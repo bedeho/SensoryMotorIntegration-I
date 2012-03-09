@@ -66,7 +66,7 @@ HiddenNeuron::~HiddenNeuron() {
 void HiddenNeuron::addAfferentSynapse(const Neuron * preSynapticNeuron, float weight) {
     
     // Ask region for history buffer
-    float * buffer = (static_cast<HiddenRegion *>(region))->getSynapseHistorySlot();
+    float * buffer = saveSynapseHistory ? (static_cast<HiddenRegion *>(region))->getSynapseHistorySlot() : NULL;
     
     // Add synapse to synapse lisr
     afferentSynapses.push_back(Synapse(weight, preSynapticNeuron, this, buffer)); // historyLength

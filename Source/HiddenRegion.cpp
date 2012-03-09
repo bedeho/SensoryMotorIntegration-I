@@ -91,9 +91,8 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
     unsigned long long int outputsPerCell, outputsPerSynapse, outputsPerRegion, bufferSize;
     
     // Init buffer variables
-    bufferSize = 0;
-    synapseHistoryBuffer.resize(0); // assume we dont save anything
     
+
     // Determine buffer sizes
     if(isTraining) {
         
@@ -101,18 +100,23 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
         outputsPerCell = (saveHistory == SH_NONE) ? 0 : outputsPerRegion;
         outputsPerSynapse = (saveHistory == SH_ALL_NEURONS_IN_REGION) ? 0 : outputsPerCell;
         
-        bufferSize = outputsPerCell;
-        
-        if(saveHistory == SH_ALL_NEURONS_IN_REGION)
-            bufferSize *= depth*verDimension*horDimension;
+        if (saveHistory == SH_NONE)
+            bufferSize = 0;
         else {
             
-            if(saveHistory == SH_ALL_NEURONS_AND_SYNAPSES_IN_REGION || saveHistory == SH_ALL_NEURONS_IN_REGION)
-                bufferSize *= depth*verDimension*horDimension;
-            else if(saveHistory == SH_SINGLE_CELLS)
-                bufferSize *= p.nrOfRecordedSingleCells[regionNr-1];
+            bufferSize = outputsPerCell;
             
-            synapseHistoryBuffer.resize(bufferSize*desiredFanIn);
+            if(saveHistory == SH_ALL_NEURONS_IN_REGION)
+                bufferSize *= depth*verDimension*horDimension;
+            else {
+                
+                if(saveHistory == SH_ALL_NEURONS_AND_SYNAPSES_IN_REGION || saveHistory == SH_ALL_NEURONS_IN_REGION)
+                    bufferSize *= depth*verDimension*horDimension;
+                else if(saveHistory == SH_SINGLE_CELLS)
+                    bufferSize *= p.nrOfRecordedSingleCells[regionNr-1];
+                
+                synapseHistoryBuffer.resize(bufferSize*desiredFanIn);
+            }
         }
         
     } else {

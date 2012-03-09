@@ -10,7 +10,9 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
+#ifndef DEBUG
 #define OMP_ENABLE
+#endif
 
 // Forward declarations
 class HiddenNeuron;
