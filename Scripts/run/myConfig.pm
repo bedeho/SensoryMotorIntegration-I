@@ -16,17 +16,17 @@
 	
 	our @EXPORT = qw($BASE $PERL_RUN_SCRIPT $PROGRAM $MATLAB_SCRIPT_FOLDER $MATLAB $BINARY LOCAL_RUN XGIRD_RUN DISCRETE CONTINOUS TRACE HEBB NONE COMP SOM HEAP FULL_CONNECTIVITY SPARSE_CONNECTIVITY SPARSE_BIASED NO_HISTORY ALL NO_SYNAPSE SINGLE_CELLS);
 	
-	our $BASE = "/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SMI/";  # must have trailing slash, "D:/Oxford/Work/Projects/"
+	our $BASE = "/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/";  # must have trailing slash, "D:/Oxford/Work/Projects/"
 	
 	################################################################################################################################################################################################
 	# Don't touch
 	################################################################################################################################################################################################
 	
 	our $PERL_RUN_SCRIPT 		= $BASE."Scripts/run/Run.pl";
-	our $PROGRAM				= $BASE."Source/DerivedData/SMI/Build/Products/Release/SMI";
+	our $PROGRAM				= $BASE."Source/DerivedData/SensoryMotorIntegration-I/Build/Products/Release/SensoryMotorIntegration-I";
 	our $MATLAB_SCRIPT_FOLDER 	= $BASE."Scripts/matlab/";  # must have trailing slash
 	our $MATLAB 				= "/Volumes/Apps/MATLAB_R2011b.app/bin/matlab -nosplash -nodisplay"; # -nodesktop
-	our $BINARY					= "SMI";
+	our $BINARY					= "SensoryMotorIntegration-I";
 	
 	# $xgrid
 	use constant LOCAL_RUN => 0;

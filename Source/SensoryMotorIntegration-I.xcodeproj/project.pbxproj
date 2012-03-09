@@ -1,0 +1,279 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5B4C814F150A3B3600A27502 /* SensoryMotorIntegration_I.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5B4C814E150A3B3600A27502 /* SensoryMotorIntegration_I.1 */; };
+		5BEA352F150A406100E2EC8E /* BinaryRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BEA3517150A406100E2EC8E /* BinaryRead.cpp */; };
+		5BEA3530150A406100E2EC8E /* BinaryWrite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BEA3519150A406100E2EC8E /* BinaryWrite.cpp */; };
+		5BEA3531150A406100E2EC8E /* HiddenNeuron.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BEA351B150A406100E2EC8E /* HiddenNeuron.cpp */; };
+		5BEA3532150A406100E2EC8E /* HiddenRegion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BEA351D150A406100E2EC8E /* HiddenRegion.cpp */; };
+		5BEA3533150A406100E2EC8E /* InputNeuron.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BEA351F150A406100E2EC8E /* InputNeuron.cpp */; };
+		5BEA3534150A406100E2EC8E /* InputRegion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BEA3521150A406100E2EC8E /* InputRegion.cpp */; };
+		5BEA3535150A406100E2EC8E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BEA3523150A406100E2EC8E /* main.cpp */; };
+		5BEA3536150A406100E2EC8E /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BEA3524150A406100E2EC8E /* Network.cpp */; };
+		5BEA3537150A406100E2EC8E /* Neuron.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BEA3526150A406100E2EC8E /* Neuron.cpp */; };
+		5BEA3538150A406100E2EC8E /* param.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BEA3528150A406100E2EC8E /* param.cpp */; };
+		5BEA3539150A406100E2EC8E /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BEA352A150A406100E2EC8E /* Region.cpp */; };
+		5BEA353A150A406100E2EC8E /* Synapse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BEA352C150A406100E2EC8E /* Synapse.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5B4C8146150A3B3600A27502 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				5B4C814F150A3B3600A27502 /* SensoryMotorIntegration_I.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5B4C8148150A3B3600A27502 /* SensoryMotorIntegration-I */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "SensoryMotorIntegration-I"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B4C814E150A3B3600A27502 /* SensoryMotorIntegration_I.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = SensoryMotorIntegration_I.1; sourceTree = "<group>"; };
+		5BEA3517150A406100E2EC8E /* BinaryRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BinaryRead.cpp; sourceTree = SOURCE_ROOT; };
+		5BEA3518150A406100E2EC8E /* BinaryRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinaryRead.h; sourceTree = SOURCE_ROOT; };
+		5BEA3519150A406100E2EC8E /* BinaryWrite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BinaryWrite.cpp; sourceTree = SOURCE_ROOT; };
+		5BEA351A150A406100E2EC8E /* BinaryWrite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinaryWrite.h; sourceTree = SOURCE_ROOT; };
+		5BEA351B150A406100E2EC8E /* HiddenNeuron.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HiddenNeuron.cpp; sourceTree = SOURCE_ROOT; };
+		5BEA351C150A406100E2EC8E /* HiddenNeuron.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HiddenNeuron.h; sourceTree = SOURCE_ROOT; };
+		5BEA351D150A406100E2EC8E /* HiddenRegion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HiddenRegion.cpp; sourceTree = SOURCE_ROOT; };
+		5BEA351E150A406100E2EC8E /* HiddenRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HiddenRegion.h; sourceTree = SOURCE_ROOT; };
+		5BEA351F150A406100E2EC8E /* InputNeuron.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputNeuron.cpp; sourceTree = SOURCE_ROOT; };
+		5BEA3520150A406100E2EC8E /* InputNeuron.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputNeuron.h; sourceTree = SOURCE_ROOT; };
+		5BEA3521150A406100E2EC8E /* InputRegion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputRegion.cpp; sourceTree = SOURCE_ROOT; };
+		5BEA3522150A406100E2EC8E /* InputRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputRegion.h; sourceTree = SOURCE_ROOT; };
+		5BEA3523150A406100E2EC8E /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
+		5BEA3524150A406100E2EC8E /* Network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = SOURCE_ROOT; };
+		5BEA3525150A406100E2EC8E /* Network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Network.h; sourceTree = SOURCE_ROOT; };
+		5BEA3526150A406100E2EC8E /* Neuron.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Neuron.cpp; sourceTree = SOURCE_ROOT; };
+		5BEA3527150A406100E2EC8E /* Neuron.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Neuron.h; sourceTree = SOURCE_ROOT; };
+		5BEA3528150A406100E2EC8E /* param.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = param.cpp; sourceTree = SOURCE_ROOT; };
+		5BEA3529150A406100E2EC8E /* Param.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Param.h; sourceTree = SOURCE_ROOT; };
+		5BEA352A150A406100E2EC8E /* Region.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Region.cpp; sourceTree = SOURCE_ROOT; };
+		5BEA352B150A406100E2EC8E /* Region.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Region.h; sourceTree = SOURCE_ROOT; };
+		5BEA352C150A406100E2EC8E /* Synapse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Synapse.cpp; sourceTree = SOURCE_ROOT; };
+		5BEA352D150A406100E2EC8E /* Synapse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Synapse.h; sourceTree = SOURCE_ROOT; };
+		5BEA352E150A406100E2EC8E /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5B4C8145150A3B3600A27502 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5B4C813D150A3AF200A27502 = {
+			isa = PBXGroup;
+			children = (
+				5B4C814B150A3B3600A27502 /* SensoryMotorIntegration-I */,
+				5B4C8149150A3B3600A27502 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5B4C8149150A3B3600A27502 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5B4C8148150A3B3600A27502 /* SensoryMotorIntegration-I */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5B4C814B150A3B3600A27502 /* SensoryMotorIntegration-I */ = {
+			isa = PBXGroup;
+			children = (
+				5BEA3517150A406100E2EC8E /* BinaryRead.cpp */,
+				5BEA3518150A406100E2EC8E /* BinaryRead.h */,
+				5BEA3519150A406100E2EC8E /* BinaryWrite.cpp */,
+				5BEA351A150A406100E2EC8E /* BinaryWrite.h */,
+				5BEA351B150A406100E2EC8E /* HiddenNeuron.cpp */,
+				5BEA351C150A406100E2EC8E /* HiddenNeuron.h */,
+				5BEA351D150A406100E2EC8E /* HiddenRegion.cpp */,
+				5BEA351E150A406100E2EC8E /* HiddenRegion.h */,
+				5BEA351F150A406100E2EC8E /* InputNeuron.cpp */,
+				5BEA3520150A406100E2EC8E /* InputNeuron.h */,
+				5BEA3521150A406100E2EC8E /* InputRegion.cpp */,
+				5BEA3522150A406100E2EC8E /* InputRegion.h */,
+				5BEA3523150A406100E2EC8E /* main.cpp */,
+				5BEA3524150A406100E2EC8E /* Network.cpp */,
+				5BEA3525150A406100E2EC8E /* Network.h */,
+				5BEA3526150A406100E2EC8E /* Neuron.cpp */,
+				5BEA3527150A406100E2EC8E /* Neuron.h */,
+				5BEA3528150A406100E2EC8E /* param.cpp */,
+				5BEA3529150A406100E2EC8E /* Param.h */,
+				5BEA352A150A406100E2EC8E /* Region.cpp */,
+				5BEA352B150A406100E2EC8E /* Region.h */,
+				5BEA352C150A406100E2EC8E /* Synapse.cpp */,
+				5BEA352D150A406100E2EC8E /* Synapse.h */,
+				5BEA352E150A406100E2EC8E /* Utilities.h */,
+				5B4C814E150A3B3600A27502 /* SensoryMotorIntegration_I.1 */,
+			);
+			path = "SensoryMotorIntegration-I";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5B4C8147150A3B3600A27502 /* SensoryMotorIntegration-I */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B4C8152150A3B3600A27502 /* Build configuration list for PBXNativeTarget "SensoryMotorIntegration-I" */;
+			buildPhases = (
+				5B4C8144150A3B3600A27502 /* Sources */,
+				5B4C8145150A3B3600A27502 /* Frameworks */,
+				5B4C8146150A3B3600A27502 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SensoryMotorIntegration-I";
+			productName = "SensoryMotorIntegration-I";
+			productReference = 5B4C8148150A3B3600A27502 /* SensoryMotorIntegration-I */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5B4C813F150A3AF200A27502 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 5B4C8142150A3AF200A27502 /* Build configuration list for PBXProject "SensoryMotorIntegration-I" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5B4C813D150A3AF200A27502;
+			productRefGroup = 5B4C8149150A3B3600A27502 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5B4C8147150A3B3600A27502 /* SensoryMotorIntegration-I */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5B4C8144150A3B3600A27502 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5BEA352F150A406100E2EC8E /* BinaryRead.cpp in Sources */,
+				5BEA3530150A406100E2EC8E /* BinaryWrite.cpp in Sources */,
+				5BEA3531150A406100E2EC8E /* HiddenNeuron.cpp in Sources */,
+				5BEA3532150A406100E2EC8E /* HiddenRegion.cpp in Sources */,
+				5BEA3533150A406100E2EC8E /* InputNeuron.cpp in Sources */,
+				5BEA3534150A406100E2EC8E /* InputRegion.cpp in Sources */,
+				5BEA3535150A406100E2EC8E /* main.cpp in Sources */,
+				5BEA3536150A406100E2EC8E /* Network.cpp in Sources */,
+				5BEA3537150A406100E2EC8E /* Neuron.cpp in Sources */,
+				5BEA3538150A406100E2EC8E /* param.cpp in Sources */,
+				5BEA3539150A406100E2EC8E /* Region.cpp in Sources */,
+				5BEA353A150A406100E2EC8E /* Synapse.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5B4C8150150A3B3600A27502 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5B4C8151150A3B3600A27502 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		5B4C8153150A3B3600A27502 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5B4C8154150A3B3600A27502 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5B4C8142150A3AF200A27502 /* Build configuration list for PBXProject "SensoryMotorIntegration-I" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B4C8150150A3B3600A27502 /* Debug */,
+				5B4C8151150A3B3600A27502 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5B4C8152150A3B3600A27502 /* Build configuration list for PBXNativeTarget "SensoryMotorIntegration-I" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B4C8153150A3B3600A27502 /* Debug */,
+				5B4C8154150A3B3600A27502 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5B4C813F150A3AF200A27502 /* Project object */;
+}
