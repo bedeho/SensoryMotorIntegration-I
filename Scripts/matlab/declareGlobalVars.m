@@ -10,7 +10,7 @@
 function declareGlobalVars()
 
     global base;
-	base = '/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SMI/'; % must have trailing slash
+	base = '/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/'; % must have trailing slash
 
     global EXPERIMENTS_FOLDER;
     EXPERIMENTS_FOLDER = [base 'Experiments/'];  

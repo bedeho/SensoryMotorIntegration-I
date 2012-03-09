@@ -135,7 +135,7 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
     this->singleSynapseBufferSize = outputsPerSynapse;
     
     // Init neurons
-    int bufferOffset = 0;
+    unsigned long long int bufferOffset = 0;
 	for(int d = 0;d < depth;d++)
         for(int i = 0;i < verDimension;i++)
             for(int j = 0;j < horDimension;j++) {
