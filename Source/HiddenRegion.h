@@ -82,17 +82,19 @@ class HiddenRegion : public Region {
 		Neuron * getNeuron(u_short depth, u_short row, u_short col);
     
         // Synapse history buffer
-        
         float * getSynapseHistorySlot();
 		
     private:
 
-        unsigned historyCounter;
-		float threshold;
+        // Track region level variables
         u_short percentileSize;
+        float threshold;
 		vector<float> sparsityPercentileValue;
+        unsigned long long int regionHistoryCounter;
     
-        vector<vector<short> > recordedSingleCells; // Really bool, but STL is fucked up!
+        // Indicates what cells to single cell record
+        // should really be bool, but STL is fucked up!
+        vector<vector<short> > recordedSingleCells; 
 	
         // Filters
         vector<vector<float> > inhibitoryFilter;
@@ -133,7 +135,8 @@ class HiddenRegion : public Region {
         u_short wrap(int x, u_short d);
         
         // Synapse history pointer
-        float * synapseHistoryPointer;
+        unsigned long long int synapseHistoryCounter;
+        unsigned long long int singleSynapseBufferSize;
 };
 
 

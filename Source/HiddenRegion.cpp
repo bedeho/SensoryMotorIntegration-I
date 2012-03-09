@@ -33,7 +33,7 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
 	Region::init(regionNr, p);
     
 	// Set vars
-	this->historyCounter = 0;
+	this->regionHistoryCounter = 0;
 	this->filterWidth = p.filterWidth[regionNr-1]; 
 	this->inhibitoryRadius = p.inhibitoryRadius[regionNr-1]; 
 	this->inhibitoryContrast = p.inhibitoryContrast[regionNr-1];
@@ -88,11 +88,13 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
         outputsPerCellPerEpoch = samplesPrObject * nrOfObjects;
     
     // Deduce history buffer sizes based on on whether there is learning or not
-    unsigned outputsPerCell, outputsPerSynapse, outputsPerRegion;
-    unsigned long long bufferSize = 0;
+    unsigned long long int outputsPerCell, outputsPerSynapse, outputsPerRegion, bufferSize;
     
+    // Init buffer variables
+    bufferSize = 0;
     synapseHistoryBuffer.resize(0); // assume we dont save anything
     
+    // Determine buffer sizes
     if(isTraining) {
         
         outputsPerRegion = outputsPerCellPerEpoch * p.nrOfEpochs;
@@ -122,13 +124,15 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
         bufferSize = outputsPerCell*depth*verDimension*horDimension;
     }
     
-    activationBuffer.resize(bufferSize);
-    inhibitedActivationHistoryBuffer.resize(bufferSize);
-    firingRateBuffer.resize(bufferSize);
-    traceBuffer.resize(bufferSize);
-    stimulationBuffer.resize(bufferSize);
-    sparsityPercentileValue = vector<float>(outputsPerRegion);
-    synapseHistoryPointer = &(synapseHistoryBuffer[0]);
+    this->activationBuffer.resize(bufferSize);
+    this->inhibitedActivationHistoryBuffer.resize(bufferSize);
+    this->firingRateBuffer.resize(bufferSize);
+    this->traceBuffer.resize(bufferSize);
+    this->stimulationBuffer.resize(bufferSize);
+    this->sparsityPercentileValue = vector<float>(outputsPerRegion);
+    
+    this->synapseHistoryCounter = 0;
+    this->singleSynapseBufferSize = outputsPerSynapse;
     
     // Init neurons
     int bufferOffset = 0;
@@ -161,7 +165,7 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
                 }
                 
                 // Init cell
-                Neurons[d][i][j].init(this, d, i, j, activation, inibitedActivation, firingRate, trace, stimulation, outputsPerSynapse, saveNeuronHistory, saveSynapseHistory, desiredFanIn); 
+                Neurons[d][i][j].init(this, d, i, j, activation, inibitedActivation, firingRate, trace, stimulation, saveNeuronHistory, saveSynapseHistory, desiredFanIn); 
             }
                
 	
@@ -364,7 +368,6 @@ void HiddenRegion::applyLearningRule() {
     if(learningRate == 0)
         return;
     
-	
     for(int d = 0; d < depth;d++)
 		#pragma omp for nowait
         for(int i = 0; i < verDimension;i++)
@@ -382,16 +385,10 @@ void HiddenRegion::applyLearningRule() {
 					
 					n->newTrace = (1 - stepSize/traceTimeConstant)*n->trace + (stepSize/traceTimeConstant)*n->firingRate;
                     
-                    /*
-                    if(isnan(n->newTrace))
-                        n =n;
-                     */
-					
 				} else {
 					
 					for(int s = 0;s < n->afferentSynapses.size();s++) {
-						n->afferentSynapses[s].weight += learningRate * (rule == HEBB_RULE
- ? n->newFiringRate : n->newTrace) * n->afferentSynapses[s].preSynapticNeuron->newFiringRate;
+						n->afferentSynapses[s].weight += learningRate * (rule == HEBB_RULE ? n->newFiringRate : n->newTrace) * n->afferentSynapses[s].preSynapticNeuron->newFiringRate;
 						norm += n->afferentSynapses[s].weight * n->afferentSynapses[s].weight;
 					}
 					
@@ -420,8 +417,8 @@ void HiddenRegion::doTimeStep(bool save) {
 	#pragma omp single	
 	{	
 		if(save) {
-			sparsityPercentileValue[historyCounter] = threshold;
-			historyCounter++;
+			sparsityPercentileValue[regionHistoryCounter] = threshold;
+			regionHistoryCounter++;
 		}
 	}
 }
@@ -473,7 +470,7 @@ Neuron * HiddenRegion::getNeuron(u_short depth, u_short row, u_short col) {
 
 void HiddenRegion::outputRegion(BinaryWrite & file) {
 	
-	for(int t = 0;t < historyCounter;t++)
+	for(int t = 0;t < regionHistoryCounter;t++)
 		file << sparsityPercentileValue[t];
 }
 
@@ -495,7 +492,27 @@ void HiddenRegion::outputSingleCells(BinaryWrite & file) {
                     Neurons[d][i][j].output(file, WEIGHT_AND_NEURON_HISTORY);                
 }
 
+float * HiddenRegion::getSynapseHistorySlot() {
+    
+    // Get the present first unused slot
+    float * bufferSlot = &(synapseHistoryBuffer[synapseHistoryCounter]);
+    
+    // New required size of buffer
+    synapseHistoryCounter += singleSynapseBufferSize;
+    
+    // Check that we have enough space
+    if(synapseHistoryBuffer.size() < synapseHistoryCounter) {
+        
+        // Allocate more space
+        //synapseHistoryBuffer.resize(synapseHistoryCounter);
+        
+        cerr << "Synapse history buffer was not big enough!!" << endl;
+        exit(EXIT_FAILURE);
+    }
 
+    // Return slot
+    return bufferSlot;
+}
 
 /*
 void HiddenRegion::outputNeuronHistory(BinaryStream & firingRateFile, 

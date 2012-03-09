@@ -30,13 +30,13 @@ class Neuron {
         // Containing region
         // Cant use referenes because of insane copy constructability of vector class
         // u_short short regionNr;
-        const Region * region;
+        Region * region;
         
         float firingRate;     // For postsynaptic activation computation
 		float newFiringRate;  // The reason this value was introduced in Neuron class was because we may run model in discrete scheme, which depends new* values
 
 		// Init
-        void init(const Region * region, u_short depth, u_short row, u_short col);
+        void init(Region * region, u_short depth, u_short row, u_short col);
                 
     private:
         

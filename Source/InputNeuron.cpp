@@ -10,7 +10,7 @@
 #include "InputNeuron.h"
 #include <math.h>
 
-void InputNeuron::init(const Region * region, u_short depth, u_short row, u_short col, float horEyePositionPreference, float horEyePositionSigmoidSlope, float horVisualPreference, float horVisualSigma) {
+void InputNeuron::init(Region * region, u_short depth, u_short row, u_short col, float horEyePositionPreference, float horEyePositionSigmoidSlope, float horVisualPreference, float horVisualSigma) {
 
     Neuron::init(region, depth, row, col),
     

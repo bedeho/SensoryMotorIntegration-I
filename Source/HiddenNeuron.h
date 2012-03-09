@@ -65,7 +65,7 @@ class HiddenNeuron: public Neuron {
         float newTrace;
 
 		// Init
-		void init(const HiddenRegion * region, 
+		void init(HiddenRegion * region, 
                   u_short depth, 
                   u_short row, 
                   u_short col, 
@@ -73,8 +73,7 @@ class HiddenNeuron: public Neuron {
                   float * const inhibitedActivationHistory, 
                   float * const firingRateHistory, 
                   float * const traceHistory,
-                  float * const stimulationHistory, 
-                  unsigned synapseHistoryBufferSize, 
+                  float * const stimulationHistory,
                   bool saveNeuronHistory, 
                   bool saveSynapseHistory,
                   u_short desiredFanIn);

@@ -21,7 +21,7 @@ using std::cout;
 using std::endl;
 using std::cerr;
 
-void HiddenNeuron::init(const HiddenRegion * region,
+void HiddenNeuron::init(HiddenRegion * region,
                         u_short depth, 
                         u_short row, 
                         u_short col, 
@@ -66,7 +66,7 @@ HiddenNeuron::~HiddenNeuron() {
 void HiddenNeuron::addAfferentSynapse(const Neuron * preSynapticNeuron, float weight) {
     
     // Ask region for history buffer
-    float * buffer = (static_cast<HiddenRegion>(region))->getSynapseHistorySlot();
+    float * buffer = (static_cast<HiddenRegion *>(region))->getSynapseHistorySlot();
     
     // Add synapse to synapse lisr
     afferentSynapses.push_back(Synapse(weight, preSynapticNeuron, this, buffer)); // historyLength
@@ -93,8 +93,8 @@ void HiddenNeuron::setupAfferentSynapses(Region & preSynapticRegion, CONNECTIVIT
             while(connectionsMade < desiredFanIn) {
                 
                 // Sample location
-                int rowSource = gsl_rng_uniform_int(rngController, preSynapticRegion.verDimension);
-                int colSource = gsl_rng_uniform_int(rngController, preSynapticRegion.horDimension);
+                unsigned long int rowSource = gsl_rng_uniform_int(rngController, preSynapticRegion.verDimension);
+                unsigned long int colSource = gsl_rng_uniform_int(rngController, preSynapticRegion.horDimension);
                 
                 // Grab neuron
                 Neuron * preSynapticNeuron = preSynapticRegion.getNeuron(d, rowSource, colSource);

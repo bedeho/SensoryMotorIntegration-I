@@ -25,7 +25,7 @@ class InputNeuron : public Neuron {
         float horEyePositionSigmoidSlope;
         float horVisualSigma;
 
-		void init(const Region * region, u_short depth, u_short row, u_short col, float horEyePositionPreference, float horEyePositionSigmoidSlope, float horVisualPreference, float horVisualSigma);
+		void init(Region * region, u_short depth, u_short row, u_short col, float horEyePositionPreference, float horEyePositionSigmoidSlope, float horVisualPreference, float horVisualSigma);
         void setFiringRate(const vector<float> & sample);
 };
 

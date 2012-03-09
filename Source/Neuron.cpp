@@ -9,7 +9,7 @@
 
 #include "Neuron.h"
 
-void Neuron::init(const Region * region, u_short depth, u_short row, u_short col) {
+void Neuron::init(Region * region, u_short depth, u_short row, u_short col) {
 
 	this->region = region;
     this->depth = depth;
