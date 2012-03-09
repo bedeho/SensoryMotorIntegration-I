@@ -46,6 +46,9 @@ void InputNeuron::setFiringRate(const vector<float> & sample) {
         cout << "yey" << endl;
     }*/
     
+    float t = exp((float)5); // - horEyePositionPreference, sample.front()
+    t = 9;
+    
     // firing = sigmoid * gaussian
     float firing;
     firing  = 1 / (1 + exp(horEyePositionSigmoidSlope * (sample.front() - horEyePositionPreference))); // sigmoid
