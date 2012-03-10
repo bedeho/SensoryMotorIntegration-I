@@ -463,6 +463,7 @@ void Network::openHistoryFile(BinaryWrite & file, const char * outputDirectory, 
     file << area7a.horVisualDimension;
     file << area7a.horEyeDimension;
     file << area7a.depth;
+    file << U_SHORT_1; // Always present
     
     // Hidden layer description
     for(u_short k = 0;k < ESPathway.size();k++) {

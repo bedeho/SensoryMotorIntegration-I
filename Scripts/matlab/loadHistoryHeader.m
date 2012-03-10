@@ -63,12 +63,7 @@ function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets
         neuronOffsets{r}(y_dimension, x_dimension, depth).nr = [];
         
         if isPresent,
-            
             nrOfPresentLayers = nrOfPresentLayers + 1;
-            
-            if r > 1 
-                nrOfNeurons = nrOfNeurons + y_dimension * x_dimension * depth;
-            end
         end
     end
     

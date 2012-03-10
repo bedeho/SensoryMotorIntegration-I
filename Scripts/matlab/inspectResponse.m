@@ -15,6 +15,10 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting); % (object, eye_position, row, col, region)
     regionCorrs = regionCorrelation(filename, nrOfEyePositionsInTesting);
     
+    % Load single unit recordings
+    [pathstr, name, ext] = fileparts(filename);
+    [singleUnits, nrOfPresentLayers] = loadSingleUnitRecordings([pathstr '/singleUnits.dat'])
+    
     % Setup vars
     PLOT_COLS = 4;
     numRegions = length(networkDimensions);
@@ -41,9 +45,10 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
     fig = figure('name',filename,'NumberTitle','off');
     for r=2:numRegions
         
-        %%% Delta plot
-        %% Figure out what cells we have history for!!!!!, put it here!, all
-        %% other cells we just gray out
+        %{
+        % Delta plot
+        % Figure out what cells we have history for!!!!!, put it here!, all
+        % other cells we just gray out
         axisVals(r-1,1) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 1); % Save axis
         %deltaMatrix = rand(10,10);% painstakingly slow regionDelta(network_1, network_2, r);
         %im = imagesc(deltaMatrix);
@@ -51,8 +56,30 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
         %title('This vs. BlankNetwork weight matrix correlation per cell');
         %colorbar;
         %set(im, 'ButtonDownFcn', {@singleUnitCallBack, r}); % Setup callback
+        %}
         
-        if ~ismpety(data{r-1}),
+        %height = networkDimensions(r).y_dimensions;
+        %width = networkDimensions(r).x_dimensions;
+        v2 = singleUnits{r}(:, :, 1).isPresent;
+        im = imagesc(v2);
+        daspect([size(v2) 1]);
+        title(['Recorded Units in Region: ' num2str(r)]);
+        colorbar;
+        set(im, 'ButtonDownFcn', {@singleUnitCallBack, r}); % Setup callback
+        
+        %{
+        recordingIndicator = zeros(height, width);
+        [singleUnits, nrOfPresentLayers] = loadSingleUnitRecordings(filename);
+        for row=1:height,
+            for col=1:width,
+                
+                 singleUnits{r}(row, col, 1).isPresent
+                
+            end
+        end
+        %}
+        
+        if ~isempty(data{r-1}),
             
             %% Activity indicator
             axisVals(r-1,2) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 2); % Save axis
@@ -181,9 +208,6 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
 
     % Callback 2
     function singleUnitCallBack(varargin)
-        
-        
-        
         disp('coming later...');
     end
 end
