@@ -185,11 +185,16 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
             const Neuron * n = afferentSynapses[s].preSynapticNeuron;
             
             // Output synapse
-            file << n->region->regionNr << n->depth << n->row << n->col << afferentSynapses[s].weight;
+            file << n->region->regionNr << n->depth << n->row << n->col;
             
-            if(data == WEIGHT_HISTORY || data == WEIGHT_AND_NEURON_HISTORY) { 
+            if(data == WEIGHTS_FINAL)
+                file << afferentSynapses[s].weight;
+            else { // WEIGHT_HISTORY, WEIGHT_AND_NEURON_HISTORY
                 
-                // Output weight history
+                // Fan in of this neuron
+                file << static_cast<u_short>(afferentSynapses.size());
+                
+                // Output weight history - WEIGHT_HISTORY
                 for(int t = 0;t < synapseHistoryCounter;t++)
                     file << afferentSynapses[s].weightHistory[t];
                 

@@ -49,9 +49,7 @@ function [synapses] = synapseHistory(fileID, networkDimensions, historyDimension
 
     % Fill synapses
     for s = 1:count,
-        
-        %waitbar(s/count,h);
-        
+
         v = fread(fileID, 4, SOURCE_PLATFORM_USHORT);
         
         synapses(s).region = v(1)+1;
