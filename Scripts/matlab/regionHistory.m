@@ -15,7 +15,7 @@ function [activity] = regionHistory(filename, region, depth, maxEpoch)
     global SOURCE_PLATFORM_FLOAT;
     
     % Load header
-    [networkDimensions, historyDimensions, neuronOffsets, headerSize] = loadHistoryHeader(filename);
+    [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets] = loadHistoryHeader(filename);
     
     % Validate input
     validateNeuron('regionHistory.m', networkDimensions, region, depth);

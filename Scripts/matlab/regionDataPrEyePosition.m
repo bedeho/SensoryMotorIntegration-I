@@ -13,8 +13,8 @@ function [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEy
     declareGlobalVars();
     global floatError;
 
-    % Get dimensions
-    [networkDimensions, historyDimensions] = getHistoryDimensions(filename);
+    % Get dimensions 
+    [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
     
     % Setup vars
     depth                = 1;
@@ -38,21 +38,24 @@ function [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEy
         % Get dimensions for this region
         y_dimension = networkDimensions(r).y_dimension;
         x_dimension = networkDimensions(r).x_dimension;
+        isPresent   = networkDimensions(r).isPresent;
         
-        % Pre-process data
-        result = regionHistory(filename, r, depth, numEpochs);
-
-        % Get final state of each fixation
-        dataAtLastStepPrObject = squeeze(result(numOutputsPrObject, :, numEpochs, :, :)); % (object, row, col)
-
-        % Restructure to access data on eye position basis
-        dataPrEyePosition = reshape(dataAtLastStepPrObject, [objectsPrEyePosition nrOfEyePositionsInTesting y_dimension x_dimension]); % (object, eye_position, row, col)
-
-        % Zero out error terms
-        dataPrEyePosition(dataPrEyePosition < floatError) = 0; % Cutoff for being designated as silent
+        if isPresent,
         
-        % Save in cell array
-        data{r-1,1} = dataPrEyePosition;
-        
+            % Pre-process data
+            result = regionHistory(filename, r, depth, numEpochs);
+
+            % Get final state of each fixation
+            dataAtLastStepPrObject = squeeze(result(numOutputsPrObject, :, numEpochs, :, :)); % (object, row, col)
+
+            % Restructure to access data on eye position basis
+            dataPrEyePosition = reshape(dataAtLastStepPrObject, [objectsPrEyePosition nrOfEyePositionsInTesting y_dimension x_dimension]); % (object, eye_position, row, col)
+
+            % Zero out error terms
+            dataPrEyePosition(dataPrEyePosition < floatError) = 0; % Cutoff for being designated as silent
+
+            % Save in cell array
+            data{r-1,1} = dataPrEyePosition;
+        end
     end
    

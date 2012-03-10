@@ -10,7 +10,7 @@
 function responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting)
 
     % Get dimensions
-    [networkDimensions, historyDimensions] = getHistoryDimensions(filename);
+    [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
     
     % Load data
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting); % (object, eye_position, row, col, region)

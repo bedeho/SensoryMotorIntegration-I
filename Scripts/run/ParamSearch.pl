@@ -209,27 +209,7 @@
     my @traceTimeConstant				= ("2.600");  # ("0.300","0.800","1.600","2.600"); 
 	die "Invalid array: traceTimeConstant" if !validateArray(\@traceTimeConstant);
 	
-	#my $pathWayLength					= 1;
-    #my @dimension						= (30);
-    #my @depth							= (1);
-    #my @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
-    #my @fanInRadius 					= (6); # not used
-    #my @fanInCountPercentage 			= ("0.1"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
-    #my @learningrate					= ("0.1"); # < === is permuted below
-    #my @eta								= ("0.8");
-    #my @timeConstant					= ("0.1"); # < === is permuted below
-    #my @sparsenessLevel					= ("0.1"); # < === is permuted below
-    #my @sigmoidSlope 					= ("30.0"); # < === is permuted below
-    #my @inhibitoryRadius				= ("6.0");
-    #my @inhibitoryContrast				= ("1.4");
-    #my @somExcitatoryRadius				= ("0.6");
-    #my @somExcitatoryContrast			= ("120.12");
-    #my @somInhibitoryRadius				= ("6.0");
-    #my @somInhibitoryContrast			= ("1.4");
-    #my @filterWidth						= (7);
-    #my @epochs							= (10); # only used in discrete model
-    #my @outputHistory					= ("true");
-	
+
 	## orthogonalization
     #my $pathWayLength					= 1;
     #my @dimension						= (100);
@@ -251,7 +231,9 @@
     #my @filterWidth						= (7);
     #my @epochs							= (10); # only used in discrete model
     #my @outputHistory					= ("false");
-    
+    #my @saveHistory						= (NO_HISTORY, SINGLE_CELLS);
+    #my @recordedSingleCells				= ("()", "((3,13), (6,8))");
+        
 	# Two layer trace
     my $pathWayLength					= 2;
     my @dimension						= (100,10);

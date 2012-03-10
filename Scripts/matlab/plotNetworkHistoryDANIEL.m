@@ -9,11 +9,10 @@
 function plotNetworkHistoryDANIEL(filename, region, depth, maxEpoch)
 
     % Get dimensions
-    [networkDimensions, historyDimensions] = getHistoryDimensions(filename);
+    [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
     
     % Setup vars
     numRegions = length(networkDimensions);
-    activity = cell(numRegions - 1, 1);
     
     % Fill in missing arguments
     if nargin < 4,

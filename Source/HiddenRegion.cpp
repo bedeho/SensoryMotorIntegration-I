@@ -90,8 +90,6 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
     // Deduce history buffer sizes based on on whether there is learning or not
     unsigned long long int outputsPerCell, outputsPerSynapse, outputsPerRegion, bufferSize;
     
-    // Init buffer variables
-    
 
     // Determine buffer sizes
     if(isTraining) {

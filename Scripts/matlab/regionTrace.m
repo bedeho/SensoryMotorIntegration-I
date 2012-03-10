@@ -9,7 +9,7 @@
 function [MeanObjects, MeanTransforms] = regionTrace(filename, nrOfEyePositionsInTesting)
 
     % Get dimensions
-    [networkDimensions, historyDimensions] = getHistoryDimensions(filename);
+    [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
     
     % Load data
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting);

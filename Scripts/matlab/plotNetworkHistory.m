@@ -9,7 +9,7 @@
 function plotNetworkHistory(filename, depth, maxEpoch)
 
     % Get dimensions
-    [networkDimensions, historyDimensions] = getHistoryDimensions(filename);
+    [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
     
     % Setup vars
     numRegions = length(networkDimensions);
@@ -24,9 +24,11 @@ function plotNetworkHistory(filename, depth, maxEpoch)
         end
     end
     
-    % Get history array
+    % Get history array 0;
     for r=2:numRegions,
-        activity{r-1} = regionHistory(filename, r, depth, maxEpoch);
+        if networkDimensions(r).isPresent,
+            activity{r-1} = regionHistory(filename, r, depth, maxEpoch);
+        end
     end
     
     % Plot
@@ -41,18 +43,21 @@ function plotNetworkHistory(filename, depth, maxEpoch)
                 
                 y_dimension = networkDimensions(r).y_dimension;
                 x_dimension = networkDimensions(r).x_dimension;
+                isPresent   = neetworkDimensions(r).isPresent;
                 
-                for ti=1:historyDimensions.numOutputsPrObject,
+                if isPresent,
+                    for ti=1:historyDimensions.numOutputsPrObject,
 
-                    subplot(numRegions-1, historyDimensions.numOutputsPrObject, plotCounter);
+                        subplot(nrOfPresentLayers, historyDimensions.numOutputsPrObject, plotCounter);
 
-                    a = activity{r-1 }(ti, o, e, :, :);
-                    imagesc(reshape(a, [y_dimension x_dimension]));
-                    axis square;
-                    colorbar
-                    hold on;
+                        a = activity{r-1}(ti, o, e, :, :);
+                        imagesc(reshape(a, [y_dimension x_dimension]));
+                        axis square;
+                        colorbar
+                        hold on;
 
-                    plotCounter = plotCounter + 1;
+                        plotCounter = plotCounter + 1;
+                    end
                 end
             end
 

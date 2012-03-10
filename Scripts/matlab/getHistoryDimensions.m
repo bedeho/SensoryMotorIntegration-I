@@ -6,7 +6,7 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function [networkDimensions, historyDimensions] = getHistoryDimensions(filename)
+function [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename)
 
     % Read header
-    [networkDimensions, historyDimensions, neuronOffsets, headerSize] = loadHistoryHeader(filename);
+    [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets] = loadHistoryHeader(filename);

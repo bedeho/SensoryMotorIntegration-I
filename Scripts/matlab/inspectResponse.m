@@ -9,7 +9,7 @@
 function inspectResponse(filename, nrOfEyePositionsInTesting)
 
     % Get dimensions
-    [networkDimensions, historyDimensions] = getHistoryDimensions(filename);
+    [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
     
     % Load data
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting); % (object, eye_position, row, col, region)
@@ -26,6 +26,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
         objectLegend{o} = ['Object ' num2str(o)];
     end
     
+    %{
     % Get name of this network
     [pathstr, name, ext] = fileparts(filename);
     [pathstr2, netname, ext] = fileparts(pathstr);
@@ -34,12 +35,15 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
     
     % Get name of related blank network
     network_2 = [pathstr2 '/BlankNetwork/BlankNetwork.txt'];
+    %}
     
     % Iterate regions to do correlation plot and setup callbacks
     fig = figure('name',filename,'NumberTitle','off');
     for r=2:numRegions
         
         %% Delta plot
+        % Figure out what cells we have history for!!!!!, put it here!, all
+        % other cells we just gray out
         axisVals(r-1,1) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 1); % Save axis
         deltaMatrix = rand(10,10);% painstakingly slow regionDelta(network_1, network_2, r);
         im = imagesc(deltaMatrix);
@@ -96,7 +100,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
        
     end
     
-    % makeFigureFullScreen(fig);
+    makeFigureFullScreen(fig);
     
     % Callback
     function responseCallBack(varargin)

@@ -24,10 +24,20 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting)
         
         % Save axis
         clickAxis(r-1,1) = subplot(numRegions-1, 3, 3*(r-2)+1);
-        v0 = data{r-1};
-        v0(v0 > 0) = 1;  % count all nonzero as 1, error terms have already been removed
-        v1 = squeeze(sum(sum(v0))); % sum away
-        v2 = v1(:,:,1);
+        
+        % Plot
+        if ~isempty(data{r-1})
+            v0 = data{r-1};
+            v0(v0 > 0) = 1;  % count all nonzero as 1, error terms have already been removed
+            v1 = squeeze(sum(sum(v0))); % sum away
+            v2 = v1(:,:,1);
+
+        else
+            v2 = zeros(networkDimensions(r).y_dimension, networkDimensions(r).x_dimension);
+        end
+        
+        % Decorate
+        title(['Region: ' num2str(r)]);
         im = imagesc(v2);         % only do first region
         daspect([size(v2) 1]);
         colorbar;

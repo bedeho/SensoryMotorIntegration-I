@@ -9,7 +9,7 @@
 function [outputPatterns,orthogonalityIndex, inputCorrelations, outputCorrelations] = regionOrthogonality(filename, nrOfEyePositionsInTesting, dotproduct, region)
 
     % Get dimensions
-    [networkDimensions, historyDimensions] = getHistoryDimensions(filename);
+    [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
     
     y_dimension = networkDimensions(region).y_dimension;
     x_dimension = networkDimensions(region).x_dimension;

@@ -9,7 +9,7 @@
 function inspectRepresentation(filename, nrOfEyePositionsInTesting)
 
     % Get dimensions
-    [networkDimensions, historyDimensions] = getHistoryDimensions(filename);
+    [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
     
     % Load data
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting); % {region}(object, eye_position, row, col, region)
@@ -23,12 +23,13 @@ function inspectRepresentation(filename, nrOfEyePositionsInTesting)
     clickAxis = subplot(numRegions, 1, 1);
     
     total = zeros(objectsPrEyePosition, nrOfEyePositionsInTesting);
-    for r=1:(numRegions-1),
-        v1 = permute(data{r}, [3 4 1 2]); % expose the last two dimensions to be summed away
+    %for r=1:(numRegions-1),
+        v1 = permute(data{numRegions-1}, [3 4 1 2]); % expose the last two dimensions to be summed away
         v1(v1 > 0) = 1;                   % count nonzero response as 1, all error terms have previously been removed
         v2 = squeeze(sum(sum(v1)));       % sum over all neurons in all regions
-        total = total + v2;
-    end
+        total = v2;
+        %total = total + v2;
+    %end
     
     im = imagesc(total);
     colorbar;
@@ -57,11 +58,19 @@ function inspectRepresentation(filename, nrOfEyePositionsInTesting)
         % Iterate regions to do response plot
         for r=2:numRegions,
             subplot(numRegions, 1, r);
-            m = squeeze(data{r-1}(row, col, :, :));
-            cla
+            
+            if ~isempty(data{r-1})
+                m = squeeze(data{r-1}(row, col, :, :));   
+            else
+                m = zeros(networkDimensions(r).y_dimension, networkDimensions(r).x_dimension);
+            end
+            
+            %cla
             imagesc(m); % > 0
+            daspect([size(m) 1]);
             colorbar
             title(['Layer: ' num2str(r)]);
+            
         end
     end
 end

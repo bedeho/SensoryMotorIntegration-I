@@ -9,7 +9,7 @@
 function [regionCorrelation] = regionCorrelation(filename, nrOfEyePositionsInTesting)
 
     % Get dimensions
-    [networkDimensions, historyDimensions] = getHistoryDimensions(filename);
+    [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
     
     % Load data
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting);
@@ -25,32 +25,37 @@ function [regionCorrelation] = regionCorrelation(filename, nrOfEyePositionsInTes
         
         y_dimension = networkDimensions(r).y_dimension;
         x_dimension = networkDimensions(r).x_dimension;
-        regionCorrelation{r-1} = zeros(y_dimension, x_dimension);
+        isPresent   = networkDimensions(r).isPresent;
         
-        % Compute correlation for each cell
-        for row = 1:y_dimension,
-            for col = 1:x_dimension,
+        if isPresent,
 
-                corr = 0;
+            regionCorrelation{r-1} = zeros(y_dimension, x_dimension);
 
-                for eyePosition = 1:(nrOfEyePositionsInTesting - 1),
+            % Compute correlation for each cell
+            for row = 1:y_dimension,
+                for col = 1:x_dimension,
 
-                    observationMatrix = [dataPrEyePosition(:, eyePosition,row,col) dataPrEyePosition(:, eyePosition+1,row,col)];
+                    corr = 0;
 
-                    if isConstant(observationMatrix(:, 1)) || isConstant(observationMatrix(:, 2)),
-                        c = 0; % uncorrelated
-                    else
+                    for eyePosition = 1:(nrOfEyePositionsInTesting - 1),
 
-                        % correlation
-                        correlationMatrix = corrcoef(observationMatrix);
-                        c = correlationMatrix(1,2); % pick one of the two identical non-diagonal element :)
+                        observationMatrix = [dataPrEyePosition(:, eyePosition,row,col) dataPrEyePosition(:, eyePosition+1,row,col)];
 
+                        if isConstant(observationMatrix(:, 1)) || isConstant(observationMatrix(:, 2)),
+                            c = 0; % uncorrelated
+                        else
+
+                            % correlation
+                            correlationMatrix = corrcoef(observationMatrix);
+                            c = correlationMatrix(1,2); % pick one of the two identical non-diagonal element :)
+
+                        end
+
+                        corr = corr + c;
                     end
 
-                    corr = corr + c;
+                    regionCorrelation{r-1}(row, col) = corr / (nrOfEyePositionsInTesting - 1); % average correlation
                 end
-
-                regionCorrelation{r-1}(row, col) = corr / (nrOfEyePositionsInTesting - 1); % average correlation
             end
         end
     end

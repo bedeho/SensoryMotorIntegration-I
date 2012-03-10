@@ -21,7 +21,7 @@ function plotSynapseHistory(folder, region, depth, row, col, includeSynapses, ma
     declareGlobalVars();
     
     % Get history dimensions
-    [networkDimensions, historyDimensions] = getHistoryDimensions([folder '/firingRate.dat']);
+    [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions([folder '/firingRate.dat']);
     
     if nargin < 7,
         maxEpoch = historyDimensions.numEpochs; % pick all epochs
@@ -149,7 +149,7 @@ function plotSynapseHistory(folder, region, depth, row, col, includeSynapses, ma
         fileID = fopen(firingRateFile);
 
         % Read header
-        [networkDimensions, historyDimensions, neuronOffsets] = loadHistoryHeader(firingRateFile);
+        [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets] = loadHistoryHeader(firingRateFile);
 
         % Get history array
         activity = neuronHistory(fileID, networkDimensions, historyDimensions, neuronOffsets, region, depth, row, col, maxEpoch);
