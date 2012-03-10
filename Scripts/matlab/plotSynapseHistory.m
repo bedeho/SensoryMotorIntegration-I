@@ -70,7 +70,7 @@ function plotSynapseHistory(folder, region, depth, row, col, includeSynapses, ma
         fileID = fopen(synapseFile);
 
         % Read header
-        [networkDimensions, historyDimensions, neuronOffsets] = loadSynapseWeightHistoryHeader(fileID);
+        [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets] = loadSynapseWeightHistoryHeader(fileID);
 
         % Get history array
         synapses = synapseHistory(fileID, networkDimensions, historyDimensions, neuronOffsets, region, depth, row, col, maxEpoch);

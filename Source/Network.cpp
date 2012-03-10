@@ -565,6 +565,11 @@ void Network::outputSynapticHistory(const char * outputDirectory) {
     BinaryWrite synapticWeights;
     openHistoryFile(synapticWeights, outputDirectory, "synapticWeights.dat", true, OF_REGION_SYNAPTIC);
     
+    // Neuronal indegree, used for file seeking in matlab
+    for(u_short k = 0;k < ESPathway.size();k++)
+        if(p.saveHistory[k] == SH_ALL_NEURONS_AND_SYNAPSES_IN_REGION)
+            ESPathway[k].outputNeurons(synapticWeights, FAN_IN_COUNT);
+    
     // Synapse history
     for(u_short k = 0;k < ESPathway.size();k++)
         if(p.saveHistory[k] == SH_ALL_NEURONS_AND_SYNAPSES_IN_REGION)

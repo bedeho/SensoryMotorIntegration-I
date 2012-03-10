@@ -12,7 +12,6 @@
 %  Output:
 %  *networkDimensions: struct array (dimension,depth) of regions (incl. V1)
 %  *historyDimensions: struct (numEpochs,numObjects,numTransforms,numOutputsPrTransform)
-%  removed --> *headerSize: bytes read, this is where the file pointer is left
 
 function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets] = loadHistoryHeader(filename)
 
@@ -55,10 +54,6 @@ function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets
         depth       = fread(fileID, 1, SOURCE_PLATFORM_USHORT);
         isPresent   = fread(fileID, 1, SOURCE_PLATFORM_USHORT);
         
-        if isPresent,
-            nrOfPresentLayers = nrOfPresentLayers + 1;
-        end
-        
         networkDimensions(r).y_dimension = y_dimension;
         networkDimensions(r).x_dimension = x_dimension;
         networkDimensions(r).depth = depth;
@@ -66,16 +61,26 @@ function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets
         
         neuronOffsets{r}(y_dimension, x_dimension, depth).offset = [];
         neuronOffsets{r}(y_dimension, x_dimension, depth).nr = [];
+        
+        if isPresent,
+            
+            nrOfPresentLayers = nrOfPresentLayers + 1;
+            
+            if r > 1 
+                nrOfNeurons = nrOfNeurons + y_dimension * x_dimension * depth;
+            end
+        end
     end
     
     % We compute the size of header just read
-    headerSize = SOURCE_PLATFORM_USHORT_SIZE*(4 + 4 * numRegions);
+    NUM_FIELDS_PER_REGION = 4;
+    headerSize = SOURCE_PLATFORM_USHORT_SIZE*(4 + NUM_FIELDS_PER_REGION * numRegions);
     
     % Compute and store the offset of each neuron's datastream in the file, not V1
     offset = headerSize; 
     nrOfNeurons = 1;
     for r=2:numRegions,
-        if networkDimensions(r).isPresent, % Continue if this region is not included
+        if networkDimensions(r).isPresent, % Continue if this region is included
             for d=1:networkDimensions(r).depth, % Region depth
                 for row=1:networkDimensions(r).y_dimension, % Region row
                     for col=1:networkDimensions(r).x_dimension, % Region col

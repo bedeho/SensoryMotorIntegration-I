@@ -46,9 +46,7 @@ function [synapses] = synapseHistory(fileID, networkDimensions, historyDimension
     
     % Read into buffer
     streamSize = maxEpoch * historyDimensions.epochSize;
-    
-    %h = waitbar(0,'Loading Synapses History...');
-    
+
     % Fill synapses
     for s = 1:count,
         
@@ -70,5 +68,3 @@ function [synapses] = synapseHistory(fileID, networkDimensions, historyDimension
              fseek(fileID, (historyDimensions.numEpochs - maxEpoch)*historyDimensions.epochSize * SOURCE_PLATFORM_FLOAT_SIZE, 'cof');
         end
     end
-    
-    %close(h);
