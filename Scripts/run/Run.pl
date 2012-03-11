@@ -47,7 +47,7 @@
 	
 	# copy stuff into testing training folders
 	if($command eq "build") {
-	       system($PROGRAM, "build", $parameterFile, $experimentFolder) == 0 or die "Could not execute simulator, or simulator returned 0.\n";
+	       system($PROGRAM, "build", $parameterFile, $experimentFolder) == 0 or die "\nSimulator could not be executed or returned 0: when building network file.\n";
 	
 	} else {
 		
@@ -70,7 +70,7 @@
 				$networkFile = $experimentFolder."BlankNetwork.txt";
 			}
 			
-			system($PROGRAM, $command, $parameterFile, $networkFile, $simulationFolder) == 0 or die "Could not execute simulator, or simulator returned 0.\n";
+			system($PROGRAM, $command, $parameterFile, $networkFile, $simulationFolder) == 0 or die "\nSimulator could not be executed or returned 0: when doing loadtest.\n";
 	       } else {
 		
 			my $stimuli;
@@ -113,7 +113,8 @@
 	        } elsif($command eq "train") {
 	        	
 				my $networkFile = "${experimentFolder}BlankNetwork.txt";
-				system($PROGRAM, $command, $parameterFile, $networkFile, "${stimuliFolder}data.dat",  $simulationFolder) == 0 or die "Could not execute simulator, or simulator returned 0.\n";
+				print " TRYING: $PROGRAM, $command, $parameterFile, $networkFile, ${stimuliFolder}data.dat,  $simulationFolder";
+				system($PROGRAM, $command, $parameterFile, $networkFile, "${stimuliFolder}data.dat",  $simulationFolder) == 0 or die "\nSimulator could not be executed or returned 0: when training.\n\n";
 				
 				# Cleanup
 				my $destinationFolder = $simulationFolder."Training";
@@ -138,7 +139,7 @@
 		
 		my $networkFile = $simulationFolder.$net;
 		
-		system($PROGRAM, "test", $parameterFile, $networkFile, "${stimuliFolder}data.dat", $simulationFolder) == 0 or die "Could not execute simulator, or simulator returned 0.\n";
+		system($PROGRAM, "test", $parameterFile, $networkFile, "${stimuliFolder}data.dat", $simulationFolder) == 0 or die "\nSimulator could not be executed or returned 0: when testing.\n";
 		
 		# Make result directory
 		my $newFolder = substr $net, 0, length($net) - 4;

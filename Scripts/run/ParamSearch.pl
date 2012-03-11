@@ -49,13 +49,9 @@
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
     my $learningRule					= TRACE; # TRACE, HEBB
     
-    my $nrOfEpochs						= 4; #100
+    my $nrOfEpochs						= 14; #100
     my $saveNetworkAtEpochMultiple 		= 1000000;
 	my $outputAtTimeStepMultiple		= 1;
-	
-	# only continous neurons?
-	#my $outputNeurons					= "false"; # output neurons during training?, since they are always outputted during testing
-	#my $outputWeights					= "false"; # output synapse history during training/testing
 	
     my $lateralInteraction				= NONE; # NONE, COMP, SOM
     my $sparsenessRoutine				= HEAP; # NONE, HEAP
@@ -74,31 +70,18 @@
     # number of afferent synapses, total 15x.
     my @learningRates 					= (
     
-#["0.0","0.00037"],
-#["0.0","0.00075"],
-#["0.0","0.00150"],
-#["0.0","0.00337"],
-#["0.0","0.00675"],
+["0.0","0.00037"],
+["0.0","0.00075"],
+["0.0","0.00150"],
+["0.0","0.00337"],
+["0.0","0.00675"]
 #["0.0","0.01250"],
 #["0.0","0.02500"],
 #["0.0","0.05000"],
 #["0.0","0.10000"]
-["0.0","0.20000"]
+#["0.0","0.20000"]
 #["0.0","0.30000"],
 #["0.0","0.50000"]
-#["0.0","0.7"],
-#["0.0","0.9"],
-#["0.0","1.2"],
-#["0.0","1.5"],
-
-
-#["0.0"],
-#["0.3"],
-#["0.5"],
-#["1.0"],
-#["2.3"]
-#["0.0"]
-#["3.3"]
     									);								
  	die "Invalid array: learningRates" if !validateArray(\@learningRates);
 
@@ -168,7 +151,7 @@
 
 # orthognalization test
 #["0.95","0.90"],
-["0.95","0.90"]
+["0.90","0.90"]
 
 #["0.85","0.90"],
 #["0.80","0.90"],
@@ -197,7 +180,7 @@
     die "Invalid array: sparsenessLevels" if !validateArray(\@sparsenessLevels);
     
     my @timeConstants					= (
-    									["0.010","0.010"]
+    									["0.100","0.100"]
     									#["0.100","0.100"]
     									#["0.100"]
     									);
@@ -230,7 +213,7 @@
     #my @somInhibitoryContrast			= ("1.4");
     #my @filterWidth						= (7);
     #my @epochs							= (10); # only used in discrete model
-    #my @outputHistory					= ("false");
+
     #my @saveHistory						= (NO_HISTORY, SINGLE_CELLS);
     #my @recordedSingleCells				= ("()", "((3,13), (6,8))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
         
@@ -254,9 +237,8 @@
     my @somInhibitoryContrast			= ("1.4","1.4");
     my @filterWidth						= (7,7);
     my @epochs							= (10,10); # only used in discrete model
-    my @outputHistory					= ("false","true");
     my @saveHistory						= (NO_HISTORY, SINGLE_CELLS);
-    my @recordedSingleCells				= ("()", "((3,13), (6,8))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+    my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (4,8))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
     
     #############################################################################
 	# Preprocessing
@@ -282,7 +264,7 @@
     	$pathWayLength != scalar(@somInhibitoryContrast) ||
     	$pathWayLength != scalar(@filterWidth) ||
     	$pathWayLength != scalar(@epochs) ||
-    	$pathWayLength != scalar(@outputHistory) ||
+    	#$pathWayLength != scalar(@outputHistory) ||
     	$pathWayLength != scalar(@saveHistory) ||
     	$pathWayLength != scalar(@recordedSingleCells);
     
@@ -308,16 +290,16 @@
                          'somInhibitoryContrast'=>      $somInhibitoryContrast[$r],
                          'filterWidth'   		=>      $filterWidth[$r],
                          'epochs'   		 	=>      $epochs[$r],
-                         'outputHistory'  		=>      $outputHistory[$r],
+                         #'outputHistory'  		=>      $outputHistory[$r],
                          'saveHistory'  		=>      $saveHistory[$r],
                          'recordedSingleCells'	=>      $recordedSingleCells[$r]
                          );
                          
-         if($outputHistory[$r] eq "true" && $xgrid == XGIRD_RUN) {
-         	print("Error: Outputting history in layer " . $outputHistory[$r] . " ... not possible while on grid\n");
-         	#my $input = <STDIN>;
-         	exit;
-         } 
+         #if($outputHistory[$r] eq "true" && $xgrid == XGIRD_RUN) {
+         #	print("Error: Outputting history in layer " . $outputHistory[$r] . " ... not possible while on grid\n");
+         #	#my $input = <STDIN>;
+         #	exit;
+         #} 
 
          push @esRegionSettings, \%region;
     }
@@ -761,7 +743,7 @@ TEMPLATE
             $str .= "\tsomInhibitoryContrast	= ". $tmp{"somInhibitoryContrast"} .";\n";
             $str .= "\tfilterWidth   			= ". $tmp{"filterWidth"} .";\n";
             $str .= "\tepochs					= ". $tmp{"epochs"} .";\n";
-            $str .= "\toutputHistory			= ". $tmp{"outputHistory"} .";\n";
+            # $str .= "\toutputHistory			= ". $tmp{"outputHistory"} .";\n";
             $str .= "\tsaveHistory				= ". $tmp{"saveHistory"} .";\n";
             $str .= "\trecordedSingleCells		= ". $tmp{"recordedSingleCells"} .";\n";
                         

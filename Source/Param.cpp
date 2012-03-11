@@ -153,9 +153,18 @@ Param::Param(const char * filename, bool isTraining) {
                     int col = list[c][1];
                     
                     // Check
-                    if(row < dimensions[i] && col < dimensions[i] && row >= 0 && col >= 0)
-                        recordedSingleCells[i][row-1][col-1] = 1; // 1 == true
-                    else {
+                    if(row < dimensions[i] && col < dimensions[i] && row >= 0 && col >= 0) {
+                        
+                        if(!recordedSingleCells[i][row-1][col-1])
+                            recordedSingleCells[i][row-1][col-1] = 1; // 1 == true
+                        else {
+                            
+                            cerr << "recordedSingleCells is spesified twice: row =" << row << ",col =" << col << endl;
+                            exit(EXIT_FAILURE);
+                        }
+                        
+                    } else {
+                        
                         cerr << "recordedSingleCells cell which is not inside layer: row =" << row << ",col =" << col << endl;
                         exit(EXIT_FAILURE);
                     }
