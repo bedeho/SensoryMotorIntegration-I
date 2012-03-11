@@ -58,9 +58,9 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
         %set(im, 'ButtonDownFcn', {@singleUnitCallBack, r}); % Setup callback
         %}
         
-        %height = networkDimensions(r).y_dimensions;
-        %width = networkDimensions(r).x_dimensions;
-        v2 = singleUnits{r}(:, :, 1).isPresent;
+        height = networkDimensions(r).y_dimensions;
+        width = networkDimensions(r).x_dimensions;
+        v2 = reshape([singleUnits{r}(:, :, 1).isPresent],[height width]);
         im = imagesc(v2);
         daspect([size(v2) 1]);
         title(['Recorded Units in Region: ' num2str(r)]);
