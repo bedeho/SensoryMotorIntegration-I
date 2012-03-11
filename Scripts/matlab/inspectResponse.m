@@ -16,9 +16,15 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
     regionCorrs = regionCorrelation(filename, nrOfEyePositionsInTesting);
     
     % Load single unit recordings
+  
+    % Decouple name
     [pathstr, name, ext] = fileparts(filename);
+    [pathstr2, name2, ext2] = fileparts(pathstr);
+    manualData = [pathstr '/singleUnits.dat'];
+    trainingData = [pathstr2 '/Training/singleUnits.dat'];
     
-    [singleUnits, historyDimensions, nrOfPresentLayers] = loadSingleUnitRecordings([pathstr '/singleUnits.dat']);
+    %[singleUnits, historyDimensions, nrOfPresentLayers] = loadSingleUnitRecordings(manualData);
+    [singleUnits, historyDimensions, nrOfPresentLayers] = loadSingleUnitRecordings(trainingData);    
     
     % Setup vars
     PLOT_COLS = 4;
@@ -30,17 +36,6 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
     for o=1:nrOfEyePositionsInTesting,
         objectLegend{o} = ['Object ' num2str(o)];
     end
-    
-    %{
-    % Get name of this network
-    [pathstr, name, ext] = fileparts(filename);
-    [pathstr2, netname, ext] = fileparts(pathstr);
-    
-    network_1 = [pathstr '/' netname '.txt'];
-    
-    % Get name of related blank network
-    network_2 = [pathstr2 '/BlankNetwork/BlankNetwork.txt'];
-    %}
     
     % Iterate regions to do correlation plot and setup callbacks
     fig = figure('name',filename,'NumberTitle','off');
