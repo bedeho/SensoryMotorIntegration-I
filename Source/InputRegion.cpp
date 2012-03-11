@@ -141,27 +141,32 @@ void InputRegion::loadDataFile(const char * dataFile) {
     // Open file
     BinaryRead file(dataFile);
     
-    // Read header
-    float e,v;
-    
-    file >> this->samplingRate;
-    file >> this->numberOfSimultanousObjects;
-    file >> v;
-    file >> e;
-    
-    // Check compatibility of parameter file
-    if(v != this->horVisualFieldSize || e != this->horEyePositionFieldSize) {
-        
-        cerr << "visual field or eye movement field is not the same as in input file:" << v << "!=" << this->horVisualFieldSize << " || " <<  e << " != " << this->horEyePositionFieldSize << endl;
-        cerr.flush();
-        exit(EXIT_FAILURE);
-    }
-    
+    // Variables that must be visible in catch clause
     u_short lastNrOfSamplesFound = 0; // For validation of file list
-    vector<vector<float> > objectData;
+    
     bool readAFullSample;
+    bool readHeader = false;
     
     try {
+        
+        // Read header
+        vector<vector<float> > objectData;
+        float e,v;
+        
+        file >> this->samplingRate;
+        file >> this->numberOfSimultanousObjects;
+        file >> v;
+        file >> e;
+        
+        readHeader = true;
+        
+        // Check compatibility of parameter file
+        if(v != this->horVisualFieldSize || e != this->horEyePositionFieldSize) {
+            
+            cerr << "visual field or eye movement field is not the same as in input file:" << v << "!=" << this->horVisualFieldSize << " || " <<  e << " != " << this->horEyePositionFieldSize << endl;
+            cerr.flush();
+            exit(EXIT_FAILURE);
+        }
         
         // Read data points
         while(file >> e) {
@@ -224,7 +229,12 @@ void InputRegion::loadDataFile(const char * dataFile) {
             cerr.flush();
             exit(EXIT_FAILURE);
             
-        } else { 
+        } else if (!readHeader){          
+            cout << "Was unable to read header of data file." << endl;
+            cerr.flush();
+            exit(EXIT_FAILURE);
+        }
+        else { 
 
             // Success!
             samplesPrObject = lastNrOfSamplesFound;            
