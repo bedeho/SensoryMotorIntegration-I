@@ -487,11 +487,11 @@ void HiddenRegion::outputNeurons(BinaryWrite & file, DATA data) {
 // Used when outputting single cell recordings from training only (WEIGHT_AND_NEURON_HISTORY)
 void HiddenRegion::outputSingleCells(BinaryWrite & file) {
 	
-    for(int d = 0;d < depth;d++)                   
+    for(int d = 0;d < depth;d++)
         for(int i = 0;i < verDimension;i++)
             for(int j = 0;j < horDimension;j++)
                 if(recordedSingleCells[i][j])
-                    Neurons[d][i][j].output(file, WEIGHT_AND_NEURON_HISTORY);                
+                    Neurons[d][i][j].output(file, WEIGHT_AND_NEURON_HISTORY);          
 }
 
 float * HiddenRegion::getSynapseHistorySlot() {

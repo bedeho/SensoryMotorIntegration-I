@@ -29,6 +29,7 @@ function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets
     historyDimensions.numObjects = v(2);
     historyDimensions.numOutputsPrObject = v(3);
     numRegions = v(4);
+    HEADER_START_SIZE = 4;
    
     % Compound stream sizes
     historyDimensions.objectSize = historyDimensions.numOutputsPrObject;
@@ -73,7 +74,7 @@ function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets
     
     % Compute the size of header just read
     NUM_FIELDS_PER_REGION = 4;
-    headerSize = SOURCE_PLATFORM_USHORT_SIZE*(4 + NUM_FIELDS_PER_REGION * numRegions + nrOfNeurons);
+    headerSize = SOURCE_PLATFORM_USHORT_SIZE*(HEADER_START_SIZE + NUM_FIELDS_PER_REGION * numRegions + nrOfNeurons);
     
     % Read in afferentSynapse count for all neurons
     buffer = fread(fileID, nrOfNeurons, SOURCE_PLATFORM_USHORT);

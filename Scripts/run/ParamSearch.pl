@@ -232,7 +232,7 @@
     #my @epochs							= (10); # only used in discrete model
     #my @outputHistory					= ("false");
     #my @saveHistory						= (NO_HISTORY, SINGLE_CELLS);
-    #my @recordedSingleCells				= ("()", "((3,13), (6,8))");
+    #my @recordedSingleCells				= ("()", "((3,13), (6,8))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
         
 	# Two layer trace
     my $pathWayLength					= 2;
@@ -256,7 +256,7 @@
     my @epochs							= (10,10); # only used in discrete model
     my @outputHistory					= ("false","true");
     my @saveHistory						= (NO_HISTORY, SINGLE_CELLS);
-    my @recordedSingleCells				= ("()", "((3,13), (6,8))");
+    my @recordedSingleCells				= ("()", "((3,13), (6,8))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
     
     #############################################################################
 	# Preprocessing

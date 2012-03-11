@@ -32,6 +32,7 @@ function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets
     historyDimensions.numObjects = v(2);
     historyDimensions.numOutputsPrObject = v(3);
     numRegions = v(4);
+    HEADER_START_SIZE = 4;
     
     % Compound stream sizes
     historyDimensions.objectSize = historyDimensions.numOutputsPrObject;
@@ -69,7 +70,7 @@ function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets
     
     % We compute the size of header just read
     NUM_FIELDS_PER_REGION = 4;
-    headerSize = SOURCE_PLATFORM_USHORT_SIZE*(4 + NUM_FIELDS_PER_REGION * numRegions);
+    headerSize = SOURCE_PLATFORM_USHORT_SIZE*(HEADER_START_SIZE + NUM_FIELDS_PER_REGION * numRegions);
     
     % Compute and store the offset of each neuron's datastream in the file, not V1
     offset = headerSize; 

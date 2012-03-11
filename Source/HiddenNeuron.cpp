@@ -177,42 +177,43 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
         
     } else if(data == FAN_IN_COUNT)
         file << static_cast<u_short>(afferentSynapses.size());
-    else { // WEIGHTS_FINAL, WEIGHT_HISTORY, WEIGHT_AND_NEURON_HISTORY
+    else if(data == WEIGHTS_FINAL) {
         
         // Iterate afferent synapses
         for(int s = 0;s < afferentSynapses.size();s++) {
             
             const Neuron * n = afferentSynapses[s].preSynapticNeuron;
+            file << n->region->regionNr << n->depth << n->row << n->col << afferentSynapses[s].weight;
+        }
+        
+    } else { // WEIGHT_HISTORY, WEIGHT_AND_NEURON_HISTORY
+        
+        // Output neurnal values as well
+        if(data == WEIGHT_AND_NEURON_HISTORY) {
             
-            // Output synapse
-            file << n->region->regionNr << n->depth << n->row << n->col;
+            // Output neuron description
+            file << region->regionNr << depth << row << col << static_cast<u_short>(afferentSynapses.size());
             
-            if(data == WEIGHTS_FINAL)
-                file << afferentSynapses[s].weight;
-            else { // WEIGHT_HISTORY, WEIGHT_AND_NEURON_HISTORY
-                
-                // Fan in of this neuron
-                file << static_cast<u_short>(afferentSynapses.size());
-                
-                // Output weight history - WEIGHT_HISTORY
-                for(int t = 0;t < synapseHistoryCounter;t++)
-                    file << afferentSynapses[s].weightHistory[t];
-                
-                // Output neurnal values as well
-                if(data == WEIGHT_AND_NEURON_HISTORY) {
-                    output(file, firingRateHistory);
-                    output(file, activationHistory);
-                    output(file, inhibitedActivationHistory);
-                    output(file, traceHistory);
-                    output(file, stimulationHistory);
-                }
-            }
+            // Output neuron history
+            output(file, firingRateHistory);
+            output(file, activationHistory);
+            output(file, inhibitedActivationHistory);
+            output(file, traceHistory);
+            output(file, stimulationHistory);
+        }
+
+        // Iterate afferent synapses
+        for(int s = 0;s < afferentSynapses.size();s++) {
+            
+            // Output weight history for this synapse
+            for(int t = 0;t < synapseHistoryCounter;t++)
+                file << afferentSynapses[s].weightHistory[t];
         }
     }
 }
 
 void HiddenNeuron::output(BinaryWrite & file, const float * buffer) {
     
-    for(int t = 0;t < synapseHistoryCounter;t++)
+    for(int t = 0;t < neuronHistoryCounter;t++)
         file << buffer[t];
 }

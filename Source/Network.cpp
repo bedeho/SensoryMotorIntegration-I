@@ -29,6 +29,7 @@
 #endif
 
 #define U_SHORT_1 static_cast<u_short>(1)
+#define U_SHORT_0 static_cast<u_short>(0)
 
 using std::cerr;
 using std::cout;
@@ -463,7 +464,7 @@ void Network::openHistoryFile(BinaryWrite & file, const char * outputDirectory, 
     file << area7a.horVisualDimension;
     file << area7a.horEyeDimension;
     file << area7a.depth;
-    file << U_SHORT_1; // Always present
+    file << U_SHORT_0; // Never present
     
     // Hidden layer description
     for(u_short k = 0;k < ESPathway.size();k++) {
@@ -471,6 +472,7 @@ void Network::openHistoryFile(BinaryWrite & file, const char * outputDirectory, 
         u_short isPresent;
         
         switch (fileType) {
+                
             case OF_REGIONAL:
                 isPresent = 1;
                 break;

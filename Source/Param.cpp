@@ -130,7 +130,6 @@ Param::Param(const char * filename, bool isTraining) {
                 case SH_SINGLE_CELLS:
                     saveSingleCells = true;
                     break;
-
             }
 
             // Add layer
@@ -147,11 +146,19 @@ Param::Param(const char * filename, bool isTraining) {
                 nrOfRecordedSingleCells[i] = list.getLength();
                 
                 // Iterate list of cells and set value to true
-                for(int c = 0;c < list.getLength();c++) {
+                for(int c = 0;c < nrOfRecordedSingleCells[i];c++) {
                     
+                    // Input is specified in MATLAB 1-based indexes
                     int row = list[c][0];
                     int col = list[c][1];
-                    recordedSingleCells[i][row][col] = 1; // 1 == true
+                    
+                    // Check
+                    if(row < dimensions[i] && col < dimensions[i] && row >= 0 && col >= 0)
+                        recordedSingleCells[i][row-1][col-1] = 1; // 1 == true
+                    else {
+                        cerr << "recordedSingleCells cell which is not inside layer: row =" << row << ",col =" << col << endl;
+                        exit(EXIT_FAILURE);
+                    }
                 }
             }
 		}
