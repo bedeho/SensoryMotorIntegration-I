@@ -17,7 +17,8 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
     
     % Load single unit recordings
     [pathstr, name, ext] = fileparts(filename);
-    [singleUnits, nrOfPresentLayers] = loadSingleUnitRecordings([pathstr '/singleUnits.dat'])
+    
+    [singleUnits, historyDimensions, nrOfPresentLayers] = loadSingleUnitRecordings([pathstr '/singleUnits.dat']);
     
     % Setup vars
     PLOT_COLS = 4;
@@ -49,7 +50,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
         % Delta plot
         % Figure out what cells we have history for!!!!!, put it here!, all
         % other cells we just gray out
-        axisVals(r-1,1) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 1); % Save axis
+        %axisVals(r-1,1) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 1); % Save axis
         %deltaMatrix = rand(10,10);% painstakingly slow regionDelta(network_1, network_2, r);
         %im = imagesc(deltaMatrix);
         %daspect([size(deltaMatrix) 1]);
@@ -58,26 +59,15 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
         %set(im, 'ButtonDownFcn', {@singleUnitCallBack, r}); % Setup callback
         %}
         
-        height = networkDimensions(r).y_dimensions;
-        width = networkDimensions(r).x_dimensions;
+        axisVals(r-1,1) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 1); % Save axis
+        height = networkDimensions(r).y_dimension;
+        width = networkDimensions(r).x_dimension;
         v2 = reshape([singleUnits{r}(:, :, 1).isPresent],[height width]);
         im = imagesc(v2);
         daspect([size(v2) 1]);
         title(['Recorded Units in Region: ' num2str(r)]);
         colorbar;
         set(im, 'ButtonDownFcn', {@singleUnitCallBack, r}); % Setup callback
-        
-        %{
-        recordingIndicator = zeros(height, width);
-        [singleUnits, nrOfPresentLayers] = loadSingleUnitRecordings(filename);
-        for row=1:height,
-            for col=1:width,
-                
-                 singleUnits{r}(row, col, 1).isPresent
-                
-            end
-        end
-        %}
         
         if ~isempty(data{r-1}),
             
@@ -128,8 +118,8 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
             hold off
         else
             subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 2); % Save axis
-            subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 3); % Simon model
-            subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + PLOT_COLS);
+            subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 3); % Save axis
+            subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + PLOT_COLS); % Save axis
         end
     end
     
@@ -208,6 +198,19 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
 
     % Callback 2
     function singleUnitCallBack(varargin)
-        disp('coming later...');
+        
+        % Extract region,row,col
+        region = varargin{3};
+
+        pos = get(axisVals(region-1,1), 'CurrentPoint');
+        [row, col] = imagescClick(pos(1, 2), pos(1, 1), networkDimensions(region).y_dimension, networkDimensions(region).x_dimension);
+
+        if singleUnits{region}(row, col, 1).isPresent,
+            plotSingleUnit(singleUnits{region}(row, col, 1), historyDimensions, 1);
+        else
+            disp('Not recorded.');
+        end
+        
     end
+
 end
