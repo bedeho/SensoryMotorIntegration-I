@@ -23,7 +23,7 @@
 	
 	# Run values
 	
-	my $experiment	 					= "test2"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
+	my $experiment	 					= "singleUnits"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
 	my $stim							= "simple-sejnowski-fD=0.20-sA=60.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
 
 	
@@ -44,7 +44,7 @@
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
     my $learningRule					= TRACE; # TRACE, HEBB
     
-    my $nrOfEpochs						= 14; #100
+    my $nrOfEpochs						= 5; #100
     my $saveNetworkAtEpochMultiple 		= 1000000;
 	my $outputAtTimeStepMultiple		= 1;
 	
@@ -65,15 +65,15 @@
     # number of afferent synapses, total 15x.
     my @learningRates 					= (
     
-["0.0","0.00037"],
-["0.0","0.00075"],
-["0.0","0.00150"],
-["0.0","0.00337"],
-["0.0","0.00675"]
-#["0.0","0.01250"],
-#["0.0","0.02500"],
-#["0.0","0.05000"],
-#["0.0","0.10000"]
+#["0.0","0.00037"],
+#["0.0","0.00075"],
+#["0.0","0.00150"],
+#["0.0","0.00337"],
+#["0.0","0.00675"]
+["0.0","0.01250"],
+["0.0","0.02500"],
+["0.0","0.05000"],
+["0.0","0.10000"]
 #["0.0","0.20000"]
 #["0.0","0.30000"],
 #["0.0","0.50000"]
@@ -233,7 +233,7 @@
     my @filterWidth						= (7,7);
     my @epochs							= (10,10); # only used in discrete model
     my @saveHistory						= (NO_HISTORY, SINGLE_CELLS);
-    my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (4,8))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+    my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (4,8), (7,4), (2,1), (6,6))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
     
     #############################################################################
 	# Preprocessing
