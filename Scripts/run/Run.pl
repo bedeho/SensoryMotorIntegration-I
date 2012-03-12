@@ -113,7 +113,7 @@
 	        } elsif($command eq "train") {
 	        	
 				my $networkFile = "${experimentFolder}BlankNetwork.txt";
-				print " TRYING: $PROGRAM, $command, $parameterFile, $networkFile, ${stimuliFolder}data.dat,  $simulationFolder";
+				#print " TRYING: $PROGRAM, $command, $parameterFile, $networkFile, ${stimuliFolder}data.dat,  $simulationFolder";
 				system($PROGRAM, $command, $parameterFile, $networkFile, "${stimuliFolder}data.dat",  $simulationFolder) == 0 or die "\nSimulator could not be executed or returned 0: when training.\n\n";
 				
 				# Cleanup

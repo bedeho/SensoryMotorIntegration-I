@@ -33,7 +33,7 @@ void BinaryWrite::openFile(const char * filename) {
         
 	} catch (fstream::failure e) { 
         
-		cerr << "Unable to open file " << filename << " for writing: " << e.what() << endl;
+		cerr << "Unable to open file for writing: error = " << strerror(errno) << ", file = " << filename << endl;
         cerr.flush();
 		exit(EXIT_FAILURE);
 	}

@@ -34,9 +34,21 @@ void BinaryRead::openFile(const char * filename) {
     // Open file
 	try {
 		open(filename, std::ios_base::in | std::ios_base::binary);
+        
+        // get length of file:
+        seekg (0, std::ios::end);
+        int length = tellg();
+        seekg (0, std::ios::beg);
+        
+        if(length == 0) {
+            cerr << "Empty file was opened for reading: " << filename <<endl;
+            cerr.flush();
+            exit(EXIT_FAILURE);
+        }
+        
 	} catch (fstream::failure e) {
         
-        cerr << "Unable to open file " << filename << " for reading: " << strerror(errno) << endl;
+        cerr << "Unable to open file for reading: error = " << strerror(errno) << ", file = " << filename << endl;
         cerr.flush();
         exit(EXIT_FAILURE);
 	}

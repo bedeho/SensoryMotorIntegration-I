@@ -24,13 +24,8 @@
 	# Run values
 	
 	my $experiment	 					= "test2"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
-	
-	#exploreHebbAndLearningSMALLERWithSmallTc
-	
-	#eye=13
-	my $stim							= "simple-sejnowski-fD=0.20-sA=10.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
-	#my $stim							= "random-sejnowski-move=50_1-fD=0.20-sA=10.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
-	#my $stim							= "simple-sejnowski-fD=0.20-sA=10.00-vpD=8.00-epD=6.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+	my $stim							= "simple-sejnowski-fD=0.20-sA=60.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+
 	
 	my $stimuliTraining 				= $stim."-training";
 	my $stimuliTesting 					= $stim."-testOnTrained";
