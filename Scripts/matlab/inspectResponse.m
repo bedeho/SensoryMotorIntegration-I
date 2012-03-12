@@ -22,9 +22,12 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
     [pathstr2, name2, ext2] = fileparts(pathstr);
     manualData = [pathstr '/singleUnits.dat'];
     trainingData = [pathstr2 '/Training/singleUnits.dat'];
+    thereIsSingleUnitRecording = exist(trainingData,'file');
     
-    %[singleUnits, historyDimensions, nrOfPresentLayers] = loadSingleUnitRecordings(manualData);
-    [singleUnits, historyDimensions, nrOfPresentLayers] = loadSingleUnitRecordings(trainingData);    
+    if thereIsSingleUnitRecording,
+        %[singleUnits, historyDimensions, nrOfPresentLayers] = loadSingleUnitRecordings(manualData);
+        [singleUnits, historyDimensions, nrOfPresentLayers] = loadSingleUnitRecordings(trainingData);    
+    end
     
     % Setup vars
     PLOT_COLS = 4;
@@ -55,14 +58,18 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
         %}
         
         axisVals(r-1,1) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 1); % Save axis
-        height = networkDimensions(r).y_dimension;
-        width = networkDimensions(r).x_dimension;
-        v2 = reshape([singleUnits{r}(:, :, 1).isPresent],[height width]);
-        im = imagesc(v2);
-        daspect([size(v2) 1]);
-        title(['Recorded Units in Region: ' num2str(r)]);
-        colorbar;
-        set(im, 'ButtonDownFcn', {@singleUnitCallBack, r}); % Setup callback
+        
+        if thereIsSingleUnitRecording,
+            
+            height = networkDimensions(r).y_dimension;
+            width = networkDimensions(r).x_dimension;
+            v2 = reshape([singleUnits{r}(:, :, 1).isPresent],[height width]);
+            im = imagesc(v2);
+            daspect([size(v2) 1]);
+            title(['Recorded Units in Region: ' num2str(r)]);
+            colorbar;
+            set(im, 'ButtonDownFcn', {@singleUnitCallBack, r}); % Setup callback
+        end
         
         if ~isempty(data{r-1}),
             
@@ -172,7 +179,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
             
             trainingFolder = [path '/Training'];
             
-            plotSynapseHistory(trainingFolder, 2, 1, row, col);
+            plotSynapseHistory(trainingFolder, region, 1, row, col);
         end
         
         % OLD STYLE - Bar plot

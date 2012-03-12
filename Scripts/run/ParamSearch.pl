@@ -23,7 +23,7 @@
 	
 	# Run values
 	
-	my $experiment	 					= "singleUnits"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
+	my $experiment	 					= "Entirelayer"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
 	my $stim							= "simple-sejnowski-fD=0.20-sA=60.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
 
 	
@@ -232,7 +232,7 @@
     my @somInhibitoryContrast			= ("1.4","1.4");
     my @filterWidth						= (7,7);
     my @epochs							= (10,10); # only used in discrete model
-    my @saveHistory						= (NO_HISTORY, SINGLE_CELLS);
+    my @saveHistory						= (NO_HISTORY, ALL); # NO_HISTORY => 0, ALL => 1, NO_SYNAPSE => 2, SINGLE_CELLS 
     my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (4,8), (7,4), (2,1), (6,6))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
     
     #############################################################################

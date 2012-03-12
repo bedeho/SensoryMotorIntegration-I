@@ -188,11 +188,14 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
         
     } else { // WEIGHT_HISTORY, WEIGHT_AND_NEURON_HISTORY
         
-        // Output neurnal values as well
+        // Output neuron description
+        file << region->regionNr << depth << row << col;
+        
+        // Output neurnal values as well 
         if(data == WEIGHT_AND_NEURON_HISTORY) {
             
             // Output neuron description
-            file << region->regionNr << depth << row << col << static_cast<u_short>(afferentSynapses.size());
+            file << static_cast<u_short>(afferentSynapses.size());
             
             // Output neuron history
             output(file, firingRateHistory);
