@@ -159,8 +159,9 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
     
     if(data <= STIMULATION) {
         
-        const float * buffer;
-        
+        const float * buffer = NULL;
+
+        // Dump buffer content to file
         if(data == FIRING_RATE)
             buffer = firingRateHistory;
         else if(data == ACTIVATION)
@@ -171,8 +172,8 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
             buffer = traceHistory;
         else if(data == STIMULATION)
             buffer = stimulationHistory;
-        
-        // Dump buffer content to file
+
+
         output(file, buffer);
         
     } else if(data == FAN_IN_COUNT)
@@ -180,10 +181,10 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
     else if(data == WEIGHTS_FINAL) {
         
         // Iterate afferent synapses
-        for(int s = 0;s < afferentSynapses.size();s++) {
+    	for(std::vector<Synapse>::iterator s = afferentSynapses.begin(); s != afferentSynapses.end();s++) {
             
-            const Neuron * n = afferentSynapses[s].preSynapticNeuron;
-            file << n->region->regionNr << n->depth << n->row << n->col << afferentSynapses[s].weight;
+            const Neuron * n = (*s).preSynapticNeuron;
+            file << n->region->regionNr << n->depth << n->row << n->col << (*s).weight;
         }
         
     } else { // WEIGHT_HISTORY, WEIGHT_AND_NEURON_HISTORY
@@ -203,17 +204,17 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
         }
 
         // Iterate afferent synapses
-        for(int s = 0;s < afferentSynapses.size();s++) {
+        for(std::vector<Synapse>::iterator s = afferentSynapses.begin(); s != afferentSynapses.end();s++)  {
             
             // Output weight history for this synapse
-            for(int t = 0;t < synapseHistoryCounter;t++)
-                file << afferentSynapses[s].weightHistory[t];
+            for(unsigned long t = 0;t < synapseHistoryCounter;t++)
+                file << (*s).weightHistory[t];
         }
     }
 }
 
 void HiddenNeuron::output(BinaryWrite & file, const float * buffer) {
     
-    for(int t = 0;t < neuronHistoryCounter;t++)
+    for(unsigned long t = 0;t < neuronHistoryCounter;t++)
         file << buffer[t];
 }

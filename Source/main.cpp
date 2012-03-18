@@ -27,6 +27,7 @@ int main (int argc, char *argv[]) {
 		int numberOfThreads = (3 * omp_get_num_procs())/4; // Ben's advice, use 75% of cores
 	#else
 		int numberOfThreads = 1;
+		cout << "No OpenMP compiled for this simulator." << endl;
 	#endif
     
 	int i = 1;
@@ -130,7 +131,8 @@ int main (int argc, char *argv[]) {
 			#ifndef OS_WIN
                 // On linux/mac we tar and cleanup when xgrid is used
                 if(xgrid) {
-                    system("tar -cjf result.tbz *.dat"); // tar results
+
+                	system("tar -cjf result.tbz *.dat"); // tar results
                     system("rm *.dat"); // delete all original result files
                 }			
 			#endif

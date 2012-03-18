@@ -8,7 +8,7 @@
  */
 
 #include "InputNeuron.h"
-#include <math.h>
+#include <cmath>
 
 void InputNeuron::init(Region * region, u_short depth, u_short row, u_short col, float horEyePositionPreference, float horEyePositionSigmoidSlope, float horVisualPreference, float horVisualSigma) {
 
@@ -39,7 +39,7 @@ void InputNeuron::setFiringRate(const vector<float> & sample) {
     
     // iterate all visual stimuli and compute gaussian of all
     float norm = 0;
-    for(int i = 1;i < sample.size();i++)
+    for(unsigned i = 1;i < sample.size();i++)
         norm += (horVisualPreference - sample[i])*(horVisualPreference - sample[i]); // (a - b)^2
     
     /*if(norm < horVisualSigma) {

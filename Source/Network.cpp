@@ -18,11 +18,12 @@
 #include <cstdlib>
 #include <string> 
 #include <sstream>
-#include <time.h>
-#include <math.h>
+#include <ctime>
+#include <cmath>
 #include <gsl/gsl_cdf.h>
 #include <gsl/gsl_randist.h>
 #include <iomanip>
+#include <cerrno>
 
 #ifdef OMP_ENABLE
 	#include <omp.h>
@@ -39,14 +40,16 @@ using std::string;
 using std::ofstream;
 using std::stringstream;
 using std::setw;
-using std::left; 
+using std::left;
 
 // Do not use this constructor if you intend to train later, use the one 
 // below, if constructors where named then this amgibuity could have been
 // avoided
-Network::Network(const char * parameterFile, bool verbose) : p(parameterFile, false),
-																ESPathway(p.dimensions.size()),
-																verbose(verbose) {										
+Network::Network(const char * parameterFile, bool verbose) :
+		verbose(verbose),
+		p(parameterFile, false),
+		ESPathway(p.dimensions.size())
+																 {
     // Init regions
 	area7a.init(p, NULL);
                                                                     
@@ -77,9 +80,10 @@ Network::Network(const char * parameterFile, bool verbose) : p(parameterFile, fa
 	gsl_rng_free(rngController);
 }
 
-Network::Network(const char * dataFile, const char * parameterFile, bool verbose, const char * inputWeightFile, bool isTraining) : p(parameterFile, isTraining),
-																							ESPathway(p.dimensions.size()),
-                                                                                            verbose(verbose) {
+Network::Network(const char * dataFile, const char * parameterFile, bool verbose, const char * inputWeightFile, bool isTraining) :
+		verbose(verbose),
+		p(parameterFile, isTraining),
+		ESPathway(p.dimensions.size()) {
 																								
 	area7a.init(p, dataFile);
 																								
@@ -207,6 +211,8 @@ void Network::run(const char * outputDirectory, bool isTraining, int numberOfThr
         double start = omp_get_wtime();
     
         cout << "Number of threads: " << numberOfThreads << endl;
+	#else
+		cout << "Number of threads: 1 " << endl;
 	#endif
 
 	u_short nrOfEpochs;
@@ -227,21 +233,22 @@ void Network::run(const char * outputDirectory, bool isTraining, int numberOfThr
 
 u_short Network::runDiscrete(const char * outputDirectory, bool isTraining, bool xgrid) {
 	
-	u_short nrOfEpochs = 0, totalEpochCounter = 0;
+	u_short nrOfEpochs = 0;
+	u_short totalEpochCounter = 0;
 	
 	if(isTraining) {
 		
 		// Find total number of epochs, used in xgrid progress report
-		for(int r = 0; r < p.epochs.size();r++)
+		for(unsigned r = 0; r < p.epochs.size();r++)
 			nrOfEpochs += p.epochs[r];
 		
 		#pragma omp parallel private(totalEpochCounter)
 		{
 			// Iterate each region
-			for(int r = 0; r < ESPathway.size();r++) {
+			for(unsigned r = 0; r < ESPathway.size();r++) {
 				
 				// Train each region r epochs[r] times
-				for(int e = 0; e < p.epochs[r];e++) {
+				for(unsigned e = 0; e < p.epochs[r];e++) {
 					
 					#pragma omp single
 					{
@@ -258,7 +265,7 @@ u_short Network::runDiscrete(const char * outputDirectory, bool isTraining, bool
                             area7a.setFiringRate(o, s * area7a.interSampleTime);
                             
                             // Compute new firing rates
-                            for(int k = 0; k <= r;k++) {
+                            for(unsigned k = 0; k <= r;k++) {
                                 
                                 ESPathway[k].computeNewFiringRate();
                                 #pragma omp barrier
@@ -271,7 +278,7 @@ u_short Network::runDiscrete(const char * outputDirectory, bool isTraining, bool
                             #pragma omp barrier
                             
                             // Save activity
-                            for(int k = 0;k < ESPathway.size();k++)
+                            for(unsigned k = 0;k < ESPathway.size();k++)
                                 ESPathway[k].doTimeStep(true);
                         }
                         
@@ -300,14 +307,14 @@ u_short Network::runDiscrete(const char * outputDirectory, bool isTraining, bool
 				area7a.setFiringRate(o, s * area7a.interSampleTime);
 				
 				// Compute new firing rates
-				for(int k = 0; k < ESPathway.size();k++) {
+				for(unsigned k = 0; k < ESPathway.size();k++) {
 					
 					ESPathway[k].computeNewFiringRate();
 					#pragma omp barrier	
 				}
 
 				// Save activity
-				for(int k = 0;k < ESPathway.size();k++)
+				for(unsigned k = 0;k < ESPathway.size();k++)
 					ESPathway[k].doTimeStep(true);
 			}
 		}
@@ -334,7 +341,7 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
 			
 			// We cannot continue without reseting old values from
 			// the last time step in the last epoch.
-			for(int k = 0;k < ESPathway.size();k++)
+			for(unsigned k = 0;k < ESPathway.size();k++)
 				ESPathway[k].clearState(true);
 			
 			#pragma omp single
@@ -357,7 +364,7 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
                     //}
                     
                     // Compute new firing rates
-                    for(int k = 0; k < ESPathway.size();k++)
+                    for(unsigned k = 0; k < ESPathway.size();k++)
                         ESPathway[k].computeNewFiringRate();
                     
                     // We need barrier due to nowait in computeNewFiringRate()
@@ -365,7 +372,7 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
                     
                     // Do learning
                     if(isTraining) {
-                        for(int k = 0; k < ESPathway.size();k++)
+                        for(unsigned k = 0; k < ESPathway.size();k++)
                             ESPathway[k].applyLearningRule();
                     }
                     
@@ -374,7 +381,7 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
                     
                     // Make time step for each region, and save data if we are on appropriate time step
                     bool save = ((t+1) % p.outputAtTimeStepMultiple) == 0;
-                    for(int k = 0;k < ESPathway.size();k++)
+                    for(unsigned k = 0;k < ESPathway.size();k++)
                         ESPathway[k].doTimeStep(save); 
                 }
                 
@@ -387,12 +394,12 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
                 if(isTraining) {
                     
                     if(p.resetActivity)
-                        for(int k = 0;k < ESPathway.size();k++)
+                        for(unsigned k = 0;k < ESPathway.size();k++)
                             ESPathway[k].clearState(p.resetTrace);
                     
                 } else { // In testing we MUST reset betweene objects when we are testing with continous neurons
                     
-                    for(int k = 0;k < ESPathway.size();k++)
+                    for(unsigned k = 0;k < ESPathway.size();k++)
                         ESPathway[k].clearState(p.resetTrace); // does not matter if trace is reset here
                 }
 			}
@@ -469,7 +476,7 @@ void Network::openHistoryFile(BinaryWrite & file, const char * outputDirectory, 
     // Hidden layer description
     for(u_short k = 0;k < ESPathway.size();k++) {
         
-        u_short isPresent;
+        u_short isPresent = 0;
         
         switch (fileType) {
                 
@@ -513,7 +520,7 @@ void Network::outputRegionHistory(const char * outputDirectory, bool isTraining)
 void Network::outputNeuronHistoryData(const char * outputDirectory, bool isTraining, DATA data) {
     
     // Select
-    const char * filename;
+    const char * filename = NULL;
     
     switch (data) {
         case FIRING_RATE:

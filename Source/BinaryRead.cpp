@@ -11,6 +11,8 @@
 
 // Includes
 #include "BinaryRead.h"
+#include <cstdlib>
+#include <cstring>
 
 using std::cerr;
 using std::endl;

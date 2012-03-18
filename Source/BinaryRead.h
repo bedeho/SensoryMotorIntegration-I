@@ -16,7 +16,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
-#include <errno.h>
+#include <cerrno>
 
 using std::string;
 using std::fstream;

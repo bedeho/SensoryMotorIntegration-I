@@ -9,7 +9,7 @@
 
 #include "Param.h"
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
 #include <libconfig.h++>
 #include <cmath>
 #include <cfloat>
@@ -205,7 +205,7 @@ void Param::validate(bool isTraining) {
 		float smallestTimeConstant = FLT_MAX;
 		
 		// Find the smallest time constant
-		for(int i = 0;i < timeConstants.size();i++) {
+		for(unsigned i = 0;i < timeConstants.size();i++) {
 			smallestTimeConstant = smallestTimeConstant > timeConstants[i] ? timeConstants[i] : smallestTimeConstant;
 			
 			if(smallestTimeConstant <= 0) {

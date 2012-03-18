@@ -29,7 +29,7 @@ datatables.net/extras/tabletools/plug-ins
 2. CHANGE TO RELEASE SETTINS IN TARGET SETTINGS EDITOR AND IN XCODE CODE EDITOR ITSELF: Active Scheme->Edit scheme
 3. Change build location: Xcode->Preferences->DerivedData, change to "Relative" and let it be "DerivedData"
 4. REMEMBER TO SET MULTIPLE VALUES (common for debug/release) AND set for project and target column simultaneously.
-5. Enable OpenMP Support = Yes
+5. Enable OpenMP Support = Yes, alternatively add compiler flag -fopenmp.
 6. Always Search User Paths = Yes 
 7. Header Search Paths: 
 /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include
@@ -40,6 +40,7 @@ datatables.net/extras/tabletools/plug-ins
 9. Other linker flag:
 -lconfig++
 -lgsl
+-
 
 ***************
 * ADD STIMULI *
@@ -49,38 +50,6 @@ datatables.net/extras/tabletools/plug-ins
 3.
 4.
 5.
-
-****************
-* FILE FORMATS *
-****************
-
-1. History files: 
-firingRate.dat
-activation.dat, 
-inhibitedActivation.dat, 
-trace.dat
-________________
-All files are binary and contain what name indicates,
-and the format is:
-Number of epochs 					= unsigned short
-Number of objects 					= --
-Number of data points per object 	= --
-Number of layers					= --
-Height of input layer				= --
-Width of input layer				= --
-
-For each hidden layer L:
-	L.vertical_size					= --
-	L.horizontal_size				= --
-	L.depth							= -- 
-	L.isPresent: 					= 1/0 --
-
-For each hidden layer L where L.data == :
-	For each cell c in L:
-		For each data point d in c:
-			L.c.d					= float
-			
-
 	  
 	
 

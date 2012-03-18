@@ -16,9 +16,11 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include <math.h>
+#include <cmath>
 #include <iomanip>
-#include "utilities.h"
+#include <cstdlib>
+#include <cstring>
+#include "Utilities.h"
 
 using std::cerr;
 using std::cout;
@@ -144,7 +146,7 @@ void InputRegion::loadDataFile(const char * dataFile) {
     // Variables that must be visible in catch clause
     u_short lastNrOfSamplesFound = 0; // For validation of file list
     
-    bool readAFullSample;
+    bool readAFullSample = false;
     bool readHeader = false;
     
     try {
@@ -294,7 +296,7 @@ void InputRegion::setFiringRate(u_short object, float time) {
 void InputRegion::linearInterpolate(u_short object, float time) {
 
     // use <time> to find/interpolate present eye/visual location
-    int sampleIndex = (int)floor(time * samplingRate); // (time/interSampleTime) = time * samplingRate
+    unsigned sampleIndex = (int)floor(time * samplingRate); // (time/interSampleTime) = time * samplingRate
     
     // Test that there is one more data point
     if(!(data[object].size() > sampleIndex)) {
@@ -314,7 +316,7 @@ void InputRegion::linearInterpolate(u_short object, float time) {
     float val;
     
     // Interpolate for each data point in sample
-    for(int i = 0;i < sample.size();i++){
+    for(unsigned i = 0;i < sample.size();i++){
         
         if(data[object].size() == sampleIndex + 1) {
             

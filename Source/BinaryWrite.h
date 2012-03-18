@@ -16,7 +16,9 @@
 #include <fstream>
 #include <string>
 #include <iostream>
-#include <errno.h>
+#include <cerrno>
+#include <cstdlib>
+#include <cstring>
 
 using std::string;
 using std::fstream;
@@ -54,7 +56,7 @@ BinaryWrite & BinaryWrite::operator<<(T val) {
     
     } catch (fstream::failure e) {
     
-        cerr << "Unable to write to " << filename << ": " << e.what() << endl;
+    	cerr << "Unable to write to: error = " << strerror(errno) << ", file = " << filename << endl;
         cerr.flush();
         exit(EXIT_FAILURE);
     }

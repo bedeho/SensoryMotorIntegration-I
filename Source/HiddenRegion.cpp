@@ -13,7 +13,7 @@
 #include "BinaryWrite.h"
 #include "InputNeuron.h"
 #include "InputRegion.h"
-#include <math.h>
+#include <cmath>
 #include <sstream>
 #include <algorithm>
 #include <queue>
@@ -266,15 +266,15 @@ void HiddenRegion::computeNewActivation() {
 				
 				if(neuronType == CONTINUOUS) {
 					
-					for(int s = 0;s < n->afferentSynapses.size();s++)
-						stimulation += n->afferentSynapses[s].weight * n->afferentSynapses[s].preSynapticNeuron->firingRate;
+					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++)
+						stimulation += (*s).weight * (*s).preSynapticNeuron->firingRate;
                     
 					n->newActivation = (1 - stepSize/timeConstant) * n->activation + (stepSize/timeConstant) * stimulation;
 					
 				} else {
 					
-					for(int s = 0;s < n->afferentSynapses.size();s++)
-						stimulation += n->afferentSynapses[s].weight * n->afferentSynapses[s].preSynapticNeuron->newFiringRate;
+					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++)
+						stimulation += (*s).weight * (*s).preSynapticNeuron->newFiringRate;
 					
 					n->newActivation = stimulation;
 				}
@@ -380,18 +380,20 @@ void HiddenRegion::applyLearningRule() {
 				
 				if(neuronType == CONTINUOUS) {
 					
-					for(int s = 0;s < n->afferentSynapses.size();s++) {
-						n->afferentSynapses[s].weight += learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->trace) * n->afferentSynapses[s].preSynapticNeuron->firingRate;
-						norm += n->afferentSynapses[s].weight * n->afferentSynapses[s].weight;
+					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
+
+						(*s).weight += learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->trace) * (*s).preSynapticNeuron->firingRate;
+						norm += (*s).weight * (*s).weight;
 					}
 					
 					n->newTrace = (1 - stepSize/traceTimeConstant)*n->trace + (stepSize/traceTimeConstant)*n->firingRate;
                     
 				} else {
 					
-					for(int s = 0;s < n->afferentSynapses.size();s++) {
-						n->afferentSynapses[s].weight += learningRate * (rule == HEBB_RULE ? n->newFiringRate : n->newTrace) * n->afferentSynapses[s].preSynapticNeuron->newFiringRate;
-						norm += n->afferentSynapses[s].weight * n->afferentSynapses[s].weight;
+					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
+
+						(*s).weight += learningRate * (rule == HEBB_RULE ? n->newFiringRate : n->newTrace) * (*s).preSynapticNeuron->newFiringRate;
+						norm += (*s).weight * (*s).weight;
 					}
 					
 					// Update trace term, whether it is being used or not
@@ -472,7 +474,7 @@ Neuron * HiddenRegion::getNeuron(u_short depth, u_short row, u_short col) {
 
 void HiddenRegion::outputRegion(BinaryWrite & file) {
 	
-	for(int t = 0;t < regionHistoryCounter;t++)
+	for(unsigned long long int t = 0;t < regionHistoryCounter;t++)
 		file << sparsityPercentileValue[t];
 }
 

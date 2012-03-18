@@ -11,7 +11,7 @@
 #define NETWORK_H
 
 #ifndef DEBUG
-#define OMP_ENABLE
+//#define OMP_ENABLE
 #endif
 
 // Forward declarations
