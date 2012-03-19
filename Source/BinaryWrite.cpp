@@ -1,6 +1,6 @@
 /*
  *  BinaryWrite.cpp
- *  SMI
+ *  SensoryMotorIntegration-I
  *
  *  Created by Bedeho Mender on 05/03/12.
  *  Copyright 2012 OFTNAI. All rights reserved.

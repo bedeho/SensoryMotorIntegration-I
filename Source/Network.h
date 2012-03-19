@@ -1,6 +1,6 @@
 /*
  *  Network.h
- *  SMI
+ *  SensoryMotorIntegration-I
  *
  *  Created by Bedeho Mender on 17/11/11.
  *  Copyright 2011 OFTNAI. All rights reserved.
@@ -9,10 +9,6 @@
 
 #ifndef NETWORK_H
 #define NETWORK_H
-
-#ifndef DEBUG
-//#define OMP_ENABLE
-#endif
 
 // Forward declarations
 class HiddenNeuron;

@@ -1,9 +1,18 @@
+/*
+ *  main.cpp
+ *  SensoryMotorIntegration-I
+ *
+ *  Created by Bedeho Mender on 17/11/11.
+ *  Copyright 2011 OFTNAI. All rights reserved.
+ *
+ */
 
 #include "Network.h"
 #include <iostream>
 #include <cstring>
 #include <string>
 #include <cstdlib>
+#include "Utilities.h"
 
 #ifdef OMP_ENABLE
 	#include <omp.h>
@@ -27,8 +36,19 @@ int main (int argc, char *argv[]) {
 		int numberOfThreads = (3 * omp_get_num_procs())/4; // Ben's advice, use 75% of cores
 	#else
 		int numberOfThreads = 1;
-		cout << "No OpenMP compiled for this simulator." << endl;
 	#endif
+
+
+	if(xgrid) {
+
+		cout << "Parameters passed:" << endl;
+
+		// Dumping stuff for xgrid
+		for(int j = 0;j < argc;j++)
+			cout << j << ": " << argv[j] << endl;
+
+		cout << endl;
+	}
     
 	int i = 1;
 	for(;i < argc;i++) {

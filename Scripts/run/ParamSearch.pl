@@ -2,7 +2,7 @@
 
 	#
 	#  ParamSearch.pl
-	#  SMI
+	#  SensoryMotorIntegration-I
 	#
 	#  Created by Bedeho Mender on 21/11/11.
 	#  Copyright 2011 OFTNAI. All rights reserved.
@@ -24,7 +24,7 @@
 	# Run values
 	
 	my $experiment	 					= "test2"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
-	my $stim							= "simple-sejnowski-fD=0.20-sA=60.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+	my $stim							= "simple-classic-fD=0.20-sA=60.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
 
 	
 	my $stimuliTraining 				= $stim."-training";

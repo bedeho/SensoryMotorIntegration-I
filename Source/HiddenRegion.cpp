@@ -1,6 +1,6 @@
 /*
  *  HiddenRegion.cpp
- *  SMI
+ *  SensoryMotorIntegration-I
  *
  *  Created by Bedeho Mender on 17/11/11.
  *  Copyright 2011 OFTNAI. All rights reserved.

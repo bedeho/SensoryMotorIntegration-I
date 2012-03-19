@@ -1,6 +1,6 @@
 /*
  *  Network.cpp
- *  SMI
+ *  SensoryMotorIntegration-I
  *
  *  Created by Bedeho Mender on 17/11/11.
  *  Copyright 2011 OFTNAI. All rights reserved.
@@ -24,6 +24,7 @@
 #include <gsl/gsl_randist.h>
 #include <iomanip>
 #include <cerrno>
+#include "Utilities.h"
 
 #ifdef OMP_ENABLE
 	#include <omp.h>
@@ -48,8 +49,8 @@ using std::left;
 Network::Network(const char * parameterFile, bool verbose) :
 		verbose(verbose),
 		p(parameterFile, false),
-		ESPathway(p.dimensions.size())
-																 {
+		ESPathway(p.dimensions.size()) {
+
     // Init regions
 	area7a.init(p, NULL);
                                                                     
@@ -209,10 +210,23 @@ void Network::run(const char * outputDirectory, bool isTraining, int numberOfThr
 	#ifdef OMP_ENABLE
         omp_set_num_threads(numberOfThreads);
         double start = omp_get_wtime();
-    
-        cout << "Number of threads: " << numberOfThreads << endl;
+
+    	if(numberOfThreads == 1) {
+
+    		cout << endl;
+    		cout << "**********************************" << endl;
+    		cout << "**** ONLY SINGLE THREADED !!! ****" << endl;
+    		cout << "**********************************" << endl;
+    		cout << endl;
+    	}
+    	else
+    		cout << "Number of threads: " << numberOfThreads << endl;
 	#else
-		cout << "Number of threads: 1 " << endl;
+    	cout << endl;
+    	cout << "*******************" << endl;
+    	cout << "**** no OpenMP ****" << endl;
+    	cout << "*******************" << endl;
+    	cout << endl;
 	#endif
 
 	u_short nrOfEpochs;

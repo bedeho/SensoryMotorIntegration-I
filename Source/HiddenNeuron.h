@@ -1,6 +1,6 @@
 /*
  *  HiddenNeuron.h
- *  SMI
+ *  SensoryMotorIntegration-I
  *
  *  Created by Bedeho Mender on 17/11/11.
  *  Copyright 2011 OFTNAI. All rights reserved.
@@ -21,10 +21,10 @@ class BinaryWrite;
 #include "Neuron.h"
 #include "Synapse.h"
 #include "Param.h"
-#include "Utilities.h"
 #include <vector>
 #include <gsl/gsl_randist.h>
 #include <cfloat>
+#include "Utilities.h"
 
 using std::vector;
 
