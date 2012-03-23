@@ -159,27 +159,19 @@ bool HiddenNeuron::areYouConnectedTo(const Neuron * n) {
 
 void HiddenNeuron::output(BinaryWrite & file, DATA data) {
     
-    if(data <= STIMULATION) {
-        
-        const float * buffer = NULL;
-
-        // Dump buffer content to file
-        if(data == FIRING_RATE)
-            buffer = firingRateHistory;
-        else if(data == ACTIVATION)
-            buffer = activationHistory;
-        else if(data == INHIBITED_ACTIVATION)
-            buffer = inhibitedActivationHistory;
-        else if(data == TRACE)
-            buffer = traceHistory;
-        else if(data == STIMULATION)
-            buffer = stimulationHistory;
-        else if(data == EFFECTIVE_TRACE)
-        	buffer = effectiveTraceHistory;
-
-        output(file, buffer);
-        
-    } else if(data == FAN_IN_COUNT)
+    if(data == FIRING_RATE)
+    	output(file, firingRateHistory);
+    else if(data == ACTIVATION)
+    	output(file, activationHistory);
+    else if(data == INHIBITED_ACTIVATION)
+    	output(file, inhibitedActivationHistory);
+    else if(data == TRACE)
+    	output(file, traceHistory);
+    else if(data == STIMULATION)
+    	output(file, stimulationHistory);
+    else if(data == EFFECTIVE_TRACE)
+    	output(file, effectiveTraceHistory);
+    else if(data == FAN_IN_COUNT)
         file << static_cast<u_short>(afferentSynapses.size());
     else if(data == WEIGHTS_FINAL) {
         
