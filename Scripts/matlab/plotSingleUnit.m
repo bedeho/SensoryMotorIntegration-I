@@ -38,7 +38,7 @@ function plotSingleUnit(unit, historyDimensions, includeSynapses, maxEpoch)
     
     addGrid();
     mFinal = max([0.51 m1 m2 m3 m4]); % Used for axis
-    axis([0 streamSize -0.02 mFinal]);
+    axis([0 streamSize -0.01 mFinal]);
     
     %% Plot synapses
     subplot(2,1,2);
@@ -50,15 +50,22 @@ function plotSingleUnit(unit, historyDimensions, includeSynapses, maxEpoch)
         numberOfSynapses = sizes(end);
         
         % Iterate synapses
+        m5 = 0;
         for s=1:numberOfSynapses,
             
             b = unit.synapses(:, :, 1:maxEpoch, s);
             v = reshape(b, [1 streamSize]);
             plot(v,'b');
             hold on;
+            
+            t = max(v);
+            
+            if t > m5,
+                m5 = t,
+            end
         end
         
-        axis tight;
+        axis([0 streamSize -0.01 (m5*1.5)]);
     end
     
     function [lineHandle, maxValue] = plotUnitData(unitData, color)

@@ -22,10 +22,15 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
     [pathstr2, name2, ext2] = fileparts(pathstr);
     manualData = [pathstr '/singleUnits.dat'];
     trainingData = [pathstr2 '/Training/singleUnits.dat'];
+    thereIsSingleUnitRecording = exist(trainingData,'file');
     
+<<<<<<< HEAD
     hasSingleUnitRecording = exist(trainingData,'file')
     
     if hasSingleUnitRecording,
+=======
+    if thereIsSingleUnitRecording,
+>>>>>>> 729a7c6b73a36c5aa010a5bd01abeffd41270704
         %[singleUnits, historyDimensions, nrOfPresentLayers] = loadSingleUnitRecordings(manualData);
         [singleUnits, historyDimensions, nrOfPresentLayers] = loadSingleUnitRecordings(trainingData);    
     end
@@ -58,8 +63,15 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
         %set(im, 'ButtonDownFcn', {@singleUnitCallBack, r}); % Setup callback
         %}
         
+<<<<<<< HEAD
         if hasSingleUnitRecording,
             axisVals(r-1,1) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 1); % Save axis
+=======
+        axisVals(r-1,1) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 1); % Save axis
+        
+        if thereIsSingleUnitRecording,
+            
+>>>>>>> 729a7c6b73a36c5aa010a5bd01abeffd41270704
             height = networkDimensions(r).y_dimension;
             width = networkDimensions(r).x_dimension;
             v2 = reshape([singleUnits{r}(:, :, 1).isPresent],[height width]);

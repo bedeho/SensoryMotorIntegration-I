@@ -23,8 +23,13 @@
 	
 	# Run values
 	
+<<<<<<< HEAD
 	my $experiment	 					= "entireLayer"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
 	my $stim							= "simple-sejnowski-fD=0.20-sA=10.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+=======
+	my $experiment	 					= "Entirelayer"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
+	my $stim							= "simple-sejnowski-fD=0.20-sA=60.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+>>>>>>> 729a7c6b73a36c5aa010a5bd01abeffd41270704
 
 	
 	my $stimuliTraining 				= $stim."-training";
@@ -44,7 +49,11 @@
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
     my $learningRule					= TRACE; # TRACE, HEBB
     
+<<<<<<< HEAD
     my $nrOfEpochs						= 2; #100
+=======
+    my $nrOfEpochs						= 5; #100
+>>>>>>> 729a7c6b73a36c5aa010a5bd01abeffd41270704
     my $saveNetworkAtEpochMultiple 		= 1000000;
 	my $outputAtTimeStepMultiple		= 1;
 	
@@ -64,12 +73,17 @@
     # Notice, layer one needs 3x because of small filter magnitudes, and 5x because of
     # number of afferent synapses, total 15x.
     my @learningRates 					= (
+<<<<<<< HEAD
 
 #["0.0","0.00000"],    
+=======
+    
+>>>>>>> 729a7c6b73a36c5aa010a5bd01abeffd41270704
 #["0.0","0.00037"],
 #["0.0","0.00075"],
 #["0.0","0.00150"],
 #["0.0","0.00337"],
+<<<<<<< HEAD
 #["0.0","0.00675"],
 #["0.0","0.00775"],
 #["0.0","0.00875"],
@@ -84,6 +98,13 @@
 #["0.0","0.02500"],
 #["0.0","0.05000"],
 #["0.0","0.10000"]
+=======
+#["0.0","0.00675"]
+["0.0","0.01250"],
+["0.0","0.02500"],
+["0.0","0.05000"],
+["0.0","0.10000"]
+>>>>>>> 729a7c6b73a36c5aa010a5bd01abeffd41270704
 #["0.0","0.20000"]
 #["0.0","0.30000"],
 #["0.0","0.50000"]
@@ -248,8 +269,13 @@
     my @somInhibitoryContrast			= ("1.4","1.4");
     my @filterWidth						= (7,7);
     my @epochs							= (10,10); # only used in discrete model
+<<<<<<< HEAD
     my @saveHistory						= (NO_HISTORY, ALL); #  NO_HISTORY, ALL, SYNAPSE, SINGLE_CELLS
     my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,22), (22,26), (12,28), (23,23))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+=======
+    my @saveHistory						= (NO_HISTORY, ALL); # NO_HISTORY => 0, ALL => 1, NO_SYNAPSE => 2, SINGLE_CELLS 
+    my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (4,8), (7,4), (2,1), (6,6))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+>>>>>>> 729a7c6b73a36c5aa010a5bd01abeffd41270704
     
     #############################################################################
 	# Preprocessing
