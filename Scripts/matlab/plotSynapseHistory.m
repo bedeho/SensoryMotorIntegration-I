@@ -44,10 +44,12 @@ function plotSynapseHistory(folder, region, depth, row, col, includeSynapses, ma
     [activationLine, m2] = plotFile('activation.dat', 'y');
     [firingLine, m3] = plotFile('firingRate.dat', 'r');
     [stimulationLine, m4] = plotFile('stimulation.dat', 'k');
+    [effectiveTraceLine, m5] = plotFile('effectiveTrace.dat', '--m');
+    
     legend('Firing','Trace','Activation','Stimulation');
     
     addGrid();
-    mFinal = max([0.51 m1 m2 m3 m4]); % Used for axis
+    mFinal = max([0.51 m1 m2 m3 m4 m5]); % Used for axis
     axis([0 streamSize -0.02 mFinal]);
     
     %{

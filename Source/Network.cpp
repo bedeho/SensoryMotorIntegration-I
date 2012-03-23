@@ -465,6 +465,7 @@ void Network::outputHistory(const char * outputDirectory, bool isTraining) {
         outputNeuronHistoryData(outputDirectory, isTraining, INHIBITED_ACTIVATION);
         outputNeuronHistoryData(outputDirectory, isTraining, TRACE);
         outputNeuronHistoryData(outputDirectory, isTraining, STIMULATION);
+        outputNeuronHistoryData(outputDirectory, isTraining, EFFECTIVE_TRACE);
     }
 }
 
@@ -552,6 +553,9 @@ void Network::outputNeuronHistoryData(const char * outputDirectory, bool isTrain
         case STIMULATION:
             filename = "stimulation.dat";
             break;
+        case EFFECTIVE_TRACE:
+        	filename = "effectiveTrace.dat";
+        	break;
         default:
             break;
     }

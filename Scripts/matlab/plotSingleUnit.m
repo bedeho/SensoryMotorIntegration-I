@@ -32,8 +32,9 @@ function plotSingleUnit(unit, historyDimensions, includeSynapses, maxEpoch)
     [activationLine, m2] = plotUnitData(unit.activation, 'y');
     [firingLine, m3] = plotUnitData(unit.firingRate, 'r');
     [stimulationLine, m4] = plotUnitData(unit.stimulation, 'k');
+    [effectiveTraceLine, m5] = plotUnitData(unit.effectiveTrace, '--m');
     
-    legend('Trace','Activation','Firing','Stimulation');
+    legend('Trace','Activation','Firing','Stimulation','Effective Trace');
     
     addGrid();
     mFinal = max([0.51 m1 m2 m3 m4]); % Used for axis

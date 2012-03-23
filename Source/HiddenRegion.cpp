@@ -131,6 +131,8 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
     this->firingRateBuffer.resize(bufferSize);
     this->traceBuffer.resize(bufferSize);
     this->stimulationBuffer.resize(bufferSize);
+    this->effectiveTraceBuffer.resize(bufferSize);
+
     this->sparsityPercentileValue = vector<float>(outputsPerRegion);
     
     this->synapseHistoryCounter = 0;
@@ -152,7 +154,8 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
                       * inibitedActivation = NULL,
                       * firingRate = NULL,
                       * trace = NULL,
-                      * stimulation = NULL;
+                      * stimulation = NULL,
+                      * effectiveTrace = NULL;
                 
                 if(saveNeuronHistory) {
                     
@@ -161,13 +164,14 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
                     firingRate = &(firingRateBuffer[bufferOffset]);
                     trace = &(traceBuffer[bufferOffset]);
                     stimulation = &(stimulationBuffer[bufferOffset]);
+                    effectiveTrace = &(effectiveTraceBuffer[bufferOffset]);
                     
                     // Increment buffer offset for next cell
                     bufferOffset += outputsPerCell;
                 }
                 
                 // Init cell
-                Neurons[d][i][j].init(this, d, i, j, activation, inibitedActivation, firingRate, trace, stimulation, saveNeuronHistory, saveSynapseHistory, desiredFanIn); 
+                Neurons[d][i][j].init(this, d, i, j, activation, inibitedActivation, firingRate, trace, stimulation, effectiveTrace, saveNeuronHistory, saveSynapseHistory, desiredFanIn);
             }
                
 	
@@ -380,9 +384,11 @@ void HiddenRegion::applyLearningRule() {
 				
 				if(neuronType == CONTINUOUS) {
 					
+					n->effectiveTrace = 1 / (1 + exp(100000000 * (0.08 - n->trace))); // sigmoid, slope=10^8, threshold=0.01
+
 					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
 
-						(*s).weight += learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->trace) * (*s).preSynapticNeuron->firingRate;
+						(*s).weight += learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->effectiveTrace) * (*s).preSynapticNeuron->firingRate;
 						norm += (*s).weight * (*s).weight;
 					}
 					
@@ -390,9 +396,11 @@ void HiddenRegion::applyLearningRule() {
                     
 				} else {
 					
+					n->effectiveTrace = 1 / (1 + exp(100000000 * (0.08 - n->newTrace))); // sigmoid, slope=10^8, threshold=0.01
+
 					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
 
-						(*s).weight += learningRate * (rule == HEBB_RULE ? n->newFiringRate : n->newTrace) * (*s).preSynapticNeuron->newFiringRate;
+						(*s).weight += learningRate * (rule == HEBB_RULE ? n->newFiringRate : n->effectiveTrace) * (*s).preSynapticNeuron->newFiringRate;
 						norm += (*s).weight * (*s).weight;
 					}
 					

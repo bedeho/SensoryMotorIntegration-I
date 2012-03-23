@@ -23,8 +23,8 @@
 	
 	# Run values
 	
-	my $experiment	 					= "test2"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
-	my $stim							= "simple-classic-fD=0.20-sA=60.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+	my $experiment	 					= "entireLayer"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
+	my $stim							= "simple-sejnowski-fD=0.20-sA=10.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
 
 	
 	my $stimuliTraining 				= $stim."-training";
@@ -44,7 +44,7 @@
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
     my $learningRule					= TRACE; # TRACE, HEBB
     
-    my $nrOfEpochs						= 14; #100
+    my $nrOfEpochs						= 2; #100
     my $saveNetworkAtEpochMultiple 		= 1000000;
 	my $outputAtTimeStepMultiple		= 1;
 	
@@ -64,12 +64,22 @@
     # Notice, layer one needs 3x because of small filter magnitudes, and 5x because of
     # number of afferent synapses, total 15x.
     my @learningRates 					= (
-    
-["0.0","0.00037"],
-["0.0","0.00075"],
-["0.0","0.00150"],
-["0.0","0.00337"],
-["0.0","0.00675"]
+
+#["0.0","0.00000"],    
+#["0.0","0.00037"],
+#["0.0","0.00075"],
+#["0.0","0.00150"],
+#["0.0","0.00337"],
+#["0.0","0.00675"],
+#["0.0","0.00775"],
+#["0.0","0.00875"],
+#["0.0","0.00975"],
+#["0.0","0.01075"],
+#["0.0","0.01575"],
+#["0.0","0.05575"],
+#["0.0","0.10750"],
+["0.0","0.20750"]
+#["0.0","0.50750"]
 #["0.0","0.01250"],
 #["0.0","0.02500"],
 #["0.0","0.05000"],
@@ -145,8 +155,15 @@
 #["0.90","0.90"]
 
 # orthognalization test
-#["0.95","0.90"],
-["0.90","0.90"]
+#["0.98","0.90"],
+["0.99","0.85"],
+#["0.999","0.90"],
+
+["0.99","0.90"],
+["0.99","0.95"],
+#["0.999","0.95"],
+
+#["0.90","0.90"]
 
 #["0.85","0.90"],
 #["0.80","0.90"],
@@ -176,7 +193,6 @@
     
     my @timeConstants					= (
     									["0.100","0.100"]
-    									#["0.100","0.100"]
     									#["0.100"]
     									);
     die "Invalid array: timeConstants" if !validateArray(\@timeConstants);
@@ -184,7 +200,7 @@
     my @stepSizeFraction				= ("0.50");  #0.1 = 1/10, 0.05 = 1/20, 0.02 = 1/50
     die "Invalid array: stepSizeFraction" if !validateArray(\@stepSizeFraction);
     
-    my @traceTimeConstant				= ("2.600");  # ("0.300","0.800","1.600","2.600"); 
+    my @traceTimeConstant				= ("0.500");  # ("0.300","0.800","1.600","2.600"); 
 	die "Invalid array: traceTimeConstant" if !validateArray(\@traceTimeConstant);
 	
 
@@ -209,12 +225,12 @@
     #my @filterWidth						= (7);
     #my @epochs							= (10); # only used in discrete model
 
-    #my @saveHistory						= (NO_HISTORY, SINGLE_CELLS);
+    #my @saveHistory						= (NO_HISTORY, SINGLE_CELLS); #  NO_HISTORY, ALL, SYNAPSE, SINGLE_CELLS
     #my @recordedSingleCells				= ("()", "((3,13), (6,8))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
         
 	# Two layer trace
     my $pathWayLength					= 2;
-    my @dimension						= (100,10);
+    my @dimension						= (100,30);
     my @depth							= (1,1);
     my @connectivity					= (SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     my @fanInRadius 					= (6,6); # not used
@@ -232,8 +248,8 @@
     my @somInhibitoryContrast			= ("1.4","1.4");
     my @filterWidth						= (7,7);
     my @epochs							= (10,10); # only used in discrete model
-    my @saveHistory						= (NO_HISTORY, SINGLE_CELLS);
-    my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (4,8))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+    my @saveHistory						= (NO_HISTORY, ALL); #  NO_HISTORY, ALL, SYNAPSE, SINGLE_CELLS
+    my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,22), (22,26), (12,28), (23,23))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
     
     #############################################################################
 	# Preprocessing

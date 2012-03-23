@@ -69,6 +69,7 @@ function [singleUnits, historyDimensions, nrOfPresentLayers] = loadSingleUnitRec
         singleUnits{r}(y_dimension, x_dimension, depth).inhibitedActivation = [];
         singleUnits{r}(y_dimension, x_dimension, depth).trace = [];
         singleUnits{r}(y_dimension, x_dimension, depth).stimulationHistory = [];
+        singleUnits{r}(y_dimension, x_dimension, depth).effectiveTrace = [];
         singleUnits{r}(y_dimension, x_dimension, depth).synapses = [];
         
         if isPresent,         
@@ -124,6 +125,9 @@ function [singleUnits, historyDimensions, nrOfPresentLayers] = loadSingleUnitRec
         
         stimulation = fread(fileID, historyDimensions.streamSize, SOURCE_PLATFORM_FLOAT);
         singleUnits{regionNr}(row, col, depth).stimulation          = reshape(stimulation, dimensionStructure); % stimulation
+
+        effectiveTrace = fread(fileID, historyDimensions.streamSize, SOURCE_PLATFORM_FLOAT);
+        singleUnits{regionNr}(row, col, depth).effectiveTrace          = reshape(effectiveTrace, dimensionStructure); % stimulation        
         
         % Synapse history - history of all in one read
         % file << afferentSynapses[s].weightHistory[t];

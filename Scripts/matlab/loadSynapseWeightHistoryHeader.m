@@ -59,10 +59,10 @@ function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets
         networkDimensions(r).depth = depth;
         networkDimensions(r).isPresent = isPresent;
         
-        neuronOffsets{r}(y_dimension, x_dimension, depth).offset = [];
-        neuronOffsets{r}(y_dimension, x_dimension, depth).nr = [];
-        
         if isPresent,
+            
+            neuronOffsets{r}(y_dimension, x_dimension, depth).offset = [];
+            neuronOffsets{r}(y_dimension, x_dimension, depth).nr = [];
             
             nrOfPresentLayers = nrOfPresentLayers + 1;
             
@@ -74,7 +74,7 @@ function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets
     
     % Compute the size of header just read
     NUM_FIELDS_PER_REGION = 4;
-    headerSize = SOURCE_PLATFORM_USHORT_SIZE*(HEADER_START_SIZE + NUM_FIELDS_PER_REGION * numRegions + nrOfNeurons);
+    headerSize = SOURCE_PLATFORM_USHORT_SIZE*(HEADER_START_SIZE + NUM_FIELDS_PER_REGION * numRegions);
     
     % Read in afferentSynapse count for all neurons
     buffer = fread(fileID, nrOfNeurons, SOURCE_PLATFORM_USHORT);

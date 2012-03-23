@@ -29,7 +29,8 @@ void HiddenNeuron::init(HiddenRegion * region,
                         float * inhibitedActivationHistory, 
                         float * firingRateHistory, 
                         float * traceHistory, 
-                        float * stimulationHistory, 
+                        float * stimulationHistory,
+                        float * effectiveTraceHistory,
                         bool saveNeuronHistory, 
                         bool saveSynapseHistory, 
                         u_short desiredFanIn) {
@@ -50,6 +51,7 @@ void HiddenNeuron::init(HiddenRegion * region,
     this->inhibitedActivationHistory = inhibitedActivationHistory;
     this->firingRateHistory = firingRateHistory;
     this->traceHistory = traceHistory;
+    this->effectiveTraceHistory = effectiveTraceHistory;
     this->stimulationHistory = stimulationHistory;
     
     // Reserve, so only capacity changes, not size
@@ -172,7 +174,8 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
             buffer = traceHistory;
         else if(data == STIMULATION)
             buffer = stimulationHistory;
-
+        else if(data == EFFECTIVE_TRACE)
+        	buffer = effectiveTraceHistory;
 
         output(file, buffer);
         
@@ -187,21 +190,32 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
             file << n->region->regionNr << n->depth << n->row << n->col << (*s).weight;
         }
         
-    } else { // WEIGHT_HISTORY, WEIGHT_AND_NEURON_HISTORY
-        
-        // Output neurnal values as well
-        if(data == WEIGHT_AND_NEURON_HISTORY) {
-            
-            // Output neuron description
-            file << region->regionNr << depth << row << col << static_cast<u_short>(afferentSynapses.size());
-            
-            // Output neuron history
-            output(file, firingRateHistory);
-            output(file, activationHistory);
-            output(file, inhibitedActivationHistory);
-            output(file, traceHistory);
-            output(file, stimulationHistory);
+    } else if(data == WEIGHT_HISTORY) {
+
+        // Iterate afferent synapses
+        for(std::vector<Synapse>::iterator s = afferentSynapses.begin(); s != afferentSynapses.end();s++)  {
+
+        	// Output presynaptic neuron description
+        	const Neuron * n = (*s).preSynapticNeuron;
+        	file << n->region->regionNr << n->depth << n->row << n->col;
+
+            // Output weight history for this synapse
+            for(unsigned long t = 0;t < synapseHistoryCounter;t++)
+                file << (*s).weightHistory[t];
         }
+
+    } else if(data == WEIGHT_AND_NEURON_HISTORY) {
+        
+        // Output neuron description
+        file << region->regionNr << depth << row << col << static_cast<u_short>(afferentSynapses.size());
+            
+        // Output neuron history
+        output(file, firingRateHistory);
+        output(file, activationHistory);
+        output(file, inhibitedActivationHistory);
+        output(file, traceHistory);
+        output(file, stimulationHistory);
+        output(file, effectiveTraceHistory);
 
         // Iterate afferent synapses
         for(std::vector<Synapse>::iterator s = afferentSynapses.begin(); s != afferentSynapses.end();s++)  {

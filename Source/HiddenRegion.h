@@ -47,6 +47,7 @@ class HiddenRegion : public Region {
         vector<float> traceBuffer;
         vector<float> stimulationBuffer;
         vector<float> synapseHistoryBuffer;
+        vector<float> effectiveTraceBuffer;
 
 		// Init - instead of ctor
         void init(u_short regionNr, Param & p, bool isTraining, u_short nrOfObjects, u_short samplesPrObject, u_short samplingRate, u_short desiredFanIn);

@@ -47,6 +47,7 @@ class HiddenNeuron: public Neuron {
         float * firingRateHistory;
         float * traceHistory;
         float * stimulationHistory;
+        float * effectiveTraceHistory;
     
         void output(BinaryWrite & file, const float * buffer);
     
@@ -60,6 +61,7 @@ class HiddenNeuron: public Neuron {
         float inhibitedActivation;    // Activation after being passed through inhibit routine
         float trace;                  // Defines trace values for this neuron
         float stimulation;            // Presynaptic stimulation, only used for inspection purposes.
+        float effectiveTrace;		  // sigmoid(trace);
         float newActivation;
         float newInhibitedActivation;
         float newTrace;
@@ -74,6 +76,7 @@ class HiddenNeuron: public Neuron {
                   float * const firingRateHistory, 
                   float * const traceHistory,
                   float * const stimulationHistory,
+                  float * const effectiveTraceHistory,
                   bool saveNeuronHistory, 
                   bool saveSynapseHistory,
                   u_short desiredFanIn);
@@ -107,8 +110,8 @@ class HiddenNeuron: public Neuron {
 *
 */
 
-#include <float.h>
-#include <math.h>
+#include <cfloat>
+#include <cmath>
 
 inline void HiddenNeuron::clearState(bool resetTrace) {
 	
@@ -123,6 +126,8 @@ inline void HiddenNeuron::clearState(bool resetTrace) {
 	if(resetTrace) {
 		trace = 0; 
 		newTrace = 0;
+
+		effectiveTrace = 0;
 	}
 }
 
@@ -157,6 +162,7 @@ inline void HiddenNeuron::saveState() {
         firingRateHistory[neuronHistoryCounter] = firingRate;
         traceHistory[neuronHistoryCounter] = trace;
         stimulationHistory[neuronHistoryCounter] = stimulation;
+        effectiveTraceHistory[neuronHistoryCounter] = effectiveTrace;
         neuronHistoryCounter++;
     }
     
