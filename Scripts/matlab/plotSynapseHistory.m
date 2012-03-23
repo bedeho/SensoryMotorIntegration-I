@@ -61,9 +61,6 @@ function plotSynapseHistory(folder, region, depth, row, col, includeSynapses, ma
     %}
     
     %% Plot synapses
-    potentiatedSynapses = subplot(3,1,2);
-    allSynapses = subplot(3,1,3);
-    
     if includeSynapses,
         
         synapseFile = [folder '/synapticWeights.dat'];
@@ -81,7 +78,8 @@ function plotSynapseHistory(folder, region, depth, row, col, includeSynapses, ma
         % Plot history of each synapse
         historyView = zeros(length(synapses),streamSize);
         
-        %fix later, factor out axes slowness businuess
+        %% fix later, factor out axes slowness businuess
+        potentiatedSynapses = subplot(3,1,2);
         for s=1:length(synapses),
 
             v = synapses(s).activity(:, :, 1:maxEpoch);
@@ -104,18 +102,37 @@ function plotSynapseHistory(folder, region, depth, row, col, includeSynapses, ma
             %end
             
             historyView(s,:) = vect;
+            hold on
+            plot(vect);
+            
             
             % Add to all synapses plot
             %axes(allSynapses);
             %hold on;
             %plot(vect);
         end
-
-        axes(potentiatedSynapses);
-        hold on;
+        
         imagesc(historyView);
-        axis tight;
-        colorbar;
+        axis tight
+        
+        %% Traditional view
+        allSynapses = subplot(3,1,3);
+        m5 = 0;
+        for s=1:length(synapses),
+
+            v = historyView(s,:);
+            plot(v);
+            hold on;
+            
+            t = max(v);
+            
+            if t > m5,
+                m5 = t,
+            end
+            
+        end
+        addGrid();
+        axis([0 streamSize -0.01 (m5*1.5)]);
         
         %{
         % Add grid to both

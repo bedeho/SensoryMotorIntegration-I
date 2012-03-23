@@ -72,12 +72,12 @@ function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets
         end
     end
     
-    % Compute the size of header just read
-    NUM_FIELDS_PER_REGION = 4;
-    headerSize = SOURCE_PLATFORM_USHORT_SIZE*(HEADER_START_SIZE + NUM_FIELDS_PER_REGION * numRegions);
-    
     % Read in afferentSynapse count for all neurons
     buffer = fread(fileID, nrOfNeurons, SOURCE_PLATFORM_USHORT);
+    
+    % Compute the size of header just read
+    NUM_FIELDS_PER_REGION = 4;
+    headerSize = SOURCE_PLATFORM_USHORT_SIZE*(HEADER_START_SIZE + NUM_FIELDS_PER_REGION * numRegions + nrOfNeurons);
     
     % Maintain cumulative sum over afferentSynapseLists up to each neuron (count),
     % this is for file seeking
@@ -100,9 +100,6 @@ function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets
             end
         end
     end
-    
-    % Close file
-    fclose(fileID);
     
     % Check that we found the right number of neurons
     if counter ~= nrOfNeurons,
