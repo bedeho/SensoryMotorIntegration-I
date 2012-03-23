@@ -199,7 +199,6 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
     } else if(data == WEIGHT_AND_NEURON_HISTORY) {
         
         // Output neuron description
-<<<<<<< HEAD
         file << region->regionNr << depth << row << col << static_cast<u_short>(afferentSynapses.size());
             
         // Output neuron history
@@ -209,23 +208,6 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
         output(file, traceHistory);
         output(file, stimulationHistory);
         output(file, effectiveTraceHistory);
-=======
-        file << region->regionNr << depth << row << col;
-        
-        // Output neurnal values as well 
-        if(data == WEIGHT_AND_NEURON_HISTORY) {
-            
-            // Output neuron description
-            file << static_cast<u_short>(afferentSynapses.size());
-            
-            // Output neuron history
-            output(file, firingRateHistory);
-            output(file, activationHistory);
-            output(file, inhibitedActivationHistory);
-            output(file, traceHistory);
-            output(file, stimulationHistory);
-        }
->>>>>>> 729a7c6b73a36c5aa010a5bd01abeffd41270704
 
         // Iterate afferent synapses
         for(std::vector<Synapse>::iterator s = afferentSynapses.begin(); s != afferentSynapses.end();s++)  {
