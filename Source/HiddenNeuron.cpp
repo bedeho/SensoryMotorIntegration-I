@@ -111,7 +111,7 @@ void HiddenNeuron::setupAfferentSynapses(Region & preSynapticRegion, CONNECTIVIT
                 }
             }
         }
-    } /*else if (connectivity == SPARSE_BIASED) {
+    } else if (connectivity == SPARSE_BIASED) {
         
         u_short connectionsMade = 0;
         
@@ -144,7 +144,11 @@ void HiddenNeuron::setupAfferentSynapses(Region & preSynapticRegion, CONNECTIVIT
                 connectionsMade++;
             }
         }
-    }*/
+    } else {
+
+    	cerr << "Incorrect connectivity parameter!" << endl;
+    	exit(EXIT_FAILURE);
+    }
 
 }
 

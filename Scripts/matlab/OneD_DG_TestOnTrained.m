@@ -18,8 +18,10 @@ function OneD_DG_TestOnTrained(stimuliName)
     global base;
     
     % Movement parameters
-    fixationDuration = 0.5; % (s) 0
-    simulatorTimeStepSize = 0.1*0.5
+    fixationDuration = 0.050; % (s) 0
+    timeConstant = input('Please enter timeConstant (e.g. 0.010):');
+    stepSizeFraction = input('Please enter step size fraction for testOnTrained (e.g. 0.5):');
+    simulatorTimeStepSize = timeConstant*stepSizeFraction;
     
     % Make folder
     %str = strsplit(stimuliName,'-');
@@ -32,7 +34,7 @@ function OneD_DG_TestOnTrained(stimuliName)
     % Load file
     [samplingRate, numberOfSimultanousObjects, visualFieldSize, eyePositionFieldSize, buffer] = OneD_Load(stimuliName);
     
-    ticksPrSample = fixationDuration * samplingRate;
+    ticksPrSample = ceil(fixationDuration * samplingRate);
     
     if(ticksPrSample < 1) 
         error(['ticksPrSample < 1' ticksPrSample]);
@@ -41,7 +43,7 @@ function OneD_DG_TestOnTrained(stimuliName)
     % Parse data
     [objects, minSequenceLength, objectsFound] = OneD_Parse(buffer);
     objectDuration = minSequenceLength/samplingRate;
-    nrOfModelTicks = floor(objectDuration/simulatorTimeStepSize);
+    nrOfModelTicksPerObjects = floor(objectDuration/simulatorTimeStepSize);
     
     %% Use as nrOfEyePositionsInTesting in analysis
     %%nrOfEyePositionsInTesting = num2str(minSequenceLength)
@@ -59,6 +61,17 @@ function OneD_DG_TestOnTrained(stimuliName)
     fwrite(fileID, eyePositionFieldSize, 'float');
     
     % Output data sequence for each target
+    % Algorithm
+    % 1. Take actual input datastrem for an object, and
+    % step throug it using the model's ACTUAL timestep
+    % and interpolation method (linear) to produce
+    % new time stream which is IDENTICAL to what model
+    % will see.
+    % 2. Remove all redundancy from this stream
+    % 3. Turn each of the resulting data points in this
+    % stream into an object for which you generate the appropriate
+    % number of samples based on the fixation duration parameter
+    % for testing and the sampling rate being used.
     nrOfCleanedUpPointsFound = 0;
     for o = 1:objectsFound,
         
@@ -110,13 +123,13 @@ function OneD_DG_TestOnTrained(stimuliName)
         dim = size(samples);
         sampleDimension = dim(2);
         
-        data = zeros(nrOfModelTicks+1,2);
+        data = zeros(nrOfModelTicksPerObjects+1,2);
         
         dx = (1/samplingRate);
         
         %go through 'samples' at steps of 'simulatorTimeStepSize'
         %interpolate points.
-        for t = 0:nrOfModelTicks, % start at 0 because that is where the model starts
+        for t = 0:nrOfModelTicksPerObjects, % start at 0 because that is where the model starts
            
             time = (t * simulatorTimeStepSize);
             streamPoint = (time / dx);
@@ -140,7 +153,7 @@ function OneD_DG_TestOnTrained(stimuliName)
                 val = samples(end,:);
             end
             
-            data(t+1,:) = val;
+            data(t+1,:) = val
         end
         
     end

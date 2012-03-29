@@ -27,10 +27,10 @@ function OneD_Visualize_TimerFcn(obj, event)
     OneDVisualizeTimer = (lineCounter - nrOfObjectsFoundSoFar)*timeStep;
     total = uint64(OneDVisualizeTimer * 1000);
     
-    fullMin = idivide(total, 60*1000);
+    fullMin = idivide(total, uint64(60*1000));
     totalWithoutFullMin = mod(total, 60*1000);
     
-    fullSec = idivide(totalWithoutFullMin, 1000);
+    fullSec = idivide(totalWithoutFullMin, uint64(1000));
     
     fullMs = mod(totalWithoutFullMin, 1000);
     

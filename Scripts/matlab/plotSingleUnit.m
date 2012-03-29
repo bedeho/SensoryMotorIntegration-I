@@ -37,7 +37,7 @@ function plotSingleUnit(unit, historyDimensions, includeSynapses, maxEpoch)
     legend('Trace','Activation','Firing','Stimulation','Effective Trace');
     
     addGrid();
-    mFinal = max([0.51 m1 m2 m3 m4]); % Used for axis
+    mFinal = 1.5*max([0.51 m1 m2 m3 m4]); % Used for axis
     axis([0 streamSize -0.01 mFinal]);
     
     %% Plot synapses

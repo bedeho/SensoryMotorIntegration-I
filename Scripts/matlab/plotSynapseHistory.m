@@ -46,19 +46,11 @@ function plotSynapseHistory(folder, region, depth, row, col, includeSynapses, ma
     [stimulationLine, m4] = plotFile('stimulation.dat', 'k');
     [effectiveTraceLine, m5] = plotFile('effectiveTrace.dat', '--m');
     
-    legend('Firing','Trace','Activation','Stimulation');
+    legend('Firing','Trace','Activation','Stimulation','Effective Trace');
     
+    mFinal = 1.5*max([0.51 m1 m2 m3 m4 m5]); % Used for axis
+    axis([0 streamSize -0.01 mFinal]);
     addGrid();
-    mFinal = max([0.51 m1 m2 m3 m4 m5]); % Used for axis
-    axis([0 streamSize -0.02 mFinal]);
-    
-    %{
-    if includeSynapses,
-        legend([synapseLine firingLine traceLine activationLine stimulationLine],'Synapses','Firing','Trace','Activation','Stimulation');
-    else
-        legend([firingLine traceLine activationLine stimulationLine],'Firing','Trace','Activation','Stimulation');
-    end
-    %}
     
     %% Plot synapses
     if includeSynapses,
@@ -80,71 +72,48 @@ function plotSynapseHistory(folder, region, depth, row, col, includeSynapses, ma
         
         %% fix later, factor out axes slowness businuess
         potentiatedSynapses = subplot(3,1,2);
+        maxSynapseValue = 0;
         for s=1:length(synapses),
 
             v = synapses(s).activity(:, :, 1:maxEpoch);
             vect = reshape(v, [1 streamSize]);
-            
-            %{
-            % Add to potentiated synapses, if it is ever potentiated
-            if ~isMonotonicallyDecreasing(vect)
-                axes(potentiatedSynapses);
-                hold on;
-                plot(vect);
-            end
-            %}
-            
-            % NOT theoretically perfect
-            %if nnz(vect(1) < vect) > 0,
-            %    axes(potentiatedSynapses);
-            %    hold on;
-            %    plot(vect);
-            %end
-            
             historyView(s,:) = vect;
-            hold on
+            
+            hold on;
             plot(vect);
             
+            tmpMax = max(vect);
             
-            % Add to all synapses plot
-            %axes(allSynapses);
-            %hold on;
-            %plot(vect);
+            if tmpMax > maxSynapseValue,
+                maxSynapseValue = tmpMax;
+            end
+            
         end
+
+        axis([0 streamSize -0.01 (maxSynapseValue*1.5)]);
+        addGrid();
         
-        imagesc(historyView);
-        axis tight
+        %imagesc(historyView);
+        %colormap gray
+        %axis tight
         
         %% Traditional view
         allSynapses = subplot(3,1,3);
-        m5 = 0;
         for s=1:length(synapses),
 
             v = historyView(s,:);
-            plot(v);
-            hold on;
             
-            t = max(v);
-            
-            if t > m5,
-                m5 = t,
+            if max(v) > v(1),
+                plot(v);
+                hold on;
             end
             
         end
-        addGrid();
-        axis([0 streamSize -0.01 (m5*1.5)]);
         
-        %{
-        % Add grid to both
-        axes(potentiatedSynapses);
+        axis([0 streamSize -0.01 (maxSynapseValue*1.5)]);
         addGrid();
-        axes(allSynapses);
-        addGrid();
-        %}
         
     end
-    
-    %axis([0 streamSize -0.02 0.1]);
     
     %{
     function r = isMonotonicallyDecreasing(v)
@@ -185,7 +154,6 @@ function plotSynapseHistory(folder, region, depth, row, col, includeSynapses, ma
 
         fclose(fileID);
     end
-
 
     function addGrid() 
 

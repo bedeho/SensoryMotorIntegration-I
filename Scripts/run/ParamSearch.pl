@@ -23,8 +23,12 @@
 	
 	# Run values
 	
-	my $experiment	 					= "entireLayer22"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
-	my $stim							= "simple-sejnowski-fD=0.20-sA=10.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+	my $experiment	 					= "20E-fC2-99-3O"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
+
+	#my $stim							= "simple-sejnowski-fD=0.20-sA=10.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+
+	my $stim							= "simple-sejnowski-fD=0.05-sA=10.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+
 
 	
 	my $stimuliTraining 				= $stim."-training";
@@ -44,8 +48,8 @@
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
     my $learningRule					= TRACE; # TRACE, HEBB
     
-    my $nrOfEpochs						= 2; #100
-    my $saveNetworkAtEpochMultiple 		= 1000000;
+    my $nrOfEpochs						= 20; #100
+    my $saveNetworkAtEpochMultiple 		= 6;
 	my $outputAtTimeStepMultiple		= 1;
 	
     my $lateralInteraction				= NONE; # NONE, COMP, SOM
@@ -56,7 +60,9 @@
     
     # RANGE PARAMS - permutable
     my @sigmoidSlopes					= (
-										["3000000000.0","3000000000.0"]
+										#["3000000000.0","3000000000.0","3000000000.0","3000000000.0"]
+										["3000000000.0","3000000000.0","3000000000.0"]
+										#["3000000000.0","3000000000.0"]
 										#["3000000000.0"]
     									);
     die "Invalid array: sigmoidSlopes" if !validateArray(\@sigmoidSlopes);
@@ -66,28 +72,36 @@
     my @learningRates 					= (
 
 #["0.0","0.00000"],    
-#["0.0","0.00037"],
+##["0.0","0.00037"],
 #["0.0","0.00075"],
-#["0.0","0.00150"],
-#["0.0","0.00337"],
+##["0.0","0.00150"],
+##["0.0","0.00337"],
 #["0.0","0.00675"],
 #["0.0","0.00775"],
-#["0.0","0.00875"],
+##["0.0","0.00875"],
 #["0.0","0.00975"],
-#["0.0","0.01075"],
+##["0.0","0.01075"],
 #["0.0","0.01575"],
 #["0.0","0.05575"],
-#["0.0","0.10750"],
-["0.0","0.20750"]
-#["0.0","0.50750"]
-#["0.0","0.01250"],
-#["0.0","0.02500"],
-#["0.0","0.05000"],
-#["0.0","0.10000"]
-#["0.0","0.20000"]
-#["0.0","0.30000"],
+#["0.0","0.10750"]
+#["0.0","0.20000"],
+#["0.0","0.30000"]
 #["0.0","0.50000"]
-    									);								
+#["0.0"]
+#["0.0","0.0","0.0"]
+#["0.0","0.0","0.00675"],
+#["0.0","0.0","0.01075"],
+#["0.0","0.0","0.01575"],
+#["0.0","0.0","0.05575"],
+["0.0","0.0","0.10750"]
+#["0.0","0.0","0.20000"],
+#["0.0","0.0","0.30000"],
+#["0.0","0.0","0.40000"],	
+#["0.0","0.0","0.50000"],	
+#["0.0","0.0","0.60000"],
+#["0.0","0.0","0.70000"],
+#["0.0","0.0","1.00000"]							
+);								
  	die "Invalid array: learningRates" if !validateArray(\@learningRates);
 
     my @sparsenessLevels				= (
@@ -154,102 +168,128 @@
 #["0.95","0.90"],
 #["0.90","0.90"]
 
-# orthognalization test
-#["0.98","0.90"],
-["0.99","0.85"],
+#orthogonalization
+#["0.95"],
+#["0.99"],
+#["0.995"],
+#["0.998"],
+#["0.999"],
+#["0.9993"],
+#["0.9998"]
+
+# orthognalization 2
+#["0.999","0.999"],
+#["0.999","0.99"],
+#["0.999","0.95"],
 #["0.999","0.90"],
 
-["0.99","0.90"],
-["0.99","0.95"],
-#["0.999","0.95"],
+#["0.99","0.999"],
+#["0.99","0.95"],
+#["0.99","0.90"],
 
+#["0.90","0.999"],
+##["0.90","0.99"],
+#["0.90","0.95"],
 #["0.90","0.90"]
 
-#["0.85","0.90"],
-#["0.80","0.90"],
-#["0.75","0.90"],
-#["0.70","0.90"],
-#["0.65","0.90"],
-#["0.60","0.90"],
-#["0.55","0.90"],
-#["0.50","0.90"],
-#["0.45","0.90"],
-#["0.40","0.90"],
-#["0.35","0.90"],
-#["0.30","0.90"]
+# orthognalization 3
+#["0.999","0.999","0.999"],
+#["0.99","0.99","0.99"],
+#["0.95","0.95","0.95"],
+#["0.90","0.90","0.90"]
 
-#["0.94"],
-#["0.93"],
-#["0.90"],
-#["0.85"],
-#["0.80"],
-#["0.75"],
-#["0.70"],
-#["0.65"],
-#["0.60"]
+# trace 3
+#["0.99","0.99","0.98"],
+#["0.99","0.99","0.95"],
+["0.99","0.99","0.90"]
+#["0.99","0.99","0.80"]
+#["0.99","0.999","0.95"]
+#["0.99","0.999","0.99"]
+);
 
-    									);
     die "Invalid array: sparsenessLevels" if !validateArray(\@sparsenessLevels);
     
     my @timeConstants					= (
-    									["0.100","0.100"]
+    									["0.010","0.010","0.010"]
+									#["0.010","0.010"]
     									#["0.100"]
     									);
     die "Invalid array: timeConstants" if !validateArray(\@timeConstants);
  	
-    my @stepSizeFraction				= ("0.50");  #0.1 = 1/10, 0.05 = 1/20, 0.02 = 1/50
+    my @stepSizeFraction				= ("0.5");  #0.1 = 1/10, 0.05 = 1/20, 0.02 = 1/50
     die "Invalid array: stepSizeFraction" if !validateArray(\@stepSizeFraction);
     
     my @traceTimeConstant				= ("0.500");  # ("0.300","0.800","1.600","2.600"); 
 	die "Invalid array: traceTimeConstant" if !validateArray(\@traceTimeConstant);
 	
-
-	## orthogonalization
+    # orthogonalization
     #my $pathWayLength					= 1;
-    #my @dimension						= (100);
-    #my @depth							= (1);
-    #my @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
+    #my @dimension					= (100);
+    #my @depth						= (1);
+    #my @connectivity					= (SPARSE_BIASED);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     #my @fanInRadius 					= (6); # not used
-    #my @fanInCountPercentage 			= ("0.1"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    #my @fanInCountPercentage 				= ("0.8"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
     #my @learningrate					= ("0.1"); # < === is permuted below
-    #my @eta								= ("0.8");
+    #my @eta						= ("0.8");
     #my @timeConstant					= ("0.1"); # < === is permuted below
-    #my @sparsenessLevel					= ("0.1"); # < === is permuted below
+    #my @sparsenessLevel				= ("0.1"); # < === is permuted below
     #my @sigmoidSlope 					= ("30.0"); # < === is permuted below
     #my @inhibitoryRadius				= ("6.0");
     #my @inhibitoryContrast				= ("1.4");
     #my @somExcitatoryRadius				= ("0.6");
-    #my @somExcitatoryContrast			= ("120.12");
+    #my @somExcitatoryContrast				= ("120.12");
     #my @somInhibitoryRadius				= ("6.0");
-    #my @somInhibitoryContrast			= ("1.4");
-    #my @filterWidth						= (7);
-    #my @epochs							= (10); # only used in discrete model
-
-    #my @saveHistory						= (NO_HISTORY, SINGLE_CELLS); #  NO_HISTORY, ALL, SYNAPSE, SINGLE_CELLS
+    #my @somInhibitoryContrast				= ("1.4");
+    #my @filterWidth					= (7);
+    #my @epochs						= (10); # only used in discrete model
+    #my @saveHistory					= (NO_HISTORY, SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
     #my @recordedSingleCells				= ("()", "((3,13), (6,8))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
         
-	# Two layer trace
-    my $pathWayLength					= 2;
-    my @dimension						= (100,30);
-    my @depth							= (1,1);
-    my @connectivity					= (SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
-    my @fanInRadius 					= (6,6); # not used
-    my @fanInCountPercentage 			= ("0.1","0.05"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
-    my @learningrate					= ("0.1","0.1"); # < === is permuted below
-    my @eta								= ("0.8","0.8");
-    my @timeConstant					= ("0.1","0.1"); # < === is permuted below
-    my @sparsenessLevel					= ("0.1","0.1"); # < === is permuted below
-    my @sigmoidSlope 					= ("30.0","30.0"); # < === is permuted below
-    my @inhibitoryRadius				= ("6.0","6.0");
-    my @inhibitoryContrast				= ("1.4","1.4");
-   	my @somExcitatoryRadius				= ("0.6","0.6");
-    my @somExcitatoryContrast			= ("120.12","120.12");
-   	my @somInhibitoryRadius				= ("6.0","6.0");
-    my @somInhibitoryContrast			= ("1.4","1.4");
-    my @filterWidth						= (7,7);
-    my @epochs							= (10,10); # only used in discrete model
-    my @saveHistory						= (NO_HISTORY, ALL); #  NO_HISTORY, ALL, SYNAPSE, SINGLE_CELLS
-    my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,22), (22,26), (12,28), (23,23))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+    ## Two layer trace
+    #my $pathWayLength					= 2;
+    #my @dimension					= (100,100);
+    #my @depth						= (1,1);
+    #my @connectivity					= (SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
+    #my @fanInRadius 					= (6,6); # not used
+    #my @fanInCountPercentage 				= ("0.1","0.01"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    #my @learningrate					= ("0.1","0.1"); # < === is permuted below
+    #my @eta						= ("0.8","0.8");
+    #my @timeConstant					= ("0.1","0.1"); # < === is permuted below
+    #my @sparsenessLevel					= ("0.1","0.1"); # < === is permuted below
+    #my @sigmoidSlope 					= ("30.0","30.0"); # < === is permuted below
+    #my @inhibitoryRadius				= ("6.0","6.0");
+    #my @inhibitoryContrast				= ("1.4","1.4");
+    #my @somExcitatoryRadius				= ("0.6","0.6");
+    #my @somExcitatoryContrast				= ("120.12","120.12");
+    #my @somInhibitoryRadius				= ("6.0","6.0");
+    #my @somInhibitoryContrast				= ("1.4","1.4");
+    #my @filterWidth					= (7,7);
+    #my @epochs						= (10,10); # only used in discrete model
+    #my @saveHistory					= (NO_HISTORY, NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+    #my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+    
+    ## Three layer trace
+    my $pathWayLength					= 3;
+    my @dimension					= (100,100,30);
+    my @depth						= (1,1,1);
+    my @connectivity					= (SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
+    my @fanInRadius 					= (6,6,6); # not used
+    my @fanInCountPercentage 				= ("0.1","0.01","0.2"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    my @learningrate					= ("0.1","0.1","0.1"); # < === is permuted below
+    my @eta						= ("0.8","0.8","0.8");
+    my @timeConstant					= ("0.1","0.1","0.1"); # < === is permuted below
+    my @sparsenessLevel					= ("0.1","0.1","0.1"); # < === is permuted below
+    my @sigmoidSlope 					= ("30.0","30.0","30.0"); # < === is permuted below
+    my @inhibitoryRadius				= ("6.0","6.0","6.0");
+    my @inhibitoryContrast				= ("1.4","1.4","1.4");
+    my @somExcitatoryRadius				= ("0.6","0.6","0.6");
+    my @somExcitatoryContrast				= ("120.12","120.12","120.12");
+    my @somInhibitoryRadius				= ("6.0","6.0","6.0");
+    my @somInhibitoryContrast				= ("1.4","1.4","1.4");
+    my @filterWidth					= (7,7,7);
+    my @epochs						= (10,10,10); # only used in discrete model
+    my @saveHistory					= (NO_HISTORY, NO_HISTORY, NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+    my @recordedSingleCells				= ("()", "()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
     
     #############################################################################
 	# Preprocessing
