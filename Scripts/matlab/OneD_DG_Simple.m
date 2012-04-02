@@ -19,10 +19,10 @@ function OneD_DG_Simple(prefix)
     dimensions = OneD_DG_Dimensions();
     
     % Movement parameters
-    saccadeVelocity             = 400000000000;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    samplingRate                = 100;	% (Hz)
+    saccadeVelocity             = 4000000000000000000000;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
+    samplingRate                = 1000;	% (Hz)
     fixationDuration            = 0.050;  % 0.25;	% (s) - fixation period after each saccade
-    saccadeAmplitude            = 10;    % 30= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
+    saccadeAmplitude            = 30;    % 30= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
 
     % Derived
     timeStep = 1/samplingRate;

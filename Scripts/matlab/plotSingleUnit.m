@@ -26,11 +26,11 @@ function plotSingleUnit(unit, historyDimensions, includeSynapses, maxEpoch)
     fig = figure();
     
     %% Plot neuron dynamics
-    subplot(2,1,1);
+    subplot(3,1,1);
     
     [traceLine, m1] = plotUnitData(unit.trace, 'g');
     [activationLine, m2] = plotUnitData(unit.activation, 'y');
-    [firingLine, m3] = plotUnitData(unit.firingRate, 'r');
+    [firingLine, m3] = plotUnitData(unit.firingRate, 'b');
     [stimulationLine, m4] = plotUnitData(unit.stimulation, 'k');
     [effectiveTraceLine, m5] = plotUnitData(unit.effectiveTrace, '--m');
     
@@ -41,7 +41,6 @@ function plotSingleUnit(unit, historyDimensions, includeSynapses, maxEpoch)
     axis([0 streamSize -0.01 mFinal]);
     
     %% Plot synapses
-    subplot(2,1,2);
     
     if includeSynapses,
         
@@ -49,6 +48,7 @@ function plotSingleUnit(unit, historyDimensions, includeSynapses, maxEpoch)
         sizes = size(synapses);
         numberOfSynapses = sizes(end);
         
+        %{
         % Iterate synapses
         m5 = 0;
         for s=1:numberOfSynapses,
@@ -66,6 +66,55 @@ function plotSingleUnit(unit, historyDimensions, includeSynapses, maxEpoch)
         end
         
         axis([0 streamSize -0.01 (m5*1.5)]);
+        %}
+        
+        % Plot history of each synapse
+        historyView = zeros(numberOfSynapses,streamSize);
+        
+        %% fix later, factor out axes slowness businuess
+        potentiatedSynapses = subplot(3,1,2);
+        maxSynapseValue = 0;
+        for s=1:numberOfSynapses,
+
+            v = synapses(:, :, 1:maxEpoch, s);
+            vect = reshape(v, [1 streamSize]);
+            historyView(s,:) = vect;
+            
+            hold on;
+            plot(vect);
+            
+            tmpMax = max(vect);
+            
+            if tmpMax > maxSynapseValue,
+                maxSynapseValue = tmpMax;
+            end
+            
+        end
+
+        axis([0 streamSize -0.01 (maxSynapseValue*1.5)]);
+        addGrid();
+        
+        %imagesc(historyView);
+        %colormap gray
+        %axis tight
+        
+        %% Traditional view
+        allSynapses = subplot(3,1,3);
+        for s=1:numberOfSynapses,
+
+            v = historyView(s,:);
+            
+            if max(v) > v(1),
+                plot(v);
+                hold on;
+            end
+            
+        end
+        
+        axis([0 streamSize -0.01 (maxSynapseValue*1.5)]);
+        addGrid();
+        
+  
     end
     
     function [lineHandle, maxValue] = plotUnitData(unitData, color)

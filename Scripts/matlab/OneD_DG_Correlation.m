@@ -45,6 +45,7 @@ function OneD_DG_Correlation(stimuliName)
         end
     end
     
+    fig = figure();
     imagesc(dotproduct);
     
     % Save correlation
@@ -52,5 +53,8 @@ function OneD_DG_Correlation(stimuliName)
     cd([base 'Stimuli/' stimuliName]);
     save dotproduct; 
     cd(startDir);
+    
+     % Save figure
+    saveas(fig,[base 'Stimuli/' stimuliName '/correlation.png'],'png');
     
 end

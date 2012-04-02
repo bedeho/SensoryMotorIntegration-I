@@ -23,11 +23,21 @@
 	
 	# Run values
 	
-	my $experiment	 					= "20E-fC2-99-3O"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
+	my $experiment	 					= "moreepoch-99-s30-randomized-13E-fC100"; # inputpercentiletest-l0.2-fiC50-tC100-hebb-classic
 
-	#my $stim							= "simple-sejnowski-fD=0.20-sA=10.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+	#my $stim							= "simple-sejnowski-fD=0.05-sA=60.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00"; # 3E, 4H
 
-	my $stim							= "simple-sejnowski-fD=0.05-sA=10.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+	#my $stim							= "simple-sejnowski-fD=0.05-sA=10.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00"; # 13E, 4H
+
+	#my $stim							= "simple-sejnowski-fD=0.05-sA=30.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00"; # 5E, 4H
+
+	#my $stim							= "random-sejnowski-ord=6-fD=0.05-sA=30.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00"; # 5E, 4H
+	
+	#my $stim							= "random-sejnowski-ord=10-fD=0.05-sA=10.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00"; # 13E,4H,
+
+	my $stim							= "random-sejnowski-ord=4-fD=0.05-sA=10.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00"; # 13E,4H
+
+
 
 
 	
@@ -48,8 +58,8 @@
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
     my $learningRule					= TRACE; # TRACE, HEBB
     
-    my $nrOfEpochs						= 20; #100
-    my $saveNetworkAtEpochMultiple 		= 6;
+    my $nrOfEpochs						= 25; #100
+    my $saveNetworkAtEpochMultiple 		= 3;
 	my $outputAtTimeStepMultiple		= 1;
 	
     my $lateralInteraction				= NONE; # NONE, COMP, SOM
@@ -71,7 +81,7 @@
     # number of afferent synapses, total 15x.
     my @learningRates 					= (
 
-#["0.0","0.00000"],    
+#["0.0","0.0"],    
 ##["0.0","0.00037"],
 #["0.0","0.00075"],
 ##["0.0","0.00150"],
@@ -88,19 +98,16 @@
 #["0.0","0.30000"]
 #["0.0","0.50000"]
 #["0.0"]
-#["0.0","0.0","0.0"]
+#["0.0","0.0","0.0"],
 #["0.0","0.0","0.00675"],
-#["0.0","0.0","0.01075"],
-#["0.0","0.0","0.01575"],
+#["0.0","0.0","0.02575"]
+#["0.0","0.0","0.03575"],
+["0.0","0.0","0.05000"]
 #["0.0","0.0","0.05575"],
-["0.0","0.0","0.10750"]
-#["0.0","0.0","0.20000"],
+#["0.0","0.0","0.10000"]
+#["0.0","0.0","0.10750"],
 #["0.0","0.0","0.30000"],
-#["0.0","0.0","0.40000"],	
-#["0.0","0.0","0.50000"],	
-#["0.0","0.0","0.60000"],
-#["0.0","0.0","0.70000"],
-#["0.0","0.0","1.00000"]							
+#["0.0","0.0","1.00000"]						
 );								
  	die "Invalid array: learningRates" if !validateArray(\@learningRates);
 
@@ -201,10 +208,18 @@
 # trace 3
 #["0.99","0.99","0.98"],
 #["0.99","0.99","0.95"],
+#["0.99","0.99","0.90"],
+#["0.99","0.99","0.80"],
+
+#["0.99","0.999","0.98"],
+#["0.99","0.999","0.95"],
+#["0.99","0.999","0.90"],
+#["0.99","0.999","0.80"]
+
+#["0.99","0.999","0.90"],
 ["0.99","0.99","0.90"]
-#["0.99","0.99","0.80"]
-#["0.99","0.999","0.95"]
-#["0.99","0.999","0.99"]
+#["0.99","0.999","0.99"],
+#["0.99","0.999","0.85"]
 );
 
     die "Invalid array: sparsenessLevels" if !validateArray(\@sparsenessLevels);
@@ -219,7 +234,7 @@
     my @stepSizeFraction				= ("0.5");  #0.1 = 1/10, 0.05 = 1/20, 0.02 = 1/50
     die "Invalid array: stepSizeFraction" if !validateArray(\@stepSizeFraction);
     
-    my @traceTimeConstant				= ("0.500");  # ("0.300","0.800","1.600","2.600"); 
+    my @traceTimeConstant				= ("0.100");  # ("0.300","0.800","1.600","2.600"); 
 	die "Invalid array: traceTimeConstant" if !validateArray(\@traceTimeConstant);
 	
     # orthogonalization
@@ -270,11 +285,11 @@
     
     ## Three layer trace
     my $pathWayLength					= 3;
-    my @dimension					= (100,100,30);
+    my @dimension					= (100,30,30);
     my @depth						= (1,1,1);
-    my @connectivity					= (SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
+    my @connectivity					= (SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY, FULL_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     my @fanInRadius 					= (6,6,6); # not used
-    my @fanInCountPercentage 				= ("0.1","0.01","0.2"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    my @fanInCountPercentage 				= ("0.1","0.01","0.3"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
     my @learningrate					= ("0.1","0.1","0.1"); # < === is permuted below
     my @eta						= ("0.8","0.8","0.8");
     my @timeConstant					= ("0.1","0.1","0.1"); # < === is permuted below

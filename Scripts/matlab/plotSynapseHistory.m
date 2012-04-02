@@ -42,7 +42,7 @@ function plotSynapseHistory(folder, region, depth, row, col, includeSynapses, ma
     
     [traceLine, m1] = plotFile('trace.dat', 'g');
     [activationLine, m2] = plotFile('activation.dat', 'y');
-    [firingLine, m3] = plotFile('firingRate.dat', 'r');
+    [firingLine, m3] = plotFile('firingRate.dat', 'b');
     [stimulationLine, m4] = plotFile('stimulation.dat', 'k');
     [effectiveTraceLine, m5] = plotFile('effectiveTrace.dat', '--m');
     

@@ -8,27 +8,26 @@
 %  Purpose: Generates the simplest possible 1d dynamical data
 %
 
-function OneD_DG_Random(prefix)
+function OneD_DG_Random_Simple(prefix)
 
     % Import global variables
     declareGlobalVars();
     
     global base;
-
+    
     % Load enviromental paramters
     dimensions = OneD_DG_Dimensions();
     
-    % Movement parameters
-    saccadeVelocity             = 4000000000000000000000;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
+    % Parameters
+    %saccadeVelocity             = 4000000000000000000000;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     samplingRate                = 1000;	% (Hz)
     fixationDuration            = 0.050;  % 0.25;	% (s) - fixation period after each saccade
     saccadeAmplitude            = 10;    % 30= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
+    nrOfOrderings               = 4;
 
     % Derived
     ticksPrSample = fixationDuration * samplingRate;
-    nrOfSubsequentEyeMovements = 1;
-    nrOfRandomMovements = 50;
-    
+
     possibleEyePositions = dimensions.leftMostEyePosition:saccadeAmplitude:dimensions.rightMostEyePosition;
     nrOfEyePositions = length(possibleEyePositions);
 
@@ -39,7 +38,7 @@ function OneD_DG_Random(prefix)
         prefix = [prefix '-']
     end
     
-    encodePrefix = [prefix 'move=' num2str(nrOfRandomMovements) '_' num2str(nrOfSubsequentEyeMovements) '-'];
+    encodePrefix = [prefix 'ord=' num2str(nrOfOrderings) '-'];
     encodePrefix = [encodePrefix 'fD=' num2str(fixationDuration,'%.2f') ];
     encodePrefix = [encodePrefix '-sA=' num2str(saccadeAmplitude,'%.2f') ];
     encodePrefix = [encodePrefix '-vpD=' num2str(dimensions.visualPreferenceDistance,'%.2f')];
@@ -110,39 +109,21 @@ function OneD_DG_Random(prefix)
     OneD_Overlay([tSFolderName '-training'],[tSFolderName '-testOnTrained'])
     
     function doTimeSteps()
-
-        % Do a random eye movement
-        for n = 1:nrOfRandomMovements,
+        
+        for o=1:nrOfOrderings,
             
-            % Pick saccade target
-            s = randi(nrOfEyePositions);
+            transformOrder = randperm(nrOfEyePositions)
             
-            % Pick direction
-            if randi(2) == 1,
-                d = -1; % left
-            else
-                d = 1;
-            end
-            
-            % Do a number of extra saccades
-            for r = 0:nrOfSubsequentEyeMovements,
+            for p=transformOrder,
                 
-                newPosition = s + d*r;
+                ep = possibleEyePositions(p);
                 
-                % Loop around if we need to
-                if newPosition > nrOfEyePositions || newPosition < 1
-                    ep = possibleEyePositions(1);
-                else
-                    ep = possibleEyePositions(newPosition);
-                end
-                                
                 % Output 
                 sample = [ep (t - ep)];
-                
+
                 % Duplicat sample and write out duplicates in column order
                 repeatedSample = repmat(sample,1,ticksPrSample);
                 fwrite(fileID, repeatedSample, 'float');
-
             end
         end
     end

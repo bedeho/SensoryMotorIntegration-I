@@ -43,7 +43,7 @@ function OneD_DG_TestOnTrained(stimuliName)
     % Parse data
     [objects, minSequenceLength, objectsFound] = OneD_Parse(buffer);
     objectDuration = minSequenceLength/samplingRate;
-    nrOfModelTicksPerObjects = floor(objectDuration/simulatorTimeStepSize);
+    nrOfModelTicksPerObjects = ceil(objectDuration/simulatorTimeStepSize); % Round up to not loose last sample (?)
     
     %% Use as nrOfEyePositionsInTesting in analysis
     %%nrOfEyePositionsInTesting = num2str(minSequenceLength)
@@ -72,6 +72,7 @@ function OneD_DG_TestOnTrained(stimuliName)
     % stream into an object for which you generate the appropriate
     % number of samples based on the fixation duration parameter
     % for testing and the sampling rate being used.
+    
     nrOfCleanedUpPointsFound = 0;
     for o = 1:objectsFound,
         
@@ -131,12 +132,21 @@ function OneD_DG_TestOnTrained(stimuliName)
         %interpolate points.
         for t = 0:nrOfModelTicksPerObjects, % start at 0 because that is where the model starts
            
-            time = (t * simulatorTimeStepSize);
-            streamPoint = (time / dx);
-            startPoint = floor(streamPoint); % this should in theory never be last sample point
-            overflow = streamPoint - startPoint;
+            % Actual model time of start of sample "t"
+            presentModelTime = (t * simulatorTimeStepSize);
             
-            startPoint = startPoint + 1; % 1 based indexing.
+            % The number of full samples presentModelTime covers
+            nrOfFullSamples = floor(presentModelTime / dx);
+            
+            % Time from startPoint time to presentModelTime
+            if nrOfFullSamples == 0,
+                overflow = 0;
+            else
+                overflow = rem(presentModelTime, nrOfFullSamples * dx);
+            end
+            
+            % Sample point immediatly prior to presentModelTime
+            startPoint = nrOfFullSamples + 1;
             
             if startPoint < length(samples), % check if we are on the last point
                 
@@ -153,7 +163,7 @@ function OneD_DG_TestOnTrained(stimuliName)
                 val = samples(end,:);
             end
             
-            data(t+1,:) = val
+            data(t+1,:) = val;
         end
         
     end

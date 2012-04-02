@@ -9,7 +9,12 @@
 
 function OneD_Overlay(trainingStimuliName, testingStimuliName)
 
-    figure();
+    % Import global variables
+    declareGlobalVars();
+    
+    global base;
+    
+    fig = figure();
 
     % Plot spatial data
     subplot(1,3,1);
@@ -23,6 +28,9 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
     % Plot temporal eye movement data of testing
     subplot(1,3,3);
     plotEyeMovements(testingStimuliName);
+    
+    % Save figure
+    saveas(fig,[base 'Stimuli/' testingStimuliName '/stim.png'],'png');
     
     function plotStimuli(name, color)
         
