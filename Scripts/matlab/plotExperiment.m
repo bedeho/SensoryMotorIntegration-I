@@ -74,9 +74,9 @@ function plotExperiment(experiment, stimuliName)
     fprintf(fileID, '<thead><tr>');
     fprintf(fileID, '<th>Name</th>');
     fprintf(fileID, '<th>Network</th>');
-    %fprintf(fileID, '<th>Result 1</th>');
-    %fprintf(fileID, '<th>Result 2</th>');
-    fprintf(fileID, '<th>Result *</th>');
+    fprintf(fileID, '<th>Result 1</th>');
+    fprintf(fileID, '<th>Result 2</th>');
+    %fprintf(fileID, '<th>Result *</th>');
     for p = 1:nrOfParams,
         fprintf(fileID, ['<th>' parameters{p,1} '</th>']);
     end
@@ -127,7 +127,7 @@ function plotExperiment(experiment, stimuliName)
                     %%fprintf(fileID, '<td><img src="%s" width="370px" height="300px"/></td>\n', [netDir '/result_1.png']);
                     
                     %% Result 2
-                    %fprintf(fileID, '<td><img src="%s" width="370px" height="300px"/></td>\n', [netDir '/orthogonality.png']);
+                    fprintf(fileID, '<td><img src="%s" width="370px" height="300px"/></td>\n', [netDir '/orthogonality.png']);
 
                     %% Result 3
                     fprintf(fileID, '<td><img src="%s" width="370px" height="300px"/></td>\n', [netDirRelative '/invariance.png']);

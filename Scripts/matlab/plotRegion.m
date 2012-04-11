@@ -57,7 +57,7 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     invariancePlot = figure();
 
     responseCounts = invarianceHeuristics(filename, info.nrOfEyePositionsInTesting);
-    markerSpecifiers = {'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>'};
+    markerSpecifiers = {'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>', 'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>'};
     
     % Plot a line for each object
     for e=1:info.nrOfEyePositionsInTesting,

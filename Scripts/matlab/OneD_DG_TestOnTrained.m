@@ -79,6 +79,9 @@ function OneD_DG_TestOnTrained(stimuliName)
         % Compute what model sees
         data = linearInterpolate(objects{o});
         
+        % Remove 2,3,4,... dimensions
+        data = data(;,;
+        
         % Remove redundancy
         cleanedUp = unique(data,'rows');
         x = length(cleanedUp);

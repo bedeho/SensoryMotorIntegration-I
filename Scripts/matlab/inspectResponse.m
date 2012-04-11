@@ -33,7 +33,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
     PLOT_COLS = 4;
     numRegions = length(networkDimensions);
     axisVals = zeros(numRegions, PLOT_COLS); % Save axis that we can lookup 'CurrentPoint' property on callback
-    markerSpecifiers = {'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>'}; %, '<', 'p', 'h'''
+    markerSpecifiers = {'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>', 'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>'}; %, '<', 'p', 'h'''
     
     objectLegend = cell(nrOfEyePositionsInTesting,1);
     for o=1:nrOfEyePositionsInTesting,
