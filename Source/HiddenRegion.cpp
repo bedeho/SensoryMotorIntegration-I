@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <queue>
 #include <iostream>
+#include <cstdlib>
 #include "Utilities.h"
 
 using std::cout;

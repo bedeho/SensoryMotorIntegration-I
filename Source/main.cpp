@@ -206,7 +206,7 @@ int main (int argc, char *argv[]) {
 void usage() {
 
 	cout << endl;
-	cout << "usage: smi [--help] [--verbose]  [--xgrid] [--multicore] " << endl; // [--silent]
+	cout << "usage: smi [--help] [--verbose]  [--xgrid] [--singlethreaded] " << endl; // [--silent]
     cout << "               COMMAND ARGS" << endl;
     cout << endl;
     cout << "The command list for smi is:" << endl;
@@ -219,4 +219,6 @@ void usage() {
 
 	cout << "\t run\t Test trained network." << endl;
 	cout << "\t\t\t  test <parameter file> <untrained network file> <data file> <output directory>" << endl;
+    
+    
 }

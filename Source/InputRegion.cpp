@@ -174,7 +174,7 @@ void InputRegion::loadDataFile(const char * dataFile) {
         while(file >> e) {
             
             // NaN encodes end of "object", like '*' did in VisNet
-            if(isnan(e)) {
+            if(std::isnan(e)) {
                 
                 if(lastNrOfSamplesFound != 0 && lastNrOfSamplesFound != samplesPrObject) {
                     
