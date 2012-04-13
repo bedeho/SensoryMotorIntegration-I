@@ -60,6 +60,10 @@ function OneD_DG_TestOnTrained(stimuliName)
     fwrite(fileID, visualFieldSize, 'float');
     fwrite(fileID, eyePositionFieldSize, 'float');
     
+    if numberOfSimultanousObjects > 1,
+        error('Script not written to handle multiple objects, use OneD_DG_Test.m instead.');
+    end
+    
     % Output data sequence for each target
     % Algorithm
     % 1. Take actual input datastrem for an object, and
@@ -80,7 +84,7 @@ function OneD_DG_TestOnTrained(stimuliName)
         data = linearInterpolate(objects{o});
         
         % Remove 2,3,4,... dimensions
-        data = data(;,;
+        data = data(:,1:2);
         
         % Remove redundancy
         cleanedUp = unique(data,'rows');
@@ -127,7 +131,7 @@ function OneD_DG_TestOnTrained(stimuliName)
         dim = size(samples);
         sampleDimension = dim(2);
         
-        data = zeros(nrOfModelTicksPerObjects+1,2);
+        data = zeros(nrOfModelTicksPerObjects+1, sampleDimension);
         
         dx = (1/samplingRate);
         

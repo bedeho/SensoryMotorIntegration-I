@@ -66,8 +66,6 @@ function OneD_Visualize_TimerFcn(obj, event)
     % draw LIP sig*gauss neurons and input space
     function draw()
 
-        %disp('got here');
-        
         v = OneD_DG_InputLayer(dimensions, [eyePosition retinalPositions]);
         
         % Clean up so that it is not hidden from us that stimuli is off
@@ -100,6 +98,7 @@ function OneD_Visualize_TimerFcn(obj, event)
         temp(v(:,1),:) = [];  % blank out all these rows
         
         % plot
+        cla
         rows = 1:(lineCounter - nrOfObjectsFoundSoFar);
         for o = 1:dimensions.numberOfSimultanousObjects,
             plot(temp(rows, 1), temp(rows ,o + 1) , 'o');
@@ -109,12 +108,6 @@ function OneD_Visualize_TimerFcn(obj, event)
         daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
         axis([dimensions.leftMostEyePosition dimensions.rightMostEyePosition dimensions.leftMostVisualPosition dimensions.rightMostVisualPosition]);
         
-        %x = eyePosition * ones(1, numberOfSimultanousObjects);
-        %y = retinalPositions;
-        %plot(x, y,'r*');
-        %axis([leftMostEyePosition rightMostEyePosition leftMostVisualPosition rightMostVisualPosition]);
-        
-        %}
     end
 
 end

@@ -74,8 +74,8 @@ function OneD_DG_Random(prefix)
     for t = dimensions.targets,
         
         % Save at t=0
-        fwrite(fileID, dimensions.leftMostEyePosition, 'float');           % Eye position (HFP)
-        fwrite(fileID, t - dimensions.leftMostEyePosition, 'float');       % Fixation offset of target
+        %fwrite(fileID, dimensions.leftMostEyePosition, 'float');           % Eye position (HFP)
+        %fwrite(fileID, t - dimensions.leftMostEyePosition, 'float');       % Fixation offset of target
 
         % Output all samples for this target position
         doTimeSteps();

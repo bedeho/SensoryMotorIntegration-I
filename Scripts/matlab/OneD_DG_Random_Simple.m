@@ -22,8 +22,8 @@ function OneD_DG_Random_Simple(prefix)
     %saccadeVelocity             = 4000000000000000000000;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     samplingRate                = 1000;	% (Hz)
     fixationDuration            = 0.050;  % 0.25;	% (s) - fixation period after each saccade
-    saccadeAmplitude            = 5;    % 30= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
-    nrOfOrderings               = 23;
+    saccadeAmplitude            = 80;    % 35= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
+    nrOfOrderings               = 4;
 
     % Derived
     ticksPrSample = fixationDuration * samplingRate;
@@ -38,8 +38,9 @@ function OneD_DG_Random_Simple(prefix)
         prefix = [prefix '-']
     end
     
-    encodePrefix = [prefix 'ord=' num2str(nrOfOrderings) '-'];
-    encodePrefix = [encodePrefix 'fD=' num2str(fixationDuration,'%.2f') ];
+    encodePrefix = [prefix 'Ord=' num2str(nrOfOrderings,'%.2f')];
+    encodePrefix = [encodePrefix '-Sim=' num2str(dimensions.numberOfSimultanousObjects,'%.2f')];
+    encodePrefix = [encodePrefix '-fD=' num2str(fixationDuration,'%.2f') ];
     encodePrefix = [encodePrefix '-sA=' num2str(saccadeAmplitude,'%.2f') ];
     encodePrefix = [encodePrefix '-vpD=' num2str(dimensions.visualPreferenceDistance,'%.2f')];
     encodePrefix = [encodePrefix '-epD=' num2str(dimensions.eyePositionPrefrerenceDistance,'%.2f')];
@@ -69,19 +70,27 @@ function OneD_DG_Random_Simple(prefix)
     % Set index
     rng(72, 'twister');
     
-    % Output data sequence for each target
-    for t = dimensions.targets,
-        
-        % Some combination of 
-        
-        % Save at t=0
-        fwrite(fileID, dimensions.leftMostEyePosition, 'float');           % Eye position (HFP)
-        fwrite(fileID, t - dimensions.leftMostEyePosition, 'float');       % Fixation offset of target
+    % Setup for generating target combinations
+    n = dimensions.nrOfVisualTargetLocations;
+    r = dimensions.numberOfSimultanousObjects;
+    unsampledPerms = combnk(1:n, r);
+    
+    % Iterate target combinations
+    while ~isempty(unsampledPerms),
 
-        % Output all samples for this target position
-        doTimeSteps();
+        dim = size(unsampledPerms);
+        sampleId = randi(dim(1));
+        showTargets = unsampledPerms(sampleId,:);
+        unsampledPerms(sampleId,:) = []; % Kill this combination
+        
+        % Output data sequence for each target
+        targets = dimensions.targets(showTargets);
+        
+        % Output all samples for this target combination
+        doTimeSteps(targets);
         
         fwrite(fileID, NaN('single'), 'float');         % transform flag
+        
     end
 
     % Close file
@@ -101,16 +110,15 @@ function OneD_DG_Random_Simple(prefix)
     cd(startDir);
     
     % Generate complementary testing data
-    OneD_DG_Test(tSFolderName, dimensions.targetBoundary, dimensions.visualFieldSize, dimensions.eyePositionFieldSize);
-    OneD_DG_TestOnTrained([tSFolderName '-training']);
+    OneD_DG_Test(tSFolderName, samplingRate, fixationDuration, dimensions.visualFieldSize, dimensions.eyePositionFieldSize, dimensions.targets, possibleEyePositions, false);
     
     % Generate correlation data
-    OneD_DG_Correlation([tSFolderName '-testOnTrained']);
+    OneD_DG_Correlation([tSFolderName '-stdTest']);
     
     % Visualize
-    OneD_Overlay([tSFolderName '-training'],[tSFolderName '-testOnTrained'])
+    OneD_Overlay([tSFolderName '-training'],[tSFolderName '-stdTest'])
     
-    function doTimeSteps()
+    function doTimeSteps(targets)
         
         for o=1:nrOfOrderings,
             
@@ -121,7 +129,7 @@ function OneD_DG_Random_Simple(prefix)
                 ep = possibleEyePositions(p);
                 
                 % Output 
-                sample = [ep (t - ep)];
+                sample = [ep (targets - ep)];
 
                 % Duplicat sample and write out duplicates in column order
                 repeatedSample = repmat(sample,1,ticksPrSample);

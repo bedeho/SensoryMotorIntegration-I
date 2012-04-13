@@ -45,7 +45,7 @@ function [samplingRate, numberOfSimultanousObjects, visualFieldSize, eyePosition
         if ~isnan(eyePosition),
             
             retinalPositions = fread(fileID, numberOfSimultanousObjects,'float');
-            buffer = [buffer; eyePosition retinalPositions];
+            buffer = [buffer; eyePosition retinalPositions'];
         else
 
             % Reset counter at last object
