@@ -36,7 +36,7 @@ function responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesti
     % Clear out cells that respond to more than one object
     for row=1:y_dimension,
         for col=1:x_dimension,
-            responsePerObject(:,row,col) = ~respondedToMultiple(row,col) * responsePerObject(:,row,col); % Zero out cells that responded to multiple
+            %responsePerObject(:,row,col) = ~respondedToMultiple(row,col) * responsePerObject(:,row,col); % Zero out cells that responded to multiple
         end
     end
     

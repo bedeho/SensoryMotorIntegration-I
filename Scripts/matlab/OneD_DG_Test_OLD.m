@@ -8,7 +8,7 @@
 %  Purpose: Generate testing data
 %
 
-function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, targets, eyePositions, iterateEyeWise)
+function OneD_DG_Test(stimuliName, targetBoundary, visualFieldSize, eyePositionFieldSize, iterateEyeWise)
 
     % Import global variables
     declareGlobalVars();
@@ -22,14 +22,26 @@ function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, visualFieldSi
         mkdir(stimuliFolder);
     end
     
-    if nargin < 8,
+    if nargin < 5,
         iterateEyeWise = true;
     end
         
+    % General
+    %nrOfVisualTargetLocations   = 4;
+    nrOfTestingTargets          = 10;
+    nrOfEyePositions            = 4;
+    samplingRate                = 10;	% (Hz)
+    fixationDuration            = 0.2;	% (s) - fixation period after each saccade
+    
     % Derived
     timeStep                    = 1/samplingRate;
     samplesPrLocation           = fixationDuration / timeStep;
-        
+    
+    %%targets                     = centerN(visualFieldSize, nrOfTestingTargets);
+    targets                     = centerN(2*targetBoundary, nrOfTestingTargets);
+    %eyePositionFieldSize        = visualFieldSize - targets(end) % Make sure eye movement range is sufficiently confined to always keep any target on retina
+    eyePositions                = centerN(eyePositionFieldSize, nrOfEyePositions);
+    
     % Open file
     filename = [stimuliFolder '/data.dat'];
     fileID = fopen(filename,'w');
@@ -69,7 +81,7 @@ function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, visualFieldSi
     end
     
     % Save stats
-    info.nrOfEyePositionsInTesting = length(targets);
+    info.nrOfEyePositionsInTesting = nrOfEyePositions;
     info.testingStyle = 'stdTest';
     save info;
 

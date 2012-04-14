@@ -31,16 +31,16 @@ function dimensions = OneD_DG_Dimensions()
     %dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
     
     %% Sejnowski modified:   8,6,8,1/16
-    dimensions.visualPreferenceDistance = 4;
-    dimensions.eyePositionPrefrerenceDistance = 3;
-    dimensions.gaussianSigma = 8; % deg
-    dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
+    %dimensions.visualPreferenceDistance = 4;
+    %dimensions.eyePositionPrefrerenceDistance = 3;
+    %dimensions.gaussianSigma = 8; % deg
+    %dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
     
     %% My classics: 1,2,2,10
-    %dimensions.visualPreferenceDistance = 1;
-    %dimensions.eyePositionPrefrerenceDistance = 2;
-    %dimensions.gaussianSigma = 2; % deg
-    %dimensions.sigmoidSlope = 10; % (1/8)/2; % num
+    dimensions.visualPreferenceDistance = 1;
+    dimensions.eyePositionPrefrerenceDistance = 2;
+    dimensions.gaussianSigma = 2; % deg
+    dimensions.sigmoidSlope = 10; % (1/8)/2; % num
     
     % Place targets
     if dimensions.nrOfVisualTargetLocations > 1,

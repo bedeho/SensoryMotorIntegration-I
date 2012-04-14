@@ -77,20 +77,31 @@ function OneD_Visualize_TimerFcn(obj, event)
         fullNorm = norm([sigmoidPositive(:); sigmoidNegative(:)])
         
         % + sigmoid
-        subplot(3,1,1);
-        imagesc(sigmoidPositive/fullNorm);
+        subplot(4,1,1);
+        im = imagesc(sigmoidPositive/fullNorm);
         daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
         
         tickTitle = [sprintf('%02d', fullMin) ':' sprintf('%02d', fullSec) ':' sprintf('%03d',fullMs)];
         title(tickTitle);
         
+        set(im, 'ButtonDownFcn', @responseCallBack); % Setup callback
+        
         % - sigmoid
-        subplot(3,1,2);
+        subplot(4,1,2);
         imagesc(sigmoidNegative/fullNorm);
         daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
         
-        % input space
-        subplot(3,1,3);
+        %% input space
+        subplot(4,1,3);
+        
+        plot(eyePosition*ones(numberOfSimultanousObjects), retinalPositions , 'o');
+        
+        daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
+        axis([dimensions.leftMostEyePosition dimensions.rightMostEyePosition dimensions.leftMostVisualPosition dimensions.rightMostVisualPosition]);
+        title('Present input');
+        
+        %% input space
+        subplot(4,1,4);
         
         % cleanup nan
         temp = buffer;
@@ -98,7 +109,7 @@ function OneD_Visualize_TimerFcn(obj, event)
         temp(v(:,1),:) = [];  % blank out all these rows
         
         % plot
-        cla
+        %cla
         rows = 1:(lineCounter - nrOfObjectsFoundSoFar);
         for o = 1:dimensions.numberOfSimultanousObjects,
             plot(temp(rows, 1), temp(rows ,o + 1) , 'o');
@@ -107,7 +118,21 @@ function OneD_Visualize_TimerFcn(obj, event)
         end
         daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
         axis([dimensions.leftMostEyePosition dimensions.rightMostEyePosition dimensions.leftMostVisualPosition dimensions.rightMostVisualPosition]);
+        title('History input');
+    end
+
+    % Callback - kill visualizer
+    function responseCallBack(varargin)
         
+        % single left  click => 'SelectionType' = 'normal'
+        % single right click => 'SelectionType' = 'alt'
+        % double right click => 'SelectionType' = 'open'
+        clickType = get(gcf,'SelectionType')
+        
+        stopVisualizer();
+        
+        disp('You stopped the visualizer');
+
     end
 
 end
