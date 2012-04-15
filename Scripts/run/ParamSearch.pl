@@ -23,7 +23,7 @@
 	
 	# Run values
 	
-	my $experiment	 					= "100-2L-30-1E-10H-2S-1O";
+	my $experiment	 					= "1epoch-90-classic-30-1E-3H-2S-1O";
 
 	#my $stim							= "simple-sejnowski-fD=0.05-sA=60.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00"; # 3E, 4H
 
@@ -47,8 +47,13 @@
 
 	#my $stim							= "random-sejnowski-Ord=10.00-Sim=2.00-fD=0.05-sA=80.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=110.00"; # 2E,10H,S2,10O
 	
-	my $stim							= "random-sejnowski-Ord=1.00-Sim=2.00-fD=0.05-sA=150.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=110.00"; # 1E,10H,S2,1O
+	#my $stim							= "random-sejnowski-Ord=1.00-Sim=2.00-fD=0.05-sA=150.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=110.00"; # 1E,10H,S2,1O
 	
+	#my $stim							= "random-classic-Ord=1.00-Sim=2.00-fD=0.05-sA=150.00-vpD=1.00-epD=2.00-gS=2.00-sS=10.00-vF=200.00-eF=110.00"; #
+	
+	#my $stim							= "random-classic-Ord=1.00-Sim=2.00-fD=0.05-sA=150.00-vpD=1.00-epD=2.00-gS=2.00-sS=10.00-vF=200.00-eF=120.00"; # 5H
+	
+	my $stim							= "random-classic-Ord=1.00-Sim=2.00-fD=0.05-sA=150.00-vpD=1.00-epD=2.00-gS=2.00-sS=10.00-vF=200.00-eF=125.00"; # 4H,
 	
 	my $stimuliTraining 				= $stim."-training";
 	#my $stimuliTesting 					= $stim."-testOnTrained";
@@ -66,9 +71,9 @@
 	
 	# FIXED PARAMS - non-permutable
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
-    my $learningRule					= TRACE; # TRACE, HEBB
+    my $learningRule					= HEBB; # TRACE, HEBB
     
-    my $nrOfEpochs						= 100; #100
+    my $nrOfEpochs						= 1; #100
     my $saveNetworkAtEpochMultiple 		= 33;
 	my $outputAtTimeStepMultiple		= 1;
 	
@@ -116,12 +121,10 @@
 
 #["0.00010"],
 #["0.00100"],
-#["0.01000"],
-#["0.05000"],
-#["0.10000"],
-#["1.00000"]
-
-
+["0.01000"],
+["0.05000"],
+["0.10000"],
+["1.00000"],
 ["5.00000"],
 ["10.0000"],
 ["50.0000"],
@@ -291,9 +294,9 @@
     my $pathWayLength					= 1;
     my @dimension					= (30);
     my @depth						= (1);
-    my @connectivity					= (FULL_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
+    my @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     my @fanInRadius 					= (6); # not used
-    my @fanInCountPercentage 				= ("0.8"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    my @fanInCountPercentage 				= ("0.2"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
     my @learningrate					= ("0.1"); # < === is permuted below
     my @eta						= ("0.8");
     my @timeConstant					= ("0.1"); # < === is permuted below
@@ -308,7 +311,7 @@
     my @filterWidth					= (7);
     my @epochs						= (10); # only used in discrete model
     my @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-    my @recordedSingleCells				= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+    my @recordedSingleCells				= ("( (3,9), (6,8), (2,3))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
     
     ## 1
     #my $pathWayLength					= 2;

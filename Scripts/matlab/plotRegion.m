@@ -55,6 +55,12 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     
     %% Compute invariance heuristic
     invariancePlot = figure();
+    
+    responseCounts = invarianceHeuristics(filename, info.nrOfEyePositionsInTesting);
+
+    bar(responseCounts);
+    
+    %{
 
     responseCounts = invarianceHeuristics(filename, info.nrOfEyePositionsInTesting);
     markerSpecifiers = {'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>', 'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>'};
@@ -74,5 +80,6 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     end
     
     legend(objectLegend);
+    %}
 
 end

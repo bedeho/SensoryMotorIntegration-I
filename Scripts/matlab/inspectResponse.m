@@ -86,7 +86,16 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
             %%{
             v0 = data{r-1};
             v0(v0 > 0) = 1;  % count all nonzero as 1, error terms have already been removed
-            v1 = squeeze(sum(sum(v0))); % sum away
+            
+            
+            % Fix when only one object in Simon Mode
+            if objectsPrEyePosition > 1,
+                v1 = squeeze(sum(sum(v0))); % sum away
+            else
+                v1 = squeeze(sum(v0)); % sum away
+            end
+            
+            
             v2 = v1(:,:,1);
             im = imagesc(v2);         % only do first region
             daspect([size(v2) 1]);
@@ -107,15 +116,18 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
 
             responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting);
 
+            bar(responseCounts);
+            
+            %{
             % Plot a line for each object
-            for e=1:nrOfEyePositionsInTesting,
+            %for e=1:nrOfEyePositionsInTesting,
+            %    plot(responseCounts{e}, ['-' markerSpecifiers{e}], 'Linewidth', PLOT_COLS);
+            %    hold all
+            %end
 
-                plot(responseCounts{e}, ['-' markerSpecifiers{e}], 'Linewidth', PLOT_COLS);
-                hold all
-            end
-
-            axis tight
-            legend(objectLegend);
+            %axis tight
+            %legend(objectLegend);
+            %}
 
             hold off
         else
@@ -151,6 +163,10 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
 
             %% SIMON STYLE - object based line plot
             %%{
+            
+            bar(data{region-1}(:, :, row, col));
+            
+            %{
 
             cla
             
@@ -171,7 +187,8 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
             
             title(['Row:' num2str(row) ', Col:' num2str(col)]); % ', R:' num2str(region)
             axis([1 objectsPrEyePosition -0.1 m]);
-            legend(objectLegend); 
+            legend(objectLegend);
+ %}
         else
             %Right click
             [path, name, ext] = fileparts(filename);

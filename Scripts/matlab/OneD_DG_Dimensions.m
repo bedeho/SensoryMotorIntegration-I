@@ -9,7 +9,7 @@
 function dimensions = OneD_DG_Dimensions()
 
     % Stimuli
-    dimensions.nrOfVisualTargetLocations  = 10;
+    dimensions.nrOfVisualTargetLocations  = 4;
     dimensions.numberOfSimultanousObjects = 2;
     
     % Enviroment (non-Elmsley) 

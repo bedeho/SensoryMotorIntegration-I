@@ -20,8 +20,14 @@ function [MeanObjects, MeanTransforms] = regionTrace(filename, nrOfEyePositionsI
     % Cleanup so sum() counts instances for us
     dataPrEyePosition = data{r-1,1} > 0; % (object, eye_position, row, col)
     
-    % Number of times a given (row,col) cell responds to something
-    NrOfResponsesPerCell = squeeze(sum(sum(dataPrEyePosition))); % (row, col)
+    % Transform=1 correction!!!
+    if objectsPrEyePosition > 1,
+        % Number of times a given (row,col) cell responds to something
+        NrOfResponsesPerCell = squeeze(sum(sum(dataPrEyePosition))); % (row, col)
+    else
+        % Number of times a given (row,col) cell responds to something
+        NrOfResponsesPerCell = squeeze(sum(dataPrEyePosition)); % (row, col)
+    end
     
     % Number of cells respoding to atleast one pattern
     totalNrOfResponses = squeeze(sum(sum(NrOfResponsesPerCell)));

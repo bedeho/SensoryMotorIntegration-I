@@ -29,7 +29,14 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting)
         if ~isempty(data{r-1})
             v0 = data{r-1};
             v0(v0 > 0) = 1;  % count all nonzero as 1, error terms have already been removed
-            v1 = squeeze(sum(sum(v0))); % sum away
+            
+            % Fix when only one object in Simon Mode
+            if objectsPrEyePosition > 1,
+                v1 = squeeze(sum(sum(v0))); % sum away
+            else
+                v1 = squeeze(sum(v0)); % sum away
+            end
+
             v2 = v1(:,:,1);
 
         else
