@@ -91,7 +91,6 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
     // Deduce history buffer sizes based on on whether there is learning or not
     unsigned long long int outputsPerCell, outputsPerSynapse, outputsPerRegion, bufferSize;
     
-
     // Determine buffer sizes
     if(isTraining) {
         
@@ -114,7 +113,10 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
                 else if(saveHistory == SH_SINGLE_CELLS)
                     bufferSize *= p.nrOfRecordedSingleCells[regionNr-1];
                 
-                synapseHistoryBuffer.resize(bufferSize*desiredFanIn);
+                int regionSynapseBufferSize = bufferSize*desiredFanIn;
+                synapseHistoryBuffer.resize(regionSynapseBufferSize);
+                
+                cout << "***>> Allocated synapse buffer space for region #" << regionNr << " = " << regionSynapseBufferSize << " data points (float)." << endl;
             }
         }
         
@@ -514,12 +516,13 @@ float * HiddenRegion::getSynapseHistorySlot() {
     synapseHistoryCounter += singleSynapseBufferSize;
     
     // Check that we have enough space
-    if(synapseHistoryBuffer.size() < synapseHistoryCounter) {
+    int size = synapseHistoryBuffer.size();
+    if(size < synapseHistoryCounter) {
         
         // Allocate more space
         //synapseHistoryBuffer.resize(synapseHistoryCounter);
         
-        cerr << "Synapse history buffer was not big enough!!" << endl;
+        cerr << "***>> Could not allocate sufficient synapse history buffer slots, buffer size = " << size << ", failed to get next slot brining buffer to size = " << synapseHistoryCounter << endl;
         exit(EXIT_FAILURE);
     }
 

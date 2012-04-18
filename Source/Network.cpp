@@ -132,14 +132,14 @@ Network::Network(const char * dataFile, const char * parameterFile, bool verbose
         
 
         Region & r = (i == 0) ? static_cast<Region&>(area7a) : static_cast<Region&>(ESPathway[i-1]);
-        u_short desiredFanIn = r.verDimension * r.horDimension; // 2 * = both signs, (((i == 0) ? 2 : 1) *
+        u_short desiredFanIn = r.depth * r.verDimension * r.horDimension; // 2 * = both signs, (((i == 0) ? 2 : 1) *
         
         if(p.connectivities[i] == SPARSE)
             desiredFanIn *= p.fanInCountPercentage[i];
         else if(p.connectivities[i] == SPARSE_BIASED)
             desiredFanIn *= (p.fanInCountPercentage[i]/r.verDimension);
         
-        cout << "Layer " << i+1 << " desiredFanIn: " << desiredFanIn * r.depth << endl;
+        cout << "Layer " << i+1 << " desiredFanIn: " << desiredFanIn<< endl;
         
         ESPathway[i].init(i+1, p, isTraining, area7a.nrOfObjects, area7a.samplesPrObject, area7a.samplingRate, desiredFanIn);
     }
@@ -172,7 +172,11 @@ Network::Network(const char * dataFile, const char * parameterFile, bool verbose
         for(u_short k = 0;k < ESPathway.size();k++)
             for(u_short d = 0;d < ESPathway[k].depth;d++)
                 for(u_short i = 0;i < ESPathway[k].verDimension;i++)
-                    for(u_short j = 0;j < ESPathway[k].horDimension;j++)
+                    for(u_short j = 0;j < ESPathway[k].horDimension;j++) {
+                        
+                        //if(ESPathway[k].Neurons[d][i][j].saveSynapseHistory)
+                        //    cout << "About to save neuron (" << i << "," << j << ") with #synapses = " << numberOfAfferentSynapses[k][d][i][j] << endl;
+                        
                         for(u_short m = 0;m < numberOfAfferentSynapses[k][d][i][j];m++) {
                             
                             u_short regionNr, depth, row, col;
@@ -190,6 +194,7 @@ Network::Network(const char * dataFile, const char * parameterFile, bool verbose
                             ESPathway[k].Neurons[d][i][j].addAfferentSynapse(n, weight);
                             
                         }
+                    }
         
 	} catch(fstream::failure e) {
         

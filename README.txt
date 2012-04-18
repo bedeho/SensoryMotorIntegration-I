@@ -41,6 +41,9 @@ datatables.net/extras/tabletools/plug-ins
 -lconfig++
 -lgsl
 -
+10. DO NOT LINK DYNIMCALY TO .so or .dynlib (or whatever they call it on macs), then grid fails since there
+is no libconfig on there!! actually link GSL statically to, since getting the local version to work was
+a total headache!!!
 
 ***************
 * ADD STIMULI *

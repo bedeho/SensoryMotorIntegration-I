@@ -23,7 +23,7 @@
 	
 	# Run values
 	
-	my $experiment	 					= "1epoch-90-classic-30-1E-3H-2S-1O";
+	my $experiment	 					= "100epoch-10h-4e"; # trace-10h, classic-30-1E-3H-2S-1O
 
 	#my $stim							= "simple-sejnowski-fD=0.05-sA=60.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00"; # 3E, 4H
 
@@ -53,12 +53,30 @@
 	
 	#my $stim							= "random-classic-Ord=1.00-Sim=2.00-fD=0.05-sA=150.00-vpD=1.00-epD=2.00-gS=2.00-sS=10.00-vF=200.00-eF=120.00"; # 5H
 	
-	my $stim							= "random-classic-Ord=1.00-Sim=2.00-fD=0.05-sA=150.00-vpD=1.00-epD=2.00-gS=2.00-sS=10.00-vF=200.00-eF=125.00"; # 4H,
+	# simle
+	#my $stim							= "random-classic-Ord=1.00-Sim=2.00-fD=0.05-sA=150.00-vpD=1.00-epD=2.00-gS=4.00-sS=10.00-vF=200.00-eF=125.00"; #
+
+	# 8h
+	#my $stim							= "random-classic-Ord=1.00-Sim=2.00-fD=0.05-sA=150.00-vpD=1.00-epD=2.00-gS=3.00-sS=10.00-vF=200.00-eF=112.50";
+	
+	# 10h
+	#my $stim							= "random-classic-Ord=1.00-Sim=2.00-fD=0.05-sA=150.00-vpD=1.00-epD=2.00-gS=3.00-sS=10.00-vF=200.00-eF=110.00";
+	
+	# 10h, 2e
+	#my $stim							= "random-classic-Ord=1.00-Sim=2.00-fD=0.05-sA=60.00-vpD=1.00-epD=2.00-gS=3.00-sS=10.00-vF=200.00-eF=110.00";
+	
+	# 10h, 2e, ord = 3
+	#my $stim							= "random-classic-Ord=3.00-Sim=2.00-fD=0.05-sA=60.00-vpD=1.00-epD=2.00-gS=3.00-sS=10.00-vF=200.00-eF=110.00";
+	
+	# 10h, 4e, ord = 5
+	#my $stim 							= "random-classic-Ord=5.00-Sim=2.00-fD=0.05-sA=30.00-vpD=1.00-epD=2.00-gS=3.00-sS=10.00-vF=200.00-eF=110.00";
+	
+	my $stim							= "random-classic-Ord=10.00-Sim=2.00-fD=0.05-sA=30.00-vpD=1.00-epD=2.00-gS=3.00-sS=10.00-vF=200.00-eF=110.00";
 	
 	my $stimuliTraining 				= $stim."-training";
 	#my $stimuliTesting 					= $stim."-testOnTrained";
 	my $stimuliTesting 					= $stim."-stdTest";
-	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
+	my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
 
 	# Load params from stimuli name
 	my $visualPreferenceDistance;
@@ -71,10 +89,10 @@
 	
 	# FIXED PARAMS - non-permutable
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
-    my $learningRule					= HEBB; # TRACE, HEBB
+    my $learningRule					= TRACE; # TRACE, HEBB
     
-    my $nrOfEpochs						= 1; #100
-    my $saveNetworkAtEpochMultiple 		= 33;
+    my $nrOfEpochs						= 50; # 30,100
+    my $saveNetworkAtEpochMultiple 		= 22;
 	my $outputAtTimeStepMultiple		= 1;
 	
     my $lateralInteraction				= NONE; # NONE, COMP, SOM
@@ -87,9 +105,9 @@
     my @sigmoidSlopes					= (
 										#["3000000000.0","3000000000.0","3000000000.0","3000000000.0","3000000000.0"]
 										#["3000000000.0","3000000000.0","3000000000.0","3000000000.0"]
-										#["3000000000.0","3000000000.0","3000000000.0"]
+										["3000000000.0","3000000000.0","3000000000.0"]
 										#["3000000000.0","3000000000.0"]
-										["3000000000.0"]
+										#["3000000000.0"]
     									);
     die "Invalid array: sigmoidSlopes" if !validateArray(\@sigmoidSlopes);
     
@@ -119,18 +137,28 @@
 #["0.0","0.0","0.05000"]
 #["0.0","0.05000"]
 
-#["0.00010"],
-#["0.00100"],
-["0.01000"],
-["0.05000"],
-["0.10000"],
-["1.00000"],
-["5.00000"],
-["10.0000"],
-["50.0000"],
-["100.000"],
-["500.000"],
-["1000.00"]
+["0.0","0.0","0.0050"],
+["0.0","0.0","0.0100"],
+["0.0","0.0","0.0500"],
+["0.0","0.0","0.5000"]
+#["0.0","0.0","05.0000"],
+#["0.0","0.0","50.0000"]
+
+# Sinle level input!
+#["0.00500"],
+#["0.05000"]
+#["0.50000"],
+#["1.00000"]
+#["10.0000"],
+#["100.000"],
+#["1000.00"]
+#["10000.00"]
+#["100000.00"],
+#["1000000.00"],
+#["10000000.00"],
+#["100000000.00"],
+#["1000000000.00"],
+#["10000000000.00"]
 
 
 #["0.0","0.0","0.0","0.01000"],
@@ -221,9 +249,9 @@
 
 #["0.99","0.99","0.99","0.99","0.90"]
 #["0.99","0.99","0.99","0.90"]
-#["0.99","0.99","0.90"]
+["0.99","0.99","0.90"]
 #["0.99","0.90"]
-["0.90"]
+#["0.90"]
 
 # 1 HEBB
 #["0.9998","0.90"],
@@ -278,9 +306,9 @@
     
     my @timeConstants					= (
     									#["0.010","0.010","0.010","0.010"]
-    									#["0.010","0.010","0.010"]
+    									["0.010","0.010","0.010"]
 										#["0.010","0.010"]
-    									["0.030"]
+    									#["0.030"]
     									);
     die "Invalid array: timeConstants" if !validateArray(\@timeConstants);
  	
@@ -291,27 +319,27 @@
 	die "Invalid array: traceTimeConstant" if !validateArray(\@traceTimeConstant);
 	
     ## 0
-    my $pathWayLength					= 1;
-    my @dimension					= (30);
-    my @depth						= (1);
-    my @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
-    my @fanInRadius 					= (6); # not used
-    my @fanInCountPercentage 				= ("0.2"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
-    my @learningrate					= ("0.1"); # < === is permuted below
-    my @eta						= ("0.8");
-    my @timeConstant					= ("0.1"); # < === is permuted below
-    my @sparsenessLevel					= ("0.1"); # < === is permuted below
-    my @sigmoidSlope 					= ("30.0"); # < === is permuted below
-    my @inhibitoryRadius				= ("6.0");
-    my @inhibitoryContrast				= ("1.4");
-    my @somExcitatoryRadius				= ("0.6");
-    my @somExcitatoryContrast				= ("120.12");
-    my @somInhibitoryRadius				= ("6.0");
-    my @somInhibitoryContrast				= ("1.4");
-    my @filterWidth					= (7);
-    my @epochs						= (10); # only used in discrete model
-    my @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-    my @recordedSingleCells				= ("( (3,9), (6,8), (2,3))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+    #my $pathWayLength					= 1;
+    #my @dimension					= (30);
+    #my @depth						= (1);
+    #my @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
+    #my @fanInRadius 					= (6); # not used
+    #my @fanInCountPercentage 				= ("0.05"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    #my @learningrate					= ("0.1"); # < === is permuted below
+    #my @eta						= ("0.8");
+    #my @timeConstant					= ("0.1"); # < === is permuted below
+    #my @sparsenessLevel					= ("0.1"); # < === is permuted below
+    #my @sigmoidSlope 					= ("30.0"); # < === is permuted below
+    #my @inhibitoryRadius				= ("6.0");
+    #my @inhibitoryContrast				= ("1.4");
+    #my @somExcitatoryRadius				= ("0.6");
+    #my @somExcitatoryContrast				= ("120.12");
+    #my @somInhibitoryRadius				= ("6.0");
+    #my @somInhibitoryContrast				= ("1.4");
+    #my @filterWidth					= (7);
+    #my @epochs						= (10); # only used in discrete model
+    #my @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+    #my @recordedSingleCells				= ("( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14)   , (14,15), (16,14), (13,13), (19,15), (1,18), (17,14) )"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
     
     ## 1
     #my $pathWayLength					= 2;
@@ -337,27 +365,27 @@
     #my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as
     
     ## 2
-    #my $pathWayLength					= 3;
-    #my @dimension					= (60,60,30);
-    #my @depth						= (1,1,1);
-    #my @connectivity					= (SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY, FULL_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
-    #my @fanInRadius 					= (6,6,6); # not used
-    #my @fanInCountPercentage 				= ("0.1","0.1","0.1"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
-    #my @learningrate					= ("0.1","0.1","0.1"); # < === is permuted below
-    #my @eta						= ("0.8","0.8","0.8");
-    #my @timeConstant					= ("0.1","0.1","0.1"); # < === is permuted below
-    #my @sparsenessLevel					= ("0.1","0.1","0.1"); # < === is permuted below
-    #my @sigmoidSlope 					= ("30.0","30.0","30.0"); # < === is permuted below
-    #my @inhibitoryRadius				= ("6.0","6.0","6.0");
-    #my @inhibitoryContrast				= ("1.4","1.4","1.4");
-    #my @somExcitatoryRadius				= ("0.6","0.6","0.6");
-    #my @somExcitatoryContrast				= ("120.12","120.12","120.12");
-    #my @somInhibitoryRadius				= ("6.0","6.0","6.0");
-    #my @somInhibitoryContrast				= ("1.4","1.4","1.4");
-    #my @filterWidth					= (7,7,7);
-    #my @epochs						= (10,10,10); # only used in discrete model
-    #my @saveHistory					= (NO_HISTORY, NO_HISTORY, NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-    #my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14))", "()");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+    my $pathWayLength					= 3;
+    my @dimension					= (60,60,30);
+    my @depth						= (1,1,1);
+    my @connectivity					= (SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY, FULL_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
+    my @fanInRadius 					= (6,6,6); # not used
+    my @fanInCountPercentage 				= ("0.1","0.1","0.1"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    my @learningrate					= ("0.1","0.1","0.1"); # < === is permuted below
+    my @eta						= ("0.8","0.8","0.8");
+    my @timeConstant					= ("0.1","0.1","0.1"); # < === is permuted below
+    my @sparsenessLevel					= ("0.1","0.1","0.1"); # < === is permuted below
+    my @sigmoidSlope 					= ("30.0","30.0","30.0"); # < === is permuted below
+    my @inhibitoryRadius				= ("6.0","6.0","6.0");
+    my @inhibitoryContrast				= ("1.4","1.4","1.4");
+    my @somExcitatoryRadius				= ("0.6","0.6","0.6");
+    my @somExcitatoryContrast				= ("120.12","120.12","120.12");
+    my @somInhibitoryRadius				= ("6.0","6.0","6.0");
+    my @somInhibitoryContrast				= ("1.4","1.4","1.4");
+    my @filterWidth					= (7,7,7);
+    my @epochs						= (10,10,10); # only used in discrete model
+    my @saveHistory					= (NO_HISTORY, NO_HISTORY, NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+    my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14))", "()");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
     
     ## 3
     #my $pathWayLength					= 4;
@@ -531,7 +559,10 @@
         open (SIMULATIONS_FILE, '>'.$experimentFolder.'simulations.txt') or die "Could not open file '${experimentFolder}simulations.txt'. $!\n";
         
         # Copy SMI binary, if this is xgrid run
-		cp($PROGRAM, $experimentFolder.$BINARY) or die "Cannot make copy of binary: $!\n" if ($xgrid);
+		cp($PROGRAM, $experimentFolder.$BINARY) or die "Cannot make copy of binary: $!\n";
+		
+		# Copy xgrid worker script
+		cp($PERL_WORKER_SCRIPT, "${experimentFolder}xGridDiagnosticWorker.pl") or die "Cannot make copy of worker script: $!\n";
 		
 		# Make result directory
         mkdir($xgridResult);
@@ -627,7 +658,7 @@
 							
 							# Add line to batch file
 							print XGRID_FILE "\n" if !$firstTime;
-							print XGRID_FILE "$BINARY --xgrid train ${simulationCode}.txt BlankNetwork.txt";
+							print XGRID_FILE "xGridDiagnosticWorker.pl $BINARY --xgrid train ${simulationCode}.txt BlankNetwork.txt";
 							
 							$firstTime = 0;
 						} else {

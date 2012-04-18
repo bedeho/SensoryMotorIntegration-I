@@ -47,6 +47,10 @@ function responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesti
         end
     end
     
+    %
+    %responsePerObject(objectid,row,col) = number of transforms responded
+    %to object id
+    
     % Put into format for bar plotting
     responseCounts = zeros(nrOfEyePositionsInTesting, objectsPrEyePosition);
     
@@ -57,8 +61,6 @@ function responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesti
         z(z == 0) = [];
         responseCounts(e, :) = hist(z,1:objectsPrEyePosition);
     end
-
-    
     
 end
 

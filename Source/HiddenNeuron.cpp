@@ -68,8 +68,27 @@ HiddenNeuron::~HiddenNeuron() {
 
 void HiddenNeuron::addAfferentSynapse(const Neuron * preSynapticNeuron, float weight) {
     
-    // Ask region for history buffer
-    float * buffer = saveSynapseHistory ? (static_cast<HiddenRegion *>(region))->getSynapseHistorySlot() : NULL;
+    float * buffer;
+    
+    if (saveSynapseHistory) {
+        
+        if(desiredFanIn == afferentSynapses.size()) {
+            
+            cerr << "Attempting to add more synapses then there is space for in neuron buffer, blanknetwork does not match!" << endl;
+            exit(EXIT_FAILURE);
+        }
+        
+        // Ask region for history buffer
+        //if(saveSynapseHistory) {
+        //    
+        //    cout << ">> Allocating for synapse buffer for neuron (" << row << "," << col << ")" << endl;
+        //}
+    
+        buffer = (static_cast<HiddenRegion *>(region))->getSynapseHistorySlot();
+
+    }
+    else
+        buffer = NULL;  
     
     // Add synapse to synapse lisr
     afferentSynapses.push_back(Synapse(weight, preSynapticNeuron, this, buffer)); // historyLength

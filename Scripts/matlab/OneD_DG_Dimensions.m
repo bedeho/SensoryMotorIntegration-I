@@ -9,7 +9,7 @@
 function dimensions = OneD_DG_Dimensions()
 
     % Stimuli
-    dimensions.nrOfVisualTargetLocations  = 4;
+    dimensions.nrOfVisualTargetLocations  = 10;
     dimensions.numberOfSimultanousObjects = 2;
     
     % Enviroment (non-Elmsley) 
@@ -39,7 +39,7 @@ function dimensions = OneD_DG_Dimensions()
     %% My classics: 1,2,2,10
     dimensions.visualPreferenceDistance = 1;
     dimensions.eyePositionPrefrerenceDistance = 2;
-    dimensions.gaussianSigma = 2; % deg
+    dimensions.gaussianSigma = 3; % deg
     dimensions.sigmoidSlope = 10; % (1/8)/2; % num
     
     % Place targets

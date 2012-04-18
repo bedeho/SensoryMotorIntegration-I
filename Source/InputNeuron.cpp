@@ -37,28 +37,36 @@ void InputNeuron::setFiringRate(const vector<float> & sample) {
      * sigmoidNegative(j,i) = sigmoidNegative(j,i) * 1/(1 + exp(-1 * sigmoidSlope * (eyePosition - e))); % negative slope
      */
     
+    /*
+     * FLAW
     // iterate all visual stimuli and compute gaussian of all
     float norm = 0;
     for(unsigned i = 1;i < sample.size();i++)
         norm += (horVisualPreference - sample[i])*(horVisualPreference - sample[i]); // (a - b)^2
-    
-    /*if(norm < horVisualSigma) {
-        cout << "yey" << endl;
-    }*/
-    
-    //float t = exp((float)5); // - horEyePositionPreference, sample.front()
-    //t = 9;
     
     // firing = sigmoid * gaussian
     float firing;
     firing  = 1 / (1 + exp(horEyePositionSigmoidSlope * (sample.front() - horEyePositionPreference))); // sigmoid
     //firing  = exp((-(sample.front() - horEyePositionPreference) * (sample.front() - horEyePositionPreference))/(2*horVisualSigma*horVisualSigma) ); // sigmoid
     firing *= exp(-norm/(2*horVisualSigma*horVisualSigma)); // gaussian
+    */
     
-    /*
-    if(firing > 0.5) {
-        cout << "loaded firing" << endl;
-    }*/
+    // NEW WORKING VERSION!
+    // iterate all visual stimuli and compute gaussian of all
+    // firing = sigmoid(gauss_1 + ... + gauss_n)
+    float firing = 0;
+    
+    for(unsigned i = 1;i < sample.size();i++) {
+        
+        float norm = (horVisualPreference - sample[i])*(horVisualPreference - sample[i]); // (a - b)^2
+        firing += exp(-norm/(2*horVisualSigma*horVisualSigma)); // gaussian
+    }
+    
+    // sigmoid
+    firing *= 1 / (1 + exp(horEyePositionSigmoidSlope * (sample.front() - horEyePositionPreference)));
+    
+    // gaussian
+    //firing *= exp(-(sample.front() - horEyePositionPreference)*(sample.front() - horEyePositionPreference)/(2*horVisualSigma*horVisualSigma));
     
     // Set variables
     this->firingRate = firing;

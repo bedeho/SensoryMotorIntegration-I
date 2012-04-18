@@ -116,7 +116,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
 
             responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting);
 
-            bar(responseCounts);
+            bar(responseCounts');
             
             %{
             % Plot a line for each object

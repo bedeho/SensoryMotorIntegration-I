@@ -79,6 +79,9 @@ void InputRegion::init(Param & p, const char * dataFile) {
         this->totalDuration = 0;
     }
     
+    // Space for sample
+    sample.resize(1 + numberOfSimultanousObjects);
+    
     /*
     //test
     for(int d = 0; d < data.size();d++)
@@ -90,10 +93,6 @@ void InputRegion::init(Param & p, const char * dataFile) {
 	vector<vector<vector<InputNeuron> > > tmp1(depth, vector<vector<InputNeuron> >(horVisualDimension, vector<InputNeuron>(horEyeDimension)));
 	Neurons = tmp1;
     
-    // Space for sample
-    vector<float> tmp2(1 + numberOfSimultanousObjects);
-    sample = tmp2;
-	
 	// Initialize neurons
 	for(u_short d = 0;d < depth;d++)
         for(u_short i = 0;i < horVisualDimension;i++)

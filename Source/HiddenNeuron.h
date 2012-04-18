@@ -38,7 +38,7 @@ class HiddenNeuron: public Neuron {
         unsigned long neuronHistoryCounter;
         unsigned long synapseHistoryCounter;
 		bool saveNeuronHistory;
-		bool saveSynapseHistory;
+		
     
     
         // History buffers
@@ -52,6 +52,25 @@ class HiddenNeuron: public Neuron {
         void output(BinaryWrite & file, const float * buffer);
     
     public:
+    
+    
+        // temporarily moved
+        bool saveSynapseHistory;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
         
         // Data structures
         vector<Synapse> afferentSynapses;

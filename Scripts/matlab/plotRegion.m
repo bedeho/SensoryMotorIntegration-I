@@ -58,7 +58,7 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     
     responseCounts = invarianceHeuristics(filename, info.nrOfEyePositionsInTesting);
 
-    bar(responseCounts);
+    bar(responseCounts');
     
     %{
 
