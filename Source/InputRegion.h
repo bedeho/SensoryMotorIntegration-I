@@ -19,6 +19,7 @@ class Param;
 #include "InputNeuron.h"
 #include <vector>
 #include <string>
+#include <gsl/gsl_randist.h>
 #include "Utilities.h"
 
 using std::vector;
@@ -54,6 +55,7 @@ class InputRegion : public Region {
         u_short numberOfSimultanousObjects;
         float horVisualFieldSize;
         float horEyePositionFieldSize;
+        INPUT_EYE_MODULATION modulationType;
     
         // Derived from data read from file
         u_short horVisualDimension;
@@ -67,7 +69,7 @@ class InputRegion : public Region {
         vector<vector<vector<InputNeuron> > > Neurons;
         
 		// Init
-		void init(Param & p, const char * dataFile);
+		void init(Param & p, const char * dataFile, gsl_rng * rngController);
 
 		// Load switch content from buffer
         void setFiringRate(u_short object, float time);

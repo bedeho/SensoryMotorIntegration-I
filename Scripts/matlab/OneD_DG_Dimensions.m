@@ -9,8 +9,8 @@
 function dimensions = OneD_DG_Dimensions()
 
     % Stimuli
-    dimensions.nrOfVisualTargetLocations  = 10;
-    dimensions.numberOfSimultanousObjects = 2;
+    dimensions.nrOfVisualTargetLocations  = 4;
+    dimensions.numberOfSimultanousObjects = 1;
     
     % Enviroment (non-Elmsley) 
     dimensions.visualFieldSize             = 200; % Entire visual field (rougly 100 per eye), (deg)

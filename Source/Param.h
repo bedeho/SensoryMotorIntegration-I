@@ -30,6 +30,7 @@ enum SAVEHISTORY            {
                               SH_ALL_NEURONS_IN_REGION = 2,
                               SH_SINGLE_CELLS = 3
                             };
+enum INPUT_EYE_MODULATION   { GAUSSIAN = 0, SIGMOID = 1 };
 
 // In the future, make HiddenRegion/striate param internal classes
 // that keep projects of these vectors, and thenmake param_layer class
@@ -53,7 +54,9 @@ class Param  {
         float gaussianSigma;                    
         float sigmoidSlope;                     
         float horVisualFieldSize;               
-        float horEyePositionFieldSize;          
+        float horEyePositionFieldSize;
+        float sigmoidModulationPercentage;
+        //INPUT_EYE_MODULATION modulationType;
         
         // Not for 7a		
 		vector<float> fanInCountPercentage;    

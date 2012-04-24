@@ -21,6 +21,8 @@ class InputRegion;
 #include "Param.h"
 #include <vector>
 #include "Utilities.h"
+#include <gsl/gsl_cdf.h>
+#include <gsl/gsl_randist.h>
 
 using std::vector;
 
@@ -56,6 +58,7 @@ class Network {
     public:
     	vector<HiddenRegion> ESPathway;
     	InputRegion area7a;
+        gsl_rng * rngController;
     	
 		// Build new network based on these parameters
 		Network(const char * parameterFile, bool verbose);

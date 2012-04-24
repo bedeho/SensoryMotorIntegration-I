@@ -34,7 +34,7 @@ using std::setw;
 using std::left;
 
 // reason we use init and not ctor is for uniformity with hiddenRegion class
-void InputRegion::init(Param & p, const char * dataFile) {
+void InputRegion::init(Param & p, const char * dataFile, gsl_rng * rngController) {
 
     // No call to region.init()
     
@@ -103,7 +103,9 @@ void InputRegion::init(Param & p, const char * dataFile) {
                 float hslope = (d == 0 ? p.sigmoidSlope : -1 * p.sigmoidSlope);
                 float hsigma = p.gaussianSigma;
                 
-                Neurons[d][i][j].init(this, d, i, j, heye, hslope, hvisual, hsigma);
+                INPUT_EYE_MODULATION modulationType = static_cast<INPUT_EYE_MODULATION>(gsl_ran_bernoulli(rngController, p.sigmoidModulationPercentage));
+                
+                Neurons[d][i][j].init(this, d, i, j, heye, hslope, hvisual, hsigma, modulationType);
             }
 }
 

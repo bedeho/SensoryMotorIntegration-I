@@ -20,8 +20,6 @@
 #include <sstream>
 #include <ctime>
 #include <cmath>
-#include <gsl/gsl_cdf.h>
-#include <gsl/gsl_randist.h>
 #include <iomanip>
 #include <cerrno>
 #include "Utilities.h"
@@ -52,7 +50,7 @@ Network::Network(const char * parameterFile, bool verbose) :
 		ESPathway(p.dimensions.size()) {
 
     // Init regions
-	area7a.init(p, NULL);
+	area7a.init(p, NULL, NULL);
                                                                     
     for(u_short i = 0;i < ESPathway.size();i++) {
         
@@ -70,7 +68,7 @@ Network::Network(const char * parameterFile, bool verbose) :
     }
     
     // Make afferent synapses for V2,V3,V4,V5,...
-	gsl_rng * rngController = gsl_rng_alloc(gsl_rng_taus);	// Setup GSL RNG with seed
+	rngController = gsl_rng_alloc(gsl_rng_taus);	// Setup GSL RNG with seed
     gsl_rng_set(rngController, p.seed);
 	
 	ESPathway[0].setupAfferentSynapses(area7a, p.weightNormalization, p.connectivities[0], p.initialWeight, rngController);
@@ -85,8 +83,12 @@ Network::Network(const char * dataFile, const char * parameterFile, bool verbose
 		verbose(verbose),
 		p(parameterFile, isTraining),
 		ESPathway(p.dimensions.size()) {
-																								
-	area7a.init(p, dataFile);
+
+    // Seed random number generator
+    rngController = gsl_rng_alloc(gsl_rng_taus);	// Setup GSL RNG with seed
+    gsl_rng_set(rngController, p.seed);
+            
+	area7a.init(p, dataFile, rngController);
 																								
 	BinaryRead weightFile(inputWeightFile);
 	

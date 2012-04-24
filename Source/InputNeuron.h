@@ -14,6 +14,7 @@
 
 // Includes
 #include "Neuron.h"
+#include "Param.h"
 #include "Utilities.h"
 
 class InputNeuron : public Neuron {
@@ -24,8 +25,10 @@ class InputNeuron : public Neuron {
     
         float horEyePositionSigmoidSlope;
         float horVisualSigma;
-
-		void init(Region * region, u_short depth, u_short row, u_short col, float horEyePositionPreference, float horEyePositionSigmoidSlope, float horVisualPreference, float horVisualSigma);
+    
+        INPUT_EYE_MODULATION modulationType;    
+        
+		void init(Region * region, u_short depth, u_short row, u_short col, float horEyePositionPreference, float horEyePositionSigmoidSlope, float horVisualPreference, float horVisualSigma, INPUT_EYE_MODULATION modulationType);
         void setFiringRate(const vector<float> & sample);
 };
 
