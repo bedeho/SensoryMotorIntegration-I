@@ -38,7 +38,8 @@ function OneD_DG_Random_Simple(prefix)
         prefix = [prefix '-']
     end
     
-    encodePrefix = [prefix 'Ord=' num2str(nrOfOrderings,'%.2f')];
+    encodePrefix = [prefix 'Tar=' num2str(dimensions.nrOfVisualTargetLocations,'%.2f')];
+    encodePrefix = [encodePrefix '-Ord=' num2str(nrOfOrderings,'%.2f')];
     encodePrefix = [encodePrefix '-Sim=' num2str(dimensions.numberOfSimultanousObjects,'%.2f')];
     encodePrefix = [encodePrefix '-fD=' num2str(fixationDuration,'%.2f') ];
     encodePrefix = [encodePrefix '-sA=' num2str(saccadeAmplitude,'%.2f') ];

@@ -48,9 +48,13 @@ Network::Network(const char * parameterFile, bool verbose) :
 		verbose(verbose),
 		p(parameterFile, false),
 		ESPathway(p.dimensions.size()) {
+            
+    // Seed random number generator
+    rngController = gsl_rng_alloc(gsl_rng_taus);	// Setup GSL RNG with seed
+    gsl_rng_set(rngController, p.seed);
 
     // Init regions
-	area7a.init(p, NULL, NULL);
+	area7a.init(p, NULL, rngController);
                                                                     
     for(u_short i = 0;i < ESPathway.size();i++) {
         
@@ -67,10 +71,8 @@ Network::Network(const char * parameterFile, bool verbose) :
         ESPathway[i].init(i+1, p, false, 0, 0, 1, desiredFanIn); // The constructor we are in now is the build constructor, so no learning will happen
     }
     
-    // Make afferent synapses for V2,V3,V4,V5,...
-	rngController = gsl_rng_alloc(gsl_rng_taus);	// Setup GSL RNG with seed
-    gsl_rng_set(rngController, p.seed);
-	
+
+	// Make afferent synapses for V2,V3,V4,V5,...
 	ESPathway[0].setupAfferentSynapses(area7a, p.weightNormalization, p.connectivities[0], p.initialWeight, rngController);
                                                                     
     for(u_short i = 1;i < ESPathway.size();i++)
@@ -85,7 +87,7 @@ Network::Network(const char * dataFile, const char * parameterFile, bool verbose
 		ESPathway(p.dimensions.size()) {
 
     // Seed random number generator
-    rngController = gsl_rng_alloc(gsl_rng_taus);	// Setup GSL RNG with seed
+    rngController = gsl_rng_alloc(gsl_rng_taus);
     gsl_rng_set(rngController, p.seed);
             
 	area7a.init(p, dataFile, rngController);

@@ -23,9 +23,33 @@
 	
 	# Run values
 	
-	my $experiment	 					= "test"; # trace-10h, classic-30-1E-3H-2S-1O
+	my $experiment	 					= "noTrace"; # trace-10h, classic-30-1E-3H-2S-1O
+	
+	# 4,4 resolution, 4H,13E
+	my $stim 							= "random-mod-Tar=4.00-Ord=10.00-Sim=1.00-fD=0.05-sA=10.00-vpD=4.00-epD=4.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+	
+	#my $stim							= "random-mod-Tar=4.00-Ord=10.00-Sim=1.00-fD=0.05-sA=10.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+	
+	# 10H, 13E
+	#my $stim							= "random-classic-Tar=10.00-Ord=10.00-Sim=1.00-fD=0.05-sA=10.00-vpD=1.00-epD=2.00-gS=3.00-sS=10.00-vF=200.00-eF=110.00";
+	
+	# 4H, 13E, O=10, dense, sharp gauss, shallow sigmoid
+	#my $stim							= "random-gausssharp-Ord=10.00-Sim=1.00-fD=0.05-sA=10.00-vpD=1.00-epD=2.00-gS=3.00-sS=0.06-vF=200.00-eF=125.00";
+	
+	# 4H, 13E, O=10, dense, sharp sigmoid, big sigma
+	#my $stim							= "random-sigsharp-Ord=10.00-Sim=1.00-fD=0.05-sA=10.00-vpD=1.00-epD=2.00-gS=8.00-sS=10.00-vF=200.00-eF=125.00";
+	
+	# 4H, 13E, O =10, DENSE+sejnowski
+	#my $stim							= "random-dense-Ord=10.00-Sim=1.00-fD=0.05-sA=10.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
 
-	my $stim 							= "random-classic-Ord=10.00-Sim=1.00-fD=0.05-sA=10.00-vpD=1.00-epD=2.00-gS=3.00-sS=10.00-vF=200.00-eF=125.00";
+	# 4H, 13E, ORD = 4 << 10
+	#my $stim							= "random-sejnowski-Ord=4.00-Sim=1.00-fD=0.05-sA=10.00-vpD=8.00-epD=6.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+
+	# 4H,13E, control 1 = back to sejnowski world!
+	#my $stim							 = "random-sejnowski-Ord=10.00-Sim=1.00-fD=0.05-sA=10.00-vpD=8.00-epD=6.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+
+	# 4H,13E, classic one, the shocker
+	#my $stim 							= "random-classic-Ord=10.00-Sim=1.00-fD=0.05-sA=10.00-vpD=1.00-epD=2.00-gS=3.00-sS=10.00-vF=200.00-eF=125.00";
 	
 	#my $stim							= "simple-sejnowski-fD=0.05-sA=60.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00"; # 3E, 4H
 
@@ -94,7 +118,7 @@
     my $learningRule					= TRACE; # TRACE, HEBB
     
     my $nrOfEpochs						= 20; # 30,100
-    my $saveNetworkAtEpochMultiple 		= 22;
+    my $saveNetworkAtEpochMultiple 		= 7;
 	my $outputAtTimeStepMultiple		= 1;
 	
     my $lateralInteraction				= NONE; # NONE, COMP, SOM
@@ -102,16 +126,27 @@
     
     my $modulationType					= # MODTYPE_GAUSSIAN MODTYPE_SIGMOID
     
-    my $resetTrace						= "true"; # "false", Reset trace between objects of training
-    my $resetActivity					= "true"; # "false", Reset activation between objects of training
+    my $resetTrace						= "false"; # "false", Reset trace between objects of training
+    my $resetActivity					= "false"; # "false", Reset activation between objects of training
     
     # RANGE PARAMS - permutable
     my @sigmoidSlopes					= (
 										#["3000000000.0","3000000000.0","3000000000.0","3000000000.0","3000000000.0"]
-										#["3000000000.0","3000000000.0","3000000000.0","3000000000.0"]
-										#["3000000000.0","3000000000.0","3000000000.0"]
+										#"3000000000.0","3000000000.0","3000000000.0","3000000000.0"]
+										["3000000000.0","3000000000.0","3000000000.0"],
 										#["3000000000.0","3000000000.0"]
-										["3000000000.0"]
+										#["3000000000.0"]
+										
+										#["3000000000.0","3000000000.0","300000000.0"],
+										#["3000000000.0","3000000000.0","30000000.0"],
+										#["3000000000.0","3000000000.0","3000000.0"],
+										#["3000000000.0","3000000000.0","300000.0"],
+										#["3000000000.0","3000000000.0","30000.0"],
+										#["3000000000.0","3000000000.0","3000.0"],
+										#["3000000000.0","3000000000.0","300.0"],
+										#["3000000000.0","3000000000.0","30.0"],
+										#["3000000000.0","3000000000.0","3.0"],
+										#["3000000000.0","3000000000.0","0.3"]
     									);
     die "Invalid array: sigmoidSlopes" if !validateArray(\@sigmoidSlopes);
     
@@ -138,7 +173,7 @@
 
 #["0.0","0.0","0.0","0.0","0.05000"]
 #["0.0","0.0","0.0","0.05000"]
-#["0.0","0.0","0.05000"]
+["0.0","0.0","0.05000"]
 #["0.0","0.05000"]
 
 #["0.0","0.0","0.0050"],
@@ -150,7 +185,7 @@
 
 # Sinle level input!
 #["0.00500"],
-["0.05000"]
+#["0.05000"]
 #["0.50000"],
 #["1.00000"]
 #["10.0000"],
@@ -243,7 +278,7 @@
 #["0.99","0.96"],
 #["0.98","0.96"],
 #["0.97","0.96"],
-##["0.96","0.96"],
+#["0.96","0.96"],
 #["0.95","0.96"],
 #["0.94","0.96"],
 #["0.90","0.96"]
@@ -253,9 +288,9 @@
 
 #["0.99","0.99","0.99","0.99","0.90"]
 #["0.99","0.99","0.99","0.90"]
-#["0.99","0.99","0.90"]
+["0.99","0.99","0.90"]
 #["0.99","0.90"]
-["0.90"]
+#["0.90"]
 
 # 1 HEBB
 #["0.9998","0.90"],
@@ -310,9 +345,9 @@
     
     my @timeConstants					= (
     									#["0.010","0.010","0.010","0.010"]
-    									#["0.010","0.010","0.010"]
+    									["0.010","0.010","0.010"]
 										#["0.010","0.010"]
-    									["0.030"]
+    									#["0.030"]
     									);
     die "Invalid array: timeConstants" if !validateArray(\@timeConstants);
  	
@@ -322,30 +357,30 @@
     my @traceTimeConstant				= ("0.100");  # ("0.300","0.800","1.600","2.600"); 
 	die "Invalid array: traceTimeConstant" if !validateArray(\@traceTimeConstant);
 	
-	my @sigmoidModulationPercentage     = ("0.00","0.05","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00");
+	my @sigmoidModulationPercentage     = ("1.00"); # ("0.00","0.05","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00");
 	
     ## 0
-    my $pathWayLength					= 1;
-    my @dimension					= (30);
-    my @depth						= (1);
-    my @connectivity					= (FULL_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
-    my @fanInRadius 					= (6); # not used
-    my @fanInCountPercentage 				= ("0.05"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
-    my @learningrate					= ("0.1"); # < === is permuted below
-    my @eta						= ("0.8");
-    my @timeConstant					= ("0.1"); # < === is permuted below
-    my @sparsenessLevel					= ("0.1"); # < === is permuted below
-    my @sigmoidSlope 					= ("30.0"); # < === is permuted below
-    my @inhibitoryRadius				= ("6.0");
-    my @inhibitoryContrast				= ("1.4");
-    my @somExcitatoryRadius				= ("0.6");
-    my @somExcitatoryContrast				= ("120.12");
-    my @somInhibitoryRadius				= ("6.0");
-    my @somInhibitoryContrast				= ("1.4");
-    my @filterWidth					= (7);
-    my @epochs						= (10); # only used in discrete model
-    my @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-    my @recordedSingleCells				= ("( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14)   , (14,15), (16,14), (13,13), (19,15), (1,18), (17,14) )"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+    #my $pathWayLength					= 1;
+    #my @dimension					= (30);
+    #my @depth						= (1);
+    #my @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
+    #my @fanInRadius 					= (6); # not used
+    #my @fanInCountPercentage 				= ("0.20"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    #my @learningrate					= ("0.1"); # < === is permuted below
+    #my @eta						= ("0.8");
+    #my @timeConstant					= ("0.1"); # < === is permuted below
+    #my @sparsenessLevel					= ("0.1"); # < === is permuted below
+    #my @sigmoidSlope 					= ("30.0"); # < === is permuted below
+    #my @inhibitoryRadius				= ("6.0");
+    #my @inhibitoryContrast				= ("1.4");
+    #my @somExcitatoryRadius				= ("0.6");
+    #my @somExcitatoryContrast				= ("120.12");
+    #my @somInhibitoryRadius				= ("6.0");
+    #my @somInhibitoryContrast				= ("1.4");
+    #my @filterWidth					= (7);
+    #my @epochs						= (10); # only used in discrete model
+    #my @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+    #my @recordedSingleCells				= ("( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14)   , (14,15), (16,14), (13,13), (19,15), (1,18), (17,14) )"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
     
     ## 1
     #my $pathWayLength					= 2;
@@ -371,27 +406,27 @@
     #my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as
     
     ## 2
-  	#my $pathWayLength					= 3;
-    #my @dimension					= (60,60,30);
-    #my @depth						= (1,1,1);
-    #my @connectivity					= (SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY, FULL_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
-    #my @fanInRadius 					= (6,6,6); # not used
-    #my @fanInCountPercentage 				= ("0.1","0.1","0.1"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
-    #my @learningrate					= ("0.1","0.1","0.1"); # < === is permuted below
-    #my @eta						= ("0.8","0.8","0.8");
-    #my @timeConstant					= ("0.1","0.1","0.1"); # < === is permuted below
-    #my @sparsenessLevel					= ("0.1","0.1","0.1"); # < === is permuted below
-    #my @sigmoidSlope 					= ("30.0","30.0","30.0"); # < === is permuted below
-    #my @inhibitoryRadius				= ("6.0","6.0","6.0");
-    #my @inhibitoryContrast				= ("1.4","1.4","1.4");
-    #my @somExcitatoryRadius				= ("0.6","0.6","0.6");
-    #my @somExcitatoryContrast				= ("120.12","120.12","120.12");
-    #my @somInhibitoryRadius				= ("6.0","6.0","6.0");
-    #my @somInhibitoryContrast				= ("1.4","1.4","1.4");
-    #my @filterWidth					= (7,7,7);
-    #my @epochs						= (10,10,10); # only used in discrete model
-    #my @saveHistory					= (NO_HISTORY, NO_HISTORY, NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-    #my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14))", "()");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+  	my $pathWayLength					= 3;
+    my @dimension					= (30,30,30);
+    my @depth						= (1,1,1);
+    my @connectivity					= (SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY, FULL_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
+    my @fanInRadius 					= (6,6,6); # not used
+    my @fanInCountPercentage 				= ("0.1","0.1","0.1"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    my @learningrate					= ("0.1","0.1","0.1"); # < === is permuted below
+    my @eta						= ("0.8","0.8","0.8");
+    my @timeConstant					= ("0.1","0.1","0.1"); # < === is permuted below
+    my @sparsenessLevel					= ("0.1","0.1","0.1"); # < === is permuted below
+    my @sigmoidSlope 					= ("30.0","30.0","30.0"); # < === is permuted below
+    my @inhibitoryRadius				= ("6.0","6.0","6.0");
+    my @inhibitoryContrast				= ("1.4","1.4","1.4");
+    my @somExcitatoryRadius				= ("0.6","0.6","0.6");
+    my @somExcitatoryContrast				= ("120.12","120.12","120.12");
+    my @somInhibitoryRadius				= ("6.0","6.0","6.0");
+    my @somInhibitoryContrast				= ("1.4","1.4","1.4");
+    my @filterWidth					= (7,7,7);
+    my @epochs						= (10,10,10); # only used in discrete model
+    my @saveHistory					= (NO_HISTORY, NO_HISTORY, NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+    my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14))", "()");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
     
     ## 3
     #my $pathWayLength					= 4;
@@ -745,16 +780,17 @@
 		# random-sejnowski-Ord=4-Sim=2-fD=0.05-sA=30.00-vpD=4.00-epD=3.00-gS=8.00-sS=0.06-vF=200.00-eF=110.00
 		my @res = ($sName =~ m/(\d+\.\d+)/g);
 
-		#$Ord 							= $res[0];
-		#$Sim 							= $res[1];
-		#$fD 							= $res[2];
-		#$sA 							= $res[3];
-		$visualPreferenceDistance		= $res[4];
-		$eyePositionPrefrerenceDistance	= $res[5];
-		$gaussianSigma					= $res[6];
-		$sigmoidSlope					= $res[7];
-		$horVisualFieldSize				= $res[8];
-		$horEyePositionFieldSize		= $res[9];
+		#$Tar 							= $res[0];
+		#$Ord 							= $res[1];
+		#$Sim 							= $res[2];
+		#$fD 							= $res[3];
+		#$sA 							= $res[4];
+		$visualPreferenceDistance		= $res[5];
+		$eyePositionPrefrerenceDistance	= $res[6];
+		$gaussianSigma					= $res[7];
+		$sigmoidSlope					= $res[8];
+		$horVisualFieldSize				= $res[9];
+		$horEyePositionFieldSize		= $res[10];
 	}
 	
 	sub makeParameterFile {
