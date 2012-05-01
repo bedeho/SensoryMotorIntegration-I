@@ -31,6 +31,9 @@ Param::Param(const char * filename, bool isTraining) {
 
 		cfg.lookupValue("neuronType", tmp);
 		neuronType = static_cast<NEURONTYPE>(tmp);
+        
+        //cfg.lookupValue("transferFunction", tmp);
+		//transferFunction = static_cast<TRANSFER_FUNCTION>(tmp);
 		
 		cfg.lookupValue("continuous.traceTimeConstant", traceTimeConstant);
 		cfg.lookupValue("continuous.stepSizeFraction", stepSizeFraction);
@@ -63,7 +66,7 @@ Param::Param(const char * filename, bool isTraining) {
 		
 		cfg.lookupValue("lateralInteraction", tmp);
 		lateralInteraction = static_cast<LATERAL>(tmp);
-        
+
         cfg.lookupValue("playAtPrcntOfOriginalSpeed", playAtPrcntOfOriginalSpeed);
         
 		cfg.lookupValue("seed", tmp);
@@ -110,6 +113,8 @@ Param::Param(const char * filename, bool isTraining) {
 			timeConstants.push_back(extrastriate[i]["timeConstant"]);
 			sparsenessLevels.push_back(extrastriate[i]["sparsenessLevel"]);
 			sigmoidSlopes.push_back(extrastriate[i]["sigmoidSlope"]);
+            sigmoidThreshold.push_back(extrastriate[i]["sigmoidThreshold"]);
+            globalInhibitoryConstant.push_back(extrastriate[i]["globalInhibitoryConstant"]);
 			inhibitoryRadius.push_back(extrastriate[i]["inhibitoryRadius"]);
 			inhibitoryContrast.push_back(extrastriate[i]["inhibitoryContrast"]);
 			somExcitatoryRadius.push_back(extrastriate[i]["somExcitatoryRadius"]);

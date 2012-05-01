@@ -112,13 +112,17 @@ class HiddenRegion : public Region {
 		float somInhibitoryContrast;					// duplicate of p.somInhibitoryContrast[regionNr-1]	
 		float sparsenessLevel;							// duplicate of p.sparsities[regionNr-1]
 		float sigmoidSlope;							    // duplicate of p.sigmoidSlopes[regionNr-1]
+        float sigmoidThreshold;                         // duplicate of p.sigmoidSlopes[regionNr-1]
 		float learningRate;							    // duplicate of p.learningRates[regionNr-1]
 		float eta;										// duplicate of p.etas[regionNr-1]
 		float timeConstant;								// duplicate of p.timeConstants[regionNr-1]
 		float stepSize;
 		float traceTimeConstant;
-        
+        float globalInhibitoryConstant;
+        float globalBias;
+    
 		NEURONTYPE neuronType;
+        //TRANSFER_FUNCTION transferFunction;
 		SPARSENESSROUTINE sparsenessRoutine;
 		LEARNING_RULE rule;
 		WEIGHTNORMALIZATION weightNormalization;

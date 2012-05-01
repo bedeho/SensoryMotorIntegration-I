@@ -18,9 +18,10 @@ using std::vector;
 // Read parameter file for full explanation
 enum FEEDBACK				{ NOFEEDBACK = 0,		SYMMETRIC = 1 };
 enum LEARNING_RULE			{ TRACE_RULE = 0,		HEBB_RULE = 1 };
-enum SPARSENESSROUTINE		{ NOSPARSENESS = 0,		HEAP = 1 };
+enum SPARSENESSROUTINE		{ NOSPARSENESS = 0,		HEAP = 1,           GLOBAL = 2};
 enum WEIGHTNORMALIZATION	{ NONORMALIZATION = 0,	CLASSIC = 1 };
 enum NEURONTYPE				{ DISCRETE = 0,			CONTINUOUS = 1 };
+//enum TRANSFER_FUNCTION      { IDENTITY = 0,         SIGMOID = 1 };
 enum INITIALWEIGHT          { ZERO = 0,				RANDOMEQUAL = 1,	RANDOMINDEPENDENT = 2 };
 enum LATERAL				{ NONE = 0,				COMP = 1,			SOM = 2 };
 enum CONNECTIVITY			{ FULL = 0,				SPARSE = 1,         SPARSE_BIASED = 2 };
@@ -31,6 +32,7 @@ enum SAVEHISTORY            {
                               SH_SINGLE_CELLS = 3
                             };
 enum INPUT_EYE_MODULATION   { GAUSSIAN = 0, SIGMOID = 1 };
+
 
 // In the future, make HiddenRegion/striate param internal classes
 // that keep projects of these vectors, and thenmake param_layer class
@@ -64,13 +66,18 @@ class Param  {
 		vector<float> timeConstants;		
 		vector<float> etas;					   
 		vector<float> sparsenessLevels;		 
-		vector<float> sigmoidSlopes;			
+		vector<float> sigmoidSlopes;
+        vector<float> sigmoidThreshold;
+        
 		vector<float> inhibitoryRadius;		    
 		vector<float> inhibitoryContrast;		
         vector<float> somExcitatoryRadius;		
 		vector<float> somExcitatoryContrast;	
 		vector<float> somInhibitoryRadius;		
 		vector<float> somInhibitoryContrast;
+    
+        vector<float> globalInhibitoryConstant;
+        vector<float> globalBias;
     
         vector<u_short> depths;					
         vector<u_short> dimensions;
@@ -84,6 +91,7 @@ class Param  {
         vector<vector<vector<short> > > recordedSingleCells; // Should be bool, but STL is fucked up!
         
 		NEURONTYPE neuronType;
+        //TRANSFER_FUNCTION transferFunction;
 		WEIGHTNORMALIZATION weightNormalization;
 		SPARSENESSROUTINE sparsenessRoutine;
 		FEEDBACK feedback;

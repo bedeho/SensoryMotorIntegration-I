@@ -22,8 +22,8 @@ function OneD_DG_Random_Simple(prefix)
     %saccadeVelocity             = 4000000000000000000000;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     samplingRate                = 1000;	% (Hz)
     fixationDuration            = 0.050;  % 0.25;	% (s) - fixation period after each saccade
-    saccadeAmplitude            = 10;    % 35= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
-    nrOfOrderings               = 10;
+    saccadeAmplitude            = 90;    % 35= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
+    nrOfOrderings               = 1;
 
     % Derived
     ticksPrSample = fixationDuration * samplingRate;

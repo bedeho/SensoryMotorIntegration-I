@@ -43,14 +43,19 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
 	this->somInhibitoryRadius = p.somInhibitoryRadius[regionNr-1]; 
 	this->somInhibitoryContrast = p.somInhibitoryContrast[regionNr-1];
 	this->sparsenessLevel = p.sparsenessLevels[regionNr-1];
-	this->sigmoidSlope = p.sigmoidSlopes[regionNr-1];												
+	this->sigmoidSlope = p.sigmoidSlopes[regionNr-1];
+    this->sigmoidThreshold = p.sigmoidThreshold[regionNr-1];
 	this->learningRate = p.learningRates[regionNr-1]; // /desiredFanIn was used before, no longer though! 0.1 seems to be the magic bullet
 	this->eta = p.etas[regionNr-1];
 	this->timeConstant = p.timeConstants[regionNr-1];
+    this->globalInhibitoryConstant = p.globalInhibitoryConstant[regionNr-1];
+    this->globalBias = p.globalBias[regionNr-1];
+    
 	this->stepSize = p.stepSize;
 	this->traceTimeConstant = p.traceTimeConstant;
 	this->neuronType = p.neuronType;
 	this->sparsenessRoutine = p.sparsenessRoutine;
+    //this->transferFunction = p.transferFunction;
 	this->rule = p.rule;
 	this->weightNormalization = p.weightNormalization;
     this->lateralInteraction = p.lateralInteraction;
@@ -229,34 +234,72 @@ void HiddenRegion::setupFilters() {
 }
 
 void HiddenRegion::computeNewFiringRate() {
+    
+    if(lateralInteraction == HEAP) {
 	
-	// Compute activation
-	computeNewActivation();
-	
-	// Do local inhibition
-	// Even if we do not run .inhibit(), the activation
-	// values will still have been copied through to 
-	// n->newInhibitedActivation by .computeNewActivation(),
-	// hence all future calculations that expect inhibited values
-	// will still work.
-	
-	if(lateralInteraction != NONE)
-		filter();
-	
-	// this value is written to once by each thread,
-	// but it is the same value is computed in all threads,
-	// so it does not matter
-	if(sparsenessRoutine != NOSPARSENESS)
-		threshold = findThreshold();
-	
-	// Compute firing rate using contrast enhancement
-	for(int d = 0;d < depth;d++)
-	{
-		#pragma omp for nowait
-		for(int i = 0;i < verDimension; i++)
-			for(int j = 0;j < horDimension; j++)
-				Neurons[d][i][j].newFiringRate =  1/(1+exp(-2*sigmoidSlope*(Neurons[d][i][j].newInhibitedActivation-threshold))); //Neurons[d][i][j].newInhibitedActivation > threshold ? 1 : 0;
-	}
+        // Compute activation
+        computeNewActivation();
+        
+        // Do local inhibition
+        // Even if we do not run .inhibit(), the activation
+        // values will still have been copied through to 
+        // n->newInhibitedActivation by .computeNewActivation(),
+        // hence all future calculations that expect inhibited values
+        // will still work.
+        
+        if(lateralInteraction != NONE)
+            filter();
+        
+        // this value is written to once by each thread,
+        // but it is the same value is computed in all threads,
+        // so it does not matter
+        if(sparsenessRoutine != NOSPARSENESS)
+            threshold = findThreshold();
+        
+        // Compute firing rate using contrast enhancement
+        for(int d = 0;d < depth;d++)
+        {
+            #pragma omp for nowait
+            for(int i = 0;i < verDimension; i++)
+                for(int j = 0;j < horDimension; j++)
+                    Neurons[d][i][j].newFiringRate = 1/(1+exp(-2*sigmoidSlope*(Neurons[d][i][j].newInhibitedActivation-threshold))); //Neurons[d][i][j].newInhibitedActivation > threshold ? 1 : 0;
+        }
+    }
+    else if (lateralInteraction == GLOBAL) {
+        
+        float cumulativeFiringRate = 0;
+        
+        for(int i = 0;i < verDimension; i++)
+            for(int j = 0;j < horDimension; j++)
+                cumulativeFiringRate += Neurons[0][i][j].firingRate;
+        
+        #pragma omp for
+        for(int i = 0;i < verDimension; i++)
+            for(int j = 0;j < horDimension; j++) {
+            
+                // Presynaptic Stimulation
+                HiddenNeuron * n = &Neurons[0][i][j];
+                float stimulation = 0;
+                
+                for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++)
+                    stimulation += (*s).weight * (*s).preSynapticNeuron->firingRate;
+                
+                // Lateral inhibition
+                stimulation -= globalInhibitoryConstant * cumulativeFiringRate;
+                
+                // Background input
+                stimulation += globalBias;
+                
+                // Pass stimulation through transfer function
+                float transferFunctionStimulation = 1 / (1 + exp(-2*sigmoidSlope*(stimulation - sigmoidThreshold)));
+                
+                // Update firing rate
+                n->newFiringRate = (1 - stepSize/timeConstant) * n->firingRate + (stepSize/timeConstant) * transferFunctionStimulation;
+                    
+                // Save stimulation variable
+                n->stimulation = stimulation;				
+            }
+    }
 }
 
 // Save outout in newActivation (also newInhibitedActivation)
