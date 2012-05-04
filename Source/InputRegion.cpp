@@ -246,7 +246,6 @@ void InputRegion::loadDataFile(const char * dataFile) {
     }
 }
 
-/*
 // Normalized scheme!
 void InputRegion::setFiringRate(u_short object, float time) {
     
@@ -275,8 +274,8 @@ void InputRegion::setFiringRate(u_short object, float time) {
                 Neurons[d][i][j].newFiringRate /= norm;
             }
 }
-*/
 
+/*
 // Classic
 void InputRegion::setFiringRate(u_short object, float time) {
     
@@ -293,6 +292,7 @@ void InputRegion::setFiringRate(u_short object, float time) {
 			for(int j = 0;j < horEyeDimension;j++)
 				Neurons[d][i][j].setFiringRate(sample);
 }
+*/
 
 void InputRegion::linearInterpolate(u_short object, float time) {
 

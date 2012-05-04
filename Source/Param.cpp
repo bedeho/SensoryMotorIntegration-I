@@ -115,6 +115,8 @@ Param::Param(const char * filename, bool isTraining) {
 			sigmoidSlopes.push_back(extrastriate[i]["sigmoidSlope"]);
             sigmoidThreshold.push_back(extrastriate[i]["sigmoidThreshold"]);
             globalInhibitoryConstant.push_back(extrastriate[i]["globalInhibitoryConstant"]);
+            externalStimulation.push_back(extrastriate[i]["externalStimulation"]);
+
 			inhibitoryRadius.push_back(extrastriate[i]["inhibitoryRadius"]);
 			inhibitoryContrast.push_back(extrastriate[i]["inhibitoryContrast"]);
 			somExcitatoryRadius.push_back(extrastriate[i]["somExcitatoryRadius"]);

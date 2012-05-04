@@ -49,7 +49,7 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
 	this->eta = p.etas[regionNr-1];
 	this->timeConstant = p.timeConstants[regionNr-1];
     this->globalInhibitoryConstant = p.globalInhibitoryConstant[regionNr-1];
-    this->globalBias = p.globalBias[regionNr-1];
+    this->externalStimulation = p.externalStimulation[regionNr-1];
     
 	this->stepSize = p.stepSize;
 	this->traceTimeConstant = p.traceTimeConstant;
@@ -235,7 +235,7 @@ void HiddenRegion::setupFilters() {
 
 void HiddenRegion::computeNewFiringRate() {
     
-    if(lateralInteraction == HEAP) {
+    if(sparsenessRoutine == HEAP) {
 	
         // Compute activation
         computeNewActivation();
@@ -265,7 +265,7 @@ void HiddenRegion::computeNewFiringRate() {
                     Neurons[d][i][j].newFiringRate = 1/(1+exp(-2*sigmoidSlope*(Neurons[d][i][j].newInhibitedActivation-threshold))); //Neurons[d][i][j].newInhibitedActivation > threshold ? 1 : 0;
         }
     }
-    else if (lateralInteraction == GLOBAL) {
+    else if(sparsenessRoutine == GLOBAL) {
         
         float cumulativeFiringRate = 0;
         
@@ -284,20 +284,22 @@ void HiddenRegion::computeNewFiringRate() {
                 for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++)
                     stimulation += (*s).weight * (*s).preSynapticNeuron->firingRate;
                 
-                // Lateral inhibition
-                stimulation -= globalInhibitoryConstant * cumulativeFiringRate;
+                // Save stimulation variable
+                n->stimulation = stimulation;
                 
-                // Background input
-                stimulation += globalBias;
+                // Lateral inhibition
+                //n->inhibition = globalInhibitoryConstant * cumulativeFiringRate;
+                //stimulation -= n->inhibition;
+                
+                n->newInhibitedActivation = globalInhibitoryConstant * cumulativeFiringRate;
+
+                n->newActivation = stimulation - n->newInhibitedActivation + externalStimulation;
                 
                 // Pass stimulation through transfer function
-                float transferFunctionStimulation = 1 / (1 + exp(-2*sigmoidSlope*(stimulation - sigmoidThreshold)));
+                float transferFunctionStimulation = 1 / (1 + exp(-2*sigmoidSlope*(n->newActivation - sigmoidThreshold)));
                 
-                // Update firing rate
-                n->newFiringRate = (1 - stepSize/timeConstant) * n->firingRate + (stepSize/timeConstant) * transferFunctionStimulation;
-                    
-                // Save stimulation variable
-                n->stimulation = stimulation;				
+                // Compute firing rate
+                n->newFiringRate = (1 - stepSize/timeConstant) * n->firingRate + (stepSize/timeConstant) * transferFunctionStimulation;			
             }
     }
 }

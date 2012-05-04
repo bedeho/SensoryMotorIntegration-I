@@ -40,13 +40,14 @@ function plotSynapseHistory(folder, region, depth, row, col, includeSynapses, ma
     %% Plot neuron dynamics
     subplot(3,1,1);
     
-    [traceLine, m1] = plotFile('trace.dat', 'g');
-    [activationLine, m2] = plotFile('activation.dat', 'y');
+    [traceLine, m1] = plotFile('trace.dat', 'y');
+    [activationLine, m2] = plotFile('activation.dat', 'g');
     [firingLine, m3] = plotFile('firingRate.dat', 'b');
     [stimulationLine, m4] = plotFile('stimulation.dat', 'k');
-    [effectiveTraceLine, m5] = plotFile('effectiveTrace.dat', '--m');
+    %[effectiveTraceLine, m5] = plotFile('effectiveTrace.dat', '--m');
+    [InhibitedActivationLine, m5] = plotFile('inhibitedActivation.dat', '--m');
     
-    legend('Firing','Trace','Activation','Stimulation','Effective Trace');
+    legend('Trace','Activation','Firing','Stimulation','Inhibition');
     
     mFinal = 1.5*max([0.51 m1 m2 m3 m4 m5]); % Used for axis
     axis([0 streamSize -0.01 mFinal]);

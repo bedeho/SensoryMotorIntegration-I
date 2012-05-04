@@ -179,12 +179,13 @@ function plotExperiment(experiment, stimuliName)
                     outputButton('Repr.', ['matlab:inspectRepresentation(\\''' netDir '/firingRate.dat\\'',' num2str(info.nrOfEyePositionsInTesting) ')']); 
                     outputButton('F', ['matlab:plotNetworkHistoryDANIEL(\\''' netDir '/firingRate.dat\\'')']); 
                     outputButton('A', ['matlab:plotNetworkHistoryDANIEL(\\''' netDir '/activation.dat\\'')']);
-                    %outputButton('IActivation', ['matlab:plotNetworkHistoryDANIEL(\\''' netDir '/inhibitedActivation.dat\\'')']);
+                    outputButton('IA', ['matlab:plotNetworkHistoryDANIEL(\\''' netDir '/inhibitedActivation.dat\\'')']);
                     outputButton('T', ['matlab:plotNetworkHistoryDANIEL(\\''' netDir '/trace.dat\\'')']);
                     outputButton('S', ['matlab:plotNetworkHistoryDANIEL(\\''' netDir '/stimulation.dat\\'')']);
                     
                     outputButton('t-F', ['matlab:plotNetworkHistoryDANIEL(\\''' trDir '/firingRate.dat\\'')']); 
                     outputButton('t-A', ['matlab:plotNetworkHistoryDANIEL(\\''' trDir '/activation.dat\\'')']);
+                    outputButton('t-IA', ['matlab:plotNetworkHistoryDANIEL(\\''' trDir '/inhibitedActivation.dat\\'')']);
                     outputButton('t-T', ['matlab:plotNetworkHistoryDANIEL(\\''' trDir '/trace.dat\\'')']); 
                     outputButton('t-S', ['matlab:plotNetworkHistoryDANIEL(\\''' trDir '/stimulation.dat\\'')']); 
                     

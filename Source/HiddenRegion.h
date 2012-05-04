@@ -119,7 +119,7 @@ class HiddenRegion : public Region {
 		float stepSize;
 		float traceTimeConstant;
         float globalInhibitoryConstant;
-        float globalBias;
+        float externalStimulation;
     
 		NEURONTYPE neuronType;
         //TRANSFER_FUNCTION transferFunction;

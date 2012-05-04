@@ -79,11 +79,15 @@ class HiddenNeuron: public Neuron {
         float activation;             // Normal weighted sum of input firing rates
         float inhibitedActivation;    // Activation after being passed through inhibit routine
         float trace;                  // Defines trace values for this neuron
-        float stimulation;            // Presynaptic stimulation, only used for inspection purposes.
+        
         float effectiveTrace;		  // sigmoid(trace);
         float newActivation;
         float newInhibitedActivation;
         float newTrace;
+    
+        // inspection purposes
+        float stimulation;            // Presynaptic stimulation, only used for inspection purposes.
+        //float inhibition;               // total inhibition from neighboors
 
 		// Init
 		void init(HiddenRegion * region, 

@@ -166,6 +166,8 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
             
             bar(data{region-1}(:, :, row, col));
             
+            set(gca,'YLim',[-0.1 1.1]);
+            
             %{
 
             cla

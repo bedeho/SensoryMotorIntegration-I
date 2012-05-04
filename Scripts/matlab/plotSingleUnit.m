@@ -28,13 +28,14 @@ function plotSingleUnit(unit, historyDimensions, includeSynapses, maxEpoch)
     %% Plot neuron dynamics
     subplot(3,1,1);
     
-    [traceLine, m1] = plotUnitData(unit.trace, 'g');
-    [activationLine, m2] = plotUnitData(unit.activation, 'y');
+    [traceLine, m1] = plotUnitData(unit.trace, 'y');
+    [activationLine, m2] = plotUnitData(unit.activation, 'g');
     [firingLine, m3] = plotUnitData(unit.firingRate, 'b');
     [stimulationLine, m4] = plotUnitData(unit.stimulation, 'k');
-    [effectiveTraceLine, m5] = plotUnitData(unit.effectiveTrace, '--m');
+    %[effectiveTraceLine, m5] = plotUnitData(unit.effectiveTrace, '--m');
+    [InhibitedActivationLine, m5] = plotUnitData(unit.inhibitedActivation, '--m');
     
-    legend('Trace','Activation','Firing','Stimulation','Effective Trace');
+    legend('Trace','Activation','Firing','Stimulation','Inhibition');
     
     addGrid();
     mFinal = 1.5*max([0.51 m1 m2 m3 m4]); % Used for axis

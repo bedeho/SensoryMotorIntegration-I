@@ -77,7 +77,7 @@ class Param  {
 		vector<float> somInhibitoryContrast;
     
         vector<float> globalInhibitoryConstant;
-        vector<float> globalBias;
+        vector<float> externalStimulation;
     
         vector<u_short> depths;					
         vector<u_short> dimensions;

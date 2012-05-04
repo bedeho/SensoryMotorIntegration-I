@@ -31,8 +31,8 @@ function dimensions = OneD_DG_Dimensions()
     %dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
     
     %% Sejnowski modified:   8,6,8,1/16
-    dimensions.visualPreferenceDistance = 4;
-    dimensions.eyePositionPrefrerenceDistance = 4;
+    dimensions.visualPreferenceDistance = 1;
+    dimensions.eyePositionPrefrerenceDistance = 2;
     dimensions.gaussianSigma = 8; % deg
     dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
     

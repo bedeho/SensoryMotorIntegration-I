@@ -44,7 +44,7 @@ function plotNetworkHistoryDANIEL(filename, region, depth, maxEpoch)
     for e=1:maxEpoch,
         
         fig = figure();
-        title(['Epoch: ' num2str(e)]);
+        
 
         tmp = activity(:, :, e, :, :);
         tmp = reshape(tmp, [dataPointsPerCell nrOfCells]);
@@ -52,8 +52,10 @@ function plotNetworkHistoryDANIEL(filename, region, depth, maxEpoch)
         
         imagesc(tmp);
         colorbar
+        colormap('gray')
 
         %makeFigureFullScreen(fig);
+        title(['Epoch: ' num2str(e)]);
         pause
 
     end
