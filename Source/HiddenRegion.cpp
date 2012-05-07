@@ -432,11 +432,17 @@ void HiddenRegion::applyLearningRule() {
 				
 				if(neuronType == CONTINUOUS) {
 					
-					n->effectiveTrace = 1 / (1 + exp(100000000 * (0.08 - n->trace))); // sigmoid, slope=10^8, threshold=0.01
+					//n->effectiveTrace = 1 / (1 + exp(100000000 * (0.08 - n->trace))); // sigmoid, slope=10^8, threshold=0.01
+                    n->effectiveTrace = 0;
 
 					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
 
-						(*s).weight += learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->effectiveTrace) * (*s).preSynapticNeuron->firingRate;
+                        // effectiveTrace
+						//(*s).weight += learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->effectiveTrace) * (*s).preSynapticNeuron->firingRate;
+                        
+                        // trace
+                        (*s).weight += learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->trace) * (*s).preSynapticNeuron->firingRate;
+                        
 						norm += (*s).weight * (*s).weight;
 					}
 					
@@ -444,11 +450,16 @@ void HiddenRegion::applyLearningRule() {
                     
 				} else {
 					
-					n->effectiveTrace = 1 / (1 + exp(100000000 * (0.08 - n->newTrace))); // sigmoid, slope=10^8, threshold=0.01
-
+					//n->effectiveTrace = 1 / (1 + exp(100000000 * (0.08 - n->newTrace))); // sigmoid, slope=10^8, threshold=0.01
+                    n->effectiveTrace = 0;
+                    
 					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
 
-						(*s).weight += learningRate * (rule == HEBB_RULE ? n->newFiringRate : n->effectiveTrace) * (*s).preSynapticNeuron->newFiringRate;
+                        // effectiveTrace
+						//(*s).weight += learningRate * (rule == HEBB_RULE ? n->newFiringRate : n->effectiveTrace) * (*s).preSynapticNeuron->newFiringRate;
+                        
+                        // trace
+                        (*s).weight += learningRate * (rule == HEBB_RULE ? n->newFiringRate : n->trace) * (*s).preSynapticNeuron->newFiringRate;
 						norm += (*s).weight * (*s).weight;
 					}
 					
