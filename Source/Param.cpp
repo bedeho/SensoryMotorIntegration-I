@@ -227,6 +227,12 @@ void Param::validate(bool isTraining) {
 		}
 		
 		stepSize = smallestTimeConstant * stepSizeFraction;
+        
+        if(nrOfEpochs < 1) {
+            cerr << "No training epochs, nrOfEpochs = 0." << endl;
+            cerr.flush();
+            exit(EXIT_FAILURE);
+        }
 	}
 	
 	if(traceTimeConstant <= 0) {

@@ -29,9 +29,17 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     
     % Plot region correlation
     regionCorrelationPlot = figure();
-    imagesc(corr{region-1});
-    colorbar;
-
+    
+    % IMAGESC CORRELATION
+    %imagesc(corr{region-1});
+    %colorbar;
+    
+    % Plot region correlatio
+    correlationVector = corr{region-1}(:);
+    sortedCorrelations = sort(correlationVector,'descend');
+    plot(sortedCorrelations,'-ob');
+    axis([0 length(correlationVector) -1.1 1.1]);
+    
     % Multiple indexes
     regionOrthogonalizationPlot = figure();
     

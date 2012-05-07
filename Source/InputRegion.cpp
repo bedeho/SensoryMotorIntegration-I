@@ -249,6 +249,9 @@ void InputRegion::loadDataFile(const char * dataFile) {
 // Normalized scheme!
 void InputRegion::setFiringRate(u_short object, float time) {
     
+    #pragma omp single
+    {
+    
     // Linear interpolation
     linearInterpolate(object, time);
 
@@ -273,6 +276,7 @@ void InputRegion::setFiringRate(u_short object, float time) {
                 Neurons[d][i][j].firingRate /= norm;
                 Neurons[d][i][j].newFiringRate /= norm;
             }
+    }
 }
 
 /*
