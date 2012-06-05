@@ -88,7 +88,7 @@ function OneD_DG_Random_Simple(prefix)
         targets = dimensions.targets(showTargets);
         
         % Output all samples for this target combination
-        doTimeSteps(targets);
+        outputFixationOrders(targets);
         
         fwrite(fileID, NaN('single'), 'float');         % transform flag
         
@@ -119,7 +119,7 @@ function OneD_DG_Random_Simple(prefix)
     % Visualize
     OneD_Overlay([tSFolderName '-training'],[tSFolderName '-stdTest'])
     
-    function doTimeSteps(targets)
+    function outputFixationOrders(targets)
         
         for o=1:nrOfOrderings,
             
@@ -189,7 +189,7 @@ function OneD_DG_Random_Simple(prefix)
             % Interpolate the state from at time
             state = interpolateState(criticalPoints, time);
             
-            fwrite(fileID, ..., 'float');
+            fwrite(fileID, state, 'float');
              
             % Next sample
             time = time + 1/samplingRate;
@@ -197,7 +197,38 @@ function OneD_DG_Random_Simple(prefix)
         
     end
 
-    function [time ep retinalTargets] = interpolateState(criticalPoints, time)
+    % Very inefficient, but it works,
+    function state = interpolateState(criticalPoints, time)
+        
+        c = 1;
+        
+        % Find position point c immediatly past the desired time,
+        % the means that point c-1 will be some time prior to desired
+        % time by definition.
+        while criticalPoints(1,c) < time,
+            c++
+        end
+        
+        % If the very first data point is desired, then
+        % time==0, and we can just serve up that point
+        % without any interpolation
+        if c == 1,
+            state = criticalPoints(:,1);
+        else
+            
+            % Get some time points
+            before = criticalPoints(:,c-1);
+            after = criticalPoints(:,c);
+            overflow = time - after(1);
+            
+            % Get change rate
+            delta = after - before;
+            dt = delta(1);
+            rate = delta/dt;
+            
+            % Do linear interpolation
+            state = before + overflow*rate;
+        end
     end
     
 end
