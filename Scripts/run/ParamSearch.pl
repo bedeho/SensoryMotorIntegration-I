@@ -25,7 +25,7 @@
 	
 	my $experiment	 					= "trace_orth_3"; # trace-10h, classic-30-1E-3H-2S-1O
 	
-	my $stim							= "random-mod-Tar=4.00-Ord=1.00-Sim=1.00-fD=0.05-sA=10.00-vpD=4.00-epD=4.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+	my $stim							= "";
 	
 	# 2,2
 	#my $stim							= "random-mod-Tar=2.00-Ord=1.00-Sim=1.00-fD=0.05-sA=90.00-vpD=4.00-epD=4.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00";
@@ -129,31 +129,24 @@
 	my $outputAtTimeStepMultiple		= 1;
 	
     my $lateralInteraction				= NONE; # NONE, COMP, SOM
-    my $sparsenessRoutine				= GLOBAL; # NONE, HEAP, GLOBAL
+    my $sparsenessRoutine				= HEAP; # NONE, HEAP, GLOBAL
     
     my $resetTrace						= "true"; # "false", Reset trace between objects of training
     my $resetActivity					= "true"; # "false", Reset activation between objects of training
     
     # RANGE PARAMS - permutable
     my @sigmoidSlopes					= (
-										#["3000000000.0","3000000000.0","3000000000.0","3000000000.0","3000000000.0"]
-										#["3000000000.0","3000000000.0","3000000000.0","3000000000.0"]
-										#["3000000000.0","3000000000.0","3000000000.0"],
-										#["3000000000.0","3000000000.0"]
-										#["3000000000.0"]
-										#["0010.0"]
-										#["0050.0"],
-										#["0100.0"]
-										#["0100.0","0100.0"]
-										#["0200.0"]
-										#["1000.0"],
-										#["10000.0"],
-										#["100000.0"],
-										#["1000000.0"],
-										#["10000000.0"],
+    									["00000001.0"],
+    									["00000010.0"],
+										["00000100.0"],
+										["00001000.0"],
+										["00010000.0"],
+										["00100000.0"],
+										["01000000.0"],
+										["10000000.0"]
 										#["100000000.0"]
 										#["100000000.0","100000000.0"]
-										["100000000.0","100000000.0","100000000.0"]
+										#["100000000.0","100000000.0","100000000.0"]
 										
 										#["3000000000.0","3000000000.0","300000000.0"],
 										#["3000000000.0","3000000000.0","30000000.0"],
@@ -169,107 +162,14 @@
     die "Invalid array: sigmoidSlopes" if !validateArray(\@sigmoidSlopes);
     
     my @sigmoidThresholds				= (
-										#["0.0","0.0","0.0"],
-										#["0.0","0.0"]
-										#["0.000"]
-										["0.000","0.000","0.000"]
-										#["0.001"],
-										#["0.010"],
-										#["0.050"],
-										#["0.100"],
-										#["0.200"],
-										#["0.300"],
-										#["0.400"]
-										#["0.800"],
-										#["3.000"],
-										#["2.900"],
-										#["2.800"],
-										#["2.700"],
-										#["2.600"],
-										#["2.500"],
-										#["2.400"],
-										#["2.300"],
-										#["2.200"],
-										#["2.100"],
-										#["2.000"],
-										#["1.900"],
-										#["1.800"],
-										#["1.700"],
-										#["1.600"],
-										#["1.500"],
-										#["1.400"],
-										#["1.300"],
-										#["1.200"],
-										#["1.100"],
-										#["1.000"],
-										#["0.900"],
-										#["0.800"],
-										#["0.700"],
-										#["0.600"],
-										#["0.500"],
-										#["0.400"],
-										#["0.300"],
-										#["0.200"],
-										#["0.100"]
-										#["1.000","1.000"]
-										#["1.200"]
-										#["0.0"],
-										#["0.0"],
+										#["0.000","0.000","0.000"]
+										["0.000"]
     									);
     die "Invalid array: sigmoidThreshold" if !validateArray(\@sigmoidThresholds);
      
     my @globalInhibitoryConstants		= (
-    									#["0.0","0.0","0.0"],
-										#["0.0000"],
-										#["0.0001"],
-										#["0.0005"],
-										#["0.0010"],
-										#["0.0050"],
-										#["0.0100"],
-										#["0.0200"],
-										#["0.0500"],
-										#["0.1000"],
-										#["0.5000"],
-										#["1.5000"],
-										#["2.0000"],
-										#["5.0000"],
-										#["10.000"],
-										#["20.000"],
-										#["50.000"],
-										#["100.00"],
-										#["200.00"],
-										#["300.00"]
-										##["0.1000","0.1000"],
-										##["0.1000","0.0500"],
-										##["0.1000","0.0100"],
-										##["0.1000","0.0050"],
-										##["0.1000","0.0001"]
-										#
-										#["0.0050","0.00005","0.00500"],
-										#["0.0050","0.00050","0.00500"],
-										#["0.0050","0.00500","0.00500"],
-										#["0.0050","0.05000","0.00500"],
-										#["0.0050","0.50000","0.00500"]
-										#
-										#["0.0050","0.00005","0.00500"],
-										#["0.0050","0.00050","0.00500"],
-										#["0.0050","0.00500","0.00500"],
-										["0.0500","0.05000","0.00500"]
-										#["0.0050","0.50000","0.00500"]
-										#
-										#["0.0000","0.0000"],
-										#["0.0010","0.0010"],
-										#["0.0030","0.0030"],
-										#["0.0050","0.0050"],
-										#["0.0100","0.0100"],
-										#["0.0200","0.0200"],
-										#["0.0500","0.0500"],
-										#["0.1000","0.1000"],
-										#["0.5000","0.5000"],
-										#["0.7000","0.7000"],
-										#["1.0000","1.0000"]
-										#["0.0100"],
-										#["0.1000"]
+										#["0.0500","0.05000","0.00500"]
+										["0.0500"]
 										);
 	die "Invalid array: globalInhibitoryConstants" if !validateArray(\@globalInhibitoryConstants);
 	
@@ -277,7 +177,8 @@
     									#["0.0","0.0","0.0"],
 										#["0.0"]
 										#["0.0","0.0"]
-										["0.0","0.0","0.0"]
+										#["0.0","0.0","0.0"]
+										["0.0"]
 										);
 	die "Invalid array: externalStimulations" if !validateArray(\@externalStimulations);
 										
@@ -318,10 +219,10 @@
 #["0.00000"]
 #["0.00000","0.00000"]
 #["0.00000","0.00000","0.05000"],
-["0.00000","0.00000","0.10000"]
+#["0.00000","0.00000","0.10000"]
 #["0.00000","0.00000","0.50000"]
 #["0.00500"],
-#["0.05000"],
+["0.05000"]
 #["0.10000"],
 #["1.00000"],
 #["1.50000"]
@@ -391,7 +292,7 @@
 #["0.9998"],
 #["0.998"],
 #["0.995"],
-#["0.99"],
+["0.99"]
 #["0.95"],
 #["0.90"],
 #["0.00"]
@@ -426,7 +327,7 @@
 
 #["0.99","0.99","0.99","0.99","0.90"]
 #["0.99","0.99","0.99","0.90"]
-["0.99","0.99","0.90"]
+#["0.99","0.99","0.90"]
 #["0.99","0.90"]
 #["0.90"]
 
@@ -484,8 +385,8 @@
     my @timeConstants					= (
     									#["0.010","0.010","0.010","0.010"]
     									#["0.010","0.010","0.010"]
-										["0.010","0.010","0.010"]
-    									#["0.010"]
+										#["0.010","0.010","0.010"]
+    									["0.010"]
     									);
     die "Invalid array: timeConstants" if !validateArray(\@timeConstants);
  	
@@ -498,31 +399,32 @@
 	my @sigmoidModulationPercentage     = ("1.00"); # ("0.00","0.05","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00");
 	
     ## 0
-    #my $pathWayLength					= 1;
-    #my @dimension					= (30);
-    #my @depth						= (1);
-    #my @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
-    #my @fanInRadius 					= (6); # not used
-    #my @fanInCountPercentage 				= ("0.10"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
-    #my @learningrate					= ("0.1"); # < === is permuted below
-    #my @eta						= ("0.8");
-    #my @timeConstant					= ("0.1"); # < === is permuted below
-    #my @sparsenessLevel					= ("0.1"); # < === is permuted below
-    #my @sigmoidSlope 					= ("30.0"); # < === is permuted below
-    #my @sigmoidThreshold				= ("0.0"); # < === is permuted below
-    #my @globalInhibitoryConstant		= ("0.0"); # < === is permuted below
-    #my @externalStimulation				= ("0.0"); # < === is permuted below
+    my $pathWayLength					= 1;
+    my @dimension					= (30);
+    my @depth						= (1);
+    my @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
+    my @fanInRadius 					= (6); # not used
+    my @fanInCountPercentage 				= ("0.20"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    my @learningrate					= ("0.1"); # < === is permuted below
+    my @eta						= ("0.8");
+    my @timeConstant					= ("0.1"); # < === is permuted below
+    my @sparsenessLevel					= ("0.1"); # < === is permuted below
+    my @sigmoidSlope 					= ("30.0"); # < === is permuted below
+    my @sigmoidThreshold				= ("0.0"); # < === is permuted below
+    my @globalInhibitoryConstant		= ("0.0"); # < === is permuted below
+    my @externalStimulation				= ("0.0"); # < === is permuted below
     
-    #my @inhibitoryRadius				= ("6.0");
-    #my @inhibitoryContrast				= ("1.4");
-    #my @somExcitatoryRadius				= ("0.6");
-    #my @somExcitatoryContrast				= ("120.12");
-    #my @somInhibitoryRadius				= ("6.0");
-    #my @somInhibitoryContrast				= ("1.4");
-    #my @filterWidth					= (7);
-    #my @epochs						= (10); # only used in discrete model
-    #my @saveHistory					= (ALL); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-    #my @recordedSingleCells				= ("( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14)   , (14,15), (16,14), (13,13), (19,15), (1,18), (17,14) )"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+    my @inhibitoryRadius				= ("6.0");
+    my @inhibitoryContrast				= ("1.4");
+    my @somExcitatoryRadius				= ("0.6");
+    my @somExcitatoryContrast			= ("120.12");
+    my @somInhibitoryRadius				= ("6.0");
+    my @somInhibitoryContrast			= ("1.4");
+    my @filterWidth						= (7);
+    
+    my @epochs						= (10); # only used in discrete model
+    my @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+    my @recordedSingleCells				= ("( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14)   , (14,15), (16,14), (13,13), (19,15), (1,18), (17,14) )"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
     
     ## 1
     #my $pathWayLength					= 2;
@@ -552,31 +454,31 @@
     #my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14))");  # 1-based indexing, as in inspector/MATLAB, not 0-based as
     
     ## 2
-  	my $pathWayLength					= 3;
-    my @dimension					= (30,30,30);
-    my @depth						= (1,1,1);
-    my @connectivity					= (SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY, FULL_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
-    my @fanInRadius 					= (6,6,6); # not used
-    my @fanInCountPercentage 				= ("0.1","0.1","0.3"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
-    my @learningrate					= ("0.1","0.1","0.1"); # < === is permuted below
-    my @eta						= ("0.8","0.8","0.8");
-    my @timeConstant					= ("0.1","0.1","0.1"); # < === is permuted below
-    my @sparsenessLevel					= ("0.1","0.1","0.1"); # < === is permuted below
-    my @sigmoidSlope 					= ("30.0","30.0","30.0"); # < === is permuted below
-    my @sigmoidThreshold				= ("0.0","0.0","0.0"); # < === is permuted below    
-    my @globalInhibitoryConstant		= ("0.0","0.0","0.0"); # < === is permuted below
-    my @externalStimulation				= ("0.0","0.0","0.0"); # < === is permuted below
+  	#my $pathWayLength					= 3;
+    #my @dimension					= (30,30,30);
+    #my @depth						= (1,1,1);
+    #my @connectivity					= (SPARSE_CONNECTIVITY, SPARSE_CONNECTIVITY, FULL_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
+    #my @fanInRadius 					= (6,6,6); # not used
+    #my @fanInCountPercentage 				= ("0.1","0.1","0.3"); # Not easily permutble due to a variety of issues - generating different blank networks etc#.
+    #my @learningrate					= ("0.1","0.1","0.1"); # < === is permuted below
+    #my @eta						= ("0.8","0.8","0.8");
+    #my @timeConstant					= ("0.1","0.1","0.1"); # < === is permuted below
+    #my @sparsenessLevel					= ("0.1","0.1","0.1"); # < === is permuted below
+    #my @sigmoidSlope 					= ("30.0","30.0","30.0"); # < === is permuted below
+    #my @sigmoidThreshold				= ("0.0","0.0","0.0"); # < === is permuted below    
+    #my @globalInhibitoryConstant		= ("0.0","0.0","0.0"); # < === is permuted below
+    #my @externalStimulation				= ("0.0","0.0","0.0"); # < === is permuted below
     
-    my @inhibitoryRadius				= ("6.0","6.0","6.0");
-    my @inhibitoryContrast				= ("1.4","1.4","1.4");
-    my @somExcitatoryRadius				= ("0.6","0.6","0.6");
-    my @somExcitatoryContrast				= ("120.12","120.12","120.12");
-    my @somInhibitoryRadius				= ("6.0","6.0","6.0");
-    my @somInhibitoryContrast				= ("1.4","1.4","1.4");
-    my @filterWidth					= (7,7,7);
-    my @epochs						= (10,10,10); # only used in discrete model
-    my @saveHistory					= (NO_HISTORY, NO_HISTORY, ALL); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-    my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14))", "()");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+    #my @inhibitoryRadius				= ("6.0","6.0","6.0");
+    #my @inhibitoryContrast				= ("1.4","1.4","1.4");
+    #my @somExcitatoryRadius				= ("0.6","0.6","0.6");
+    #my @somExcitatoryContrast				= ("120.12","120.12","120.12");
+    #my @somInhibitoryRadius				= ("6.0","6.0","6.0");
+    #my @somInhibitoryContrast				= ("1.4","1.4","1.4");
+    #my @filterWidth					= (7,7,7);
+    #my @epochs						= (10,10,10); # only used in discrete model
+    #my @saveHistory					= (NO_HISTORY, NO_HISTORY, ALL); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+    #my @recordedSingleCells				= ("()", "( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14))", "()");  # 1-based indexing, as in inspector/MATLAB, not 0-based as 
     
     ## 3
     #my $pathWayLength					= 4;

@@ -278,7 +278,7 @@ void InputRegion::setFiringRate(u_short object, float time) {
             }
     }
 }
-*/
+*/0
 
 // Classic
 void InputRegion::setFiringRate(u_short object, float time) {
