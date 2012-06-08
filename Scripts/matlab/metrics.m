@@ -1,5 +1,5 @@
 %
-%  regionCorrelation.m
+%  metrics.m
 %  SMI
 %
 %  Created by Bedeho Mender on 15/11/11.
@@ -43,8 +43,11 @@ function [result] = metrics(filename, nrOfEyePositionsInTesting)
                 result(2,row, col) = computePsi(row,col,tMax);
                 
                 % Omega = Lambda/Psi
-                if result(2,row, col) == 
-                result(3,row, col) = result(1,row, col)/result(2,row, col);
+                if result(2,row, col) == 0
+                    result(3,row, col) = 0;
+                else
+                    result(3,row, col) = result(1,row, col)/result(2,row, col);
+                end
                 
                 % t^a = Preference
                 result(4,row, col) = computeTa(row,col);
@@ -91,12 +94,13 @@ function [result] = metrics(filename, nrOfEyePositionsInTesting)
         % Iterate all combinations of eye positions
         for k = 1:nrOfEyePositionsInTesting,
             
-            intervals = findIntervals(dataPrEyePosition(:, k,row,col),tMax); % (interval bounds [a,b],interval)
+            intervals = findIntervals(dataPrEyePosition(:, k,row,col), $$$$offset, $$$4delta); % (interval bounds [a,b],interval)
+            
             headCenteredMass = 0;
             [tmp, numberOfIntervals] = size(intervals); % tmp = 2, but ~ notation is not backwards compatible
             
             for i=1:numberOfIntervals,
-                headCenteredMass = headCenteredMass + ceil((intervals(1,i) - intervals(2,i))/tMax);
+                headCenteredMass = headCenteredMass + ceil((intervals(2,i) - intervals(1,i))/tMax);
             end
             
             % Include if there where intervals,
@@ -111,12 +115,13 @@ function [result] = metrics(filename, nrOfEyePositionsInTesting)
         psi = confinedness / nrOfEyePositionsInTesting;
     end   
     
-    function intervals = findIntervals()
-    
-    %(intervals(1,i) - intervals(2,i)
-    
+    function ta = computeTa(row,col)
+        
+        for e=1:nrOfEyePositionsInTesting,
+            
+        end
+        
     end
-    
     %function [test] = isConstant(arr)
     %    
     %    test = isequal(arr(1) * ones(length(arr),1), arr);
