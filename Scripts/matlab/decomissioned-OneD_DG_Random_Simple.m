@@ -8,6 +8,10 @@
 %  Purpose: Generates the simplest possible 1d dynamical data
 %
 
+
+%{
+% LAST WORKING
+
 function OneD_DG_Random_Simple(prefix)
 
     % Import global variables
@@ -140,3 +144,4 @@ function OneD_DG_Random_Simple(prefix)
     end
     
 end
+%}

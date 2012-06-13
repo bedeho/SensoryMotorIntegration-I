@@ -69,6 +69,7 @@ function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, visualFieldSi
     end
     
     % Save stats
+    info.targets = targets;
     info.nrOfEyePositionsInTesting = length(targets);
     info.testingStyle = 'stdTest';
     save info;

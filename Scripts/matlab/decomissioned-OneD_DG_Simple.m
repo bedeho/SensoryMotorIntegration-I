@@ -8,6 +8,7 @@
 %  Purpose: Generates the simplest possible 1d dynamical data
 %
 
+%{
 function OneD_DG_Simple(prefix)
 
     % Import global variables
@@ -162,3 +163,4 @@ function OneD_DG_Simple(prefix)
 
     end
 end
+%}

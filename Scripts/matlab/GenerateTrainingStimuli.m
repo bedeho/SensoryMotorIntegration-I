@@ -1,5 +1,5 @@
 %
-%  OneD_DG_Random.m
+%  GenerateTrainingStimuli.m
 %  SMI
 %
 %  Created by Bedeho Mender on 08/02/12.
@@ -17,7 +17,7 @@
 %           linearly interpolated and saved at each point to file.
 %
 
-function OneD_DG_Random_Simple(prefix)
+function GenerateTrainingStimuli(prefix)
 
     % Import global variables
     declareGlobalVars();

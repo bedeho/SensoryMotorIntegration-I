@@ -10,6 +10,7 @@
 %  format for the analysis scripts.
 %
 
+%{
 function OneD_DG_TestOnFull(stimuliName, samplingRate, visualFieldSize, eyePositionFieldSize)
 
     % Import global variables
@@ -81,3 +82,4 @@ function OneD_DG_TestOnFull(stimuliName, samplingRate, visualFieldSize, eyePosit
     cd(startDir);
     
 end
+%}

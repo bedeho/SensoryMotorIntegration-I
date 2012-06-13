@@ -1,5 +1,5 @@
 %
-%  OneD_DG_Test.m
+%  OneD_DG_Test_OLD.m
 %  SMI
 %
 %  Created by Bedeho Mender on 15/11/11.
@@ -8,7 +8,8 @@
 %  Purpose: Generate testing data
 %
 
-function OneD_DG_Test(stimuliName, targetBoundary, visualFieldSize, eyePositionFieldSize, iterateEyeWise)
+%{
+function OneD_DG_Test_OLD(stimuliName, targetBoundary, visualFieldSize, eyePositionFieldSize, iterateEyeWise)
 
     % Import global variables
     declareGlobalVars();
@@ -102,3 +103,4 @@ function OneD_DG_Test(stimuliName, targetBoundary, visualFieldSize, eyePositionF
     end
     
 end
+%}
