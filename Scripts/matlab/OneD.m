@@ -6,6 +6,15 @@
 %  Copyright 2012 OFTNAI. All rights reserved.
 %
 %  Purpose: Generates the simplest possible 1d dynamical data
+%  
+%           Works by first generating a sequence of system
+%           states at each non-smooth point in the dynamics
+%           of the linear system, i.e. start and end of every 
+%           saccade. These points ARE NOT temporally quidistant
+%           because fixations last longer than saccades.
+%           Than this piecewise linear sequence is stepped through
+%           at fixed temporal intervals and the system state is
+%           linearly interpolated and saved at each point to file.
 %
 
 function OneD_DG_Random_Simple(prefix)

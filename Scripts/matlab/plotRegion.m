@@ -24,6 +24,9 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
         error('Region is to small');
     end
     
+    %% OLD CORRELATION
+    
+    %{
     % Compute region correlation
     corr = regionCorrelation(filename, info.nrOfEyePositionsInTesting);
     
@@ -31,14 +34,18 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     regionCorrelationPlot = figure();
     
     % IMAGESC CORRELATION
-    %imagesc(corr{region-1});
-    %colorbar;
+    imagesc(corr{region-1});
+    colorbar;
+    %}
     
-    % Plot region correlatio
+    %% NEW ANALYSIS
+    
     correlationVector = corr{region-1}(:);
     sortedCorrelations = sort(correlationVector,'descend');
     plot(sortedCorrelations,'-ob');
     axis([0 length(correlationVector) -1.1 1.1]);
+    
+    %% ORTHOGONALITY
     
     % Multiple indexes
     regionOrthogonalizationPlot = figure();
@@ -58,7 +65,7 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     imagesc(outputPatterns);
     colorbar;
     
-    % Invariance & Selectivity
+    %% Invariance & Selectivity
     [MeanObjects, MeanTransforms] = regionTrace(filename, info.nrOfEyePositionsInTesting);
     
     %% Compute invariance heuristic

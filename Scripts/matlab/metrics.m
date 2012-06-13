@@ -6,7 +6,7 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function [result] = metrics(filename, nrOfEyePositionsInTesting)
+function [analysis] = metrics(filename, nrOfEyePositionsInTesting)
 
     % Get dimensions
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
@@ -16,13 +16,16 @@ function [result] = metrics(filename, nrOfEyePositionsInTesting)
     
     % Setup vars
     numRegions = length(networkDimensions);
-    result = zeros(4,y_dimension, x_dimension); % (data,row,col), data is either head centerdness
+    analysis = zeros(4,y_dimension, x_dimension); % (data,row,col), data is either head centerdness
     % (1) = \lambda^a
     % (2) = \psi^a
     % (3) = \Omega^a
-    % (4) = t^a
+    % (4...[4+#targets]) = \chi
     
+    targets = ?;
     tMax = ?;
+    offset = targets(1);
+    delta = targets(2) - targets(1);
     
     % Get data
     dataPrEyePosition = data{numRegions,1};
@@ -37,20 +40,20 @@ function [result] = metrics(filename, nrOfEyePositionsInTesting)
             for col = 1:x_dimension,
 
                 % Lambda = average correlation
-                result(1,row, col) = computeLambda(row,col);
+                analysis(1,row, col) = computeLambda(row,col);
                 
                 % Psi = Confinedness
-                result(2,row, col) = computePsi(row,col,tMax);
+                analysis(2,row, col) = computePsi(row,col,tMax);
                 
                 % Omega = Lambda/Psi
-                if result(2,row, col) == 0
-                    result(3,row, col) = 0;
+                if analysis(2,row, col) == 0
+                    analysis(3,row, col) = 0;
                 else
-                    result(3,row, col) = result(1,row, col)/result(2,row, col);
+                    analysis(3,row, col) = analysis(1,row, col)/analysis(2,row, col);
                 end
                 
                 % t^a = Preference
-                result(4,row, col) = computeTa(row,col);
+                result(4,row, col) = computeChi(row,col);
             end
         end
     else
@@ -94,7 +97,7 @@ function [result] = metrics(filename, nrOfEyePositionsInTesting)
         % Iterate all combinations of eye positions
         for k = 1:nrOfEyePositionsInTesting,
             
-            intervals = findIntervals(dataPrEyePosition(:, k,row,col), $$$$offset, $$$4delta); % (interval bounds [a,b],interval)
+            intervals = findIntervals(dataPrEyePosition(:, k,row,col), offset, delta); % (interval bounds [a,b],interval)
             
             headCenteredMass = 0;
             [tmp, numberOfIntervals] = size(intervals); % tmp = 2, but ~ notation is not backwards compatible
@@ -115,7 +118,7 @@ function [result] = metrics(filename, nrOfEyePositionsInTesting)
         psi = confinedness / nrOfEyePositionsInTesting;
     end   
     
-    function chi = computeTa(row,col)
+    function chi = computeChi(row,col)
         
         % Find mean center off mas across fixations
         meanCenterOffMass = 0;
@@ -123,7 +126,7 @@ function [result] = metrics(filename, nrOfEyePositionsInTesting)
         for e=1:nrOfEyePositionsInTesting,
             
             responses = dataPrEyePosition(:, e,row,col);
-            centerOfMass = dot(responses,targets¤¤) / sum(responses);
+            centerOfMass = dot(responses,targets) / sum(responses);
             meanCenterOffMass = meanCenterOffMass + centerOfMass;
         end
         
