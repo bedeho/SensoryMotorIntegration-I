@@ -34,7 +34,7 @@ function responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesti
     end
     
     %%
-
+    
     % Clear out cells that respond to multiple objects
     % Note: Couldnt figure it out in vectorized form.
     numberOfObjectsRespondedTo = squeeze(sum(responsePerObject > 0)); % (row,col) = number of objects responded to atleast one transform of

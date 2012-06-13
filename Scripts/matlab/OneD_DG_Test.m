@@ -8,7 +8,7 @@
 %  Purpose: Generate testing data
 %
 
-function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, targets, eyePositions, iterateEyeWise)
+function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, targets, eyePositions)
 
     % Import global variables
     declareGlobalVars();
@@ -22,9 +22,9 @@ function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, visualFieldSi
         mkdir(stimuliFolder);
     end
     
-    if nargin < 8,
-        iterateEyeWise = true;
-    end
+    %if nargin < 8,
+    %    iterateEyeWise = true;
+    %end
         
     % Derived
     timeStep                    = 1/samplingRate;
@@ -40,22 +40,24 @@ function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, visualFieldSi
     fwrite(fileID, visualFieldSize, 'float');
     fwrite(fileID, eyePositionFieldSize, 'float');
    
+    % The ordering of these two loops
+    % controls interpretation of nrOfEyePositionsInTesting
     % Output data sequence for each target
-    if iterateEyeWise,
+    %if iterateEyeWise,
         
         for e = eyePositions,
             for t = targets,
-                outputSample()
+                outputSample(e,t)
             end
         end
-    else
-        
-        for t = targets,
-            for e = eyePositions,
-                outputSample()
-            end
-        end
-    end
+    %else
+    %    
+    %    for t = targets,
+    %        for e = eyePositions,
+    %            outputSample(e,t)
+    %        end
+    %    end
+    %end
 
     % Close file
     fclose(fileID);
@@ -70,13 +72,13 @@ function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, visualFieldSi
     
     % Save stats
     info.targets = targets;
-    info.nrOfEyePositionsInTesting = length(targets);
+    info.eyePositions = eyePositions;
     info.testingStyle = 'stdTest';
     save info;
 
     cd(startDir);
     
-    function outputSample()
+    function outputSample(e,t)
         
         for sampleCounter = 1:samplesPrLocation,
 

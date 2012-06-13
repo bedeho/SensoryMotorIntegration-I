@@ -124,16 +124,16 @@ function plotExperiment(experiment, stimuliName)
                     fprintf(fileID, '<td> %s </td>\n', summary(s).directory);
                     
                     %% Result 0
-                    %%fprintf(fileID, '<td><img src="%s" width="370px" height="300px"/></td>\n', [netDir '/result_1.png']);
+                    %%fprintf(fileID, '<td><img src="%s" width="100px" height="90px"/></td>\n', [netDir '/result_1.png']);
                     
                     %% Result 1
-                    fprintf(fileID, '<td><img src="%s" width="370px" height="300px"/></td>\n', [netDir '/orthogonality.png']);
+                    fprintf(fileID, '<td><img src="%s" width="100px" height="90px"/></td>\n', [netDir '/orthogonality.png']);
 
                     %% Result 2
-                    fprintf(fileID, '<td><img src="%s" width="370px" height="300px"/></td>\n', [netDirRelative '/invariance.png']);
+                    fprintf(fileID, '<td><img src="%s" width="100px" height="90px"/></td>\n', [netDirRelative '/invariance.png']);
 
                     %% Result 3
-                    %fprintf(fileID, '<td><img src="%s" width="370px" height="300px"/></td>\n', [netDir '/result_1.png']);
+                    %fprintf(fileID, '<td><img src="%s" width="100px" height="90px"/></td>\n', [netDir '/result_1.png']);
                     
                     %% Parameters
                     parameters = getParameters(simulation);
