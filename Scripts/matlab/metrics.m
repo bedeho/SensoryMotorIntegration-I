@@ -115,13 +115,24 @@ function [result] = metrics(filename, nrOfEyePositionsInTesting)
         psi = confinedness / nrOfEyePositionsInTesting;
     end   
     
-    function ta = computeTa(row,col)
+    function chi = computeTa(row,col)
+        
+        % Find mean center off mas across fixations
+        meanCenterOffMass = 0;
         
         for e=1:nrOfEyePositionsInTesting,
             
+            responses = dataPrEyePosition(:, e,row,col);
+            centerOfMass = dot(responses,targets¤¤) / sum(responses);
+            meanCenterOffMass = meanCenterOffMass + centerOfMass;
         end
         
+        meanCenterOffMass = meanCenterOffMass / nrOfEyePositionsInTesting;
+        
+        % return errors
+        chi = norm(targets - meanCenterOffMass);
     end
+
     %function [test] = isConstant(arr)
     %    
     %    test = isequal(arr(1) * ones(length(arr),1), arr);

@@ -26,8 +26,6 @@ function OneD_DG_Random_Simple(prefix)
     nrOfOrderings               = 1;
 
     % Derived
-    ticksPrSample = fixationDuration * samplingRate;
-
     possibleEyePositions = dimensions.leftMostEyePosition:saccadeAmplitude:dimensions.rightMostEyePosition;
     nrOfEyePositions = length(possibleEyePositions);
 
