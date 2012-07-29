@@ -42,10 +42,10 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     
     [analysis] = metrics(filename, nrOfEyePositionsInTesting)
     
-    correlationVector = corr{region-1}(:);
-    sortedCorrelations = sort(correlationVector,'descend');
-    plot(sortedCorrelations,'-ob');
-    axis([0 length(correlationVector) -1.1 1.1]);
+    %correlationVector = corr{region-1}(:);
+    %sortedCorrelations = sort(correlationVector,'descend');
+    %plot(sortedCorrelations,'-ob');
+    %axis([0 length(correlationVector) -1.1 1.1]);
     
     %% ORTHOGONALITY
     
