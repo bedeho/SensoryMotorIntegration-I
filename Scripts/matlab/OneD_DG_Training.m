@@ -29,10 +29,10 @@ function OneD_DG_Training(prefix)
     
     % Parameters
     saccadeVelocity             = 400;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    samplingRate                = 1000;	% (Hz)
-    fixationDuration            = 0.020;  % 0.25;	% (s) - fixation period after each saccade
+    samplingRate                = 1000;	%1000 % (Hz)
+    fixationDuration            = 0.500;  % 0.02;	% (s) - fixation period after each saccade
     saccadeAmplitude            = 50;    % 35= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
-    nrOfOrderings               = 8;
+    nrOfOrderings               = 1;
 
     % Derived
     possibleEyePositions = dimensions.leftMostEyePosition:saccadeAmplitude:dimensions.rightMostEyePosition;
@@ -56,7 +56,7 @@ function OneD_DG_Training(prefix)
     encodePrefix = [encodePrefix '-sS=' num2str(dimensions.sigmoidSlope,'%.2f')];
     encodePrefix = [encodePrefix '-vF=' num2str(dimensions.visualFieldSize,'%.2f')];
     encodePrefix = [encodePrefix '-eF=' num2str(dimensions.eyePositionFieldSize,'%.2f')];
-    tSFolderName = ['random-' encodePrefix];
+    tSFolderName = [encodePrefix]; %['random-' encodePrefix];
     
     tSPath = [base 'Stimuli/' tSFolderName '-training'];
     
@@ -83,6 +83,9 @@ function OneD_DG_Training(prefix)
     r = dimensions.numberOfSimultanousObjects;
     unsampledPerms = combnk(1:n, r);
     
+    figure;
+    hold on;
+
     % Iterate target combinations
     while ~isempty(unsampledPerms),
 
@@ -121,7 +124,7 @@ function OneD_DG_Training(prefix)
     OneD_DG_Test(tSFolderName, samplingRate, fixationDuration, dimensions.visualFieldSize, dimensions.eyePositionFieldSize, dimensions.targets, possibleEyePositions);
     
     % Generate correlation data
-    OneD_DG_Correlation([tSFolderName '-stdTest']);
+    %%OneD_DG_Correlation([tSFolderName '-stdTest']);
     
     % Visualize
     OneD_Overlay([tSFolderName '-training'],[tSFolderName '-stdTest'])
@@ -130,7 +133,7 @@ function OneD_DG_Training(prefix)
         
         for o=1:nrOfOrderings,
             
-            eyePositionOrder = randperm(nrOfEyePositions)
+            eyePositionOrder = randperm(nrOfEyePositions);
             
             % Generate the cirtical points of the
             eyePositionsInOrder = possibleEyePositions(eyePositionOrder); % Translate eye position indexes into actual positions
@@ -174,8 +177,10 @@ function OneD_DG_Training(prefix)
             state = [time ep retinalTargets];
             points(:,dataPoint*2) = state;
                         
-            % Add saccade time if there is a subsequent saccade
+            % Add saccade time if there is a subsequent saccade,
+            % which is the case for all but the last iteration
             if dataPoint < length(order),
+                % later realized: we dont need to test this!
                 distance = abs(order(dataPoint+1) - ep); % distance between the old and new fixation points
                 time = time + distance/saccadeVelocity ; % the time it takes to saccade
             end
@@ -196,10 +201,15 @@ function OneD_DG_Training(prefix)
             % Interpolate the state from at time
             state = interpolateState(criticalPoints, time);
             
+            % Remove time
+            state = state(2:end)';
+            
             fwrite(fileID, state, 'float');
              
             % Next sample
             time = time + 1/samplingRate;
+            
+            plot(state(1),state(2),'ro');hold on;
         end
         
     end
@@ -213,7 +223,7 @@ function OneD_DG_Training(prefix)
         % the means that point c-1 will be some time prior to desired
         % time by definition.
         while criticalPoints(1,c) < time,
-            c++
+            c = c + 1;
         end
         
         % If the very first data point is desired, then
@@ -226,7 +236,7 @@ function OneD_DG_Training(prefix)
             % Get some time points
             before = criticalPoints(:,c-1);
             after = criticalPoints(:,c);
-            overflow = time - after(1);
+            overflow = after(1) - time;
             
             % Get change rate
             delta = after - before;
