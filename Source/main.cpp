@@ -219,6 +219,4 @@ void usage() {
 
 	cout << "\t run\t Test trained network." << endl;
 	cout << "\t\t\t  test <parameter file> <untrained network file> <data file> <output directory>" << endl;
-    
-    
 }

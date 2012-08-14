@@ -39,11 +39,9 @@ function intervals = findIntervals(pts, offset, delta)
                 else
                     a_i = findIntercept(); % interpoalte start of interval
                 end
-
-                intervals = [intervals [0; 0]]; %add an extra column for new interval
-
-                % save begining value of interval
-                intervals(1,end) = a_i;
+                
+                %add an extra column for new interval: save begining value of interval
+                intervals = [intervals [a_i; 0]];
 
                 % Indicate that we are in an interval
                 isInInterval = true;

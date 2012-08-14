@@ -24,6 +24,8 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
         error('Region is to small');
     end
     
+    nrOfEyePositionsInTesting = length(info.eyePositions)
+    
     %% OLD CORRELATION
     
     %{
@@ -40,7 +42,24 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     
     %% NEW ANALYSIS
     
-    [analysis] = metrics(filename, nrOfEyePositionsInTesting)
+    % analysis
+    % (1) = \lambda^a
+    % (2) = \psi^a
+    % (3) = \Omega^a
+    % (4...[4+#targets]) = \chi
+    [analysis] = metrics(filename, info);
+    
+    regionOmega = analysis(3,:,:);
+    corr = sort(regionOmega(:),'descend');
+    
+    % Plot region correlation
+    regionCorrelationPlot = figure();
+    
+    % IMAGESC CORRELATION
+    plot(corr);
+    axis([0 numel(corr) -1.1 1.1]);
+    xlabel('Cell Rank');
+    ylabel('\Omega_a');
     
     %correlationVector = corr{region-1}(:);
     %sortedCorrelations = sort(correlationVector,'descend');
@@ -53,7 +72,7 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     regionOrthogonalizationPlot = figure();
     
     % Compute orthogonalization
-    [outputPatterns, orthogonalityIndex, inputCorrelations, outputCorrelations] = regionOrthogonality(filename, info.nrOfEyePositionsInTesting, dotproduct, region);
+    [outputPatterns, orthogonalityIndex, inputCorrelations, outputCorrelations] = regionOrthogonality(filename, nrOfEyePositionsInTesting, dotproduct, region);
         
     scatter(inputCorrelations,outputCorrelations);
     xlabel('Input Correlations');
@@ -68,18 +87,18 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     colorbar;
     
     %% Invariance & Selectivity
-    [MeanObjects, MeanTransforms] = regionTrace(filename, info.nrOfEyePositionsInTesting);
+    [MeanObjects, MeanTransforms] = regionTrace(filename, nrOfEyePositionsInTesting);
     
     %% Compute invariance heuristic
     invariancePlot = figure();
     
-    responseCounts = invarianceHeuristics(filename, info.nrOfEyePositionsInTesting);
+    responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting);
 
     bar(responseCounts');
     
     %{
 
-    responseCounts = invarianceHeuristics(filename, info.nrOfEyePositionsInTesting);
+    responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting);
     markerSpecifiers = {'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>', 'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>'};
     
     % Plot a line for each object

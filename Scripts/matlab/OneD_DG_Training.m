@@ -31,8 +31,8 @@ function OneD_DG_Training(prefix)
     saccadeVelocity             = 400;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     samplingRate                = 1000;	%1000 % (Hz)
     fixationDuration            = 0.500;  % 0.02;	% (s) - fixation period after each saccade
-    saccadeAmplitude            = 50;    % 35= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
-    nrOfOrderings               = 1;
+    saccadeAmplitude            = 35;    % 35= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
+    nrOfOrderings               = 4;
 
     % Derived
     possibleEyePositions = dimensions.leftMostEyePosition:saccadeAmplitude:dimensions.rightMostEyePosition;
@@ -98,7 +98,9 @@ function OneD_DG_Training(prefix)
         targets = dimensions.targets(showTargets);
         
         % Output all samples for this target combination
+        debugCounter = 0;
         outputFixationOrders(targets);
+        disp(debugCounter);
         
         fwrite(fileID, NaN('single'), 'float');         % transform flag
         
@@ -124,7 +126,7 @@ function OneD_DG_Training(prefix)
     OneD_DG_Test(tSFolderName, samplingRate, fixationDuration, dimensions.visualFieldSize, dimensions.eyePositionFieldSize, dimensions.targets, possibleEyePositions);
     
     % Generate correlation data
-    %%OneD_DG_Correlation([tSFolderName '-stdTest']);
+    OneD_DG_Correlation([tSFolderName '-stdTest']);
     
     % Visualize
     OneD_Overlay([tSFolderName '-training'],[tSFolderName '-stdTest'])
@@ -210,6 +212,7 @@ function OneD_DG_Training(prefix)
             time = time + 1/samplingRate;
             
             plot(state(1),state(2),'ro');hold on;
+            debugCounter = debugCounter + 1;
         end
         
     end

@@ -83,8 +83,11 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
         for o = 1:objectsFound,
             
             tmp = objects{o};
-            plot(0:timeStep:totalTimePerObject, tmp(:,1) , markerSpecifiers{o});
+            yvals = tmp(:,1);
+            ticks = (0:(length(yvals)-1)) * timeStep;
+            plot(ticks, yvals , markerSpecifiers{o});
 
+            
             hold on;
         end
 

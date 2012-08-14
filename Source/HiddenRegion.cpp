@@ -119,7 +119,7 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
                     bufferSize *= p.nrOfRecordedSingleCells[regionNr-1];
                 
                 int regionSynapseBufferSize = bufferSize*desiredFanIn;
-                synapseHistoryBuffer.resize(regionSynapseBufferSize);
+                synapseHistoryBuffer.resize(regionSynapseBufferSize,-1); // put in -1 junk for safety
                 
                 cout << "***>> Allocated synapse buffer space for region #" << regionNr << " = " << regionSynapseBufferSize << " data points (float)." << endl;
             }
@@ -134,12 +134,13 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
         bufferSize = outputsPerCell*depth*verDimension*horDimension;
     }
     
-    this->activationBuffer.resize(bufferSize);
-    this->inhibitedActivationHistoryBuffer.resize(bufferSize);
-    this->firingRateBuffer.resize(bufferSize);
-    this->traceBuffer.resize(bufferSize);
-    this->stimulationBuffer.resize(bufferSize);
-    this->effectiveTraceBuffer.resize(bufferSize);
+    // Resize, put in -1 junk for safety
+    this->activationBuffer.resize(bufferSize,-1);
+    this->inhibitedActivationHistoryBuffer.resize(bufferSize,-1);
+    this->firingRateBuffer.resize(bufferSize,-1);
+    this->traceBuffer.resize(bufferSize,-1);
+    this->stimulationBuffer.resize(bufferSize,-1);
+    this->effectiveTraceBuffer.resize(bufferSize,-1);
 
     this->sparsityPercentileValue = vector<float>(outputsPerRegion);
     

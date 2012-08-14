@@ -26,6 +26,7 @@ function plotExperiment(experiment, stimuliName)
     
     C = load('info.mat');
     info = C.info;
+    nrOfEyePositionsInTesting = length(info.eyePositions);
     
     C = load('dotproduct.mat'); 
     dotproduct = C.dotproduct;
@@ -74,9 +75,9 @@ function plotExperiment(experiment, stimuliName)
     fprintf(fileID, '<thead><tr>');
     fprintf(fileID, '<th>Name</th>');
     fprintf(fileID, '<th>Network</th>');
-    fprintf(fileID, '<th>Result 1</th>');
+    %fprintf(fileID, '<th>Result 1</th>');
     fprintf(fileID, '<th>Result 2</th>');
-    %fprintf(fileID, '<th>Result 3</th>');
+    fprintf(fileID, '<th>Result 3</th>');
     for p = 1:nrOfParams,
         fprintf(fileID, ['<th>' parameters{p,1} '</th>']);
     end
@@ -127,13 +128,13 @@ function plotExperiment(experiment, stimuliName)
                     %%fprintf(fileID, '<td><img src="%s" width="100px" height="90px"/></td>\n', [netDir '/result_1.png']);
                     
                     %% Result 1
-                    fprintf(fileID, '<td><img src="%s" width="100px" height="90px"/></td>\n', [netDir '/orthogonality.png']);
+                    %fprintf(fileID, '<td><img src="%s" width="100px" height="90px"/></td>\n', [netDir '/orthogonality.png']);
 
                     %% Result 2
                     fprintf(fileID, '<td><img src="%s" width="100px" height="90px"/></td>\n', [netDirRelative '/invariance.png']);
 
                     %% Result 3
-                    %fprintf(fileID, '<td><img src="%s" width="100px" height="90px"/></td>\n', [netDir '/result_1.png']);
+                    fprintf(fileID, '<td><img src="%s" width="100px" height="90px"/></td>\n', [netDir '/result_1.png']);
                     
                     %% Parameters
                     parameters = getParameters(simulation);
@@ -177,9 +178,9 @@ function plotExperiment(experiment, stimuliName)
                     fprintf(fileID, '<td>\n');
                     %outputButton('Correlation', ['matlab:open(\\''' netDir '/result_1.fig\\'')']);
                     outputButton('Output Orthogonalization', ['matlab:open(\\''' netDir '/outputOrthogonality.fig\\'')']);
-                    outputButton('Response', ['matlab:inspectResponse(\\''' netDir '/firingRate.dat\\'',' num2str(info.nrOfEyePositionsInTesting) ')']);
-                    outputButton('Weights', ['matlab:inspectWeights(\\''' netDir '/' summary(s).directory '.txt\\'',\\''' netDir '/firingRate.dat\\'',' num2str(info.nrOfEyePositionsInTesting) ')']);
-                    outputButton('Repr.', ['matlab:inspectRepresentation(\\''' netDir '/firingRate.dat\\'',' num2str(info.nrOfEyePositionsInTesting) ')']); 
+                    outputButton('Response', ['matlab:inspectResponse(\\''' netDir '/firingRate.dat\\'',' num2str(nrOfEyePositionsInTesting) ')']);
+                    outputButton('Weights', ['matlab:inspectWeights(\\''' netDir '/' summary(s).directory '.txt\\'',\\''' netDir '/firingRate.dat\\'',' num2str(nrOfEyePositionsInTesting) ')']);
+                    outputButton('Repr.', ['matlab:inspectRepresentation(\\''' netDir '/firingRate.dat\\'',' num2str(nrOfEyePositionsInTesting) ')']); 
                     outputButton('F', ['matlab:plotNetworkHistoryDANIEL(\\''' netDir '/firingRate.dat\\'')']); 
                     outputButton('A', ['matlab:plotNetworkHistoryDANIEL(\\''' netDir '/activation.dat\\'')']);
                     outputButton('IA', ['matlab:plotNetworkHistoryDANIEL(\\''' netDir '/inhibitedActivation.dat\\'')']);

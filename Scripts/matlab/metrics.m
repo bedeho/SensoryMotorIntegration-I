@@ -6,34 +6,38 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function [analysis] = metrics(filename, nrOfEyePositionsInTesting)
+function [analysis] = metrics(filename, info)
 
     % Get dimensions
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
     
     % Load data
+    nrOfEyePositionsInTesting = length(info.eyePositions);
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting);
     
     % Setup vars
     numRegions = length(networkDimensions);
-    analysis = zeros(4,y_dimension, x_dimension); % (data,row,col), data is either head centerdness
+    
+    dataPrEyePosition = data{numRegions-1,1};
+        
+    y_dimension = networkDimensions(numRegions).y_dimension;
+    x_dimension = networkDimensions(numRegions).x_dimension;
+    analysis = zeros(3 + objectsPrEyePosition,y_dimension, x_dimension); % (data,row,col), data is either head centerdness
+    
+    % length(targets) == objectsPrEyePosition
+    
     % (1) = \lambda^a
     % (2) = \psi^a
     % (3) = \Omega^a
     % (4...[4+#targets]) = \chi
     
-    targets = ?;
-    tMax = ?;
+    targets = info.targets;
     offset = targets(1);
     delta = targets(2) - targets(1);
-    
-    % Get data
-    dataPrEyePosition = data{numRegions,1};
-    y_dimension = networkDimensions(numRegions).y_dimension;
-    x_dimension = networkDimensions(numRegions).x_dimension;
+    tMax = delta; % can be smaller!
 
     % Compute metrics
-    if networkDimensions(r).isPresent,
+    if networkDimensions(numRegions).isPresent,
         
         % Iterate cells
         for row = 1:y_dimension,
@@ -43,8 +47,8 @@ function [analysis] = metrics(filename, nrOfEyePositionsInTesting)
                 analysis(1,row, col) = computeLambda(row,col);
                 
                 % Psi = Confinedness
-                analysis(2,row, col) = computePsi(row,col,tMax);
-                
+                analysis(2,row, col) = computePsi(row,col);
+
                 % Omega = Lambda/Psi
                 if analysis(2,row, col) == 0
                     analysis(3,row, col) = 0;
@@ -53,7 +57,7 @@ function [analysis] = metrics(filename, nrOfEyePositionsInTesting)
                 end
                 
                 % t^a = Preference
-                result(4,row, col) = computeChi(row,col);
+                analysis(4:end,row, col) = computeChi(row,col);
             end
         end
     else
@@ -80,6 +84,11 @@ function [analysis] = metrics(filename, nrOfEyePositionsInTesting)
                     c = correlationMatrix(1,2); % pick one of the two identical non-diagonal element :)
 
                 %end
+                
+                % c=NaN if neither neuron responds to anything
+                if isnan(c)
+                    c = 0;
+                end
 
                 corr = corr + c;
                 combinations = combinations + 1;
@@ -89,7 +98,23 @@ function [analysis] = metrics(filename, nrOfEyePositionsInTesting)
         
         lambda = corr / combinations;
     end
-    
+
+    function psi = computePsi(row,col)
+
+        f = zeros(1,nrOfEyePositionsInTesting);
+
+        % Iterate all combinations of eye positions
+        for k = 1:nrOfEyePositionsInTesting,
+
+            v = dataPrEyePosition(:, k,row,col);
+            f(k) = nnz(v > mean(v));
+
+        end
+
+        psi = max(f);
+    end   
+
+%{
     function psi = computePsi(row,col,tMax)
         
         confinedness = 0;
@@ -117,7 +142,8 @@ function [analysis] = metrics(filename, nrOfEyePositionsInTesting)
         
         psi = confinedness / nrOfEyePositionsInTesting;
     end   
-    
+    %}
+
     function chi = computeChi(row,col)
         
         % Find mean center off mas across fixations
@@ -127,6 +153,7 @@ function [analysis] = metrics(filename, nrOfEyePositionsInTesting)
             
             responses = dataPrEyePosition(:, e,row,col);
             centerOfMass = dot(responses,targets) / sum(responses);
+            
             meanCenterOffMass = meanCenterOffMass + centerOfMass;
         end
         

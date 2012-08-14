@@ -38,7 +38,7 @@ void InputRegion::init(Param & p, const char * dataFile, gsl_rng * rngController
 
     // No call to region.init()
     
-    // Compute preferences
+    // Compute and populate preference vectors
     centerDistance(horVisualPreferences, p.horVisualFieldSize, p.visualPreferenceDistance);
     centerDistance(horEyePreferences, p.horEyePositionFieldSize, p.eyePositionPrefrerenceDistance);
     
@@ -138,6 +138,7 @@ void InputRegion::centerDistance(vector<float> & v, float width, float distance)
 void InputRegion::loadDataFile(const char * dataFile) {
     
     // Initialize som variables we will be working with
+	u_short maxSamplesFound = 0;
     this->nrOfObjects = 0;
     this->samplesPrObject = 0;
     
@@ -145,7 +146,7 @@ void InputRegion::loadDataFile(const char * dataFile) {
     BinaryRead file(dataFile);
     
     // Variables that must be visible in catch clause
-    u_short lastNrOfSamplesFound = 0; // For validation of file list
+    //u_short lastNrOfSamplesFound = 0; // For validation of file list
     
     bool readAFullSample = false;
     bool readHeader = false;
@@ -177,12 +178,12 @@ void InputRegion::loadDataFile(const char * dataFile) {
             // NaN encodes end of "object", like '*' did in VisNet
             if(std::isnan(e)) {
                 
-                if(lastNrOfSamplesFound != 0 && lastNrOfSamplesFound != samplesPrObject) {
-                    
-                    cerr << "Number of samples varied across objects" << endl;
-                    cerr.flush();
-                    exit(EXIT_FAILURE);
-                }
+                //if(lastNrOfSamplesFound != 0 && lastNrOfSamplesFound != samplesPrObject) {
+                //
+                //    cerr << "Number of samples varied across objects" << endl;
+                //    cerr.flush();
+                //    exit(EXIT_FAILURE);
+                //}
                 
                 cout << "Loaded object " << nrOfObjects << endl;
                 
@@ -190,7 +191,11 @@ void InputRegion::loadDataFile(const char * dataFile) {
                 objectData.clear();
                 nrOfObjects++;
                 
-                lastNrOfSamplesFound = samplesPrObject;
+                // Save if this is greater present maximum
+                if(maxSamplesFound < samplesPrObject)
+                	maxSamplesFound = samplesPrObject;
+
+                //lastNrOfSamplesFound = samplesPrObject;
                 samplesPrObject = 0;
                 
             } else {
@@ -225,12 +230,13 @@ void InputRegion::loadDataFile(const char * dataFile) {
             cerr.flush();
             exit(EXIT_FAILURE);
            
-        } else if (samplesPrObject != 0) {
-            
-            // Last object had different number of samples
-            cerr << "Number of samples varied across objects" << endl;            
-            cerr.flush();
-            exit(EXIT_FAILURE);
+        //} else if (samplesPrObject != 0) {
+        //
+        //    // Last object had different number of samples
+        //    cerr << "Number of samples varied across objects" << endl;
+        //    cerr.flush();
+        //    exit(EXIT_FAILURE);
+        //
             
         } else if (!readHeader){          
             cout << "Was unable to read header of data file." << endl;
@@ -240,7 +246,8 @@ void InputRegion::loadDataFile(const char * dataFile) {
         else { 
 
             // Success!
-            samplesPrObject = lastNrOfSamplesFound;            
+            //samplesPrObject = lastNrOfSamplesFound;
+            samplesPrObject = maxSamplesFound;
             cout << "Objects: " << nrOfObjects << ", Samples/Object: " << samplesPrObject << endl;
         }
     }
@@ -278,7 +285,7 @@ void InputRegion::setFiringRate(u_short object, float time) {
             }
     }
 }
-*/0
+*/
 
 // Classic
 void InputRegion::setFiringRate(u_short object, float time) {
@@ -306,8 +313,9 @@ void InputRegion::linearInterpolate(u_short object, float time) {
     if(!(data[object].size() > sampleIndex)) {
         
         cerr << "Time is outside of recorded data: time=" << time << ", sampleIndex=" << sampleIndex << ", size=" << data[object].size() << endl;
-        cerr.flush();
-        exit(EXIT_FAILURE);
+        //cerr.flush();
+        //exit(EXIT_FAILURE);
+        sampleIndex = data[object].size() - 1; // JUST PUT IN LAST SAMPLE
     }
     
     // Time between 

@@ -37,7 +37,7 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             
             netDir = [simulationFolder directory];
             
-            [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot,regionCorrelationPlot, regionCorrelation, invariancePlot] = plotRegion([netDir '/firingRate.dat'], info, dotproduct);
+            [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, regionCorrelation, invariancePlot] = plotRegion([netDir '/firingRate.dat'], info, dotproduct);
             
             % regionCorrelationPlot
             saveas(regionCorrelationPlot,[netDir '/result_1.fig']);
@@ -61,7 +61,7 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             
             % Save results for summary
             summary(counter).directory = directory;
-            summary(counter).nrOfHeadCenteredCells = nnz(regionCorrelation{end} > 0); % Count number of cells with positive correlation
+            summary(counter).nrOfHeadCenteredCells = nnz(regionCorrelation > 0); % Count number of cells with positive correlation
             summary(counter).orthogonalityIndex = orthogonalityIndex;
             summary(counter).MeanObjects = MeanObjects;
             summary(counter).MeanTransforms = MeanTransforms;
