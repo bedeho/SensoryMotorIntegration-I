@@ -5,9 +5,29 @@
 	use warnings FATAL => 'all';
 	use base qw(Exporter);
 
-	our @EXPORT = qw(compare trim validateArray);
+	our @EXPORT = qw(compare 
+			trim 
+			validateArray
+			FULL_CONNECTIVITY
+			SPARSE_CONNECTIVITY
+			SPARSE_BIASED
+			NO_HISTORY
+			ALL
+			NO_SYNAPSE 
+			SINGLE_CELLS 
+			);
+
+        # Connectivity
+        use constant FULL_CONNECTIVITY => 0;
+        use constant SPARSE_CONNECTIVITY => 1;
+        use constant SPARSE_BIASED => 2;
+
+        # saveHistory
+        use constant NO_HISTORY => 0;
+        use constant ALL => 1;
+        use constant NO_SYNAPSE => 2;
+        use constant SINGLE_CELLS => 3;
 	
-			
 	# WE MUST MAKE SURE THAT THERE ARE NO DUPLICATES IN THE
 	# PARAMTER RANGES, OTHERWISE WE WILL OVERWRITE EXPERIMENT NAMES
 	sub validateArray {
