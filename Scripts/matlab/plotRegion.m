@@ -6,7 +6,7 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, corr, invariancePlot] = plotRegion(filename, info, dotproduct, region, depth)
+function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, corr, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
 
     % Get dimensions
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
@@ -46,21 +46,34 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     % (1) = \lambda^a
     % (2) = \psi^a
     % (3) = \Omega^a
-    % (4...[4+#targets]) = \chi
+    % (4) = best match target
+    % (5...[5+#targets]) = \chi
     [analysis] = metrics(filename, info);
     
-    regionOmega = analysis(3,:,:);
-    corr = sort(regionOmega(:),'descend');
+    omegaMatrix = squeeze(analysis(3,:,:));
+    preferenceMatrix = squeeze(analysis(4,:,:));
+    corr = sort(omegaMatrix(:),'descend');
     
     % Plot region correlation
     regionCorrelationPlot = figure();
     
-    % IMAGESC CORRELATION
     plot(corr);
     axis([0 numel(corr) -1.1 1.1]);
     xlabel('Cell Rank');
     ylabel('\Omega_a');
     
+    % Plot Omega/preference
+    %figure();
+    %subplot(1,2,1);
+    %imagesc(omegaMatrix);
+    %subplot(1,2,2);
+    %imagesc(preferenceMatrix);
+    %title('region');
+    
+    % Head distribution
+    distributionPlot = doDistributionPlot(omegaMatrix,preferenceMatrix);
+    
+    % IMAGESC CORRELATION
     %correlationVector = corr{region-1}(:);
     %sortedCorrelations = sort(correlationVector,'descend');
     %plot(sortedCorrelations,'-ob');
@@ -94,7 +107,7 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     
     responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting);
 
-    bar(responseCounts');
+    bar(responseCounts);
     
     %{
 
@@ -117,5 +130,51 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     
     legend(objectLegend);
     %}
+    
+    function p = doDistributionPlot(omegaMatrix,preferenceMatrix)
+        
+        % Make figure
+        p = figure();
+        
+        % Omega resoltion
+        dO = 0.1;
+        omegaBins = dO:dO:1; % Bin b (b=1,2,...) keeps all cells with omega value in range dO * (b-1,b];
+        
+        % make space
+        % dist(1, bin) = min
+        % dist(2, bin) = mean
+        % dist(3, bin) = max
+        dist = zeros(3,length(omegaBins));
+        
+        % targetBins
+        targetBins = (0:length(info.targets)) + 0.5;
+        
+        % Populate bins
+        for b = 1:length(omegaBins),
+        
+          % Find eligable neurons: omega value within bin AND with a good
+          % target match (match > 0)
+          neurons = squeeze(omegaMatrix > (b-1)*dO & omegaMatrix <= b*dO & preferenceMatrix > 0); %
+          
+          % Make histogram of neurons over targets they prefer
+          histogram = histc(analysis(4,neurons),targetBins);
+          cHist = histogram(1:(end-1));
+          
+          % Save result
+          dist(1,b) = min(cHist);
+          dist(2,b) = mean(cHist);
+          dist(3,b) = max(cHist);
+        
+        end
+        
+        % Plot bar
+        upper = dist(3,:) - dist(2,:);
+        lower = dist(2,:) - dist(1,:);
+        X = 1:length(dist);
+        Y = dist(2,:);
+        errorbar(X,Y,lower,upper)
+        %plot(1:length(dist),dist(2,:));
+        
+    end
 
 end

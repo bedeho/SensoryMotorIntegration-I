@@ -53,9 +53,13 @@ function [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEy
 
             % Zero out error terms
             dataPrEyePosition(dataPrEyePosition < floatError) = 0; % Cutoff for being designated as silent
-
+            
+            % Reshufle dimensions
+            dataPrEyePosition = permute(dataPrEyePosition,[2 1 3 4]);
+            
             % Save in cell array
             data{r-1,1} = dataPrEyePosition;
         end
+        
     end
    

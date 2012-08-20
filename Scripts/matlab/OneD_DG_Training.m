@@ -31,7 +31,7 @@ function OneD_DG_Training(prefix)
     saccadeVelocity             = 400;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     samplingRate                = 1000;	%1000 % (Hz)
     fixationDuration            = 0.500;  % 0.02;	% (s) - fixation period after each saccade
-    saccadeAmplitude            = 35;    % 35= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
+    saccadeAmplitude            = 25;    % 35= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
     nrOfOrderings               = 4;
 
     % Derived

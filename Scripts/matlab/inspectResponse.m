@@ -14,6 +14,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
     % Load data
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting); % (object, eye_position, row, col, region)
     regionCorrs = regionCorrelation(filename, nrOfEyePositionsInTesting);
+    %[analysis] = metrics(filename, info);
     
     % Load single unit recordings
   
@@ -116,7 +117,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
 
             responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting);
 
-            bar(responseCounts');
+            bar(responseCounts);
             
             %{
             % Plot a line for each object
@@ -164,7 +165,8 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
             %% SIMON STYLE - object based line plot
             %%{
             
-            bar(data{region-1}(:, :, row, col));
+            cellData = data{region-1}(:, :, row, col)
+            bar(cellData);
             
             set(gca,'YLim',[-0.1 1.1]);
             

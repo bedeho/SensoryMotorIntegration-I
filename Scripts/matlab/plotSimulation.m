@@ -37,7 +37,7 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             
             netDir = [simulationFolder directory];
             
-            [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, regionCorrelation, invariancePlot] = plotRegion([netDir '/firingRate.dat'], info, dotproduct);
+            [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, regionCorrelation, invariancePlot, distributionPlot] = plotRegion([netDir '/firingRate.dat'], info, dotproduct);
             
             % regionCorrelationPlot
             saveas(regionCorrelationPlot,[netDir '/result_1.fig']);
@@ -58,6 +58,11 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             saveas(invariancePlot, [netDir '/invariance.fig']);
             saveas(invariancePlot, [netDir '/invariance.png']);
             delete(invariancePlot);
+            
+            % distributionPlot
+            saveas(distributionPlot, [netDir '/dist.fig']);
+            saveas(distributionPlot, [netDir '/dist.png']);
+            %delete(distributionPlot);            
             
             % Save results for summary
             summary(counter).directory = directory;

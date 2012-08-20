@@ -22,19 +22,20 @@ function [analysis] = metrics(filename, info)
         
     y_dimension = networkDimensions(numRegions).y_dimension;
     x_dimension = networkDimensions(numRegions).x_dimension;
-    analysis = zeros(3 + objectsPrEyePosition,y_dimension, x_dimension); % (data,row,col), data is either head centerdness
+    analysis = zeros(4 + objectsPrEyePosition,y_dimension, x_dimension); % (data,row,col), data is either head centerdness
     
     % length(targets) == objectsPrEyePosition
     
     % (1) = \lambda^a
     % (2) = \psi^a
     % (3) = \Omega^a
-    % (4...[4+#targets]) = \chi
+    % (4) = best match target
+    % (5...[5+#targets]) = \chi
     
     targets = info.targets;
-    offset = targets(1);
-    delta = targets(2) - targets(1);
-    tMax = delta; % can be smaller!
+    %offset = targets(1);
+    %delta = targets(2) - targets(1);
+    %tMax = delta; % can be smaller!
 
     % Compute metrics
     if networkDimensions(numRegions).isPresent,
@@ -56,8 +57,13 @@ function [analysis] = metrics(filename, info)
                     analysis(3,row, col) = analysis(1,row, col)/analysis(2,row, col);
                 end
                 
+                [match,chi] = computeChi(row,col);
+                
+                % best match
+                analysis(4,row, col) = match;
+                
                 % t^a = Preference
-                analysis(4:end,row, col) = computeChi(row,col);
+                analysis(5:end,row, col) = chi;
             end
         end
     else
@@ -73,7 +79,7 @@ function [analysis] = metrics(filename, info)
         for ep_1 = 1:(nrOfEyePositionsInTesting - 1),
             for ep_2 = (ep_1+1):nrOfEyePositionsInTesting,
 
-                observationMatrix = [dataPrEyePosition(:, ep_1,row,col) dataPrEyePosition(:, ep_2,row,col)];
+                observationMatrix = [dataPrEyePosition(ep_1,:,row,col)' dataPrEyePosition(ep_2,:,row,col)'];
 
                 %if isConstant(observationMatrix(:, 1)) || isConstant(observationMatrix(:, 2)),
                 %    c = 0; % uncorrelated
@@ -106,7 +112,7 @@ function [analysis] = metrics(filename, info)
         % Iterate all combinations of eye positions
         for k = 1:nrOfEyePositionsInTesting,
 
-            v = dataPrEyePosition(:, k,row,col);
+            v = dataPrEyePosition(k,:,row,col);
             f(k) = nnz(v > mean(v));
 
         end
@@ -144,23 +150,39 @@ function [analysis] = metrics(filename, info)
     end   
     %}
 
-    function chi = computeChi(row,col)
+    function [match,chi] = computeChi(row,col)
         
         % Find mean center off mas across fixations
         meanCenterOffMass = 0;
+        changedCenterOfMass = false;
         
         for e=1:nrOfEyePositionsInTesting,
             
-            responses = dataPrEyePosition(:, e,row,col);
+            responses = dataPrEyePosition(e, :,row,col);
             centerOfMass = dot(responses,targets) / sum(responses);
             
-            meanCenterOffMass = meanCenterOffMass + centerOfMass;
+            % dont include fixation if there was NO response, i.e. sum() =
+            % 0, i.e centerOfMass is NaN
+            if ~isnan(centerOfMass)
+                meanCenterOffMass = meanCenterOffMass + centerOfMass;
+                changedCenterOfMass = true;
+            end
         end
         
         meanCenterOffMass = meanCenterOffMass / nrOfEyePositionsInTesting;
         
         % return errors
-        chi = norm(targets - meanCenterOffMass);
+        chi = (targets - meanCenterOffMass).^2;
+        [C I] = min(chi);
+        match = I;
+        
+        % If tehre are NaN entries, it means this is 
+        % a non-responsive neuron for atleast one eye position,
+        % and hence we mark it so it will not be par tof analysis
+        if ~changedCenterOfMass,
+            match = -1;
+            chi = -1 * ones(1,length(targets));
+        end
     end
 
     %function [test] = isConstant(arr)

@@ -39,7 +39,7 @@ function [regionCorrelation] = regionCorrelation(filename, nrOfEyePositionsInTes
 
                     for eyePosition = 1:(nrOfEyePositionsInTesting - 1),
 
-                        observationMatrix = [dataPrEyePosition(:, eyePosition,row,col) dataPrEyePosition(:, eyePosition+1,row,col)];
+                        observationMatrix = [dataPrEyePosition(eyePosition, :, row,col)' dataPrEyePosition(eyePosition+1, :,row,col)'];
 
                         if isConstant(observationMatrix(:, 1)) || isConstant(observationMatrix(:, 2)),
                             c = 0; % uncorrelated

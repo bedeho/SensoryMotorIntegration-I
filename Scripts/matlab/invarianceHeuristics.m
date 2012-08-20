@@ -27,13 +27,11 @@ function responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesti
     v0(v0 > 0) = 1;  % count all nonzero as 1, error terms have already been removed
     
     %% Do special case for one transform in Simon mode!!!
-    if objectsPrEyePosition> 1,
-        responsePerObject = squeeze(sum(v0)); % (eye_position, row, col)
+    if objectsPrEyePosition > 1,
+        responsePerObject = squeeze(sum(v0)); % (object, row, col)
     else
-        responsePerObject = squeeze(v0); % (eye_position, row, col)
+        responsePerObject = squeeze(v0); % (object, row, col)
     end
-    
-    %%
     
     % Clear out cells that respond to multiple objects
     % Note: Couldnt figure it out in vectorized form.
@@ -55,11 +53,11 @@ function responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesti
     responseCounts = zeros(nrOfEyePositionsInTesting, objectsPrEyePosition);
     
     % Plot a line for each object
-    for e=1:nrOfEyePositionsInTesting,
-        z = responsePerObject(e,:,:);
+    for o=1:objectsPrEyePosition,
+        z = responsePerObject(o,:,:);
         z = z(:);
         z(z == 0) = [];
-        responseCounts(e, :) = hist(z,1:objectsPrEyePosition);
+        responseCounts(:, o) = hist(z,1:nrOfEyePositionsInTesting);
     end
     
 end
