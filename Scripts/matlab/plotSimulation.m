@@ -37,7 +37,7 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             
             netDir = [simulationFolder directory];
             
-            [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, regionCorrelation, invariancePlot, distributionPlot] = plotRegion([netDir '/firingRate.dat'], info, dotproduct);
+            [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, singleCell, multiCell, invariancePlot, distributionPlot] = plotRegion([netDir '/firingRate.dat'], info, dotproduct);
             
             % regionCorrelationPlot
             saveas(regionCorrelationPlot,[netDir '/result_1.fig']);
@@ -66,7 +66,7 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             
             % Save results for summary
             summary(counter).directory = directory;
-            summary(counter).nrOfHeadCenteredCells = nnz(regionCorrelation > 0); % Count number of cells with positive correlation
+            summary(counter).nrOfHeadCenteredCells = nnz(singleCell > 0); % Count number of cells with positive correlation
             summary(counter).orthogonalityIndex = orthogonalityIndex;
             summary(counter).MeanObjects = MeanObjects;
             summary(counter).MeanTransforms = MeanTransforms;
@@ -75,6 +75,9 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             %summary(counter).meanInvariance = meanInvariance;
             %summary(counter).multiCell = multiCell;
             %summary(counter).nrOfSingleCell = nrOfSingleCell;
+            
+            % Save for collation
+            save([netDir '/collation.mat'],'singleCell','multiCell');
             
             counter = counter + 1;
         end

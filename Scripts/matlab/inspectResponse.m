@@ -6,7 +6,11 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function inspectResponse(filename, nrOfEyePositionsInTesting)
+function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
+
+    declareGlobalVars();
+    
+    global base;
 
     % Get dimensions
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
@@ -14,6 +18,14 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
     % Load data
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting); % (object, eye_position, row, col, region)
     regionCorrs = regionCorrelation(filename, nrOfEyePositionsInTesting);
+        
+    % Load stimuli
+    startDir = pwd;
+    cd([base 'Stimuli/' stimuliName]);
+    C = load('info.mat');
+    info = C.info;
+    cd(startDir);
+    
     %[analysis] = metrics(filename, info);
     
     % Load single unit recordings
@@ -34,11 +46,13 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
     PLOT_COLS = 4;
     numRegions = length(networkDimensions);
     axisVals = zeros(numRegions, PLOT_COLS); % Save axis that we can lookup 'CurrentPoint' property on callback
-    markerSpecifiers = {'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>', 'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>'}; %, '<', 'p', 'h'''
+    %markerSpecifiers = {'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>', 'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>'}; %, '<', 'p', 'h'''
+    markerSpecifiers = {'+', 'v', 'x', 's', 'd', '^', '.', '>', '+', 'v', 'x', 's', 'd', '^', '.', '>','+', 'v', 'x', 's', 'd', '^', '.', '>'};
+    topLayerRowDim = networkDimensions(numRegions).x_dimension;
     
     objectLegend = cell(nrOfEyePositionsInTesting,1);
     for o=1:nrOfEyePositionsInTesting,
-        objectLegend{o} = ['Object ' num2str(o)];
+        objectLegend{o} = [num2str(info.eyePositions(o)) '^{\circ}'];
     end
     
     % Iterate regions to do correlation plot and setup callbacks
@@ -74,7 +88,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
         
         if ~isempty(data{r-1}),
             
-            %% Activity indicator
+            % Activity indicator
             axisVals(r-1,2) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 2); % Save axis
 
             % TRADITIONAL
@@ -154,7 +168,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
         % double right click => 'SelectionType' = 'open'
         clickType = get(gcf,'SelectionType')
         
-        if ~strcmp(clickType,'alt'),
+        if strcmp(clickType,'normal'),
             
             % Dump correlation
             disp(['Correlation: ' num2str(regionCorrs{region-1}(row,col))]);
@@ -170,30 +184,8 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
             
             set(gca,'YLim',[-0.1 1.1]);
             
-            %{
-
-            cla
-            
-            m = 1.1;
-
-            for h = 1:nrOfEyePositionsInTesting,
-
-                v = squeeze(data{region-1}(:, h, row, col));
-
-                if max(v) > m,
-                    m = max(v);
-                end
-
-                plot(v, [':' markerSpecifiers{h}]);
-
-                hold all;
-            end  
-            
-            title(['Row:' num2str(row) ', Col:' num2str(col)]); % ', R:' num2str(region)
-            axis([1 objectsPrEyePosition -0.1 m]);
-            legend(objectLegend);
- %}
-        else
+        elseif strcmp(clickType,'alt'),
+                
             %Right click
             [path, name, ext] = fileparts(filename);
             [path, name, ext] = fileparts(path);
@@ -201,22 +193,9 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
             trainingFolder = [path '/Training'];
             
             plotSynapseHistory(trainingFolder, region, 1, row, col);
-        end
-        
-        % OLD STYLE - Bar plot
-        %cla
-        
-        %Simon Style
-        %plot(data{region-1}(:, :, row, col));
-        %set(gca,'XLim',[0 nrOfEyePositionsInTesting]);
-        %set(gca,'YLim',[-0.1 1.1]);
-        
-        % Old Style
-        %bar(data{region-1}(:, :, row, col));
-        %set(gca,'XLim',[0 (objectsPrEyePosition+1)])
-        
-        %set(gca,'XTick', 1:objectsPrEyePosition)
-        
+        else
+            prettyPlot(region,row,col,true);
+        end 
     end
 
     % Callback 2
@@ -236,4 +215,79 @@ function inspectResponse(filename, nrOfEyePositionsInTesting)
         
     end
 
-end
+    function prettyPlot(region,row,col,doHeadCentered)
+
+        figure();
+
+        for h = 1:nrOfEyePositionsInTesting,
+
+            y = squeeze(data{region-1}(h, :, row, col));
+            
+            if doHeadCentered,
+                % head centere refrernce frame
+                x = info.targets;
+            else
+                % retinal reference frame
+                x = info.targets - info.eyePositions(h);
+            end
+
+            plot(x,y, ['-k' markerSpecifiers{h}]);
+
+            hold all;
+        end  
+
+        hTitle = title(['Cell #' num2str((row-1)*topLayerRowDim + col)]); % ', R:' num2str(region)
+        %axis([min(info.targets) max(info.targets) -0.1 1.1]);
+        hLegend = legend(objectLegend);
+        if doHeadCentered,
+            hXLabel = xlabel('Head-centered location (deg)');
+        else
+            hXLabel = xlabel('Eye-centered location (deg)');
+        end
+        
+        hYLabel = ylabel('Firing rate');
+        
+        set( gca                       , ...
+            'FontName'   , 'Helvetica' );
+        set([hTitle, hXLabel, hYLabel], ...
+            'FontName'   , 'AvantGarde');
+        set([hLegend, gca]             , ...
+            'FontSize'   , 8           );
+        set([hXLabel, hYLabel]  , ...
+            'FontSize'   , 10          );
+        set( hTitle                    , ...
+            'FontSize'   , 12          , ...
+            'FontWeight' , 'bold'      );
+
+        set(gca, ...
+          'Box'         , 'off'     , ...
+          'TickDir'     , 'out'     , ...
+          'TickLength'  , [.02 .02] , ...
+          'XMinorTick'  , 'off'     , ...
+          'YMinorTick'  , 'on'      , ...
+          'YGrid'       , 'on'      , ...
+          'XColor'      , [.3 .3 .3], ...
+          'YColor'      , [.3 .3 .3], ...
+          'YTick'       , 0:0.2:1, ...
+          'LineWidth'   , 1         );
+      
+        set(gca,'YLim',[-0.1 1.1]);
+        %set(gca,'XTick',1:nrOfBins);
+
+    end
+    
+    % OLD STYLE - Bar plot
+    %cla
+
+    %Simon Style
+    %plot(data{region-1}(:, :, row, col));
+    %set(gca,'XLim',[0 nrOfEyePositionsInTesting]);
+    %set(gca,'YLim',[-0.1 1.1]);
+
+    % Old Style
+    %bar(data{region-1}(:, :, row, col));
+    %set(gca,'XLim',[0 (objectsPrEyePosition+1)])
+
+    %set(gca,'XTick', 1:objectsPrEyePosition)
+    
+    end

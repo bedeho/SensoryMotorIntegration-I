@@ -6,15 +6,28 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting)
-        
+function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimuliName)
+    
+    declareGlobalVars();
+    
+    global base;
+    
     % Load data
     [networkDimensions, neuronOffsets] = loadWeightFileHeader(networkFile); % Load weight file header
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting); % (object, eye_position, row, col, region)
     
+    % Load stimuli
+    startDir = pwd;
+    cd([base 'Stimuli/' stimuliName]);
+    C = load('info.mat');
+    info = C.info;
+    cd(startDir);
+    
+    
     % Setup vars
     numRegions = length(networkDimensions);
     axisVals = zeros(numRegions-1, 3); % Save axis that we can lookup 'CurrentPoint' property on callback
+    topLayerRowDim = networkDimensions(numRegions).x_dimension;
     
     % Iterate regions to do correlation plot and setup callbacks
     fig = figure('name',filename,'NumberTitle','off');
@@ -68,15 +81,18 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting)
         % Response count
         disp(['# responding: ' num2str(v2(row,col))]);
         
-        drawWeights(region, row, col, 1);
+        % Check if we right clicked
+        rightClicked =  strcmp(get(gcf,'SelectionType'),'alt');
+        
+        drawWeights(region, row, col, 1, rightClicked);
         
         if region == 2,
-            drawWeights(region, row, col, 2);
+            drawWeights(region, row, col, 2, rightClicked);
         end
         
     end
 
-    function drawWeights(region, row, col, sourceDepth)
+    function drawWeights(region, row, col, sourceDepth,rightClicked)
         
         % Plot the two input layers
         subplot(numRegions-1, 3, 3*(region-2) + 1 + sourceDepth);
@@ -86,6 +102,54 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting)
         dim = fliplr(size(weightBox1));
         daspect([dim 1]);
         colorbar;
+        axis square;
+        
+        [height,width] = size(weightBox1);
+        
+        % External figure
+        if rightClicked,
+            
+            f = figure();
+            imagesc(weightBox1);
+            dim = fliplr(size(weightBox1));
+            daspect([dim 1]);
+            colorbar;
+            hTitle = title(['Afferent synaptic weights of cell #' num2str((row-1)*topLayerRowDim + col)]);
+            
+            hXLabel = xlabel('Eye-position preference: \beta_{i} (deg)');
+            hYLabel = ylabel('Retinal preference: \alpha_{i} (deg)');
+            
+            set( gca                       , ...
+                'FontName'   , 'Helvetica' );
+            set([hTitle, hXLabel, hYLabel], ...
+                'FontName'   , 'AvantGarde');
+            set(gca             , ...
+                'FontSize'   , 8           );
+            set([hXLabel, hYLabel]  , ...
+                'FontSize'   , 10          );
+            set( hTitle                    , ...
+                'FontSize'   , 12          , ...
+                'FontWeight' , 'bold'      );
+            
+            set(gca, ...
+              'Box'         , 'on'     , ...
+              'TickDir'     , 'out'     , ...
+              'TickLength'  , [.01 .01] , ...
+              'XMinorTick'  , 'off'    );
+          
+          % Unbelievable: cannot
+          % find matlab command to turn vector into string
+          % must do it manually
+          
+          tLabels = info.eyePositionPreferences(1:4:end);
+          labels = cell(1,length(tLabels));
+          for l=1:length(labels),
+              labels{l} = num2str(tLabels(l));
+          end
+          
+           %set(gca,'XTick',1:length(labels))
+            set(gca,'XTickLabel',info.eyePositionPreferences)
+        end
     end
     
 end

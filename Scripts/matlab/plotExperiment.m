@@ -178,8 +178,8 @@ function plotExperiment(experiment, stimuliName)
                     fprintf(fileID, '<td>\n');
                     %outputButton('Correlation', ['matlab:open(\\''' netDir '/result_1.fig\\'')']);
                     outputButton('Output Orthogonalization', ['matlab:open(\\''' netDir '/outputOrthogonality.fig\\'')']);
-                    outputButton('Response', ['matlab:inspectResponse(\\''' netDir '/firingRate.dat\\'',' num2str(nrOfEyePositionsInTesting) ')']);
-                    outputButton('Weights', ['matlab:inspectWeights(\\''' netDir '/' summary(s).directory '.txt\\'',\\''' netDir '/firingRate.dat\\'',' num2str(nrOfEyePositionsInTesting) ')']);
+                    outputButton('Response', ['matlab:inspectResponse(\\''' netDir '/firingRate.dat\\'',' num2str(nrOfEyePositionsInTesting) ',\\''' stimuliName '\\'')']);
+                    outputButton('Weights', ['matlab:inspectWeights(\\''' netDir '/' summary(s).directory '.txt\\'',\\''' netDir '/firingRate.dat\\'',' num2str(nrOfEyePositionsInTesting) ',\\''' stimuliName '\\'')']);
                     outputButton('Repr.', ['matlab:inspectRepresentation(\\''' netDir '/firingRate.dat\\'',' num2str(nrOfEyePositionsInTesting) ')']); 
                     outputButton('F', ['matlab:plotNetworkHistoryDANIEL(\\''' netDir '/firingRate.dat\\'')']); 
                     outputButton('A', ['matlab:plotNetworkHistoryDANIEL(\\''' netDir '/activation.dat\\'')']);

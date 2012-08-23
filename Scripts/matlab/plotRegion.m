@@ -6,7 +6,7 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, corr, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
+function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, corr,dist, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
 
     % Get dimensions
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
@@ -71,7 +71,7 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     %title('region');
     
     % Head distribution
-    distributionPlot = doDistributionPlot(omegaMatrix,preferenceMatrix);
+    [distributionPlot, dist] = doDistributionPlot(omegaMatrix,preferenceMatrix);
     
     % IMAGESC CORRELATION
     %correlationVector = corr{region-1}(:);
@@ -109,35 +109,13 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
 
     bar(responseCounts);
     
-    %{
-
-    responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting);
-    markerSpecifiers = {'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>', 'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>'};
-    
-    % Plot a line for each object
-    for e=1:info.nrOfEyePositionsInTesting,
-        plot(responseCounts{e}, ['-' markerSpecifiers{e}], 'Linewidth', 3);
-        hold all
-    end
-
-    axis tight
-    
-    % Object legend
-    objectLegend = cell(info.nrOfEyePositionsInTesting,1);
-    for o=1:info.nrOfEyePositionsInTesting,
-        objectLegend{o} = ['Object ' num2str(o)];
-    end
-    
-    legend(objectLegend);
-    %}
-    
-    function p = doDistributionPlot(omegaMatrix,preferenceMatrix)
+    function [p,dist] = doDistributionPlot(omegaMatrix,preferenceMatrix)
         
         % Make figure
         p = figure();
         
         % Omega resoltion
-        dO = 0.1;
+        dO = 0.2;
         omegaBins = dO:dO:1; % Bin b (b=1,2,...) keeps all cells with omega value in range dO * (b-1,b];
         
         % make space
@@ -177,4 +155,26 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
         
     end
 
+    
+    %{
+
+    responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting);
+    markerSpecifiers = {'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>', 'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>'};
+    
+    % Plot a line for each object
+    for e=1:info.nrOfEyePositionsInTesting,
+        plot(responseCounts{e}, ['-' markerSpecifiers{e}], 'Linewidth', 3);
+        hold all
+    end
+
+    axis tight
+    
+    % Object legend
+    objectLegend = cell(info.nrOfEyePositionsInTesting,1);
+    for o=1:info.nrOfEyePositionsInTesting,
+        objectLegend{o} = ['Object ' num2str(o)];
+    end
+    
+    legend(objectLegend);
+    %}
 end

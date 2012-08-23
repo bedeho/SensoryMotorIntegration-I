@@ -8,13 +8,20 @@
 %  Purpose: Generate testing data
 %
 
-function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, targets, eyePositions)
+function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, dimensions, eyePositions)
 
     % Import global variables
     declareGlobalVars();
     
     global base;
-
+    
+    % Get args
+    visualFieldSize = dimensions.visualFieldSize, 
+    eyePositionFieldSize = dimensions.eyePositionFieldSize
+    targets = dimensions.targets;
+    visualPreferences = dimensions.visualPreferences;
+    eyePositionPreferences = dimensions.eyePositionPreferences;
+    
     % Make folder
     stimuliFolder = [base 'Stimuli/' stimuliName '-stdTest'];
     
@@ -74,6 +81,9 @@ function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, visualFieldSi
     info.targets = targets;
     info.eyePositions = eyePositions;
     info.testingStyle = 'stdTest';
+    info.visualPreferences = visualPreferences;
+    info.eyePositionPreferences = eyePositionPreferences;
+    
     save info;
 
     cd(startDir);

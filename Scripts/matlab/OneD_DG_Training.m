@@ -123,7 +123,7 @@ function OneD_DG_Training(prefix)
     cd(startDir);
     
     % Generate complementary testing data
-    OneD_DG_Test(tSFolderName, samplingRate, fixationDuration, dimensions.visualFieldSize, dimensions.eyePositionFieldSize, dimensions.targets, possibleEyePositions);
+    OneD_DG_Test(tSFolderName, samplingRate, fixationDuration, dimensions, possibleEyePositions);
     
     % Generate correlation data
     OneD_DG_Correlation([tSFolderName '-stdTest']);

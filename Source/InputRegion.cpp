@@ -45,7 +45,7 @@ void InputRegion::init(Param & p, const char * dataFile, gsl_rng * rngController
     // Set variables
     this->regionNr = 0;
     
-    this->depth = 2;
+    this->depth = 1;
     this->horVisualDimension = horVisualPreferences.size();
     this->horEyeDimension = horEyePreferences.size();
     this->verDimension = this->horVisualDimension;

@@ -69,4 +69,6 @@ function dimensions = OneD_DG_Dimensions()
     
     dimensions.nrOfVisualPreferences = length(dimensions.visualPreferences);
     dimensions.nrOfEyePositionPrefrerence = length(dimensions.eyePositionPreferences);
+    
+    
 end

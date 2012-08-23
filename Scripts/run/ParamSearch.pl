@@ -23,7 +23,7 @@
 	# Input
     	####################################################################
 	
-	my $experiment	 			= "trace_orth_4_3"; # trace-10h, classic-30-1E-3H-2S-1O
+	my $experiment	 			= "trace_orth_4_small"; # trace-10h, classic-30-1E-3H-2S-1O
 	my $stim				= "Tar=4.00-Ord=4.00-Sim=1.00-fD=0.50-sA=25.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
 
 	#"Tar=4.00-Ord=4.00-Sim=1.00-fD=0.50-sA=35.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
