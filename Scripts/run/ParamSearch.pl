@@ -44,6 +44,8 @@
 	my $resetTrace				= "true"; # "false", Reset trace between objects of training
 	my $resetActivity			= "true"; # "false", Reset activation between objects of training
 
+	my $sigmoidModulationPercentage		= "0.0";
+
     	####################################################################
 	# Preprocessing
     	####################################################################
@@ -105,7 +107,7 @@
 
          push @esRegionSettings, \%region;
     }
-    
+
     my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
     my $firstTime = 1;
     
@@ -128,7 +130,7 @@
 			die("Well played.\n"); 
 		}
 	}
-	
+	print "WHAT THE BLEEP IS WRONG\n";
 	# Make experiment folder
 	mkdir($experimentFolder);
 	
@@ -145,7 +147,7 @@
 	
 	# Make temporary parameter file
 	my $tmpParameterFile = $experimentFolder."Parameters.txt";
-	my $paramResult = makeParameterFile(\@esRegionSettings, "0.1", "0.1", "0.1");
+	my $paramResult = makeParameterFile(\@esRegionSettings, "0.1", "0.1",$sigmoidModulationPercentage); # "0.1");
 	open (PARAMETER_FILE, '>'.$tmpParameterFile) or die "Could not open file '$tmpParameterFile'. $!\n";
 	print PARAMETER_FILE $paramResult;
 	close (PARAMETER_FILE);
@@ -182,10 +184,11 @@
 	cp($thisScript, $experimentFolder."ParametersCopy.pl") or die "Cannot make copy of parameter file: $!\n";
 	
     #############################################################################
-	# Permuting
+# Permuting
     #############################################################################
-    
-    for my $sMP (@sigmoidModulationPercentage) {
+
+
+    #for my $sMP (@sigmoidModulationPercentage) {
     for my $sS (@sigmoidSlopes) {
     for my $sT (@sigmoidThresholds) {
     for my $gIC (@globalInhibitoryConstants) {
@@ -266,7 +269,7 @@
 						$simulationCode .= "sT=${sTstr}_" if scalar(@sigmoidThresholds) > 1;
 						$simulationCode .= "gIC=${gICstr}_" if scalar(@globalInhibitoryConstants) > 1;
 						$simulationCode .= "eS=${eSstr}_" if scalar(@externalStimulations) > 1;
-						$simulationCode .= "sMPs=${sMP}_" if scalar(@sigmoidModulationPercentage) > 1;
+						#$simulationCode .= "sMPs=${sMP}_" if scalar(@sigmoidModulationPercentage) > 1;
 						
 						# If there is only a single parameter combination being explored, then just give a long precise name,
 						# it's essentially not a parameter search.
@@ -282,7 +285,7 @@
 							# Make parameter file
 							print "\tWriting new parameter file: ". $simulationCode . " \n"; # . $timeStepStr . 
 							
-							my $result = makeParameterFile(\@esRegionSettings, $sSF, $ttC, $sMP);
+							my $result = makeParameterFile(\@esRegionSettings, $sSF, $ttC, $sigmoidModulationPercentage); #, $sMP);
 							
 							open (PARAMETER_FILE, '>'.$parameterFile) or die "Could not open file '$parameterFile'. $!\n";
 							print PARAMETER_FILE $result;
@@ -315,7 +318,7 @@
 								
 								# Make parameter file and write to simulation folder
 								print "Writing new parameter file: ". $simulationCode . " \n"; # . $timeStepStr .
-								my $result = makeParameterFile(\@esRegionSettings, $sSF, $ttC, $sMP);
+								my $result = makeParameterFile(\@esRegionSettings, $sSF, $ttC, $sigmoidModulationPercentage); #, $sMP);
 								
 								open (PARAMETER_FILE, '>'.$parameterFile) or die "Could not open file '$parameterFile'. $!\n";
 								print PARAMETER_FILE $result;
@@ -345,7 +348,7 @@
     }
     }
     }
-    }
+    #}
     
 	# If we just setup xgrid parameter search
 	if($xgrid) {

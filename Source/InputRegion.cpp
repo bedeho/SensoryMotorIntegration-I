@@ -22,6 +22,8 @@
 #include <cstring>
 #include "Utilities.h"
 
+#include <vector>
+
 using std::cerr;
 using std::cout;
 using std::endl;
@@ -41,11 +43,16 @@ void InputRegion::init(Param & p, const char * dataFile, gsl_rng * rngController
     // Compute and populate preference vectors
     centerDistance(horVisualPreferences, p.horVisualFieldSize, p.visualPreferenceDistance);
     centerDistance(horEyePreferences, p.horEyePositionFieldSize, p.eyePositionPrefrerenceDistance);
-    
+
+    //cerr << "horEyePreferences: ";
+    //for (unsigned int i = 0; i < horEyePreferences.size(); i++ )
+    //    cerr << " " << horEyePreferences[i];
+
     // Set variables
     this->regionNr = 0;
     
-    this->depth = 1;
+    this->depth = (p.sigmoidModulationPercentage == 0 ? 1 : 2); // comparison with 0 works, because it is perfectly represented
+    //cout << "Depth: " << this->depth << ", P(sig): " << p.sigmoidModulationPercentage << endl;
     this->horVisualDimension = horVisualPreferences.size();
     this->horEyeDimension = horEyePreferences.size();
     this->verDimension = this->horVisualDimension;
@@ -126,13 +133,23 @@ void InputRegion::centerDistance(vector<float> & v, float width, float distance)
     
     int length = floor(width/distance);
     
-    for(int i = 0;i < length;i++)
+    for(int i = 0;i <= length;i++) {
+    	//cerr << -width/2 + i*distance << " ";
         v.push_back(-width/2 + i*distance);
+    }
     
+    //cerr << "\n\n";
+
     float offset = (v.front() + v.back())/2;
     
-    for(int i = 0;i < length;i++)
+    //cerr << "offset: " << offset << endl;
+
+    for(int i = 0;i <= length;i++) {
+    	//cerr << v[i] - offset << " ";
         v[i] = v[i] - offset;
+    }
+
+    //cerr << "\n\n";
 }
 
 void InputRegion::loadDataFile(const char * dataFile) {

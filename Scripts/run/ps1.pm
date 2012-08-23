@@ -48,14 +48,15 @@
 			@timeConstants
 			@stepSizeFraction
 			@traceTimeConstant
-			@sigmoidModulationPercentage
 			);
+			#@sigmoidModulationPercentage
 
  	# RANGE PARAMS - permutable
     	our @sigmoidSlopes					= (
+									["00000001.0"],
 									["00000000.1"],
-									["0000000.01"],
-									["000000.001"]
+									["0000000.01"]
+									#["000000.001"]
     									#["00000001.0"],
     									#["00000010.0"],
 									#["00000100.0"],
@@ -316,7 +317,7 @@
     our @traceTimeConstant				= ("0.500");  # ("0.300","0.800","1.600","2.600"); 
 	die "Invalid array: traceTimeConstant" if !validateArray(\@traceTimeConstant);
 
-	our @sigmoidModulationPercentage     = ("0.00"); # ("0.00","0.05","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00");
+	#our @sigmoidModulationPercentage     = ("0.00"); # ("0.00","0.05","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00");
 	
     ## 0
     our $pathWayLength					= 1;

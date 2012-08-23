@@ -16,6 +16,9 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
     [networkDimensions, neuronOffsets] = loadWeightFileHeader(networkFile); % Load weight file header
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting); % (object, eye_position, row, col, region)
     
+    % MaxDepth
+    
+    
     % Load stimuli
     startDir = pwd;
     cd([base 'Stimuli/' stimuliName]);
@@ -86,7 +89,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         
         drawWeights(region, row, col, 1, rightClicked);
         
-        if region == 2,
+        if region == 2 && networkDimensions(1).depth > 1,
             drawWeights(region, row, col, 2, rightClicked);
         end
         
@@ -109,12 +112,20 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         % External figure
         if rightClicked,
             
+            answer = inputdlg('Extra Title')
+            
+            if ~isempty(answer)
+                extraTitle = [' - ' answer{1}];
+            else
+                extraTitle = '';
+            end
+            
             f = figure();
             imagesc(weightBox1);
             dim = fliplr(size(weightBox1));
             daspect([dim 1]);
             colorbar;
-            hTitle = title(['Afferent synaptic weights of cell #' num2str((row-1)*topLayerRowDim + col)]);
+            hTitle = title(['Afferent synaptic weights of cell #' num2str((row-1)*topLayerRowDim + col) extraTitle]);
             
             hXLabel = xlabel('Eye-position preference: \beta_{i} (deg)');
             hYLabel = ylabel('Retinal preference: \alpha_{i} (deg)');
@@ -137,18 +148,33 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
               'TickLength'  , [.01 .01] , ...
               'XMinorTick'  , 'off'    );
           
-          % Unbelievable: cannot
-          % find matlab command to turn vector into string
-          % must do it manually
-          
-          tLabels = info.eyePositionPreferences(1:4:end);
-          labels = cell(1,length(tLabels));
-          for l=1:length(labels),
-              labels{l} = num2str(tLabels(l));
-          end
-          
-           %set(gca,'XTick',1:length(labels))
-            set(gca,'XTickLabel',info.eyePositionPreferences)
+            % Unbelievable: cannot
+            % find matlab command to turn vector into string
+            % must do it manually
+            
+            % Width
+            wTicks = 1:width;
+            wTicks = wTicks(1:4:end);
+            wLabels = info.eyePositionPreferences(1:4:end);
+            wCellLabels = cell(1,length(wLabels));
+            for l=1:length(wLabels),
+              wCellLabels{l} = num2str(wLabels(l));
+            end
+
+            set(gca,'XTick',wTicks);
+            set(gca,'XTickLabel',wCellLabels);
+            
+            % Height
+            hTicks = 1:height;
+            hTicks = hTicks(1:10:end);
+            hLabels = info.visualPreferences(1:10:end);
+            hCellLabels = cell(1,length(hLabels));
+            for l=1:length(hLabels),
+              hCellLabels{l} = num2str(hLabels(l));
+            end
+
+            set(gca,'YTick',hTicks);
+            set(gca,'YTickLabel',hCellLabels);
         end
     end
     
