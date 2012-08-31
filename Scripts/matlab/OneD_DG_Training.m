@@ -32,7 +32,7 @@ function OneD_DG_Training(prefix)
     samplingRate                = 1000;	%1000 % (Hz)
     fixationDuration            = 0.500;  % 0.02;	% (s) - fixation period after each saccade
     saccadeAmplitude            = 25;    % 35= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
-    nrOfOrderings               = 4;
+    nrOfOrderings               = 3;
 
     % Derived
     possibleEyePositions = dimensions.leftMostEyePosition:saccadeAmplitude:dimensions.rightMostEyePosition;

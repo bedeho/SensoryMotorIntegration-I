@@ -43,6 +43,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
     end
     
     % Setup vars
+    doHeadCentered = 0;
     PLOT_COLS = 4;
     numRegions = length(networkDimensions);
     axisVals = zeros(numRegions, PLOT_COLS); % Save axis that we can lookup 'CurrentPoint' property on callback
@@ -50,9 +51,17 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
     markerSpecifiers = {'+', 'v', 'x', 's', 'd', '^', '.', '>', '+', 'v', 'x', 's', 'd', '^', '.', '>','+', 'v', 'x', 's', 'd', '^', '.', '>'};
     topLayerRowDim = networkDimensions(numRegions).x_dimension;
     
-    objectLegend = cell(nrOfEyePositionsInTesting,1);
-    for o=1:nrOfEyePositionsInTesting,
-        objectLegend{o} = [num2str(info.eyePositions(o)) '^{\circ}'];
+    if doHeadCentered,
+        objectLegend = cell(nrOfEyePositionsInTesting,1);
+        for s=1:nrOfEyePositionsInTesting,
+            objectLegend{s} = [num2str(info.eyePositions(s)) '^{\circ}'];
+        end
+    else
+        numTargets = length(info.targets);
+        objectLegend = cell(numTargets,1);
+        for s=1:numTargets,
+            objectLegend{s} = [num2str(info.targets(s)) '^{\circ}'];
+        end
     end
     
     % Iterate regions to do correlation plot and setup callbacks
@@ -192,9 +201,9 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
             
             trainingFolder = [path '/Training'];
             
-            plotSynapseHistory(trainingFolder, region, 1, row, col);
+            plotSynapseHistory(trainingFolder, region, 1, row, col,1);
         else
-            prettyPlot(region,row,col,true);
+            prettyPlot(region,row,col);
         end 
     end
 
@@ -208,43 +217,57 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
         [row, col] = imagescClick(pos(1, 2), pos(1, 1), networkDimensions(region).y_dimension, networkDimensions(region).x_dimension);
 
         if singleUnits{region}(row, col, 1).isPresent,
-            plotSingleUnit(singleUnits{region}(row, col, 1), historyDimensions, 1);
+            plotSingleUnit(singleUnits{region}(row, col, 1), historyDimensions);
         else
             disp('Not recorded.');
         end
         
     end
 
-    function prettyPlot(region,row,col,doHeadCentered)
+    function prettyPlot(region,row,col)
 
         figure();
 
-        for h = 1:nrOfEyePositionsInTesting,
-
-            y = squeeze(data{region-1}(h, :, row, col));
-            
-            if doHeadCentered,
-                % head centere refrernce frame
-                x = info.targets;
-            else
-                % retinal reference frame
-                x = info.targets - info.eyePositions(h);
-            end
-
-            plot(x,y, ['-k' markerSpecifiers{h}]);
-
-            hold all;
-        end  
-
-        hTitle = title(['Cell #' num2str((row-1)*topLayerRowDim + col)]); % ', R:' num2str(region)
-        %axis([min(info.targets) max(info.targets) -0.1 1.1]);
-        hLegend = legend(objectLegend);
         if doHeadCentered,
+            
+            for h = 1:nrOfEyePositionsInTesting,
+
+                y = squeeze(data{region-1}(h, :, row, col));
+
+                if doHeadCentered,
+                    % head centere refrernce frame
+                    x = info.targets;
+                else
+                    % retinal reference frame
+                    x = info.targets - info.eyePositions(h);
+                end
+
+                plot(x,y, ['-k' markerSpecifiers{h}]);
+
+                hold all;
+            end
+            
             hXLabel = xlabel('Head-centered location (deg)');
         else
-            hXLabel = xlabel('Eye-centered location (deg)');
-        end
         
+            for o = 1:objectsPrEyePosition,
+
+                y = squeeze(data{region-1}(:, o, row, col));
+                x = info.eyePositions;
+
+                plot(x,y,['-k' markerSpecifiers{o}],'LineWidth',2,'MarkerSize',8);
+
+                hold all;
+            end
+            
+            hXLabel = xlabel('Fixation location (deg)');
+        end
+
+        hTitle = title('');
+        %title(['Cell #' num2str((row-1)*topLayerRowDim + col)]); % ', R:' num2str(region)
+        %axis([min(info.targets) max(info.targets) -0.1 1.1]);
+        hLegend = legend(objectLegend);
+        legend('boxoff')
         hYLabel = ylabel('Firing rate');
         
         set( gca                       , ...
@@ -252,25 +275,26 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
         set([hTitle, hXLabel, hYLabel], ...
             'FontName'   , 'AvantGarde');
         set([hLegend, gca]             , ...
-            'FontSize'   , 8           );
+            'FontSize'   , 14           );
         set([hXLabel, hYLabel]  , ...
-            'FontSize'   , 10          );
+            'FontSize'   , 18          );
         set( hTitle                    , ...
-            'FontSize'   , 12          , ...
+            'FontSize'   , 24          , ...
             'FontWeight' , 'bold'      );
 
         set(gca, ...
-          'Box'         , 'off'     , ...
-          'TickDir'     , 'out'     , ...
+          'Box'         , 'on'     , ...
+          'TickDir'     , 'in'     , ...
           'TickLength'  , [.02 .02] , ...
-          'XMinorTick'  , 'off'     , ...
+          'XMinorTick'  , 'on'     , ...
           'YMinorTick'  , 'on'      , ...
           'YGrid'       , 'on'      , ...
-          'XColor'      , [.3 .3 .3], ...
-          'YColor'      , [.3 .3 .3], ...
           'YTick'       , 0:0.2:1, ...
           'LineWidth'   , 1         );
       
+        %'XColor'      , [.3 .3 .3], ...
+        %'YColor'      , [.3 .3 .3], ...     
+
         set(gca,'YLim',[-0.1 1.1]);
         %set(gca,'XTick',1:nrOfBins);
 

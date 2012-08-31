@@ -121,11 +121,25 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             end
             
             f = figure();
-            imagesc(weightBox1);
+            
+            h = imagesc(weightBox1);
+            %set(h, 'linestyle', 'none');
+            %view(0, 90);
+            %axis square
+            %box on
+            %grid off
+            
             dim = fliplr(size(weightBox1));
             daspect([dim 1]);
-            colorbar;
-            hTitle = title(['Afferent synaptic weights of cell #' num2str((row-1)*topLayerRowDim + col) extraTitle]);
+            
+            colormap gray
+            colorbar
+            %colorbar('location','southoutside')
+            
+            
+            cellNr = (row-1)*topLayerRowDim + col;
+            hTitle = title('')
+            %hTitle = title(['Afferent synaptic weights of cell #' num2str(cellNr) extraTitle]);
             
             hXLabel = xlabel('Eye-position preference: \beta_{i} (deg)');
             hYLabel = ylabel('Retinal preference: \alpha_{i} (deg)');
@@ -135,11 +149,11 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             set([hTitle, hXLabel, hYLabel], ...
                 'FontName'   , 'AvantGarde');
             set(gca             , ...
-                'FontSize'   , 8           );
+                'FontSize'   , 6           );
             set([hXLabel, hYLabel]  , ...
-                'FontSize'   , 10          );
+                'FontSize'   , 18          );
             set( hTitle                    , ...
-                'FontSize'   , 12          , ...
+                'FontSize'   , 24          , ...
                 'FontWeight' , 'bold'      );
             
             set(gca, ...
@@ -175,6 +189,35 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
 
             set(gca,'YTick',hTicks);
             set(gca,'YTickLabel',hCellLabels);
+            
+            %% Reme buffer around figure
+            %tightInset = get(gca, 'TightInset');
+            %position(1) = tightInset(1);
+            %position(2) = tightInset(2);
+            %position(3) = 1 - tightInset(1) - tightInset(3);
+            %position(4) = 1 - tightInset(2) - tightInset(4);
+            %set(gca, 'Position', position);
+            %saveas(h, 'WithoutMargins.pdf');
+
+            fname = ['/home/bedeho/Dphil/Thesis/figures/eps/' 'cell_weight_' num2str(cellNr) '.eps'];
+            
+            print(f,'-depsc2','-r600','-painters',fname);
+            
+            
+            %plot2svg('myfile.svg', f)
+           
+            
+            %print(f,'-depsc2','-painters','plotname.eps')
+            %
+            %
+            %-depsc 
+            %saveas(f, fname,'eps');
+            
+            %oldfolder = cd(filepath);
+                    %print(f,'-depsc', fname);
+                    %fname = strcat(fname, '.eps'); 
+                    %eps2pdf(fname, '/usr/bin/gs');
+            %        cd(oldfolder);
         end
     end
     

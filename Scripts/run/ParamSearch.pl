@@ -23,9 +23,10 @@
 	# Input
     	####################################################################
 	
-	my $experiment	 			= "trace_orth_4_small"; # trace-10h, classic-30-1E-3H-2S-1O
-	my $stim				= "Tar=4.00-Ord=4.00-Sim=1.00-fD=0.50-sA=25.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+	my $experiment	 			= "tar_1"; # trace-10h, classic-30-1E-3H-2S-1O
+	my $stim				= "Tar=4.00-Ord=1.00-Sim=1.00-fD=0.50-sA=25.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
 
+	#"Tar=4.00-Ord=1.00-Sim=1.00-fD=0.50-sA=25.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00"
 	#"Tar=4.00-Ord=4.00-Sim=1.00-fD=0.50-sA=35.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
 	
 	my $xgrid 				= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
@@ -34,8 +35,8 @@
 	my $neuronType				= CONTINOUS; # CONTINOUS, DISCRETE
 	my $learningRule			= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs				= 1; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 11;
+	my $nrOfEpochs				= 3; # 30,100
+	my $saveNetworkAtEpochMultiple 		= 1;
 	my $outputAtTimeStepMultiple		= 4;
 
 	my $lateralInteraction			= COMP; # NONE, COMP, SOM
@@ -130,7 +131,7 @@
 			die("Well played.\n"); 
 		}
 	}
-	print "WHAT THE BLEEP IS WRONG\n";
+
 	# Make experiment folder
 	mkdir($experimentFolder);
 	
