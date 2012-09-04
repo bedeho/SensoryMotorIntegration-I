@@ -37,7 +37,7 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             
             netDir = [simulationFolder directory];
             
-            [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, singleCell, multiCell, invariancePlot, distributionPlot] = plotRegion([netDir '/firingRate.dat'], info, dotproduct);
+            [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, singleCell, multiCell, omegaBins, invariancePlot, distributionPlot] = plotRegion([netDir '/firingRate.dat'], info, dotproduct);
             
             % regionCorrelationPlot
             saveas(regionCorrelationPlot,[netDir '/result_1.fig']);
@@ -77,7 +77,7 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             %summary(counter).nrOfSingleCell = nrOfSingleCell;
             
             % Save for collation
-            save([netDir '/collation.mat'],'singleCell','multiCell');
+            save([netDir '/collation.mat'],'singleCell','multiCell','omegaBins');
             
             counter = counter + 1;
         end

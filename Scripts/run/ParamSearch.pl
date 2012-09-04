@@ -23,20 +23,26 @@
 	# Input
     	####################################################################
 	
-	my $experiment	 			= "tar_1"; # trace-10h, classic-30-1E-3H-2S-1O
-	my $stim				= "Tar=4.00-Ord=1.00-Sim=1.00-fD=0.50-sA=25.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+# try: 
+#activation tC
+# change stimuli dimension: shorter fixation, larger saccade speed?!
+#2 epoch training view - look at spesific cells that deteriorate!!!
+#
+
+	my $experiment	 			= "experiment_first"; # trace-10h, classic-30-1E-3H-2S-1O
+	my $stim				= "fast-Tar=4.00-Ord=1.00-Sim=1.00-fD=0.50-sA=25.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
 
 	#"Tar=4.00-Ord=1.00-Sim=1.00-fD=0.50-sA=25.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00"
 	#"Tar=4.00-Ord=4.00-Sim=1.00-fD=0.50-sA=35.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
 	
 	my $xgrid 				= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
-	my $seed				= 98; # 55 is standard
+	my $seed				= 55; # 55 is standard
 
 	my $neuronType				= CONTINOUS; # CONTINOUS, DISCRETE
 	my $learningRule			= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs				= 3; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 1;
+	my $nrOfEpochs				= 10; # 30,100
+	my $saveNetworkAtEpochMultiple 		= 2;
 	my $outputAtTimeStepMultiple		= 4;
 
 	my $lateralInteraction			= COMP; # NONE, COMP, SOM

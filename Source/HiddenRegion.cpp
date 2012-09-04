@@ -433,7 +433,7 @@ void HiddenRegion::applyLearningRule() {
 				
 				if(neuronType == CONTINUOUS) {
 					
-					//n->effectiveTrace = 1 / (1 + exp(100000000 * (0.08 - n->trace))); // sigmoid, slope=10^8, threshold=0.01
+					//n->effectiveTrace = 1 / (1 + exp(100000000 * (0.08 - n->trace))); //sigmoid, slope=10^8, threshold=0.01
                     n->effectiveTrace = 0;
 
 					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {

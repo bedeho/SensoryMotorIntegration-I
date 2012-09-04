@@ -53,10 +53,10 @@
 
  	# RANGE PARAMS - permutable
     	our @sigmoidSlopes					= (
-									["00000001.0"]
-									#["00000000.8"],
-									#["00000000.6"]
-									#["00000000.1"]
+									["00000001.0"],
+									["00000000.8"],
+									["00000000.6"],
+									["00000000.4"]
 									#,
 									#["00000000.1"],
 									#["0000000.01"]
@@ -91,26 +91,18 @@
     # Notice, layer one needs 3x because of small filter magnitudes, and 5x because of
     # number of afferent synapses, total 15x.
     our @learningRates 					= (
-
-
-["1.00000"],
-["0.10000"],
-["0.01000"],
-["0.00100"]
-#["0.10000"],
-#["1.00000"],
-#["1.50000"]
-#["1.00000"]
-#["10.0000"],
-#["100.000"],
-#["1000.00"]
-#["10000.00"]
-#["100000.00"],
-#["1000000.00"],
-#["10000000.00"],
-#["100000000.00"],
-#["1000000000.00"],
-#["10000000000.00"]						
+##["0.01000"],
+##["0.01500"],
+##["0.02000"],
+##["0.02500"],
+##["0.03000"],
+##["0.03500"],
+##["0.04000"]
+##["0.00010"],
+##["0.00100"],
+##["0.01000"]
+["0.05000"],
+["0.10000"]				
 );								
  	die "Invalid array: learningRates" if !validateArray(\@learningRates);
 
@@ -143,7 +135,7 @@
 #["0.9998"],
 #["0.998"],
 #["0.995"],
-#["0.99"],
+#["0.98"],
 #["0.95"],
 #["0.90"],
 #["0.00"]
@@ -151,9 +143,9 @@
 #["0.9998"],
 #["0.998"],
 #["0.995"],
-["0.95"]
+["0.85"]
 #["0.95"],
-#["0.90"],
+#["0.90"]
 #["0.00"]
 
 
@@ -177,7 +169,7 @@
     our @stepSizeFraction				= ("0.1");  #0.1 = 1/10, 0.05 = 1/20, 0.02 = 1/50
     die "Invalid array: stepSizeFraction" if !validateArray(\@stepSizeFraction);
     
-    our @traceTimeConstant				= ("0.200");  # ("0.300","0.800","1.600","2.600"); 
+    our @traceTimeConstant				= ("0.400");  # ("0.300","0.800","1.600","2.600"); 
 	die "Invalid array: traceTimeConstant" if !validateArray(\@traceTimeConstant);
 
 	#our @sigmoidModulationPercentage     = ("0.00"); # ("0.00","0.05","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00");
@@ -188,7 +180,7 @@
     our @depth						= (1);
     our @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     our @fanInRadius 					= (6); # not used
-    our @fanInCountPercentage 				= ("0.20"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    our @fanInCountPercentage 				= ("0.2"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
     our @learningrate					= ("0.1"); # < === is permuted below
     our @eta						= ("0.8");
     our @timeConstant					= ("0.1"); # < === is permuted below
@@ -207,8 +199,12 @@
     our @filterWidth						= (7);
     
     our @epochs						= (10); # only used in discrete model
-    our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-    our @recordedSingleCells				= ("( (3,9), (6,8), (2,3), (4,5), (8,4), (3,8), (1,5), (6,4), (3,3), (9,5), (13,8), (7,14)   , (14,15), (16,14), (13,13), (19,15), (1,18), (17,14) )"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+
+#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+#our @recordedSingleCells				= ("( (14,17), (19,16), (4,18) )"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+
+our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
+our @recordedSingleCells				= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 
 	# Do some validation
 	print "Uneven parameter length." if 

@@ -6,10 +6,12 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, corr,dist, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
+function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, corr, dist, omegaBins, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
 
     % Get dimensions
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
+    
+    numCells = networkDimensions(end).y_dimension * networkDimensions(end).x_dimension;
     
     % Fill in missing arguments    
     if nargin < 5,
@@ -71,7 +73,7 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     %title('region');
     
     % Head distribution
-    [distributionPlot, dist] = doDistributionPlot(omegaMatrix,preferenceMatrix);
+    [distributionPlot, dist, omegaBins] = doDistributionPlot(omegaMatrix,preferenceMatrix);
     
     % IMAGESC CORRELATION
     %correlationVector = corr{region-1}(:);
@@ -109,7 +111,9 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
 
     bar(responseCounts);
     
-    function [p,dist] = doDistributionPlot(omegaMatrix,preferenceMatrix)
+    ylim([-1 0.08*numCells]);
+    
+    function [p,dist,omegaBins] = doDistributionPlot(omegaMatrix,preferenceMatrix)
         
         % Make figure
         p = figure();
