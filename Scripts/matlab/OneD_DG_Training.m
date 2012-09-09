@@ -28,14 +28,16 @@ function OneD_DG_Training(prefix)
     dimensions = OneD_DG_Dimensions();
     
     % Parameters
-    saccadeVelocity             = 40000000000;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
+    saccadeVelocity             = 400;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     samplingRate                = 1000;	%1000 % (Hz)
     fixationDuration            = 0.500;  % 0.02;	% (s) - fixation period after each saccade
-    saccadeAmplitude            = 25;    % 35= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
-    nrOfOrderings               = 1;
+    %saccadeAmplitude           = 25;    % 35= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
+    numberOfFixations           = 6; %6;
+    nrOfOrderings               = 2;
 
     % Derived
-    possibleEyePositions = dimensions.leftMostEyePosition:saccadeAmplitude:dimensions.rightMostEyePosition;
+    %possibleEyePositions = dimensions.leftMostEyePosition:saccadeAmplitude:dimensions.rightMostEyePosition;
+    possibleEyePositions = centerN2(dimensions.eyePositionFieldSize,numberOfFixations);
     nrOfEyePositions = length(possibleEyePositions);
 
     % No multiline concat... damn
@@ -49,7 +51,7 @@ function OneD_DG_Training(prefix)
     encodePrefix = [encodePrefix '-Ord=' num2str(nrOfOrderings,'%.2f')];
     encodePrefix = [encodePrefix '-Sim=' num2str(dimensions.numberOfSimultanousObjects,'%.2f')];
     encodePrefix = [encodePrefix '-fD=' num2str(fixationDuration,'%.2f') ];
-    encodePrefix = [encodePrefix '-sA=' num2str(saccadeAmplitude,'%.2f') ];
+    encodePrefix = [encodePrefix '-nF=' num2str(numberOfFixations,'%.2f') ];
     encodePrefix = [encodePrefix '-vpD=' num2str(dimensions.visualPreferenceDistance,'%.2f')];
     encodePrefix = [encodePrefix '-epD=' num2str(dimensions.eyePositionPrefrerenceDistance,'%.2f')];
     encodePrefix = [encodePrefix '-gS=' num2str(dimensions.gaussianSigma,'%.2f')];
@@ -239,7 +241,8 @@ function OneD_DG_Training(prefix)
             % Get some time points
             before = criticalPoints(:,c-1);
             after = criticalPoints(:,c);
-            overflow = after(1) - time;
+            %overflow = after(1) - time;
+            overflow = time - before(1);
             
             % Get change rate
             delta = after - before;

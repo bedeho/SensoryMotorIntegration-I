@@ -4,28 +4,32 @@ function superPlot()
     declareGlobalVars();
 
     global base;
-
-    expFolder = [base 'Experiments/' 'ord_7' '/']; % 'trace_orth_4_small'
+    global THESIS_FIGURE_PATH;
+    
+    expName = 'exp1';
+    expFolder = [base 'Experiments/' expName '/']; % 'trace_orth_4_small'
 
     % Save all experiments to include  
-    experiments(1).Name = 'Untrained';
-    experiments(1).Folder = 'L=0.10000_S=0.95_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/BlankNetwork';
-    experiments(2).Name = 'Trained';
-    experiments(2).Folder = 'L=0.10000_S=0.95_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    legends = ['Untrained';'Trained  '];
+    experiments(1).Name = 'Trained';
+    experiments(1).Folder = 'L=0.05000_S=0.85_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(2).Name = 'Untrained';
+    experiments(2).Folder = 'L=0.05000_S=0.85_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/BlankNetwork';
+
+    legends = ['Trained  ';'Untrained'];
 
     % Start figures
     singleCellPlot = figure(); % Single cell
     multiplCellPlot = figure(); % Multiple cell
+    
     linestyle = {'-', '--', ':', '-.'};
     markstyle = {'o', '*', '.','x', 's', 'd'};
-    %colors = {'r', 'k', 'b', 'c', 'm', 'y', 'g', 'w'};
-
+    colors = {'r', 'b','k','c', 'm', 'y', 'g', 'w'};
 
     maxY = 0;
     nrOfBins = 0;
     errorBarHandles = zeros(1,length(experiments));
-
+    singleCellMinY = 0;
+    numCells = 0;
     % Iterate experiments and plot
     for e = 1:length(experiments),
 
@@ -33,23 +37,25 @@ function superPlot()
         collation = load([expFolder experiments(e).Folder '/collation.mat']);
 
         % color
-        c = mod(e-1,length(linestyle)) +1;
+        c = mod(e-1,length(linestyle)) + 1;
 
         % Add line plot to single cell plot
         figure(singleCellPlot);
         hold on;
-        plot(collation.singleCell(:), ['k' linestyle{c}],'LineWidth',2,'MarkerSize',8); % ['-' colors{c}]
-        axis tight
-
+        sortedData = sort(collation.singleCell(:),'descend');
+        singleCellMinY = min(singleCellMinY,min(sortedData));
+        plot(sortedData, [colors{c} linestyle{c}],'LineWidth',2,'MarkerSize',8); % ['-' colors{c}]
+        numCells = length(sortedData);
+        
         % Do multi cell plot
         figure(multiplCellPlot);
         hold on;
         dist = collation.multiCell;
         upper = dist(3,:) - dist(2,:);
         lower = dist(2,:) - dist(1,:);
-        X = 1:length(dist);
+        X = 1:length(collation.omegaBins);
         Y = dist(2,:);
-        h = errorbar(X,Y,lower,upper,['k' linestyle{c}],'LineWidth',2,'MarkerSize',8);
+        h = errorbar(X,Y,lower,upper,[colors{c} linestyle{c}],'LineWidth',2,'MarkerSize',8);
 
         % Save for post-processing
         maxY = max(maxY,dist(3,:));
@@ -59,13 +65,19 @@ function superPlot()
         %set(h,'Color',colors{c});
         %set(h,'Color','k');
         %set(h,'LineWidth',1);
+        
+        % Output stats
+        disp(['Experiment' experiments(e).Name]);
+        disp(['Perfect Head-centered: ' num2str(nnz(collation.singleCell(:) == 1))]);
+        disp(['Last bin:' num2str(dist(4:end,end)')]);
+        
     end
 
     % Pretty up plots
     % http://blogs.mathworks.com/loren/2007/12/11/making-pretty-graphs/
 
-    % Single cell -------------------------------------
-    figure(singleCellPlot);
+    %% Single cell -------------------------------------
+    f = figure(singleCellPlot);
     hLegend = legend(legends);
     legend('boxoff')
     hTitle = title('');
@@ -88,14 +100,24 @@ function superPlot()
       'Box'         , 'on'     , ...
       'TickDir'     , 'in'     , ...
       'TickLength'  , [.02 .02] , ...
-      'XMinorTick'  , 'on'      , ...
-      'YMinorTick'  , 'on'      , ...
-      'YGrid'       , 'on'      , ...
+      'XMinorTick'  , 'off'      , ...
+      'YMinorTick'  , 'off'      , ...
+      'YGrid'       , 'off'      , ...
       'YTick'       , 0:0.2:1, ...
-      'LineWidth'   , 1         );
+      'LineWidth'   , 2         );
+  
+    %plot([1 numCells],[0 0], 'k.-');
+    axis tight;
+    ylim([singleCellMinY 1.1]);
+    
+    %% SAVE
+    chap = 'chap-2';
+    fname = [THESIS_FIGURE_PATH chap '/' expName '_singleCell.eps'];
+    set(gcf,'renderer','painters');
+    print(f,'-depsc2','-painters',fname);
 
-    % Multicell ---------------------------------------
-    figure(multiplCellPlot);
+    %% Multicell ---------------------------------------
+    f = figure(multiplCellPlot);
     legend(legends);
 
     hLegend = legend(legends);
@@ -126,10 +148,10 @@ function superPlot()
       'TickDir'     , 'in'     , ...
       'TickLength'  , [.02 .02] , ...
       'XMinorTick'  , 'off'      , ...
-      'YMinorTick'  , 'on'      , ...
-      'YGrid'       , 'on'      , ...
+      'YMinorTick'  , 'off'      , ...
+      'YGrid'       , 'off'      , ...
       'YTick'       , 0:dY:maxY, ...
-      'LineWidth'   , 1         );
+      'LineWidth'   , 2         );
 
       %'XColor'      , [.3 .3 .3], ...
       %'YColor'      , [.3 .3 .3], ...
@@ -143,8 +165,9 @@ function superPlot()
     set(gca,'XTick',1:nrOfBins);
     set(gca,'XTickLabel',tickLabels)
 
-    buff = 3;
-    ylim([-buff (max(maxY)+buff)])
+    Y = max(maxY);
+    dY = 0.1*Y;
+    ylim([-dY (Y+dY)])
 
     for e=1:length(experiments),
         set(errorBarHandles(e)        , ...
@@ -152,6 +175,12 @@ function superPlot()
       'Marker'          , markstyle{e} , ...
       'MarkerSize'      , 8           );
     end
+    
+    %% SAVE
+    chap = 'chap-2';
+    fname = [THESIS_FIGURE_PATH chap '/' expName '_multiCell.eps'];
+    set(gcf,'renderer','painters');
+    print(f,'-depsc2','-painters',fname);
 
      % 'MarkerEdgeColor' , colors{e}  , ...
      % 'MarkerFaceColor' , [.7 .7 .7]  
@@ -162,7 +191,7 @@ function superPlot()
       s = num2str(d);
 
       if s(1) == '0' && length(s) > 1
-          s = s(2:end)
+          s = s(2:end);
       end
 
      end

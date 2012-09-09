@@ -9,12 +9,14 @@
 function dimensions = OneD_DG_Dimensions()
 
     % Stimuli
-    dimensions.nrOfVisualTargetLocations  = 4;
+    M = 4;
+    dimensions.nrOfVisualTargetLocations  = M;
     dimensions.numberOfSimultanousObjects = 1;
     
     % Enviroment (non-Elmsley) 
     dimensions.visualFieldSize             = 200; % Entire visual field (rougly 100 per eye), (deg)
     dimensions.targetRangeProportionOfVisualField = 0.5;
+    dimensions.visualFieldEccentricity     = dimensions.visualFieldSize * dimensions.targetRangeProportionOfVisualField;
     
     % Elmsley eye model
     % DistanceToScreen          = ;     % Eye centers line to screen distance (meters)
@@ -44,7 +46,7 @@ function dimensions = OneD_DG_Dimensions()
     
     % Place targets
     if dimensions.nrOfVisualTargetLocations > 1,
-        dimensions.targets = centerN(dimensions.visualFieldSize * dimensions.targetRangeProportionOfVisualField, dimensions.nrOfVisualTargetLocations);
+        dimensions.targets = centerN2(dimensions.visualFieldEccentricity , dimensions.nrOfVisualTargetLocations);
         dimensions.targetBoundary = dimensions.targets(end);
     else
         dimensions.targets = 0;
@@ -56,8 +58,9 @@ function dimensions = OneD_DG_Dimensions()
     % Derive eye movement range is sufficiently confined to keep ANY
     % target on retina
     dimensions.eyePositionFieldSize = dimensions.visualFieldSize - 2*dimensions.targets(end);
-    dimensions.leftMostEyePosition = -dimensions.eyePositionFieldSize/2;
-    dimensions.rightMostEyePosition = dimensions.eyePositionFieldSize/2; 
+    %dimensions.eyePositionEccentricity = dimensions.eyePositionFieldSize/2;
+    %dimensions.leftMostEyePosition = -dimensions.eyePositionFieldSize/2;
+    %dimensions.rightMostEyePosition = dimensions.eyePositionFieldSize/2; 
     
     % Retina
     dimensions.leftMostVisualPosition = -dimensions.visualFieldSize/2;
@@ -69,6 +72,5 @@ function dimensions = OneD_DG_Dimensions()
     
     dimensions.nrOfVisualPreferences = length(dimensions.visualPreferences);
     dimensions.nrOfEyePositionPrefrerence = length(dimensions.eyePositionPreferences);
-    
     
 end

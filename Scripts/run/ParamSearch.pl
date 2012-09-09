@@ -29,11 +29,9 @@
 #2 epoch training view - look at spesific cells that deteriorate!!!
 #
 
-	my $experiment	 			= "experiment_first"; # trace-10h, classic-30-1E-3H-2S-1O
-	my $stim				= "fast-Tar=4.00-Ord=1.00-Sim=1.00-fD=0.50-sA=25.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
-
-	#"Tar=4.00-Ord=1.00-Sim=1.00-fD=0.50-sA=25.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00"
-	#"Tar=4.00-Ord=4.00-Sim=1.00-fD=0.50-sA=35.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00";
+	my $experiment	 			= "exp_4"; # trace-10h, classic-30-1E-3H-2S-1O
+	my $stim				= "SLOW-Tar=4.00-Ord=2.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00";	
+	
 	
 	my $xgrid 				= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $seed				= 55; # 55 is standard
@@ -42,8 +40,8 @@
 	my $learningRule			= TRACE; # TRACE, HEBB
 
 	my $nrOfEpochs				= 10; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 2;
-	my $outputAtTimeStepMultiple		= 4;
+	my $saveNetworkAtEpochMultiple 		= 5;
+	my $outputAtTimeStepMultiple		= 3;
 
 	my $lateralInteraction			= COMP; # NONE, COMP, SOM
 	my $sparsenessRoutine			= HEAP; # NONE, HEAP, GLOBAL
@@ -61,14 +59,14 @@
 	my $stimuliTesting 			= $stim."-stdTest";
 
 	# Load params from stimuli name	
-	# Tar=4.00-Ord=1.00-Sim=1.00-fD=0.50-sA=35.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00
+	# SLOW-Tar=4.00-Ord=2.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00
 	my @res 				= ($stimuliTraining =~ m/(\d+\.\d+)/g);
 
 	#my $Tar 				= $res[0];
 	#my $Ord 				= $res[1];
 	#my $Sim 				= $res[2];
 	#my $fD 				= $res[3];
-	#my $sA					= $res[4]
+	#my $nF					= $res[4]
 	my $visualPreferenceDistance		= $res[5];
 	my $eyePositionPrefrerenceDistance	= $res[6];
 	my $gaussianSigma			= $res[7];
@@ -374,7 +372,7 @@
 	}
 	else {
 		# Call matlab to plot all
-		system($MATLAB . " -r \"cd('$MATLAB_SCRIPT_FOLDER');plotExperiment('$experiment','$stimuliTesting');\"");	
+		system($MATLAB . " -r \"cd('$MATLAB_SCRIPT_FOLDER');plotExperiment('$experiment','$stimuliTesting');quit;\"");	
 	}
 	
 	sub makeParameterFile {

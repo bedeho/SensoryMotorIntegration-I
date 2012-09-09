@@ -6,7 +6,7 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, corr, dist, omegaBins, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
+function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, omegaMatrix, dist, omegaBins, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
 
     % Get dimensions
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
@@ -26,7 +26,8 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
         error('Region is to small');
     end
     
-    nrOfEyePositionsInTesting = length(info.eyePositions)
+    numTargets = length(info.targets);
+    nrOfEyePositionsInTesting = length(info.eyePositions);
     
     %% OLD CORRELATION
     
@@ -126,10 +127,10 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
         % dist(1, bin) = min
         % dist(2, bin) = mean
         % dist(3, bin) = max
-        dist = zeros(3,length(omegaBins));
+        dist = zeros(3 + numTargets,length(omegaBins));
         
         % targetBins
-        targetBins = (0:length(info.targets)) + 0.5;
+        targetBins = (0:numTargets) + 0.5;
         
         % Populate bins
         for b = 1:length(omegaBins),
@@ -146,13 +147,14 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
           dist(1,b) = min(cHist);
           dist(2,b) = mean(cHist);
           dist(3,b) = max(cHist);
+          dist(4:end,b) = cHist;
         
         end
         
         % Plot bar
         upper = dist(3,:) - dist(2,:);
         lower = dist(2,:) - dist(1,:);
-        X = 1:length(dist);
+        X = 1:length(omegaBins);
         Y = dist(2,:);
         errorbar(X,Y,lower,upper)
         %plot(1:length(dist),dist(2,:));

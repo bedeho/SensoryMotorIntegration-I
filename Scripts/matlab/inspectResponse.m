@@ -11,7 +11,8 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
     declareGlobalVars();
     
     global base;
-
+    global THESIS_FIGURE_PATH;
+    
     % Get dimensions
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
     
@@ -43,24 +44,51 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
     end
     
     % Setup vars
-    doHeadCentered = 0;
+    doHeadCentered = 1;
     PLOT_COLS = 4;
     numRegions = length(networkDimensions);
     axisVals = zeros(numRegions, PLOT_COLS); % Save axis that we can lookup 'CurrentPoint' property on callback
     %markerSpecifiers = {'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>', 'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>'}; %, '<', 'p', 'h'''
     markerSpecifiers = {'+', 'v', 'x', 's', 'd', '^', '.', '>', '+', 'v', 'x', 's', 'd', '^', '.', '>','+', 'v', 'x', 's', 'd', '^', '.', '>'};
+    colors = {'r', 'b','k','c', 'm', 'y', 'g', 'w'};
     topLayerRowDim = networkDimensions(numRegions).x_dimension;
+    numEyePositions = length(info.eyePositions);
+    numTargets = length(info.targets);
     
-    if doHeadCentered,
-        objectLegend = cell(nrOfEyePositionsInTesting,1);
-        for s=1:nrOfEyePositionsInTesting,
-            objectLegend{s} = [num2str(info.eyePositions(s)) '^{\circ}'];
-        end
-    else
-        numTargets = length(info.targets);
+    %if doHeadCentered,
+    %    objectLegend = cell(nrOfEyePositionsInTesting,1);
+    %    
+    %    for s=1:nrOfEyePositionsInTesting,
+    %        objectLegend{s} = [num2str(info.targets(s)) '^{\circ}'];
+    %    end
+    %else
+        
         objectLegend = cell(numTargets,1);
+
         for s=1:numTargets,
             objectLegend{s} = [num2str(info.targets(s)) '^{\circ}'];
+        end
+    %end
+    
+    if doHeadCentered,
+        xTickLabels = cell(numTargets,1);
+        xTick = zeros(numTargets,1);
+        for s=1:numTargets,
+            %s = sprintf('45%c', char(176));
+            %xTickLabels{s} = [num2str(info.eyePositions(s)) '^{\circ}'];
+
+            xTickLabels{s} = sprintf([num2str(info.targets(s)) '%c'], char(176));
+            xTick(s) = info.targets(s);
+        end
+    else
+        xTickLabels = cell(nrOfEyePositionsInTesting,1);
+        xTick = zeros(nrOfEyePositionsInTesting,1);
+        for s=1:nrOfEyePositionsInTesting,
+            %s = sprintf('45%c', char(176));
+            %xTickLabels{s} = [num2str(info.eyePositions(s)) '^{\circ}'];
+
+            xTickLabels{s} = sprintf([num2str(info.eyePositions(s)) '%c'], char(176));
+            xTick(s) = info.eyePositions(s);
         end
     end
     
@@ -118,7 +146,6 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
             else
                 v1 = squeeze(sum(v0)); % sum away
             end
-            
             
             v2 = v1(:,:,1);
             im = imagesc(v2);         % only do first region
@@ -226,78 +253,154 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
 
     function prettyPlot(region,row,col)
 
-        figure();
+        %% GEt single cell score
+        
+        % Load analysis file for experiments
+        collation = load([pathstr '/collation.mat']);
+        sCell = collation.singleCell(row,col);
+        
+        cellNr = (row-1)*topLayerRowDim + col;
 
         if doHeadCentered,
             
             for h = 1:nrOfEyePositionsInTesting,
+                
+                f = figure();
 
                 y = squeeze(data{region-1}(h, :, row, col));
 
-                if doHeadCentered,
+                %if doHeadCentered,
                     % head centere refrernce frame
                     x = info.targets;
-                else
+                %else
                     % retinal reference frame
-                    x = info.targets - info.eyePositions(h);
-                end
+                    %x = info.targets - info.eyePositions(h);
+                %end
 
-                plot(x,y, ['-k' markerSpecifiers{h}]);
+                % color
+                
+                %c = mod(e-1,length(colors)) + 1;
+                
+                %plot(x,y, ['-k' markerSpecifiers{h}]);
+                %colors{c}
+                plot(x,y,'-bd','LineWidth',2,'MarkerSize',8);
+                
+                %hold all;
 
-                hold all;
+                hTitle = title(['Fixating ' num2str(info.eyePositions(h)) '^{\circ}']); % ', R:' num2str(region) % ', \Omega_{' num2str(cellNr) '} = ' num2str(sCell)
+                %axis([min(info.targets) max(info.targets) -0.1 1.1]);
+                %hLegend = legend(objectLegend);
+                %legend('boxoff')
+                hYLabel = ylabel('Firing rate');
+                hXLabel = xlabel('Head-centered location (deg)');
+                
+                set( gca                       , ...
+                    'FontName'   , 'Helvetica' );
+                set([hTitle, hXLabel, hYLabel], ...
+                    'FontName'   , 'AvantGarde');
+                set(gca             , ...
+                    'FontSize'   , 28           );
+                set([hXLabel, hYLabel]  , ...
+                    'FontSize'   , 28          );
+                set( hTitle                    , ...
+                    'FontSize'   , 32          , ...
+                    'FontWeight' , 'bold'      );
+
+                set(gca, ...
+                  'Box'         , 'on'     , ...
+                  'TickDir'     , 'in'     , ...
+                  'TickLength'  , [.02 .02] , ...
+                  'XMinorTick'  , 'off'     , ...
+                  'YMinorTick'  , 'off'      , ...
+                  'YGrid'       , 'off'      , ...
+                  'YTick'       , 0:0.2:1, ...
+                  'LineWidth'   , 2         );
+
+                %'XColor'      , [.3 .3 .3], ...
+                %'YColor'      , [.3 .3 .3], ...     
+
+                set(gca,'YLim',[-0.1 1.1]);
+                %set(gca,'XTick',1:nrOfBins);
+                
+                set(gca,'XTick', xTick);
+                set(gca,'XTickLabel', xTickLabels);
+                
+                %% SAVE
+                chap = 'chap-2';
+                fname = [THESIS_FIGURE_PATH chap '/neuron_response_' num2str(h) '_' num2str(cellNr) '.eps'];
+                set(gcf,'renderer','painters');
+                print(f,'-depsc2','-painters',fname);
+                
             end
             
-            hXLabel = xlabel('Head-centered location (deg)');
+            %hXLabel = xlabel('Head-centered location (deg)');
         else
+            
+            f = figure();
         
             for o = 1:objectsPrEyePosition,
 
                 y = squeeze(data{region-1}(:, o, row, col));
                 x = info.eyePositions;
+                
+                c = mod(o-1,length(colors)) + 1;
 
-                plot(x,y,['-k' markerSpecifiers{o}],'LineWidth',2,'MarkerSize',8);
+                plot(x,y,['-' markerSpecifiers{c}],'LineWidth',2,'MarkerSize',8);
 
                 hold all;
             end
             
+            set(gca,'XTick', xTick);
+            set(gca,'XTickLabel', xTickLabels);
+
             hXLabel = xlabel('Fixation location (deg)');
-        end
-
-        hTitle = title('');
-        %title(['Cell #' num2str((row-1)*topLayerRowDim + col)]); % ', R:' num2str(region)
-        %axis([min(info.targets) max(info.targets) -0.1 1.1]);
-        hLegend = legend(objectLegend);
-        legend('boxoff')
-        hYLabel = ylabel('Firing rate');
-        
-        set( gca                       , ...
-            'FontName'   , 'Helvetica' );
-        set([hTitle, hXLabel, hYLabel], ...
-            'FontName'   , 'AvantGarde');
-        set([hLegend, gca]             , ...
+            hLegend = legend(objectLegend);
+            set([hLegend, gca]             , ...
             'FontSize'   , 14           );
-        set([hXLabel, hYLabel]  , ...
-            'FontSize'   , 18          );
-        set( hTitle                    , ...
-            'FontSize'   , 24          , ...
-            'FontWeight' , 'bold'      );
+        
+            %hTitle = title('');
+            hTitle = title(['Cell #' num2str(cellNr)]); % ', R:' num2str(region) % ', \Omega_{' num2str(cellNr) '} = ' num2str(sCell)
+            %axis([min(info.targets) max(info.targets) -0.1 1.1]);
 
-        set(gca, ...
-          'Box'         , 'on'     , ...
-          'TickDir'     , 'in'     , ...
-          'TickLength'  , [.02 .02] , ...
-          'XMinorTick'  , 'on'     , ...
-          'YMinorTick'  , 'on'      , ...
-          'YGrid'       , 'on'      , ...
-          'YTick'       , 0:0.2:1, ...
-          'LineWidth'   , 1         );
-      
-        %'XColor'      , [.3 .3 .3], ...
-        %'YColor'      , [.3 .3 .3], ...     
+            legend('boxoff')
+            hYLabel = ylabel('Firing rate');
 
-        set(gca,'YLim',[-0.1 1.1]);
-        %set(gca,'XTick',1:nrOfBins);
+            set( gca                       , ...
+                'FontName'   , 'Helvetica' );
+            set([hTitle, hXLabel, hYLabel], ...
+                'FontName'   , 'AvantGarde');
+            set([hXLabel, hYLabel]  , ...
+                'FontSize'   , 28          );
+            set( hTitle                    , ...
+                'FontSize'   , 32,           ...
+                'FontWeight' , 'bold'      );
+            set( gca             , ...
+                'FontSize'   , 28           );
 
+            set(gca, ...
+              'Box'         , 'on'     , ...
+              'TickDir'     , 'in'     , ...
+              'TickLength'  , [.02 .02] , ...
+              'XMinorTick'  , 'off'     , ...
+              'YMinorTick'  , 'off'      , ...
+              'YGrid'       , 'off'      , ...
+              'YTick'       , 0:0.2:1, ...
+              'LineWidth'   , 2         );
+
+            %'XColor'      , [.3 .3 .3], ...
+            %'YColor'      , [.3 .3 .3], ...     
+
+            set(gca,'YLim',[-0.1 1.1]);
+            %set(gca,'XTick',1:nrOfBins);
+            
+            %% SAVE
+            chap = 'chap-2';
+            fname = [THESIS_FIGURE_PATH chap '/neuron_response_m_' num2str(cellNr) '.eps'];
+            set(gcf,'renderer','painters');
+            print(f,'-depsc2','-painters',fname);
+        
+        end
+       
     end
     
     % OLD STYLE - Bar plot

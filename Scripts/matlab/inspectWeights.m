@@ -11,6 +11,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
     declareGlobalVars();
     
     global base;
+    global THESIS_FIGURE_PATH;
     
     % Load data
     [networkDimensions, neuronOffsets] = loadWeightFileHeader(networkFile); % Load weight file header
@@ -122,17 +123,27 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             
             f = figure();
             
+            %% IMAGESC SCHME
             h = imagesc(weightBox1);
+            
+            
+            %% SURF SCHEME
+            %x = 1:width;
+            %y = 1:height;
+            %[X, Y] = meshgrid(x, y);
+            %h = surf(X, Y, weightBox1,'EdgeColor','none','LineStyle','none','FaceLighting','phong');
+            %h = surf(weightBox1);
             %set(h, 'linestyle', 'none');
             %view(0, 90);
-            %axis square
+            %axis tight
             %box on
             %grid off
+            %alpha(.5)
             
             dim = fliplr(size(weightBox1));
             daspect([dim 1]);
             
-            colormap gray
+            %colormap gray
             colorbar
             %colorbar('location','southoutside')
             
@@ -140,14 +151,16 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             cellNr = (row-1)*topLayerRowDim + col;
             hTitle = title('')
             %hTitle = title(['Afferent synaptic weights of cell #' num2str(cellNr) extraTitle]);
+            hTitle = title(['Cell #' num2str(cellNr) extraTitle]);
             
-            hXLabel = xlabel('Eye-position preference: \beta_{i} (deg)');
-            hYLabel = ylabel('Retinal preference: \alpha_{i} (deg)');
+            hXLabel = xlabel('Eye-position preference (deg)'); % : \beta_{i}
+            hYLabel = ylabel('Retinal preference (deg)'); % : \alpha_{i}
             
             set( gca                       , ...
                 'FontName'   , 'Helvetica' );
             set([hTitle, hXLabel, hYLabel], ...
                 'FontName'   , 'AvantGarde');
+        
             set(gca             , ...
                 'FontSize'   , 6           );
             set([hXLabel, hYLabel]  , ...
@@ -155,7 +168,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             set( hTitle                    , ...
                 'FontSize'   , 24          , ...
                 'FontWeight' , 'bold'      );
-            
+ 
             set(gca, ...
               'Box'         , 'on'     , ...
               'TickDir'     , 'out'     , ...
@@ -198,12 +211,17 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             %position(4) = 1 - tightInset(2) - tightInset(4);
             %set(gca, 'Position', position);
             %saveas(h, 'WithoutMargins.pdf');
-
-            fname = ['/home/bedeho/Dphil/Thesis/figures/eps/' 'cell_weight_' num2str(cellNr) '.eps'];
             
-            print(f,'-depsc2','-r600','-painters',fname);
+            %% SAVE
+            chap = 'chap-2';
+            fname = [THESIS_FIGURE_PATH chap '/neuron_weight_' num2str(cellNr) '.eps'];
+            set(gcf,'renderer','painters');
+            print(f,'-depsc2','-painters',fname);
             
             
+            %fname_eps = [ path 'cell_weight_' num2str(cellNr) '.pdf'];
+            %print(f,'-dpdf','-painters','-r600',fname);
+ 
             %plot2svg('myfile.svg', f)
            
             
@@ -216,10 +234,8 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             %oldfolder = cd(filepath);
                     %print(f,'-depsc', fname);
                     %fname = strcat(fname, '.eps'); 
-                    %eps2pdf(fname, '/usr/bin/gs');
+            %eps2pdf(fname, fname_eps);
             %        cd(oldfolder);
         end
     end
-    
 end
-
