@@ -29,7 +29,7 @@
 #2 epoch training view - look at spesific cells that deteriorate!!!
 #
 
-	my $experiment	 			= "experiment_1"; # trace-10h, classic-30-1E-3H-2S-1O
+	my $experiment	 			= "sigmoidal"; # trace-10h, classic-30-1E-3H-2S-1O
 	my $stim				= "SLOW-Tar=4.00-Ord=2.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00";	
 	
 	
@@ -40,7 +40,7 @@
 	my $learningRule			= TRACE; # TRACE, HEBB
 
 	my $nrOfEpochs				= 10; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 5;
+	my $saveNetworkAtEpochMultiple 		= 50;
 	my $outputAtTimeStepMultiple		= 3;
 
 	my $lateralInteraction			= COMP; # NONE, COMP, SOM
@@ -49,7 +49,7 @@
 	my $resetTrace				= "true"; # "false", Reset trace between objects of training
 	my $resetActivity			= "true"; # "false", Reset activation between objects of training
 
-	my $sigmoidModulationPercentage		= "0.0";
+	my $sigmoidModulationPercentage		= "1.0";
 
     	####################################################################
 	# Preprocessing

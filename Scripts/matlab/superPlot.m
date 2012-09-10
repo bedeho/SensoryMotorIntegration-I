@@ -6,16 +6,25 @@ function superPlot()
     global base;
     global THESIS_FIGURE_PATH;
     
-    expName = 'exp1';
+    expName = 'experiment_1';
     expFolder = [base 'Experiments/' expName '/']; % 'trace_orth_4_small'
 
     % Save all experiments to include  
     experiments(1).Name = 'Trained';
-    experiments(1).Folder = 'L=0.05000_S=0.85_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(1).Folder = 'L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
     experiments(2).Name = 'Untrained';
-    experiments(2).Folder = 'L=0.05000_S=0.85_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/BlankNetwork';
+    experiments(2).Folder = 'L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/BlankNetwork';
 
     legends = ['Trained  ';'Untrained'];
+    
+    % Dialogs
+    %answer = inputdlg('Qualifier')
+    %
+    %if ~isempty(answer)
+    %    qualifier = ['-' answer{1}];
+    %else
+    %    qualifier = '';
+    %end
 
     % Start figures
     singleCellPlot = figure(); % Single cell
@@ -30,6 +39,7 @@ function superPlot()
     errorBarHandles = zeros(1,length(experiments));
     singleCellMinY = 0;
     numCells = 0;
+    numPerfectCells = zeros(1,length(experiments));
     % Iterate experiments and plot
     for e = 1:length(experiments),
 
@@ -56,6 +66,9 @@ function superPlot()
         X = 1:length(collation.omegaBins);
         Y = dist(2,:);
         h = errorbar(X,Y,lower,upper,[colors{c} linestyle{c}],'LineWidth',2,'MarkerSize',8);
+        
+        % Find Number of Perfect cells
+        numPerfectCells(e) = nnz(sortedData > 0.8);
 
         % Save for post-processing
         maxY = max(maxY,dist(3,:));

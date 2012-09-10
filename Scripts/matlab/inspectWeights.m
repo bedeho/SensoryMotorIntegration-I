@@ -113,12 +113,12 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         % External figure
         if rightClicked,
             
-            answer = inputdlg('Extra Title')
+            answer = inputdlg('Qualifier')
             
             if ~isempty(answer)
-                extraTitle = [' - ' answer{1}];
+                qualifier = ['-' answer{1}];
             else
-                extraTitle = '';
+                qualifier = '';
             end
             
             f = figure();
@@ -151,7 +151,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             cellNr = (row-1)*topLayerRowDim + col;
             hTitle = title('')
             %hTitle = title(['Afferent synaptic weights of cell #' num2str(cellNr) extraTitle]);
-            hTitle = title(['Cell #' num2str(cellNr) extraTitle]);
+            hTitle = title(['Cell #' num2str(cellNr) ]); % extraTitle
             
             hXLabel = xlabel('Eye-position preference (deg)'); % : \beta_{i}
             hYLabel = ylabel('Retinal preference (deg)'); % : \alpha_{i}
@@ -214,7 +214,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             
             %% SAVE
             chap = 'chap-2';
-            fname = [THESIS_FIGURE_PATH chap '/neuron_weight_' num2str(cellNr) '.eps'];
+            fname = [THESIS_FIGURE_PATH chap '/neuron_weight_' num2str(cellNr) qualifier '.eps'];
             set(gcf,'renderer','painters');
             print(f,'-depsc2','-painters',fname);
             

@@ -110,9 +110,24 @@
 ##["0.01000"]
 #["0.10000"],
 ["0.10000"]
+#["0.09000"],
+#["0.08000"],
+#["0.07000"],
+#["0.06000"],
+#["0.05000"],
+#["0.04000"],
+#["0.03000"],
+#["0.02000"],
 #["0.01000"],
-#["0.00500"]
-#["0.10000"]				
+#["0.00900"],
+#["0.00800"],
+#["0.00700"],
+#["0.00600"],
+#["0.00500"],
+#["0.00400"],
+#["0.00300"],
+#["0.00200"],
+#["0.00100"]			
 );								
  	die "Invalid array: learningRates" if !validateArray(\@learningRates);
 
@@ -150,12 +165,26 @@
 #["0.90"],
 #["0.00"]
 # 200
-#["0.9998"],
-#["0.998"],
-#["0.995"],
-#["0.95"],
-#["0.90"],
-["0.85"]
+["0.98"],
+#["0.96"],
+["0.94"],
+#["0.92"],
+["0.90"],
+#["0.88"],
+["0.86"],
+#["0.84"],
+["0.82"]
+#["0.80"],
+#["0.78"],
+#["0.76"],
+#["0.74"],
+#["0.72"],
+#["0.70"],
+#["0.68"],
+#["0.66"],
+#["0.64"],
+#["0.62"],
+#["0.60"]
 #["0.80"]
 #orthogonalization
 #["0.95"],
@@ -188,7 +217,7 @@
     our @depth						= (1);
     our @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     our @fanInRadius 					= (6); # not used
-    our @fanInCountPercentage 				= ("0.2"); # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    our @fanInCountPercentage 				= ("0.1"); # 0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
     our @learningrate					= ("0.1"); # < === is permuted below
     our @eta						= ("0.8");
     our @timeConstant					= ("0.1"); # < === is permuted below

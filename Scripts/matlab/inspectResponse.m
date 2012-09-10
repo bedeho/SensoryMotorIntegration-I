@@ -260,6 +260,15 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
         sCell = collation.singleCell(row,col);
         
         cellNr = (row-1)*topLayerRowDim + col;
+        
+        % Dialogs
+        answer = inputdlg('Qualifier')
+
+        if ~isempty(answer)
+            qualifier = ['-' answer{1}];
+        else
+            qualifier = '';
+        end
 
         if doHeadCentered,
             
@@ -327,7 +336,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
                 
                 %% SAVE
                 chap = 'chap-2';
-                fname = [THESIS_FIGURE_PATH chap '/neuron_response_' num2str(h) '_' num2str(cellNr) '.eps'];
+                fname = [THESIS_FIGURE_PATH chap '/neuron_response_' num2str(h) '_' num2str(cellNr) qualifier '.eps'];
                 set(gcf,'renderer','painters');
                 print(f,'-depsc2','-painters',fname);
                 
