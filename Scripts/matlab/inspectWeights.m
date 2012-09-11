@@ -101,6 +101,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         % Plot the two input layers
         subplot(numRegions-1, 3, 3*(region-2) + 1 + sourceDepth);
         weightBox1 = afferentSynapseMatrix(fileID, networkDimensions, neuronOffsets, region, 1, row, col, region-1, sourceDepth);
+        disp(['Number of synapses from this depth from this region: ' num2str(numel(weightBox1))]);
         cla
         imagesc(weightBox1);
         dim = fliplr(size(weightBox1));
@@ -149,9 +150,8 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             
             
             cellNr = (row-1)*topLayerRowDim + col;
-            hTitle = title('')
-            %hTitle = title(['Afferent synaptic weights of cell #' num2str(cellNr) extraTitle]);
-            hTitle = title(['Cell #' num2str(cellNr) ]); % extraTitle
+            %hTitle = title(''); %; title(['Afferent synaptic weights of cell #' num2str(cellNr) extraTitle]);
+            hTitle = title(''); %title(['Cell #' num2str(cellNr) ]); % extraTitle
             
             hXLabel = xlabel('Eye-position preference (deg)'); % : \beta_{i}
             hYLabel = ylabel('Retinal preference (deg)'); % : \alpha_{i}
@@ -160,7 +160,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
                 'FontName'   , 'Helvetica' );
             set([hTitle, hXLabel, hYLabel], ...
                 'FontName'   , 'AvantGarde');
-        
+            
             set(gca             , ...
                 'FontSize'   , 6           );
             set([hXLabel, hYLabel]  , ...
@@ -217,7 +217,6 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             fname = [THESIS_FIGURE_PATH chap '/neuron_weight_' num2str(cellNr) qualifier '.eps'];
             set(gcf,'renderer','painters');
             print(f,'-depsc2','-painters',fname);
-            
             
             %fname_eps = [ path 'cell_weight_' num2str(cellNr) '.pdf'];
             %print(f,'-dpdf','-painters','-r600',fname);

@@ -57,6 +57,7 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             % outputPatternsPlot
             saveas(invariancePlot, [netDir '/invariance.fig']);
             saveas(invariancePlot, [netDir '/invariance.png']);
+            print(invariancePlot, '-depsc2', '-painters', [netDir '/' experiment '_invariance.eps']);
             delete(invariancePlot);
             
             % distributionPlot

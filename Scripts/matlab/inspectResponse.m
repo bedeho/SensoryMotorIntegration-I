@@ -296,7 +296,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
                 
                 %hold all;
 
-                hTitle = title(['Fixating ' num2str(info.eyePositions(h)) '^{\circ}']); % ', R:' num2str(region) % ', \Omega_{' num2str(cellNr) '} = ' num2str(sCell)
+                hTitle = title('')%; title(['Fixating ' num2str(info.eyePositions(h)) '^{\circ}']); % ', R:' num2str(region) % ', \Omega_{' num2str(cellNr) '} = ' num2str(sCell)
                 %axis([min(info.targets) max(info.targets) -0.1 1.1]);
                 %hLegend = legend(objectLegend);
                 %legend('boxoff')

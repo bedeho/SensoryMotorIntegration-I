@@ -6,14 +6,14 @@ function superPlot()
     global base;
     global THESIS_FIGURE_PATH;
     
-    expName = 'experiment_1';
+    expName = 'sigmoidal';
     expFolder = [base 'Experiments/' expName '/']; % 'trace_orth_4_small'
 
     % Save all experiments to include  
     experiments(1).Name = 'Trained';
-    experiments(1).Folder = 'L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(1).Folder = 'S=0.86_/TrainedNetwork'; % L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_
     experiments(2).Name = 'Untrained';
-    experiments(2).Folder = 'L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/BlankNetwork';
+    experiments(2).Folder = 'S=0.86_/BlankNetwork';
 
     legends = ['Trained  ';'Untrained'];
     
@@ -93,7 +93,7 @@ function superPlot()
     f = figure(singleCellPlot);
     hLegend = legend(legends);
     legend('boxoff')
-    hTitle = title('');
+    hTitle = title('')%; title('Head-centerdness Analysis');
     hXLabel = xlabel('Cell Rank');
     hYLabel = ylabel('Head-centerdness');
 
@@ -135,7 +135,7 @@ function superPlot()
 
     hLegend = legend(legends);
     legend('boxoff')
-    hTitle = title('');
+    hTitle = title('')%; title('Representation Analysis');
     hXLabel = xlabel('Head-centerdness Bin');
     hYLabel = ylabel('Frequency');
 

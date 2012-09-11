@@ -112,7 +112,45 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
 
     bar(responseCounts);
     
-    ylim([-1 0.08*numCells]);
+    legends = cell(1,numTargets);
+    for h=1:numTargets,
+        legends{h} = ['Head-centered Location ' num2str(info.targets(h)) '^{\circ}'];
+    end
+    
+    hLegend = legend(legends);
+    legend('boxoff')
+    hTitle = title('')%; title('Exclusive Cells');
+    hXLabel = xlabel('#Effective Fixation Locations');
+    hYLabel = ylabel('Frequency');
+
+    set( gca                       , ...
+        'FontName'   , 'Helvetica' );
+    set([hTitle, hXLabel, hYLabel], ...
+        'FontName'   , 'AvantGarde');
+    set([hLegend, gca]             , ...
+        'FontSize'   , 14           );
+    set([hXLabel, hYLabel]  , ...
+        'FontSize'   , 18          );
+    set( hTitle                    , ...
+        'FontSize'   , 24          , ...
+        'FontWeight' , 'bold'      );
+    
+    set(hLegend        , ...
+      'LineWidth'       , 2  );
+
+    set(gca, ...
+      'Box'         , 'on'     , ...
+      'TickDir'     , 'in'     , ...
+      'TickLength'  , [.02 .02] , ...
+      'XMinorTick'  , 'off'      , ...
+      'YMinorTick'  , 'off'      , ...
+      'YGrid'       , 'off'      , ...
+      'LineWidth'   , 2         );
+    
+    ylim([0 0.13*numCells]); % We dont normalize with peak, but rather with fixed number so visual comparison is easy
+    
+    
+    %%
     
     function [p,dist,omegaBins] = doDistributionPlot(omegaMatrix,preferenceMatrix)
         
@@ -160,6 +198,8 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
         %plot(1:length(dist),dist(2,:));
         
     end
+end
+
 
     
     %{
@@ -183,4 +223,3 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     
     legend(objectLegend);
     %}
-end
