@@ -21,7 +21,7 @@
 
 	####################################################################
 	# Input
-    	####################################################################
+   	####################################################################
 	
 # try: 
 #activation tC
@@ -29,8 +29,8 @@
 #2 epoch training view - look at spesific cells that deteriorate!!!
 #
 
-	my $experiment	 			= "test"; # trace-10h, classic-30-1E-3H-2S-1O
-	my $stim				= "SLOW-Tar=4.00-Ord=2.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00";	
+	my $experiment	 			= "peaked"; # trace-10h, classic-30-1E-3H-2S-1O
+	my $stim				= "Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00";	
 	
 	
 	my $xgrid 				= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
@@ -39,7 +39,7 @@
 	my $neuronType				= CONTINOUS; # CONTINOUS, DISCRETE
 	my $learningRule			= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs				= 1; # 30,100
+	my $nrOfEpochs				= 10; # 30,100
 	my $saveNetworkAtEpochMultiple 		= 50;
 	my $outputAtTimeStepMultiple		= 3;
 
@@ -59,20 +59,21 @@
 	my $stimuliTesting 			= $stim."-stdTest";
 
 	# Load params from stimuli name	
-	# SLOW-Tar=4.00-Ord=2.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=125.00
+	# Tar=2.00-nTP=6.00-ftC=3.00-Sim=1.00-fD=0.50-nF=3.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-training
 	my @res 				= ($stimuliTraining =~ m/(\d+\.\d+)/g);
 
-	#my $Tar 				= $res[0];
-	#my $Ord 				= $res[1];
-	#my $Sim 				= $res[2];
-	#my $fD 				= $res[3];
-	#my $nF					= $res[4]
-	my $visualPreferenceDistance		= $res[5];
-	my $eyePositionPrefrerenceDistance	= $res[6];
-	my $gaussianSigma			= $res[7];
-	my $sigmoidSlope			= $res[8];
-	my $horVisualFieldSize			= $res[9];
-	my $horEyePositionFieldSize		= $res[10];
+	#my $Tar 							= $res[0];
+	#my $nTP 							= $res[1];
+	#my $fTC 							= $res[2];
+	#my $Sim 							= $res[3];
+	#my $fD 							= $res[4];
+	#my $nF								= $res[5]
+	my $visualPreferenceDistance		= $res[6];
+	my $eyePositionPrefrerenceDistance	= $res[7];
+	my $gaussianSigma					= $res[8];
+	my $sigmoidSlope					= $res[9];
+	my $horVisualFieldSize				= $res[10];
+	my $horEyePositionFieldSize			= $res[11];
     
 	# Build template parameter file from these    	    	    	    	    
 	my @esRegionSettings;

@@ -40,7 +40,7 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
     plotStimuli(trainingStimuliName, 'r','o', 1, 6);
     plotStimuli(testingStimuliName, 'b','x', 3, 14);
     
-    hTitle = title('Input Data');
+    hTitle = title(''); % title('Input Data');
     hXLabel = xlabel('Eye-position (deg)');
     hYLabel = ylabel('Retinal preference (deg)');
     hLegend = legend('Training','Testing ');
@@ -80,7 +80,7 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
     fig = figure();
     plotEyeMovements(trainingStimuliName);
     
-    hTitle = title('Eye Movement Dynamics');
+    hTitle = title(''); % title('Eye Movement Dynamics');
     hXLabel = xlabel('Time (s)');
     hYLabel = ylabel('Eye-position (deg)');
     %hLegend = legend('Training','Testing ');

@@ -98,17 +98,8 @@
     # Notice, layer one needs 3x because of small filter magnitudes, and 5x because of
     # number of afferent synapses, total 15x.
     our @learningRates 					= (
-#learningrate
-#["0.00001"],
-#["0.00010"],
-#["0.00100"],
-#["0.01000"],
-#["0.10000"],
-#["1.00000"],
-#["10.0000"],
-#["100.000"],
-#["1000.00"]
 
+#learningrate
 #["0.00100"],
 #["0.00200"],
 #["0.00300"],
@@ -118,7 +109,7 @@
 #["0.00700"],
 #["0.00800"],
 #["0.00900"],
-
+#
 #["0.01000"],
 #["0.02000"],
 #["0.03000"],
@@ -128,8 +119,8 @@
 #["0.07000"],
 #["0.08000"],
 #["0.09000"],
-
-["0.10000"]
+#
+["0.10000"],
 #["0.20000"],
 #["0.30000"],
 #["0.40000"],
@@ -138,7 +129,7 @@
 #["0.70000"],
 #["0.80000"],
 #["0.90000"],
-
+#
 #["1.00000"],
 #["2.00000"],
 #["3.00000"],
@@ -185,7 +176,17 @@
 #["0.95"],
 #["0.90"],
 #["0.00"]
+
 # 200
+#["0.95"],
+#["0.99"],
+#["0.995"],
+#["0.998"],
+#["0.999"],
+#["0.9993"],
+#["0.9998"]
+
+##############
 #["0.98"],
 #["0.96"],
 #["0.94"],
@@ -194,10 +195,10 @@
 #["0.88"],
 #["0.86"],
 #["0.84"],
-#["0.82"]
+#["0.82"],
 #["0.80"],
 #["0.78"],
-#["0.76"],
+["0.76"]
 #["0.74"],
 #["0.72"],
 #["0.70"],
@@ -205,16 +206,22 @@
 #["0.66"],
 #["0.64"],
 #["0.62"],
-#["0.60"]
-["0.85"]
-#orthogonalization
-#["0.95"],
-#["0.99"],
-#["0.995"],
-#["0.998"],
-#["0.999"],
-#["0.9993"],
-#["0.9998"]
+#["0.60"],
+#["0.58"],
+#["0.56"],
+#["0.54"],
+#["0.52"],
+#["0.50"],
+#["0.48"],
+#["0.46"],
+#["0.44"],
+#["0.42"],
+#["0.40"],
+#["0.38"],
+#["0.36"],
+#["0.34"],
+#["0.32"],
+#["0.30"]
 );
 
     die "Invalid array: sparsenessLevels" if !validateArray(\@sparsenessLevels);
@@ -227,42 +234,74 @@
     our @stepSizeFraction				= ("0.1");  #0.1 = 1/10, 0.05 = 1/20, 0.02 = 1/50
     die "Invalid array: stepSizeFraction" if !validateArray(\@stepSizeFraction);
     
-    our @traceTimeConstant				= ("0.400");  # ("0.300","0.800","1.600","2.600"); 
+    our @traceTimeConstant				= (
+    
+    #"10.0",
+    #"20.0",
+    #"30.0",
+    #"40.0",
+    #"50.0",
+    #"60.0",
+    #"70.0",
+    #"80.0",
+    #"90.0",
+    #
+    #"100.0",
+    #"200.0",
+    #"300.0",
+    "400.0"
+    #"500.0",
+    #"600.0",
+    #"700.0",
+    #"800.0",
+    #"900.0",
+    #
+    #"1000.0",
+    #"2000.0",
+    #"3000.0",
+    #"4000.0",
+    #"5000.0",
+    #"6000.0",
+    #"7000.0",
+    #"8000.0",
+    #"9000.0"
+    
+    );  # classic: "0.400"
 	die "Invalid array: traceTimeConstant" if !validateArray(\@traceTimeConstant);
 
 	#our @sigmoidModulationPercentage     = ("0.00"); # ("0.00","0.05","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00");
 	
     ## 0
     our $pathWayLength					= 1;
-    our @dimension					= (30);
-    our @depth						= (1);
+    our @dimension						= (30);
+    our @depth							= (1);
     our @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     our @fanInRadius 					= (6); # not used
-    our @fanInCountPercentage 				= ("0.2"); # 0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    our @fanInCountPercentage 			= ("0.2"); # 0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
     our @learningrate					= ("0.1"); # < === is permuted below
-    our @eta						= ("0.8");
+    our @eta							= ("0.8");
     our @timeConstant					= ("0.1"); # < === is permuted below
-    our @sparsenessLevel					= ("0.1"); # < === is permuted below
+    our @sparsenessLevel				= ("0.1"); # < === is permuted below
     our @sigmoidSlope 					= ("30.0"); # < === is permuted below
     our @sigmoidThreshold				= ("0.0"); # < === is permuted below
     our @globalInhibitoryConstant		= ("0.0"); # < === is permuted below
-    our @externalStimulation				= ("0.0"); # < === is permuted below
+    our @externalStimulation			= ("0.0"); # < === is permuted below
     
     our @inhibitoryRadius				= ("6.0");
     our @inhibitoryContrast				= ("1.4");
-    our @somExcitatoryRadius				= ("0.6");
+    our @somExcitatoryRadius			= ("0.6");
     our @somExcitatoryContrast			= ("120.12");
-    our @somInhibitoryRadius				= ("6.0");
+    our @somInhibitoryRadius			= ("6.0");
     our @somInhibitoryContrast			= ("1.4");
-    our @filterWidth						= (7);
+    our @filterWidth					= (7);
     
     our @epochs						= (10); # only used in discrete model
 
-#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-#our @recordedSingleCells				= ("( (14,17), (19,16), (4,18) )"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+	#our @recordedSingleCells				= ("( (14,17), (19,16), (4,18) )"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 
-our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
-our @recordedSingleCells				= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
+	our @recordedSingleCells				= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 
 	# Do some validation
 	print "Uneven parameter length." if 

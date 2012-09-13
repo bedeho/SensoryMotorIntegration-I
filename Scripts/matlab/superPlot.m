@@ -6,14 +6,14 @@ function superPlot()
     global base;
     global THESIS_FIGURE_PATH;
     
-    expName = 'sigmoidal';
+    expName = 'peaked';
     expFolder = [base 'Experiments/' expName '/']; % 'trace_orth_4_small'
 
     % Save all experiments to include  
     experiments(1).Name = 'Trained';
-    experiments(1).Folder = 'S=0.86_/TrainedNetwork'; % L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_
+    experiments(1).Folder = 'L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork'; % L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_
     experiments(2).Name = 'Untrained';
-    experiments(2).Folder = 'S=0.86_/BlankNetwork';
+    experiments(2).Folder = 'L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/BlankNetwork';
 
     legends = ['Trained  ';'Untrained'];
     
@@ -94,8 +94,8 @@ function superPlot()
     hLegend = legend(legends);
     legend('boxoff')
     hTitle = title('')%; title('Head-centerdness Analysis');
-    hXLabel = xlabel('Cell Rank');
-    hYLabel = ylabel('Head-centerdness');
+    hXLabel = xlabel('Neuron Rank');
+    hYLabel = ylabel('\Omega');
 
     set( gca                       , ...
         'FontName'   , 'Helvetica' );
@@ -135,8 +135,8 @@ function superPlot()
 
     hLegend = legend(legends);
     legend('boxoff')
-    hTitle = title('')%; title('Representation Analysis');
-    hXLabel = xlabel('Head-centerdness Bin');
+    hTitle = title(''); % title('Representation Analysis');
+    hXLabel = xlabel('\Omega Bin');
     hYLabel = ylabel('Frequency');
 
     set( gca                       , ...
@@ -179,7 +179,8 @@ function superPlot()
     set(gca,'XTickLabel',tickLabels)
 
     Y = max(maxY);
-    dY = 0.1*Y;
+    dY = 0.05*Y;
+    xlim([0.85 (nrOfBins-1.85)]);
     ylim([-dY (Y+dY)])
 
     for e=1:length(experiments),
@@ -198,14 +199,14 @@ function superPlot()
      % 'MarkerEdgeColor' , colors{e}  , ...
      % 'MarkerFaceColor' , [.7 .7 .7]  
 
-     % Make it prettier
-     function s = fixLeadingZero(d)
+    % Make it prettier
+    function s = fixLeadingZero(d)
 
-      s = num2str(d);
+    s = num2str(d);
 
-      if s(1) == '0' && length(s) > 1
-          s = s(2:end);
-      end
+    if s(1) == '0' && length(s) > 1
+      s = s(2:end);
+    end
 
-     end
+    end
 end
