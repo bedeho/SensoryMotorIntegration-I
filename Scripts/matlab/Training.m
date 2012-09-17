@@ -31,14 +31,15 @@ function Training(prefix)
     r = dimensions.numberOfSimultanousObjects;
     
     % Parameters
+    seed                        = 17 % classic = 72
     saccadeVelocity             = 400;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    samplingRate                = 1000;	%1000 % (Hz)
+    samplingRate                = 1000;	%<=============change to 1000=========================%1000 % (Hz)
     fixationDuration            = 0.500;  % 0.02;	% (s) - fixation period after each saccade
-    nrOfEyePositions            = 6; %6;
+    nrOfEyePositions            = 6;
     
     % Dynamics
-    numberOfTargetPresentations = n;
-    fixationsPerTargetChange    = 2*nrOfEyePositions; % < == for simplicity always make this a multiple if it is greater than nrOfEyePositions
+    numberOfTargetPresentations = n
+    fixationsPerTargetChange    = 12; %floor(2*nrOfEyePositions) % 2 * < == for simplicity always make this a multiple if it is greater than nrOfEyePositions
     
     if numberOfTargetPresentations < n,
         error('Not enough to presentations see all targets!!');
@@ -68,6 +69,7 @@ function Training(prefix)
     encodePrefix = [encodePrefix '-sS=' num2str(dimensions.sigmoidSlope,'%.2f')];
     encodePrefix = [encodePrefix '-vF=' num2str(dimensions.visualFieldSize,'%.2f')];
     encodePrefix = [encodePrefix '-eF=' num2str(dimensions.eyePositionFieldSize,'%.2f')];
+    encodePrefix = [encodePrefix '-sE=' num2str(seed,'%.2f')];
     tSFolderName = [encodePrefix]; %['random-' encodePrefix];
     
     tSPath = [base 'Stimuli/' tSFolderName '-training'];
@@ -88,7 +90,7 @@ function Training(prefix)
     fwrite(fileID, dimensions.eyePositionFieldSize, 'float');
     
     % Set index
-    rng(72, 'twister');
+    rng(seed, 'twister');
     
     % Setup for generating target combinations
     unsampledPerms = combnk(1:n, r);
@@ -96,10 +98,13 @@ function Training(prefix)
     counter = 1;
     
     % Setup numbers for eye positions
-    quotient   = floor(fixationsPerTargetChange/nrOfEyePositions);
-    remainder  = mod(fixationsPerTargetChange, nrOfEyePositions);
-    unshuffled = repmat(1:nrOfEyePositions, 1, quotient);
-    unshuffled = [unshuffled 1:remainder]
+    if fixationsPerTargetChange >= nrOfEyePositions,
+        quotient   = floor(fixationsPerTargetChange/nrOfEyePositions);
+        remainder  = mod(fixationsPerTargetChange, nrOfEyePositions);
+        unshuffled = repmat(1:nrOfEyePositions, 1, quotient);
+        randomEyePositions = randperm(nrOfEyePositions);
+        unshuffled = [unshuffled randomEyePositions(1:remainder)];
+    end
     
     % Iterate target combinations
     while counter <= numberOfTargetPresentations, 
@@ -121,7 +126,11 @@ function Training(prefix)
         %eyePositionOrder = randi(nrOfEyePositions,1,fixationsPerTargetChange);
 
         % shuffle
-        eyePositionOrder = unshuffled(randperm(length(unshuffled)));
+        if fixationsPerTargetChange >= nrOfEyePositions,
+            eyePositionOrder = unshuffled(randperm(length(unshuffled)));
+        else
+            eyePositionOrder = randi(nrOfEyePositions,1,fixationsPerTargetChange);
+        end
         
         % Turn indexes into actual eye positions
         eyePositions = possibleEyePositions(eyePositionOrder);
@@ -151,7 +160,7 @@ function Training(prefix)
     end
     
     % Save dimensions used
-    save('dimensions.mat','dimensions');
+    save('dimensions.mat','dimensions','seed');
     
     cd(startDir);
     

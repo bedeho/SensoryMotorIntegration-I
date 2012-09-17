@@ -430,16 +430,28 @@ void HiddenRegion::applyLearningRule() {
 				
                 HiddenNeuron * n = &Neurons[d][i][j];
                 float norm = 0;
+                
+                float danThreshold = 0.03;
+                
+                
+                // REMEMBER TO FUDGE weight normalization.
+                
+                
+                
+                
+                
+                
+                
 				
 				if(neuronType == CONTINUOUS) {
 					
-					//n->effectiveTrace = 1 / (1 + exp(100000000 * (0.08 - n->trace))); //sigmoid, slope=10^8, threshold=0.01
-                    n->effectiveTrace = 0;
+					//n->effectiveTrace = 1 / (1 + exp(100000000 * (0.1 - n->trace))); //sigmoid, slope=10^8, threshold=0.01
 
 					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
 
                         // effectiveTrace
-						//(*s).weight += learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->effectiveTrace) * (*s).preSynapticNeuron->firingRate;
+                        // (danThreshold - (*s).weight)
+						//(*s).weight +=  (danThreshold - (*s).weight)*learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->effectiveTrace) * (*s).preSynapticNeuron->firingRate;
                         
                         // trace
                         (*s).weight += learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->trace) * (*s).preSynapticNeuron->firingRate;
@@ -469,6 +481,7 @@ void HiddenRegion::applyLearningRule() {
 					// copy back in since trace term is only read/written two for one neuron
 					n->newTrace = eta*n->newTrace + (1-eta)*n->newFiringRate;
 				}
+                
 
 				// Normalization
 				if(weightNormalization == CLASSIC)

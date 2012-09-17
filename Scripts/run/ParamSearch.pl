@@ -9,8 +9,8 @@
 	#
 
 	use strict;
-    	use warnings;
-    	use POSIX;
+    use warnings;
+    use POSIX;
 	use File::Copy "cp";
 	use Data::Dumper;
 	use Cwd 'abs_path';
@@ -18,42 +18,40 @@
 
 
 	use ps1; # <-------- only change this to change to different number of layers!! jippi
+	
+	my $imported = "ps1";
 
 	####################################################################
 	# Input
    	####################################################################
+
+	my $experiment	 					= "sigmoidal";
+	my $stim							= "Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=17.00";
 	
-# try: 
-#activation tC
-# change stimuli dimension: shorter fixation, larger saccade speed?!
-#2 epoch training view - look at spesific cells that deteriorate!!!
-#
-
-	my $experiment	 			= "peaked"; # trace-10h, classic-30-1E-3H-2S-1O
-	my $stim				= "Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00";	
+	my $offset							= 0; # -1 == old style
 	
+	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
+	my $seed							= 55; # 55 is standard
+
+	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
+	my $learningRule					= TRACE; # TRACE, HEBB
+
+	my $nrOfEpochs						= 10; # 30,100
+	my $saveNetworkAtEpochMultiple 		= 1;
+	my $outputAtTimeStepMultiple		= 1;
+
+	my $lateralInteraction				= COMP; # NONE, COMP, SOM
+	my $sparsenessRoutine				= HEAP; # NONE, HEAP, GLOBAL
+
 	
-	my $xgrid 				= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
-	my $seed				= 55; # 55 is standard
-
-	my $neuronType				= CONTINOUS; # CONTINOUS, DISCRETE
-	my $learningRule			= TRACE; # TRACE, HEBB
-
-	my $nrOfEpochs				= 10; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 50;
-	my $outputAtTimeStepMultiple		= 3;
-
-	my $lateralInteraction			= COMP; # NONE, COMP, SOM
-	my $sparsenessRoutine			= HEAP; # NONE, HEAP, GLOBAL
-
-	my $resetTrace				= "true"; # "false", Reset trace between objects of training
-	my $resetActivity			= "true"; # "false", Reset activation between objects of training
-
+	my $resetActivity					= "false"; # "false", Reset activation between objects of training
+	my $resetTrace						= "false"; # "false", Reset trace between objects of training
+	
 	my $sigmoidModulationPercentage		= "0.0";
 
-    	####################################################################
+    ###################################################################
 	# Preprocessing
-    	####################################################################
+    ####################################################################
 
 	my $stimuliTraining 			= $stim."-training";
 	my $stimuliTesting 			= $stim."-stdTest";
@@ -68,12 +66,19 @@
 	#my $Sim 							= $res[3];
 	#my $fD 							= $res[4];
 	#my $nF								= $res[5]
-	my $visualPreferenceDistance		= $res[6];
-	my $eyePositionPrefrerenceDistance	= $res[7];
-	my $gaussianSigma					= $res[8];
-	my $sigmoidSlope					= $res[9];
-	my $horVisualFieldSize				= $res[10];
-	my $horEyePositionFieldSize			= $res[11];
+	my $visualPreferenceDistance		= $res[6 + $offset];
+	my $eyePositionPrefrerenceDistance	= $res[7 + $offset];
+	my $gaussianSigma					= $res[8 + $offset];
+	my $sigmoidSlope					= $res[9 + $offset];
+	my $horVisualFieldSize				= $res[10 + $offset];
+	my $horEyePositionFieldSize			= $res[11 + $offset];
+	
+	print "Visual Preference Distance: $visualPreferenceDistance\n";
+	print "Eye Position Distance: $eyePositionPrefrerenceDistance\n";
+	print "Gaussian sigma: $gaussianSigma\n";
+	print "Slope: $sigmoidSlope\n";
+	print "Visual Field Size: $horVisualFieldSize\n";
+	print "Eye Position Field: $horEyePositionFieldSize\n\n";
     
 	# Build template parameter file from these    	    	    	    	    
 	my @esRegionSettings;
@@ -189,8 +194,11 @@
     my $thisScript = abs_path($0);
 	cp($thisScript, $experimentFolder."ParametersCopy.pl") or die "Cannot make copy of parameter file: $!\n";
 	
-    #############################################################################
-# Permuting
+	my $importScript = $PERL_SCRIPT_FOLDER.$imported.".pm";
+	cp($importScript, $experimentFolder.$imported.".pm") or die "Cannot make copy of parameter file: $!\n";
+	
+	#############################################################################
+	# Permuting
     #############################################################################
 
 

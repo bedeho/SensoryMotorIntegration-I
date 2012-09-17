@@ -334,6 +334,8 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
                 set(gca,'XTick', xTick);
                 set(gca,'XTickLabel', xTickLabels);
                 
+                xlim([(xTick(1)-0.5) (xTick(end)+0.5)]);
+                
                 %% SAVE
                 chap = 'chap-2';
                 fname = [THESIS_FIGURE_PATH chap '/neuron_response_' num2str(h) '_' num2str(cellNr) qualifier '.eps'];

@@ -9,7 +9,7 @@
 function dimensions = OneD_DG_Dimensions()
 
     % Stimuli
-    M = 4;
+    M = 10;
     dimensions.nrOfVisualTargetLocations  = M;
     dimensions.numberOfSimultanousObjects = 1;
     
@@ -59,8 +59,8 @@ function dimensions = OneD_DG_Dimensions()
     % target on retina
     dimensions.eyePositionFieldSize = dimensions.visualFieldSize - 2*dimensions.targets(end);
     %dimensions.eyePositionEccentricity = dimensions.eyePositionFieldSize/2;
-    %dimensions.leftMostEyePosition = -dimensions.eyePositionFieldSize/2;
-    %dimensions.rightMostEyePosition = dimensions.eyePositionFieldSize/2; 
+    dimensions.leftMostEyePosition = -dimensions.eyePositionFieldSize/2;
+    dimensions.rightMostEyePosition = dimensions.eyePositionFieldSize/2; 
     
     % Retina
     dimensions.leftMostVisualPosition = -dimensions.visualFieldSize/2;

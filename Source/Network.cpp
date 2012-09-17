@@ -378,6 +378,7 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
 			// For object/timestep
 			for(u_short o = 0; o < area7a.nrOfObjects;o++) {
                 
+                //repogram this code to make continousTimeStepsPrObject time dependent
                 for(unsigned t = 0; t < area7a.continousTimeStepsPrObject;t++) {
                     
                     // Due to normalization of inputs we have to let one cell do write back
@@ -416,9 +417,15 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
                 // During learning, reset activity/trace on last sample of object
                 if(isTraining) {
                     
-                    if(p.resetActivity)
+                    if(p.resetActivity) {
+                        
                         for(unsigned k = 0;k < ESPathway.size();k++)
-                            ESPathway[k].clearState(p.resetTrace);
+                                ESPathway[k].clearState(p.resetTrace);
+                    } else {
+                        
+                        for(unsigned k = 0;k < ESPathway.size();k++)
+                            ESPathway[k].resetTrace();
+                    }
                     
                 } else { // In testing we MUST reset betweene objects when we are testing with continous neurons
                     

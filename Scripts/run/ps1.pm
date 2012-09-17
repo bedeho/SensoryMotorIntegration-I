@@ -8,7 +8,7 @@
 
         package ps1;
 	
-	use myLib;
+		use myLib;
         use strict;
         use warnings FATAL => 'all';
         use base qw(Exporter);
@@ -51,32 +51,31 @@
 			);
 			#@sigmoidModulationPercentage
 
- 	# RANGE PARAMS - permutable
+ 		# RANGE PARAMS - permutable
     	our @sigmoidSlopes					= (
-									#["00000001.0"]
+									#["00000001.0"],
 									#["00000000.8"],								
 									#["00000000.7"],								
 									#["00000000.6"],
 									#["00000000.5"],								
-									["00000000.4"]
+									 ["00000000.4"]
 									#["00000000.3"],
-									#["00000000.2"]
-									#["00000000.15"]
-									#["00000000.10"]
-									#["00000000.05"]
+									#["00000000.2"],
+									#["0000000.15"]
+									#["0000000.10"]
+									#["0000000.05"]
 									#,
 									#["00000000.1"],
-									#["0000000.01"]
-									#["000000.001"]
+									#["0000000.01"],
+									#["000000.001"],
     								#["00000001.0"],
     								#["00000010.0"],
 									#["00000100.0"],
-									#["00001000.0"]
+									#["00001000.0"],
 									#["00010000.0"],
 									#["00100000.0"],
 									#["01000000.0"],
 									#["10000000.0"]
-									#["100000000.0"]
     									);
     die "Invalid array: sigmoidSlopes" if !validateArray(\@sigmoidSlopes);
     
@@ -98,7 +97,6 @@
     # Notice, layer one needs 3x because of small filter magnitudes, and 5x because of
     # number of afferent synapses, total 15x.
     our @learningRates 					= (
-
 #learningrate
 #["0.00100"],
 #["0.00200"],
@@ -111,7 +109,6 @@
 #["0.00900"],
 #
 #["0.01000"],
-#["0.02000"],
 #["0.03000"],
 #["0.04000"],
 #["0.05000"],
@@ -120,7 +117,7 @@
 #["0.08000"],
 #["0.09000"],
 #
-["0.10000"],
+["0.10000"]
 #["0.20000"],
 #["0.30000"],
 #["0.40000"],
@@ -138,10 +135,12 @@
 #["6.00000"],
 #["7.00000"],
 #["8.00000"],
-#["9.00000"]
-
+#["9.00000"],
+#["10.0000"],
+#["50.0000"],
+#["100.0000"]
 );								
- 	die "Invalid array: learningRates" if !validateArray(\@learningRates);
+ 	die "Invalid array r: learningRates" if !validateArray(\@learningRates);
 
     our @sparsenessLevels				= (
 # 10
@@ -176,7 +175,6 @@
 #["0.95"],
 #["0.90"],
 #["0.00"]
-
 # 200
 #["0.95"],
 #["0.99"],
@@ -185,20 +183,19 @@
 #["0.999"],
 #["0.9993"],
 #["0.9998"]
-
 ##############
 #["0.98"],
 #["0.96"],
 #["0.94"],
 #["0.92"],
-#["0.90"],
+["0.85"]
 #["0.88"],
 #["0.86"],
 #["0.84"],
 #["0.82"],
 #["0.80"],
 #["0.78"],
-["0.76"]
+#["0.76"],
 #["0.74"],
 #["0.72"],
 #["0.70"],
@@ -235,37 +232,35 @@
     die "Invalid array: stepSizeFraction" if !validateArray(\@stepSizeFraction);
     
     our @traceTimeConstant				= (
-    
-    #"10.0",
-    #"20.0",
-    #"30.0",
-    #"40.0",
-    #"50.0",
-    #"60.0",
-    #"70.0",
-    #"80.0",
-    #"90.0",
+    #"0.010",
+    #"0.020",
+    #"0.030",
+    #"0.040",
+    #"0.050",
+    #"0.060",
+    #"0.070",
+    #"0.080",
+    #"0.090",
     #
-    #"100.0",
-    #"200.0",
-    #"300.0",
-    "400.0"
-    #"500.0",
-    #"600.0",
-    #"700.0",
-    #"800.0",
-    #"900.0",
+    #"0.100",
+    #"0.200",
+    #"0.300",
+    "0.400"
+    #"0.500",
+    #"0.600",
+    #"0.700",
+    #"0.800",
+    #"0.900",
     #
-    #"1000.0",
-    #"2000.0",
-    #"3000.0",
-    #"4000.0",
-    #"5000.0",
-    #"6000.0",
-    #"7000.0",
-    #"8000.0",
-    #"9000.0"
-    
+    #"1.000",
+    #"2.000",
+    #"3.000",
+    #"4.000",
+    #"5.000",
+    #"6.000",
+    #"7.000",
+    #"8.000",
+    #"9.000"
     );  # classic: "0.400"
 	die "Invalid array: traceTimeConstant" if !validateArray(\@traceTimeConstant);
 
@@ -295,13 +290,13 @@
     our @somInhibitoryContrast			= ("1.4");
     our @filterWidth					= (7);
     
-    our @epochs						= (10); # only used in discrete model
+    our @epochs							= (10); # only used in discrete model
 
 	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-	#our @recordedSingleCells				= ("( (14,17), (19,16), (4,18) )"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
-
+	#our @recordedSingleCells			= ("( (8,20), (11,11), (11,23), (21,21) , (29,6) , (9,6) , (6,7))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	
 	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
-	our @recordedSingleCells				= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 
 	# Do some validation
 	print "Uneven parameter length." if 

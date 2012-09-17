@@ -19,6 +19,8 @@
 
 function OneD_DG_Training(prefix)
 
+    error('Disabled.');
+
     % Import global variables
     declareGlobalVars();
     
@@ -29,10 +31,10 @@ function OneD_DG_Training(prefix)
     
     % Parameters
     saccadeVelocity             = 400;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    samplingRate                = 1000;	%1000 % (Hz)
-    fixationDuration            = 0.500;  % 0.02;	% (s) - fixation period after each saccade
+    samplingRate                = 100;	%1000 % (Hz)
+    fixationDuration            = 0.500; % 0.02;	% (s) - fixation period after each saccade
     %saccadeAmplitude           = 25;    % 35= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
-    numberOfFixations           = 6; %6;
+    numberOfFixations           = 4; %6;
     nrOfOrderings               = 2;
 
     % Derived
@@ -78,7 +80,8 @@ function OneD_DG_Training(prefix)
     fwrite(fileID, dimensions.eyePositionFieldSize, 'float');
    
     % Set index
-    rng(72, 'twister');
+    seed = 34 % classic = 72
+    rng(seed, 'twister');
     
     % Setup for generating target combinations
     n = dimensions.nrOfVisualTargetLocations;
@@ -100,9 +103,9 @@ function OneD_DG_Training(prefix)
         targets = dimensions.targets(showTargets);
         
         % Output all samples for this target combination
-        debugCounter = 0;
+        %debugCounter = 0;
         outputFixationOrders(targets);
-        disp(debugCounter);
+        %disp(debugCounter);
         
         fwrite(fileID, NaN('single'), 'float');         % transform flag
         
@@ -214,7 +217,7 @@ function OneD_DG_Training(prefix)
             time = time + 1/samplingRate;
             
             plot(state(1),state(2),'ro');hold on;
-            debugCounter = debugCounter + 1;
+           % debugCounter = debugCounter + 1;
         end
         
     end

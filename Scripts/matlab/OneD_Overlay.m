@@ -64,6 +64,11 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
               'TickLength'  , [.02 .02] , ...
               'XMinorTick'  , 'off'    , ...
               'LineWidth',  2);
+                                    
+     %% SAVE
+    fname = [base 'Stimuli/' testingStimuliName '/inputData.eps'];
+    set(gcf,'renderer','painters');
+    print(fig,'-depsc2','-painters',fname);
     
     % y-projection
     
@@ -104,6 +109,11 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
               'TickLength'  , [.02 .02] , ...
               'XMinorTick'  , 'off'    , ...
               'LineWidth',  2);
+          
+         %% SAVE
+    fname = [base 'Stimuli/' testingStimuliName '/inputDynamics.eps'];
+    set(gcf,'renderer','painters');
+    print(f,'-depsc2','-painters',fname);
           
     % fix t time axis
     % fix legend
