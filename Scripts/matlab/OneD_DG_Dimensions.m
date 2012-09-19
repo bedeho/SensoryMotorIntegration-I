@@ -9,7 +9,7 @@
 function dimensions = OneD_DG_Dimensions()
 
     % Stimuli
-    M = 3;
+    M = 4;
     dimensions.nrOfVisualTargetLocations  = M;
     dimensions.numberOfSimultanousObjects = 1;
     

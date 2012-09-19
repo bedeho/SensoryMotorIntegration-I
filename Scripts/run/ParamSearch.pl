@@ -30,7 +30,7 @@
    	#for my $ftC (@ftCArray) {
 
 	my $experiment	 					= "peaked";#"closerlook_peaked_fixationspertarget_12"; #"peaked_fixationspertarget_${ftC}";
-	my $stim							= "Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=17.00";#"-Tar=3.00-nTP=18.00-ftC=12.00-Sim=1.00-fD=0.50-nF=4.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=132.00-sE=17.00";
+	my $stim							= "-Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=17.00";#"-Tar=3.00-nTP=18.00-ftC=12.00-Sim=1.00-fD=0.50-nF=4.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=132.00-sE=17.00";
 	
 	
 	#classic: "Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=17.00";
