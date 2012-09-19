@@ -4,7 +4,6 @@
 Source/SensoryMotorIntegration-I.xcodeproj/
 Source/DerivedData/
 Experiments/
-Scripts/matlab/centerN2.m
 Scripts/matlab/declareGlobalVars.m
 Scripts/run/myConfig.pm
 Stimuli/
