@@ -17,7 +17,7 @@
 %           linearly interpolated and saved at each point to file.
 %
 
-function Training(prefix)
+function Training(prefix,coeff)
 
     % Import global variables
     declareGlobalVars();
@@ -35,11 +35,11 @@ function Training(prefix)
     saccadeVelocity             = 400;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     samplingRate                = 1000;	%<=============change to 1000=========================%1000 % (Hz)
     fixationDuration            = 0.500;  % 0.02;	% (s) - fixation period after each saccade
-    nrOfEyePositions            = 6;
+    nrOfEyePositions            = 4;
     
     % Dynamics
-    numberOfTargetPresentations = n
-    fixationsPerTargetChange    = 12; %floor(2*nrOfEyePositions) % 2 * < == for simplicity always make this a multiple if it is greater than nrOfEyePositions
+    numberOfTargetPresentations = n*3*2
+    fixationsPerTargetChange    = floor(coeff*nrOfEyePositions) % 2 * < == for simplicity always make this a multiple if it is greater than nrOfEyePositions
     
     if numberOfTargetPresentations < n,
         error('Not enough to presentations see all targets!!');

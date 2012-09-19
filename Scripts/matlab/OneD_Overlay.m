@@ -113,7 +113,7 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
          %% SAVE
     fname = [base 'Stimuli/' testingStimuliName '/inputDynamics.eps'];
     set(gcf,'renderer','painters');
-    print(f,'-depsc2','-painters',fname);
+    print(fig,'-depsc2','-painters',fname);
           
     % fix t time axis
     % fix legend

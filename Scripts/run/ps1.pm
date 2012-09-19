@@ -53,12 +53,12 @@
 
  		# RANGE PARAMS - permutable
     	our @sigmoidSlopes					= (
-									#["00000001.0"],
+									#["00000001.0"]
 									#["00000000.8"],								
 									#["00000000.7"],								
 									#["00000000.6"],
 									#["00000000.5"],								
-									 ["00000000.4"]
+									["00000000.4"]
 									#["00000000.3"],
 									#["00000000.2"],
 									#["0000000.15"]
@@ -109,15 +109,16 @@
 #["0.00900"],
 #
 #["0.01000"],
+#["0.02000"],
 #["0.03000"],
 #["0.04000"],
-#["0.05000"],
+["0.05000"]
 #["0.06000"],
 #["0.07000"],
 #["0.08000"],
 #["0.09000"],
+#["0.10000"]
 #
-["0.10000"]
 #["0.20000"],
 #["0.30000"],
 #["0.40000"],
@@ -136,8 +137,11 @@
 #["7.00000"],
 #["8.00000"],
 #["9.00000"],
+
 #["10.0000"],
+#["25.0000"],
 #["50.0000"],
+#["75.0000"]
 #["100.0000"]
 );								
  	die "Invalid array r: learningRates" if !validateArray(\@learningRates);
@@ -188,7 +192,8 @@
 #["0.96"],
 #["0.94"],
 #["0.92"],
-["0.85"]
+#["0.90"],
+#["0.85"],
 #["0.88"],
 #["0.86"],
 #["0.84"],
@@ -198,7 +203,7 @@
 #["0.76"],
 #["0.74"],
 #["0.72"],
-#["0.70"],
+["0.70"]
 #["0.68"],
 #["0.66"],
 #["0.64"],
@@ -252,7 +257,7 @@
     #"0.800",
     #"0.900",
     #
-    #"1.000",
+    #"1.000"
     #"2.000",
     #"3.000",
     #"4.000",
@@ -260,7 +265,27 @@
     #"6.000",
     #"7.000",
     #"8.000",
-    #"9.000"
+    #"9.000",
+    #
+    #"10.000",
+    #"20.000",
+    #"30.000",
+    #"40.000",
+    #"50.000",
+    #"60.000",
+    #"70.000",
+    #"80.000",
+    #"90.000",
+    #
+    #"100.00",
+    #"200.00",
+    #"300.00",
+    #"400.00",
+    #"500.00",
+    #"600.00",
+    #"700.00",
+    #"800.00",
+    #"900.00"
     );  # classic: "0.400"
 	die "Invalid array: traceTimeConstant" if !validateArray(\@traceTimeConstant);
 
@@ -292,11 +317,11 @@
     
     our @epochs							= (10); # only used in discrete model
 
-	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-	#our @recordedSingleCells			= ("( (8,20), (11,11), (11,23), (21,21) , (29,6) , (9,6) , (6,7))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+	our @recordedSingleCells			= ("( (8,20), (11,11), (11,23), (21,21) , (29,6) , (9,6) , (6,7))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 	
-	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
-	our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	#our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
+	#our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 
 	# Do some validation
 	print "Uneven parameter length." if 

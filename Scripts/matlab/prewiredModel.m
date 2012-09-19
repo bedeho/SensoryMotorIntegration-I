@@ -26,16 +26,20 @@ function prewiredModel(filename)
     % Write LIP dimensions, dummy info really
     fwrite(fileID, [verticalDimension horizontalDimension depth], 'uint16');
     
+    % Allocate space to keep network,
+    % online generation is not possible since there is a header,
+    % numberOfAFferentSynapses varies across neurons
+    synapseBuffer = cell(verticalDimension,horizontalDimension);
+    
     % Write neuron spesific specs
-    for row=1:horizontalDimension,
-        for col=1:verticalDimension,
+    for col=1:verticalDimension,
+        for row=1:horizontalDimension,
             
             % Pick target
             target = targets(randi(numTargets,1,1));
             
             % Setup neuron variables
             numberOfAfferentSynapses = 0;
-            synapses()...
             
             % Connect
             for d=1:2,
@@ -44,15 +48,40 @@ function prewiredModel(filename)
                         if suitable_connection,
                             add presynaptic side to afferent synapse vector
                             numberOfAfferentSynapses = numberOfAfferentSynapses + 1;
+                            weight = 
                         end
                     end
                 end
             end
             
-            % Write
+            % Normalize weight vector
+            synapses(5,:) = synapses(5,:)/norm(synapses(5,:));
             
+            % Save synapses
+            synapseBuffer(col,row) = synapses;
+            
+            % Write out for header
+            fwrite(fileID, numberOfAfferentSynapses, 'uint16');
         end
     end
     
+    % Write out actual network
+    for col=1:verticalDimension,
+        for row=1:horizontalDimension,
+            
+            % Get synapses
+            synapses = synapseBuffer(col,row);
+            
+            % Iterate afferent synapses and dump
+            for s=1:length(synapses),
+                
+               % Write synaps
+               fwrite(fileID, numberOfAfferentSynapses, 'uint16'); 
+            end
+        end
+    end
+    
+    fclose(fileID);
+
 end
 
