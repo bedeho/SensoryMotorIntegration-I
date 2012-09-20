@@ -6,7 +6,7 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, omegaMatrix, dist, omegaBins, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
+function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot,thetaPlot, thetaMatrix, omegaMatrix, dist, omegaBins, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
 
     % Get dimensions
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
@@ -51,7 +51,7 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     % (3) = \Omega^a
     % (4) = best match target
     % (5...[5+#targets]) = \chi
-    [analysis] = metrics(filename, info);
+    [analysis, thetaMatrix] = metrics(filename, info);
     
     omegaMatrix = squeeze(analysis(3,:,:));
     preferenceMatrix = squeeze(analysis(4,:,:));
@@ -81,6 +81,17 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     %sortedCorrelations = sort(correlationVector,'descend');
     %plot(sortedCorrelations,'-ob');
     %axis([0 length(correlationVector) -1.1 1.1]);
+    
+    %% Theta plot
+    thetaPlot = figure();
+    theta = thetaMatrix(:);
+    plot(sort(theta,'descend'));
+    title('Retinal Confusion');
+    %ylim([0 0.005]);
+    %axis([0 numel(theta) -1.1 1.1]);
+    %xlabel('Cell Rank');
+    %ylabel('\Omega_a');
+    
     
     %% ORTHOGONALITY
     
@@ -148,10 +159,7 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
       'LineWidth'   , 2         );
     
     ylim([0 0.13*numCells]); % We dont normalize with peak, but rather with fixed number so visual comparison is easy
-    
-    
-    %%
-    
+
     function [p,dist,omegaBins] = doDistributionPlot(omegaMatrix,preferenceMatrix)
         
         % Make figure
@@ -199,27 +207,3 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
         
     end
 end
-
-
-    
-    %{
-
-    responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting);
-    markerSpecifiers = {'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>', 'r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>','r+', 'kv', 'bx', 'cs', 'md', 'y^', 'g.', 'w>'};
-    
-    % Plot a line for each object
-    for e=1:info.nrOfEyePositionsInTesting,
-        plot(responseCounts{e}, ['-' markerSpecifiers{e}], 'Linewidth', 3);
-        hold all
-    end
-
-    axis tight
-    
-    % Object legend
-    objectLegend = cell(info.nrOfEyePositionsInTesting,1);
-    for o=1:info.nrOfEyePositionsInTesting,
-        objectLegend{o} = ['Object ' num2str(o)];
-    end
-    
-    legend(objectLegend);
-    %}

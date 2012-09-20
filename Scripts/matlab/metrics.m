@@ -6,7 +6,7 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function [analysis] = metrics(filename, info)
+function [analysis, thetaMatrix] = metrics(filename, info)
 
     % Get dimensions
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
@@ -24,6 +24,7 @@ function [analysis] = metrics(filename, info)
     x_dimension = networkDimensions(numRegions).x_dimension;
     analysis = zeros(4 + objectsPrEyePosition,y_dimension, x_dimension); % (data,row,col), data is either head centerdness
     
+    thetaMatrix = zeros(y_dimension, x_dimension);
     % length(targets) == objectsPrEyePosition
     
     % (1) = \lambda^a
@@ -33,6 +34,9 @@ function [analysis] = metrics(filename, info)
     % (5...[5+#targets]) = \chi
     
     targets = info.targets;
+    eyePositions = info.eyePositions;
+    numTargets = length(targets);
+    
     %offset = targets(1);
     %delta = targets(2) - targets(1);
     %tMax = delta; % can be smaller!
@@ -64,6 +68,9 @@ function [analysis] = metrics(filename, info)
                 
                 % t^a = Preference
                 analysis(5:end,row, col) = chi;
+                
+                % theta matrix
+                thetaMatrix(row, col) = computeTheta(row,col);
             end
         end
     else
@@ -184,10 +191,35 @@ function [analysis] = metrics(filename, info)
             chi = -1 * ones(1,length(targets));
         end
     end
-
-    %function [test] = isConstant(arr)
-    %    
-    %    test = isequal(arr(1) * ones(length(arr),1), arr);
-    %end
+  
+    function theta = computeTheta(row,col)
+        
+        sigma = 2; % 2 worked well
+        theta = 0;
+        responses = dataPrEyePosition(:,:,row,col);
+        
+        counter = 0;
+        
+        for target_i=1:length(targets),
+            for eye_j=1:length(eyePositions),
+                
+                notAllTargets = 1:length(targets);
+                notAllTargets(target_i) = []; % Remove
+                
+                for target_k=notAllTargets,
+                    for eye_l=1:length(eyePositions),
+                        c = responses(eye_j,target_i)*responses(eye_l,target_k)*exp(-((targets(target_i)-eyePositions(eye_j)) - (targets(target_k) - eyePositions(eye_l)))^2/(2*sigma^2));
+                        
+                        
+                        theta = theta + c;
+                        
+                        counter = counter + 1;
+                    end
+                end
+            end
+        end
+        
+        theta = theta/counter;
+    end
 end
     

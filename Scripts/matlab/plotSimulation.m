@@ -37,33 +37,32 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             
             netDir = [simulationFolder directory];
             
-            [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot, singleCell, multiCell, omegaBins, invariancePlot, distributionPlot] = plotRegion([netDir '/firingRate.dat'], info, dotproduct);
+            [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot,thetaPlot, thetaMatrix, singleCell, multiCell, omegaBins, invariancePlot, distributionPlot] = plotRegion([netDir '/firingRate.dat'], info, dotproduct);
             
             % regionCorrelationPlot
-            saveas(regionCorrelationPlot,[netDir '/result_1.fig']);
-            saveas(regionCorrelationPlot,[netDir '/result_1.png']);
+            saveas(regionCorrelationPlot,[netDir '/result_1.eps']);
             delete(regionCorrelationPlot);
             
             % regionOrthogonalizationPlot
-            saveas(regionOrthogonalizationPlot, [netDir '/orthogonality.fig']);
-            saveas(regionOrthogonalizationPlot, [netDir '/orthogonality.png']);
+            saveas(regionOrthogonalizationPlot, [netDir '/orthogonality.eps']);
             delete(regionOrthogonalizationPlot);
             
             % outputPatternsPlot
-            saveas(outputPatternsPlot, [netDir '/outputOrthogonality.fig']);
-            saveas(outputPatternsPlot, [netDir '/outputOrthogonality.png']);
+            saveas(outputPatternsPlot, [netDir '/outputOrthogonality.eps']);
             delete(outputPatternsPlot);
             
             % outputPatternsPlot
-            saveas(invariancePlot, [netDir '/invariance.fig']);
-            saveas(invariancePlot, [netDir '/invariance.png']);
-            print(invariancePlot, '-depsc2', '-painters', [netDir '/' experiment '_invariance.eps']);
+            saveas(invariancePlot, [netDir '/invariance.eps']);
+            %print(invariancePlot, '-depsc2', '-painters', [netDir '/' experiment '_invariance.eps']);
             delete(invariancePlot);
             
             % distributionPlot
-            saveas(distributionPlot, [netDir '/dist.fig']);
-            saveas(distributionPlot, [netDir '/dist.png']);
-            %delete(distributionPlot);            
+            saveas(distributionPlot, [netDir '/dist.eps']);
+            delete(distributionPlot);
+            
+            % thetaPlot
+            saveas(thetaPlot, [netDir '/theta.eps']);
+            delete(thetaPlot);
             
             % Save results for summary
             summary(counter).directory = directory;
@@ -78,7 +77,7 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             %summary(counter).nrOfSingleCell = nrOfSingleCell;
             
             % Save for collation
-            save([netDir '/collation.mat'],'singleCell','multiCell','omegaBins');
+            save([netDir '/collation.mat'],'singleCell','multiCell','omegaBins','thetaMatrix');
             
             counter = counter + 1;
         end

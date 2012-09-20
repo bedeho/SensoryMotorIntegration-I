@@ -6,29 +6,20 @@ function superPlot()
     global base;
     global THESIS_FIGURE_PATH;
     
-    expName = 'peaked';
-    expFolder = [base 'Experiments/' expName '/']; % 'trace_orth_4_small'
+    save_filename = 'test';
 
     % Save all experiments to include  
-    experiments(1).Name = 'Trained';
-    experiments(1).Folder = 'L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork'; % L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_
-    experiments(2).Name = 'Untrained';
-    experiments(2).Folder = 'L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/BlankNetwork';
+    experiment(1).Name = 'Sigmoid';
+    experiment(1).Folder = expFolder('sig2/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork'); % L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_
+    experiment(2).Name = 'Peaked';
+    experiment(2).Folder = expFolder('pk2/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
 
-    legends = ['Trained  ';'Untrained'];
+    legends = ['Sigmoid  ';'Peaked   '];
     
-    % Dialogs
-    %answer = inputdlg('Qualifier')
-    %
-    %if ~isempty(answer)
-    %    qualifier = ['-' answer{1}];
-    %else
-    %    qualifier = '';
-    %end
-
     % Start figures
     singleCellPlot = figure(); % Single cell
     multiplCellPlot = figure(); % Multiple cell
+    confusionPlot = figure(); % Theta cell
     
     linestyle = {'-', '--', ':', '-.'};
     markstyle = {'o', '*', '.','x', 's', 'd'};
@@ -36,15 +27,16 @@ function superPlot()
 
     maxY = 0;
     nrOfBins = 0;
-    errorBarHandles = zeros(1,length(experiments));
+    errorBarHandles = zeros(1,length(experiment));
     singleCellMinY = 0;
+    thetaMaxY = 0;
     numCells = 0;
-    numPerfectCells = zeros(1,length(experiments));
+    numPerfectCells = zeros(1,length(experiment));
     % Iterate experiments and plot
-    for e = 1:length(experiments),
+    for e = 1:length(experiment),
 
         % Load analysis file for experiments
-        collation = load([expFolder experiments(e).Folder '/collation.mat']);
+        collation = load([experiment(e).Folder '/collation.mat']);
 
         % color
         c = mod(e-1,length(linestyle)) + 1;
@@ -67,6 +59,13 @@ function superPlot()
         Y = dist(2,:);
         h = errorbar(X,Y,lower,upper,[colors{c} linestyle{c}],'LineWidth',2,'MarkerSize',8);
         
+        % Do confusion plot
+        figure(confusionPlot);
+        hold on;
+        theta = sort(collation.thetaMatrix(:),'descend');
+        plot(theta, [colors{c} linestyle{c}],'LineWidth',2,'MarkerSize',8);
+        thetaMaxY = max(thetaMaxY,max(theta));
+        
         % Find Number of Perfect cells
         numPerfectCells(e) = nnz(sortedData > 0.8);
 
@@ -80,7 +79,7 @@ function superPlot()
         %set(h,'LineWidth',1);
         
         % Output stats
-        disp(['Experiment' experiments(e).Name]);
+        disp(['Experiment' experiment(e).Name]);
         disp(['Perfect Head-centered: ' num2str(nnz(collation.singleCell(:) == 1))]);
         disp(['Last bin:' num2str(dist(4:end,end)')]);
         
@@ -123,9 +122,9 @@ function superPlot()
     axis tight;
     ylim([singleCellMinY 1.1]);
     
-    %% SAVE
+    % SAVE
     chap = 'chap-2';
-    fname = [THESIS_FIGURE_PATH chap '/' expName '_singleCell.eps'];
+    fname = [THESIS_FIGURE_PATH chap '/' save_filename '_singleCell.eps'];
     set(gcf,'renderer','painters');
     print(f,'-depsc2','-painters',fname);
 
@@ -183,7 +182,7 @@ function superPlot()
     xlim([0.85 (nrOfBins-1.85)]);
     ylim([-dY (Y+dY)])
 
-    for e=1:length(experiments),
+    for e=1:length(experiment),
         set(errorBarHandles(e)        , ...
       'LineWidth'       , 2           , ...
       'Marker'          , markstyle{e} , ...
@@ -192,21 +191,67 @@ function superPlot()
     
     %% SAVE
     chap = 'chap-2';
-    fname = [THESIS_FIGURE_PATH chap '/' expName '_multiCell.eps'];
+    fname = [THESIS_FIGURE_PATH chap '/' save_filename '_multiCell.eps'];
     set(gcf,'renderer','painters');
     print(f,'-depsc2','-painters',fname);
 
      % 'MarkerEdgeColor' , colors{e}  , ...
      % 'MarkerFaceColor' , [.7 .7 .7]  
+     
+    %% confusion plot
+    
+    f = figure(confusionPlot);
+    hLegend = legend(legends);
+    legend('boxoff')
+    hTitle = title('')%; title('Head-centerdness Analysis');
+    hXLabel = xlabel('Neuron Rank');
+    hYLabel = ylabel('\Theta');
 
+    set( gca                       , ...
+        'FontName'   , 'Helvetica' );
+    set([hTitle, hXLabel, hYLabel], ...
+        'FontName'   , 'AvantGarde');
+    set([hLegend, gca]             , ...
+        'FontSize'   , 14           );
+    set([hXLabel, hYLabel]  , ...
+        'FontSize'   , 18          );
+    set( hTitle                    , ...
+        'FontSize'   , 24          , ...
+        'FontWeight' , 'bold'      );
+
+    set(gca, ...
+      'Box'         , 'on'     , ...
+      'TickDir'     , 'in'     , ...
+      'TickLength'  , [.02 .02] , ...
+      'XMinorTick'  , 'off'      , ...
+      'YMinorTick'  , 'off'      , ...
+      'YGrid'       , 'off'      , ...
+      'YTick'       , 0:0.2:1, ...
+      'LineWidth'   , 2         );
+  
+    %plot([1 numCells],[0 0], 'k.-');
+    axis tight;
+    ylim([0 thetaMaxY]);
+    
+    % SAVE
+    chap = 'chap-2';
+    fname = [THESIS_FIGURE_PATH chap '/' save_filename '_retinalconfusion.eps'];
+    set(gcf,'renderer','painters');
+    print(f,'-depsc2','-painters',fname);
+    
     % Make it prettier
     function s = fixLeadingZero(d)
 
-    s = num2str(d);
+        s = num2str(d);
 
-    if s(1) == '0' && length(s) > 1
-      s = s(2:end);
+        if s(1) == '0' && length(s) > 1
+          s = s(2:end);
+        end
+
     end
 
+    function folder = expFolder(name)
+        folder = [base 'Experiments/' name];
     end
+
 end

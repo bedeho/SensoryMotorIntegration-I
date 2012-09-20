@@ -25,12 +25,12 @@
 	# Input
    	####################################################################
    	
-   	#our @ftCArray				= ("1.00","2.00","3.00","4.00","8.00","12.00","16.00","20.00","24.00","28.00","32.00","36.00");
+   	our @ftCArray				= ("2.00","3.00","4.00","5.00","6.00","7.00","8.00","9.00","10.00","11.00","12.00","13.00","14.00","15.00","16.00");
    	
-   	#for my $ftC (@ftCArray) {
+   	for my $ftC (@ftCArray) {
 
-	my $experiment	 					= "peaked";#"closerlook_peaked_fixationspertarget_12"; #"peaked_fixationspertarget_${ftC}";
-	my $stim							= "-Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=17.00";#"-Tar=3.00-nTP=18.00-ftC=12.00-Sim=1.00-fD=0.50-nF=4.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=132.00-sE=17.00";
+	my $experiment	 					= "peaked_movementstatistics_${ftC}";
+	my $stim							= "movementstatistics-Tar=2.00-nTP=10.00-ftC=${ftC}-Sim=1.00-fD=0.50-nF=8.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-sE=17.00";
 	
 	
 	#classic: "Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=17.00";
@@ -44,7 +44,7 @@
 	my $learningRule					= TRACE; # TRACE, HEBB
 
 	my $nrOfEpochs						= 10; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 1;
+	my $saveNetworkAtEpochMultiple 		= 6;
 	my $outputAtTimeStepMultiple		= 1;
 
 	my $lateralInteraction				= COMP; # NONE, COMP, SOM
@@ -605,4 +605,4 @@ TEMPLATE
 	}
 
 
-#}
+}

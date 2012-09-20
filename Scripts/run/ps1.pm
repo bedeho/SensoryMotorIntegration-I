@@ -117,7 +117,7 @@
 #["0.07000"],
 #["0.08000"],
 #["0.09000"],
-#["0.10000"]
+#["0.10000"],
 #
 #["0.20000"],
 #["0.30000"],
@@ -130,13 +130,13 @@
 #
 #["1.00000"],
 #["2.00000"],
-#["3.00000"],
+#["3.00000"]#,
 #["4.00000"],
 #["5.00000"],
 #["6.00000"],
 #["7.00000"],
 #["8.00000"],
-#["9.00000"],
+#["9.00000"]
 
 #["10.0000"],
 #["25.0000"],
@@ -257,7 +257,7 @@
     #"0.800",
     #"0.900",
     #
-    #"1.000"
+    #"1.000",
     #"2.000",
     #"3.000",
     #"4.000",
@@ -297,7 +297,7 @@
     our @depth							= (1);
     our @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     our @fanInRadius 					= (6); # not used
-    our @fanInCountPercentage 			= ("0.2"); # 0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    our @fanInCountPercentage 			= ("0.1"); # 0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
     our @learningrate					= ("0.1"); # < === is permuted below
     our @eta							= ("0.8");
     our @timeConstant					= ("0.1"); # < === is permuted below
@@ -317,11 +317,11 @@
     
     our @epochs							= (10); # only used in discrete model
 
-	our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-	our @recordedSingleCells			= ("( (8,20), (11,11), (11,23), (21,21) , (29,6) , (9,6) , (6,7))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+	#our @recordedSingleCells			= ("( (8,20), (11,11), (11,23), (21,21) , (29,6) , (9,6) , (6,7))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 	
-	#our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
-	#our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
+	our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 
 	# Do some validation
 	print "Uneven parameter length." if 

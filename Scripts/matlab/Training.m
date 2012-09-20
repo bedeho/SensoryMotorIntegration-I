@@ -31,15 +31,15 @@ function Training(prefix,coeff)
     r = dimensions.numberOfSimultanousObjects;
     
     % Parameters
-    seed                        = 17 % classic = 72
+    seed                        = 17; % classic = 72
     saccadeVelocity             = 400;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     samplingRate                = 1000;	%<=============change to 1000=========================%1000 % (Hz)
     fixationDuration            = 0.500;  % 0.02;	% (s) - fixation period after each saccade
-    nrOfEyePositions            = 6;
+    nrOfEyePositions            = 8;
     
     % Dynamics
-    numberOfTargetPresentations = n;%n*3*2
-    fixationsPerTargetChange    = floor(coeff*nrOfEyePositions); % 2 * < == for simplicity always make this a multiple if it is greater than nrOfEyePositions
+    numberOfTargetPresentations = n*2*2.5;%n*3*2
+    fixationsPerTargetChange    = coeff;%floor(*nrOfEyePositions); % 2 * < == for simplicity always make this a multiple if it is greater than nrOfEyePositions
     
     if numberOfTargetPresentations < n,
         error('Not enough to presentations see all targets!!');

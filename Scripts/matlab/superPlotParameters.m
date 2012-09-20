@@ -8,6 +8,7 @@ function superPlotParameters()
     expName = 'peaked_tracetimeconstant';
     expFolder = [base 'Experiments/' expName '/']; % 'trace_orth_4_small'
 
+    
     experiments(45).Folder =   'ttC=900.00_/TrainedNetwork';
     experiments(44).Folder =   'ttC=800.00_/TrainedNetwork';
     experiments(43).Folder =   'ttC=700.00_/TrainedNetwork';
@@ -107,7 +108,7 @@ function superPlotParameters()
     experiments(3).tick =    0.03;
     experiments(2).tick =    0.02;
     experiments(1).tick =    0.01;
-
+    
     
 
     %{
@@ -190,8 +191,8 @@ function superPlotParameters()
     %experiments(34).tick =    7000;
     %experiments(35).tick =    8000;
     %experiments(36).tick =    9000;
-    
     %}
+    
     
     %{
     experiments(27).Folder =   'S=0.98_/TrainedNetwork';
@@ -274,20 +275,10 @@ function superPlotParameters()
     
     %}
     
+    
+    
     numExperiments = length(experiments);
     
-    label_x = 'Trace Time Constant - \tau_{q} (s)';
-    label_y = 'Number of Head-centered Neurons'; % add ERRORBAR ?!
-    
-    % Dialogs
-    %answer = inputdlg('Qualifier')
-    %
-    %if ~isempty(answer)
-    %    qualifier = ['-' answer{1}];
-    %else
-    %    qualifier = '';
-    %end
-
     % Start figures
     
     linestyle = {'-', '--', ':', '-.'};
@@ -328,12 +319,11 @@ function superPlotParameters()
     f = figure();
     
     errorbar(ticks,multiMean,multiLower,multiUpper,'LineWidth',2,'MarkerSize',8)
+    axis tight
+    %errorbarlogx(0.02);
+    set(gca,'xscale','log'); 
     
     %plot(ticks,numPerfectCells,'LineWidth',2,'MarkerSize',8);
-    
-    axis tight
-    set(gca,'xscale','log'); 
-    %errorbarlogx(0.01);
     
     topValues = multiUpper+multiMean;
     
@@ -342,7 +332,20 @@ function superPlotParameters()
     
     grid on
     
+        label_y = 'Number of Head-centered Neurons'; % add ERRORBAR ?!
+    
+    %% Trace time constant
+    label_x = 'Trace Time Constant - \tau_{q} (s)';
     ticks = [0.01 0.1 1.0 10.0 100.0 900.0];
+    
+    
+    %% Sparseness
+    %label_x = 'Sparseness - \pi (%)';
+    
+    
+    %% Learningrate
+    %label_x = 'Learningrate - \rho';
+    %ticks = [0.001 0.01 0.1 0.9];
     
     legend('boxoff')
     hTitle = title('')%; title('Varying Sparseness Percentile');
@@ -371,6 +374,8 @@ function superPlotParameters()
       'YMinorTick'  , 'off'      , ...
       'LineWidth'   , 2         , ...
       'XTick'       , ticks);
+  
+  %%
   
      % Make it prettier
      function s = fixLeadingZero(d)
