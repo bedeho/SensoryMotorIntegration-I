@@ -420,8 +420,9 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
                     if(p.resetActivity) {
                         
                         for(unsigned k = 0;k < ESPathway.size();k++)
-                                ESPathway[k].clearState(p.resetTrace);
-                    } else {
+                            ESPathway[k].clearState(p.resetTrace);
+                        
+                    } else if(p.resetTrace) {
                         
                         for(unsigned k = 0;k < ESPathway.size();k++)
                             ESPathway[k].resetTrace();
@@ -430,7 +431,7 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
                 } else { // In testing we MUST reset betweene objects when we are testing with continous neurons
                     
                     for(unsigned k = 0;k < ESPathway.size();k++)
-                        ESPathway[k].clearState(p.resetTrace); // does not matter if trace is reset here
+                        ESPathway[k].clearState(true); // does not matter if trace is reset here
                 }
 			}
 			

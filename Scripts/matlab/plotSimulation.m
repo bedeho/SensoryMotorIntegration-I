@@ -41,27 +41,33 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             
             % regionCorrelationPlot
             saveas(regionCorrelationPlot,[netDir '/result_1.eps']);
+            saveas(regionCorrelationPlot,[netDir '/result_1.png']);
             delete(regionCorrelationPlot);
             
             % regionOrthogonalizationPlot
             saveas(regionOrthogonalizationPlot, [netDir '/orthogonality.eps']);
+            saveas(regionOrthogonalizationPlot, [netDir '/orthogonality.png']);
             delete(regionOrthogonalizationPlot);
             
             % outputPatternsPlot
             saveas(outputPatternsPlot, [netDir '/outputOrthogonality.eps']);
+            saveas(outputPatternsPlot, [netDir '/outputOrthogonality.png']);
             delete(outputPatternsPlot);
             
             % outputPatternsPlot
             saveas(invariancePlot, [netDir '/invariance.eps']);
+            saveas(invariancePlot, [netDir '/invariance.png']);
             %print(invariancePlot, '-depsc2', '-painters', [netDir '/' experiment '_invariance.eps']);
             delete(invariancePlot);
             
             % distributionPlot
             saveas(distributionPlot, [netDir '/dist.eps']);
+            saveas(distributionPlot, [netDir '/dist.png']);
             delete(distributionPlot);
             
             % thetaPlot
             saveas(thetaPlot, [netDir '/theta.eps']);
+            saveas(thetaPlot, [netDir '/theta.png']);
             delete(thetaPlot);
             
             % Save results for summary

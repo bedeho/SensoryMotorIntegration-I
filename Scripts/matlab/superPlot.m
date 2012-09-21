@@ -8,20 +8,50 @@ function superPlot()
     
     save_filename = 'test';
 
-    % Save all experiments to include  
-    experiment(1).Name = 'Sigmoid';
-    experiment(1).Folder = expFolder('sigmoidal/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork'); % L=0.10000_S=0.85_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_
-    experiment(2).Name = 'Peaked';
-    experiment(2).Folder = expFolder('peaked/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
 
-    legends = ['Sigmoid  ';'Peaked   '];
+    % Save all experiments to include  
+    experiment(1).Name = '2 fixations';
+    experiment(1).Folder = expFolder('peaked_movementstatistics_2.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    experiment(2).Name = '3 fixations';
+    experiment(2).Folder = expFolder('peaked_movementstatistics_3.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    %experiment(3).Name = '4 fixations';
+    %experiment(3).Folder = expFolder('peaked_movementstatistics_4.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    %experiment(2).Name = '5 fixations';
+    %experiment(2).Folder = expFolder('peaked_movementstatistics_5.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    %experiment(5).Name = '6 fixations';
+    %experiment(5).Folder = expFolder('peaked_movementstatistics_6.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    %experiment(6).Name = '7 fixations';
+    %experiment(6).Folder = expFolder('peaked_movementstatistics_7.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    %experiment(3).Name = '8 fixations';
+    %experiment(3).Folder = expFolder('peaked_movementstatistics_8.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    %experiment(8).Name = '9 fixations';
+    %experiment(8).Folder = expFolder('peaked_movementstatistics_9.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    %experiment(9).Name = '10 fixations';
+    %experiment(9).Folder = expFolder('peaked_movementstatistics_10.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');    
+    %experiment(4).Name = '11 fixations';
+    %experiment(4).Folder = expFolder('peaked_movementstatistics_11.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    %experiment(11).Name = '12 fixations';
+    %experiment(11).Folder = expFolder('peaked_movementstatistics_12.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    %experiment(12).Name = '13 fixations';
+    %experiment(12).Folder = expFolder('peaked_movementstatistics_13.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    experiment(3).Name = '14 fixations';
+    experiment(3).Folder = expFolder('peaked_movementstatistics_14.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    %experiment(14).Name = '15 fixations';
+    %experiment(14).Folder = expFolder('peaked_movementstatistics_15.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    experiment(4).Name = 'Untrained   ';
+    experiment(4).Folder = expFolder('peaked_movementstatistics_2.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/BlankNetwork');
+
+    legends = ['2 fixations '; '3 fixations '; '14 fixations'; 'Blank networ'];
+    %legends = ['2 fixations '; '5 fixations '; '8 fixations '; '11 fixations'; '14 fixations'; 'Blank networ'];
+    %legends = ['2 fixations '; '3 fixations '; '4 fixations '; '5 fixations '; '6 fixations '; '7 fixations '; '8 fixations '; '9 fixations '; '10 fixations'; '11 fixations'; '12 fixations'; '13 fixations'; '14 fixations'; '15 fixations';'16 fixations'];
+    %legends = ['Sigmoid  ';'Peaked   '];
     
     % Start figures
     singleCellPlot = figure(); % Single cell
     multiplCellPlot = figure(); % Multiple cell
     confusionPlot = figure(); % Theta cell
     
-    linestyle = {'-', '--', ':', '-.'};
+    linestyle = {'-', '--', ':', '-.','-'};
     markstyle = {'o', '*', '.','x', 's', 'd'};
     colors = {'r', 'b','k','c', 'm', 'y', 'g', 'w'};
 
@@ -70,7 +100,7 @@ function superPlot()
         numPerfectCells(e) = nnz(sortedData > 0.8);
 
         % Save for post-processing
-        maxY = max(maxY,dist(3,:));
+        maxY = max(maxY,max(dist(3,:)));
         nrOfBins = length(dist);
         errorBarHandles(e) = h;
 
@@ -179,7 +209,8 @@ function superPlot()
 
     Y = max(maxY);
     dY = 0.05*Y;
-    xlim([0.85 (nrOfBins-1.85)]);
+    %xlim([0.85 (nrOfBins-1.85)]);
+    xlim([0.75 (nrOfBins+ 0.25)]);
     ylim([-dY (Y+dY)])
 
     for e=1:length(experiment),
@@ -237,6 +268,7 @@ function superPlot()
     %plot([1 numCells],[0 0], 'k.-');
     axis tight;
     ylim([0 thetaMaxY]);
+    xlim([-0.1 numCells]);
     
     % SAVE
     chap = 'chap-2';

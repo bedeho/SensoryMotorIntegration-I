@@ -369,8 +369,8 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
             set([hLegend, gca]             , ...
             'FontSize'   , 14           );
         
-            %hTitle = title('');
-            hTitle = title(['Cell #' num2str(cellNr)]); % ', R:' num2str(region) % ', \Omega_{' num2str(cellNr) '} = ' num2str(sCell)
+            hTitle = title('');
+           % hTitle = title(['Cell #' num2str(cellNr)]); % ', R:' num2str(region) % ', \Omega_{' num2str(cellNr) '} = ' num2str(sCell)
             %axis([min(info.targets) max(info.targets) -0.1 1.1]);
 
             legend('boxoff')
