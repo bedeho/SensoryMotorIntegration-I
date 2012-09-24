@@ -44,6 +44,7 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             saveas(regionCorrelationPlot,[netDir '/result_1.png']);
             delete(regionCorrelationPlot);
             
+            %{
             % regionOrthogonalizationPlot
             saveas(regionOrthogonalizationPlot, [netDir '/orthogonality.eps']);
             saveas(regionOrthogonalizationPlot, [netDir '/orthogonality.png']);
@@ -53,6 +54,8 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             saveas(outputPatternsPlot, [netDir '/outputOrthogonality.eps']);
             saveas(outputPatternsPlot, [netDir '/outputOrthogonality.png']);
             delete(outputPatternsPlot);
+            
+            %}
             
             % outputPatternsPlot
             saveas(invariancePlot, [netDir '/invariance.eps']);

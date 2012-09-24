@@ -162,8 +162,12 @@ Network::Network(const char * dataFile, const char * parameterFile, bool verbose
                 for(u_short i = 0;i < ESPathway[k].verDimension;i++) {
                     vector<u_short> row(ESPathway[k].horDimension);
 
-                    for(u_short j = 0;j < ESPathway[k].horDimension;j++)
+                    for(u_short j = 0;j < ESPathway[k].horDimension;j++) {
                         weightFile >> row[j];
+                        
+                        //cout << row[j] << endl;
+                    }
+                    
                     
                     sheet[i] = row;
                 }
@@ -187,6 +191,8 @@ Network::Network(const char * dataFile, const char * parameterFile, bool verbose
                             float weight;
                             
                             weightFile >> regionNr >> depth >> row >> col >> weight;
+                            
+                            //cout << "(" << regionNr << "," << depth << "," << row << "," << col << "," << weight << ")" << endl;
 
                             Neuron * n;
 

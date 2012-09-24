@@ -43,4 +43,5 @@ function [synapses] = afferentSynapseList(fileID, neuronOffsets, region, depth, 
         synapses(s).row = v(3)+1;
         synapses(s).col = v(4)+1;
         synapses(s).weight = fread(fileID, 1, SOURCE_PLATFORM_FLOAT);
+
     end

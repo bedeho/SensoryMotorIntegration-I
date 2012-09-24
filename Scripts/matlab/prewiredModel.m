@@ -10,23 +10,26 @@ function prewiredModel(filename)
     numRegions = 2;
     targets = dimensions.targets;
     numTargets = length(targets);
+    
+    % Setup random number generator
+    seed = 3;
+    rng(seed, 'twister');
 
     % Write number of regions
     fwrite(fileID, numRegions, 'uint16');
     
     % Write 7a dimensions, dummy info really
-    fwrite(fileID, [1 1 1], 'uint16');
+    fwrite(fileID, [dimensions.nrOfVisualPreferences dimensions.nrOfEyePositionPrefrerence 2], 'uint16');
     
     % Layer 1
     verticalDimension = 8;
     horizontalDimension = 8;
-    depth = 1;
-    %fanInCount = 1000;
     
     % Write LIP dimensions, dummy info really
-    fwrite(fileID, [verticalDimension horizontalDimension depth], 'uint16');
+    fwrite(fileID, [verticalDimension horizontalDimension 1], 'uint16');
     
     % Allocate space to keep network,
+    
     % online generation is not possible since there is a header,
     % numberOfAFferentSynapses varies across neurons
     synapseBuffer = cell(verticalDimension,horizontalDimension);
@@ -47,15 +50,24 @@ function prewiredModel(filename)
             % Setup neuron variables
             numberOfAfferentSynapses = 0;
             
+            % Generated figure
+            %figure();
+            title(['Row,Col =' num2str(row) ',' num2str(col)])
+            mat1 = zeros(dimensions.nrOfVisualPreferences,dimensions.nrOfEyePositionPrefrerence);
+            mat2 = zeros(dimensions.nrOfVisualPreferences,dimensions.nrOfEyePositionPrefrerence);
+            
             % Connect
             for d=1:2,
-                for eye=1:dimensions.nrOfEyePositionPrefrerence,
-                    for ret=1:dimensions.nrOfVisualPreferences,
-                        
+                for ret=1:dimensions.nrOfVisualPreferences,
+                    
+                    retPref = dimensions.visualPreferences(dimensions.nrOfVisualPreferences - (ret - 1));
+                    
+                    for eye=1:dimensions.nrOfEyePositionPrefrerence,
+                    
                         eyePref = dimensions.eyePositionPreferences(eye);
-                        retPref = dimensions.visualPreferences(ret);
-                        
+                                                
                         if rand([1 1]) > 0.9 && ((eyePref+retPref <= target && d==1) || (eyePref+retPref >= target && d==2)),
+                        %if ((eye == 2 && d == 1) || (ret == 6 && d == 2)),
                             
                             % Increase number of synapses
                             numberOfAfferentSynapses = numberOfAfferentSynapses + 1;
@@ -64,12 +76,28 @@ function prewiredModel(filename)
                             weight = rand([1 1]);
                             
                             % Save synapse
-                            synapses(:,numberOfAfferentSynapses) = [1 d ret eye weight];
+                            synapses(:,numberOfAfferentSynapses) = [0 (d-1) (ret-1) (eye-1) weight];
+                            
+                            % FIGURE
+                            if d==1,
+                                mat1(ret,eye) = mat1(ret,eye) + 1;
+                            else
+                                mat2(ret,eye) = mat2(ret,eye) + 1;
+                            end
+                            
                         end
+                        
                     end
                 end
             end
             
+            %{
+            % FIGURE
+            subplot(1,2,1);
+            imagesc(mat1);
+            subplot(1,2,2);
+            imagesc(mat2);
+            %}
             % Normalize weight vector
             synapses(5,:) = synapses(5,:)/norm(synapses(5,:));
             

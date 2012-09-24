@@ -28,8 +28,9 @@ function plotExperiment(experiment, stimuliName)
     info = C.info;
     nrOfEyePositionsInTesting = length(info.eyePositions);
     
-    C = load('dotproduct.mat'); 
-    dotproduct = C.dotproduct;
+    %C = load('dotproduct.mat'); 
+    %dotproduct = C.dotproduct;
+    dotproduct = 0;
     
     cd(startDir);
     

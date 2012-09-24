@@ -94,6 +94,7 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     
     
     %% ORTHOGONALITY
+    %{
     
     % Multiple indexes
     regionOrthogonalizationPlot = figure();
@@ -112,6 +113,15 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     outputPatternsPlot = figure();
     imagesc(outputPatterns);
     colorbar;
+    %}
+    
+    outputPatternsPlot = 0;
+    regionOrthogonalizationPlot = 0;
+    outputPatterns = 0;
+    orthogonalityIndex = 0;
+    inputCorrelations = 0;
+    outputCorrelations = 0;
+    
     
     %% Invariance & Selectivity
     [MeanObjects, MeanTransforms] = regionTrace(filename, nrOfEyePositionsInTesting);

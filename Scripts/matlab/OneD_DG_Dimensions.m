@@ -9,7 +9,7 @@
 function dimensions = OneD_DG_Dimensions()
 
     % Stimuli
-    M = 2;
+    M = 4;
     dimensions.nrOfVisualTargetLocations  = M;
     dimensions.numberOfSimultanousObjects = 1;
     
@@ -26,17 +26,17 @@ function dimensions = OneD_DG_Dimensions()
 
     % LIP Parameters
     
-    %% Sejnowski:   8,6,8,1/16
-    %dimensions.visualPreferenceDistance = 8;
-    %dimensions.eyePositionPrefrerenceDistance = 6;
-    %dimensions.gaussianSigma = 8; % deg
-    %dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
+    %% Sejnowski:   8,6,18,1/16
+    dimensions.visualPreferenceDistance = 8; %REALLY 8
+    dimensions.eyePositionPrefrerenceDistance = 6; % REALLY 6
+    dimensions.gaussianSigma = 18; % deg
+    dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
     
     %% Sejnowski modified:   8,6,8,1/16
-    dimensions.visualPreferenceDistance = 1;
-    dimensions.eyePositionPrefrerenceDistance = 2;
-    dimensions.gaussianSigma = 8; % deg
-    dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
+    %dimensions.visualPreferenceDistance = 1;
+    %dimensions.eyePositionPrefrerenceDistance = 2;
+    %dimensions.gaussianSigma = 8; % deg
+    %dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
     
     %% My classics: 1,2,2,10
     %dimensions.visualPreferenceDistance = 1;
