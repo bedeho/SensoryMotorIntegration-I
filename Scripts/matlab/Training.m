@@ -17,7 +17,7 @@
 %           linearly interpolated and saved at each point to file.
 %
 
-function Training(prefix,coeff)
+function Training(prefix,fixationsPerTargetChange)
 
     % Import global variables
     declareGlobalVars();
@@ -31,15 +31,15 @@ function Training(prefix,coeff)
     r = dimensions.numberOfSimultanousObjects;
     
     % Parameters
-    seed                        = 17; % classic = 72
+    seed                        = 44; % classic = 72
     saccadeVelocity             = 400;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     samplingRate                = 1000;	%<=============change to 1000=========================%1000 % (Hz)
     fixationDuration            = 0.500;  % 0.02;	% (s) - fixation period after each saccade
-    nrOfEyePositions            = 6;
+    nrOfEyePositions            = 10;
     
     % Dynamics
-    numberOfTargetPresentations = n;% n*nrOfEyePositions;
-    fixationsPerTargetChange    = 2*nrOfEyePositions;%coeff; % floor(2*nrOfEyePositions); < == for simplicity always make this a multiple if it is greater than nrOfEyePositions
+    numberOfTargetPresentations = ceil(2*(n*nrOfEyePositions)/fixationsPerTargetChange);
+    %fixationsPerTargetChange    = nrOfEyePositions;%2*nrOfEyePositions;%coeff; % floor(2*nrOfEyePositions); < == for simplicity always make this a multiple if it is greater than nrOfEyePositions
     
     if numberOfTargetPresentations < n,
         error('Not enough to presentations see all targets!!');
@@ -104,23 +104,53 @@ function Training(prefix,coeff)
         unshuffled = repmat(1:nrOfEyePositions, 1, quotient);
         randomEyePositions = randperm(nrOfEyePositions);
         unshuffled = [unshuffled randomEyePositions(1:remainder)];
+    else
+        total = ceil(numberOfTargetPresentations*fixationsPerTargetChange/n);
+        quotient = floor(total/nrOfEyePositions);
+        remainder = mod(total,nrOfEyePositions);
+        unshuffled = repmat(1:nrOfEyePositions, 1, quotient);
+        randomEyePositions = randperm(nrOfEyePositions);
+        eyePositionBuffer = cell(1,length(dimensions.targets));
+        
+        % CELL RANGES NOT POSSIBLE ?!?!?! x{:} = 222 ?
+        for t=1:length(dimensions.targets),
+            eyePositionBuffer{t} = [unshuffled randomEyePositions(1:remainder)];
+        end
+    end
+    
+    if dimensions.numberOfSimultanousObjects == 1,
+        
+        targetBuffer = repmat(1:length(dimensions.targets),1,ceil(numberOfTargetPresentations/n));
+        
+        % shuffle
+        targetBuffer = targetBuffer(randperm(length(targetBuffer)));
     end
     
     % Iterate target combinations
     while counter <= numberOfTargetPresentations, 
         
-        % Get target order
-        if ~isempty(unsampledPerms),
-            dim = size(unsampledPerms);
-            sampleId = randi(dim(1));
-            showTargets = unsampledPerms(sampleId,:);
-            unsampledPerms(sampleId,:) = []; % Kill this combination
+        if dimensions.numberOfSimultanousObjects > 1,
+        
+            % Get target order
+            if ~isempty(unsampledPerms),
+                dim = size(unsampledPerms);
+                sampleId = randi(dim(1));
+                showTargets = unsampledPerms(sampleId,:);
+                unsampledPerms(sampleId,:) = []; % Kill this combination
+            else
+                showTargets = fixedPerms(randi(length(fixedPerms),1,1));
+            end
+            
+            % Output data sequence for each target
+            targets = dimensions.targets(showTargets);
+        
         else
-            showTargets = fixedPerms(randi(length(fixedPerms),1,1));
+            
+            showTarget = targetBuffer(counter);
+            targets =  dimensions.targets(showTarget);
         end
         
-        % Output data sequence for each target
-        targets = dimensions.targets(showTargets);
+        
         
         % Generate sequence of fixation targets
         %eyePositionOrder = randi(nrOfEyePositions,1,fixationsPerTargetChange);
@@ -129,7 +159,19 @@ function Training(prefix,coeff)
         if fixationsPerTargetChange >= nrOfEyePositions,
             eyePositionOrder = unshuffled(randperm(length(unshuffled)));
         else
-            eyePositionOrder = randi(nrOfEyePositions,1,fixationsPerTargetChange);
+            
+            v = eyePositionBuffer{showTarget}; %get buffer
+            
+            bufferPositions = randi(length(v),1,fixationsPerTargetChange); % get positions
+
+            eyePositionOrder = v(bufferPositions); % get eye positions
+            
+            v(bufferPositions) = []; % clear out these
+            
+            eyePositionBuffer{showTarget} = v; %get buffer
+            
+            % old
+            %eyePositionOrder = randi(nrOfEyePositions,1,fixationsPerTargetChange);
         end
         
         % Turn indexes into actual eye positions
@@ -172,7 +214,7 @@ function Training(prefix,coeff)
     OneD_DG_Test(tSFolderName, samplingRate, fixationDuration, dimensions, possibleEyePositions);
     
     % Generate correlation data
-    OneD_DG_Correlation([tSFolderName '-stdTest']);
+    %OneD_DG_Correlation([tSFolderName '-stdTest']);
     
     % Visualize
     OneD_Overlay([tSFolderName '-training'],[tSFolderName '-stdTest'])

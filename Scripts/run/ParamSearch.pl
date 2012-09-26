@@ -25,13 +25,31 @@
 	# Input
    	####################################################################
    	
-   	#our @ftCArray				= ("2.00","3.00","4.00","5.00","6.00","7.00","8.00","9.00","10.00","11.00","12.00","13.00","14.00","15.00","16.00","17.00","18.00","19.00","20.00","21.00","22.00","23.00","24.00","25.00","26.00","27.00","28.00","29.00","30.00");
+   	# "1.00","2.00","3.00",
    	
-   	#for my $ftC (@ftCArray) {
+   	our @ftCArray				= ("1.00","2.00","3.00","4.00","5.00","6.00","7.00","8.00","9.00","10.00","11.00","12.00","13.00","14.00","15.00","16.00","17.00","18.00","19.00","20.00","21.00","22.00","23.00","24.00","25.00","26.00","27.00","28.00","29.00","30.00");
+   	
+   	for my $ftC (@ftCArray) {
+   		
+   	# 
+   	#my $experiment						= "multi-peaked-sigma=8";
+   	#my $stim							= "multi-peaked-Tar=8.00-nTP=28.00-ftC=6.00-Sim=2.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=116.00-sE=44.00";
+
+	# new-movestim
+	#my $nTP 							= ceil((2 * 2 * 10)/$ftC);
+	#$nTP								= "${nTP}.00";
+	#my $experiment						= "new-movestim_${ftC}";
+	#my $stim 							= "new-movestim-Tar=2.00-nTP=${nTP}-ftC=${ftC}-Sim=1.00-fD=0.50-nF=10.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-sE=44.00";
+
+	# 0MOVESTIM
+	my $nTP 							= ceil((2 * 4 * 10)/$ftC);
+	$nTP								= "${nTP}.00";
+	my $experiment						= "sparsitycheck-0MOVESTIM_${ftC}";
+	my $stim							= "0MOVESTIM-Tar=4.00-nTP=${nTP}-ftC=${ftC}-Sim=1.00-fD=0.50-nF=10.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=44.00";
 
 	# movementstatistics
-	#my $experiment	 					= "movementstatistics_${ftC}";
-	#my $stim							= "movementstatistics-Tar=2.00-nTP=28.00-ftC=${ftC}-Sim=1.00-fD=0.50-nF=14.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-sE=17.00";
+	#my $experiment	 					= "sparsity_movementstatistics_6"; #${ftC}
+	#my $stim							= "movementstatistics-Tar=2.00-nTP=28.00-ftC=6.00-Sim=1.00-fD=0.50-nF=14.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-sE=17.00";
 	
 	# classic
 	#my $experiment	 					= "peaked";
@@ -46,8 +64,8 @@
 	#my $stim							= "getE=12towork-Tar=2.00-nTP=2.00-ftC=24.00-Sim=1.00-fD=0.50-nF=12.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-sE=17.00";
 
 	# bigsigma
-	my $experiment	 					= "resolution_bigsigma";
-	my $stim							= "resolution_bigsigma-Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=8.00-epD=6.00-gS=18.00-sS=0.06-vF=200.00-eF=122.00-sE=17.00";
+	#my $experiment	 					= "resolution_bigsigma";
+	#my $stim							= "resolution_bigsigma-Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=8.00-epD=6.00-gS=18.00-sS=0.06-vF=200.00-eF=122.00-sE=17.00";
 	
 	my $offset							= 0; # -1 == old style
 	
@@ -58,7 +76,7 @@
 	my $learningRule					= TRACE; # TRACE, HEBB
 
 	my $nrOfEpochs						= 10; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 11;
+	my $saveNetworkAtEpochMultiple 		= 12;
 	my $outputAtTimeStepMultiple		= 1;
 
 	my $lateralInteraction				= COMP; # NONE, COMP, SOM
@@ -619,4 +637,4 @@ TEMPLATE
 	}
 
 
-#}
+}

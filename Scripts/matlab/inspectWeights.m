@@ -101,7 +101,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         % Plot the two input layers
         subplot(numRegions-1, 3, 3*(region-2) + 1 + sourceDepth);
         weightBox1 = afferentSynapseMatrix(fileID, networkDimensions, neuronOffsets, region, 1, row, col, region-1, sourceDepth);
-        disp(['Number of synapses from this depth from this region: ' num2str(numel(weightBox1))]);
+        % wrong: disp(['Number of synapses from this depth from this region: ' num2str(numel(weightBox1))]);
         cla
         imagesc(weightBox1);
         dim = fliplr(size(weightBox1));

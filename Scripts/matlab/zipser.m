@@ -1,14 +1,14 @@
 %
-%  pouget.m
+%  zipser.m
 %  SMI
 %
 %  Created by Bedeho Mender on 21/10/12.
 %  Copyright 2012 OFTNAI. All rights reserved.
 %
 
-function pouget()
+function zipser()
 
-    % A. Pouget & T. Sejnowski (1997)
+    % D. Zipser & R. Andersen (1988)
     
     % Input:
     % 121 units

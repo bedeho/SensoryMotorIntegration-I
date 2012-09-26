@@ -27,22 +27,22 @@ function dimensions = OneD_DG_Dimensions()
     % LIP Parameters
     
     %% Sejnowski:   8,6,18,1/16
-    dimensions.visualPreferenceDistance = 8; %REALLY 8
-    dimensions.eyePositionPrefrerenceDistance = 6; % REALLY 6
-    dimensions.gaussianSigma = 18; % deg
-    dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
+    %dimensions.visualPreferenceDistance = 8; %REALLY 8
+    %dimensions.eyePositionPrefrerenceDistance = 6; % REALLY 6
+    %dimensions.gaussianSigma = 18; % deg
+    %dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
     
     %% Sejnowski modified:   8,6,8,1/16
-    %dimensions.visualPreferenceDistance = 1;
-    %dimensions.eyePositionPrefrerenceDistance = 2;
-    %dimensions.gaussianSigma = 8; % deg
-    %dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
+    dimensions.visualPreferenceDistance = 1;
+    dimensions.eyePositionPrefrerenceDistance = 2;
+    dimensions.gaussianSigma = 8; % deg
+    dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
     
     %% My classics: 1,2,2,10
     %dimensions.visualPreferenceDistance = 1;
     %dimensions.eyePositionPrefrerenceDistance = 2;
     %dimensions.gaussianSigma = 3; % deg
-    %dimensions.sigmoidSlope = 10; % (1/8)/2; % num
+    %dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
     
     % Place targets
     if dimensions.nrOfVisualTargetLocations > 1,

@@ -22,8 +22,9 @@ function prewiredModel(filename)
     fwrite(fileID, [dimensions.nrOfVisualPreferences dimensions.nrOfEyePositionPrefrerence 2], 'uint16');
     
     % Layer 1
-    verticalDimension = 8;
-    horizontalDimension = 8;
+    dim = 30;
+    verticalDimension = dim;
+    horizontalDimension = dim;
     
     % Write LIP dimensions, dummy info really
     fwrite(fileID, [verticalDimension horizontalDimension 1], 'uint16');
@@ -38,11 +39,11 @@ function prewiredModel(filename)
     activeNeurons = coeff*(verticalDimension * horizontalDimension);
     
     % Write neuron spesific specs
-    for col=1:verticalDimension,
+    for row=1:verticalDimension,
         
-     disp([num2str(col*100/verticalDimension) '%']);
+        disp([num2str(row*100/verticalDimension) '%']);
         
-      for row=1:horizontalDimension,
+        for col=1:horizontalDimension,
 
             % Pick target
             target = targets(randi(numTargets,1,1));
@@ -51,10 +52,15 @@ function prewiredModel(filename)
             numberOfAfferentSynapses = 0;
             
             % Generated figure
-            %figure();
+            %{
+            figure();
             title(['Row,Col =' num2str(row) ',' num2str(col)])
             mat1 = zeros(dimensions.nrOfVisualPreferences,dimensions.nrOfEyePositionPrefrerence);
             mat2 = zeros(dimensions.nrOfVisualPreferences,dimensions.nrOfEyePositionPrefrerence);
+            %}
+            
+            % CLEAR <== damn this bug
+            clearvars synapses
             
             % Connect
             for d=1:2,
@@ -67,8 +73,7 @@ function prewiredModel(filename)
                         eyePref = dimensions.eyePositionPreferences(eye);
                                                 
                         if rand([1 1]) > 0.9 && ((eyePref+retPref <= target && d==1) || (eyePref+retPref >= target && d==2)),
-                        %if ((eye == 2 && d == 1) || (ret == 6 && d == 2)),
-                            
+                        %if eye == col,    
                             % Increase number of synapses
                             numberOfAfferentSynapses = numberOfAfferentSynapses + 1;
                             
@@ -78,12 +83,14 @@ function prewiredModel(filename)
                             % Save synapse
                             synapses(:,numberOfAfferentSynapses) = [0 (d-1) (ret-1) (eye-1) weight];
                             
+                            %{
                             % FIGURE
                             if d==1,
-                                mat1(ret,eye) = mat1(ret,eye) + 1;
+                                mat1(ret,eye) = mat1(ret,eye) + weight;
                             else
-                                mat2(ret,eye) = mat2(ret,eye) + 1;
+                                mat2(ret,eye) = mat2(ret,eye) + weight;
                             end
+                            %}
                             
                         end
                         
@@ -91,21 +98,29 @@ function prewiredModel(filename)
                 end
             end
             
-            %{
+            
             % FIGURE
+            %{
             subplot(1,2,1);
             imagesc(mat1);
+            colorbar
             subplot(1,2,2);
             imagesc(mat2);
+            colorbar
             %}
+            
             % Normalize weight vector
-            synapses(5,:) = synapses(5,:)/norm(synapses(5,:));
+            %synapses(5,:) = synapses(5,:)/norm(synapses(5,:));
             
             % Save synapses
-            synapseBuffer{col,row} = synapses;
+            synapseBuffer{row,col} = synapses;
             
             % Write out for header
             fwrite(fileID, numberOfAfferentSynapses, 'uint16');
+            
+            % Output neuron
+            %disp(['Row,Col =' num2str(row) ',' num2str(col) ': ' num2str(numberOfAfferentSynapses)])
+            
         end
     end
     
@@ -117,18 +132,20 @@ function prewiredModel(filename)
    % synapses(5,i) = weight
     
     % Write out actual network
-    for col=1:verticalDimension,
-        for row=1:horizontalDimension,
+    for row=1:verticalDimension,
+        for col=1:horizontalDimension,
             
             % Get synapses
-            synapses = synapseBuffer{col,row};
+            afferents = synapseBuffer{row,col};
             
             % Iterate afferent synapses and dump
-            for s=1:length(synapses),
+            for s=1:length(afferents),
+                
+               % afferents(:,s)
                 
                % Write synapse
-               fwrite(fileID, synapses(1:4,s), 'uint16'); 
-               fwrite(fileID, synapses(5,s), 'float32'); 
+               fwrite(fileID, afferents(1:4,s), 'uint16');
+               fwrite(fileID, afferents(5,s), 'float32');
             end
         end
     end
