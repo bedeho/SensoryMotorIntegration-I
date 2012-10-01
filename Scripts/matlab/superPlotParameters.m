@@ -41,37 +41,32 @@ function superPlotParameters()
     experiments(1).tick =    2;
     %}
     
-    %
-
-    %experiments(27).Folder =   '0MOVESTIM_27.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(26).Folder =   '0MOVESTIM_26.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(25).Folder =   '0MOVESTIM_25.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(24).Folder =   '0MOVESTIM_24.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(23).Folder =   '0MOVESTIM_23.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(22).Folder =   '0MOVESTIM_22.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(21).Folder =   '0MOVESTIM_21.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(20).Folder =   '0MOVESTIM_20.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(19).Folder =   '0MOVESTIM_19.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(18).Folder =   '0MOVESTIM_18.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(17).Folder =   '0MOVESTIM_17.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(16).Folder =   '0MOVESTIM_16.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(15).Folder =   '0MOVESTIM_15.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(14).Folder =   '0MOVESTIM_14.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(13).Folder =   '0MOVESTIM_13.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(12).Folder =   '0MOVESTIM_12.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(11).Folder =   '0MOVESTIM_11.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(10).Folder =   '0MOVESTIM_10.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(9).Folder =    '0MOVESTIM_9.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(8).Folder =    '0MOVESTIM_8.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(7).Folder =    '0MOVESTIM_7.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(6).Folder =    '0MOVESTIM_6.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(5).Folder =    '0MOVESTIM_5.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(4).Folder =    '0MOVESTIM_4.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(3).Folder =    '0MOVESTIM_3.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(2).Folder =    '0MOVESTIM_2.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(1).Folder =    '0MOVESTIM_1.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-
-    %experiments(27).tick =   27;
+    experiments(26).Folder =   'sparsitycheck-0MOVESTIM_26.00/S=0.80_/TrainedNetwork';
+    experiments(25).Folder =   'sparsitycheck-0MOVESTIM_25.00/S=0.80_/TrainedNetwork';
+    experiments(24).Folder =   'sparsitycheck-0MOVESTIM_24.00/S=0.80_/TrainedNetwork';
+    experiments(23).Folder =   'sparsitycheck-0MOVESTIM_23.00/S=0.80_/TrainedNetwork';
+    experiments(22).Folder =   'sparsitycheck-0MOVESTIM_22.00/S=0.80_/TrainedNetwork';
+    experiments(21).Folder =   'sparsitycheck-0MOVESTIM_21.00/S=0.80_/TrainedNetwork';
+    experiments(20).Folder =   'sparsitycheck-0MOVESTIM_20.00/S=0.80_/TrainedNetwork';
+    experiments(19).Folder =   'sparsitycheck-0MOVESTIM_19.00/S=0.80_/TrainedNetwork';
+    experiments(18).Folder =   'sparsitycheck-0MOVESTIM_18.00/S=0.80_/TrainedNetwork';
+    experiments(17).Folder =   'sparsitycheck-0MOVESTIM_17.00/S=0.80_/TrainedNetwork';
+    experiments(16).Folder =   'sparsitycheck-0MOVESTIM_16.00/S=0.80_/TrainedNetwork';
+    experiments(15).Folder =   'sparsitycheck-0MOVESTIM_15.00/S=0.80_/TrainedNetwork';
+    experiments(14).Folder =   'sparsitycheck-0MOVESTIM_14.00/S=0.80_/TrainedNetwork';
+    experiments(13).Folder =   'sparsitycheck-0MOVESTIM_13.00/S=0.80_/TrainedNetwork';
+    experiments(12).Folder =   'sparsitycheck-0MOVESTIM_12.00/S=0.80_/TrainedNetwork';
+    experiments(11).Folder =   'sparsitycheck-0MOVESTIM_11.00/S=0.80_/TrainedNetwork';
+    experiments(10).Folder =   'sparsitycheck-0MOVESTIM_10.00/S=0.80_/TrainedNetwork';
+    experiments(9).Folder =    'sparsitycheck-0MOVESTIM_9.00/S=0.80_/TrainedNetwork';
+    experiments(8).Folder =    'sparsitycheck-0MOVESTIM_8.00/S=0.80_/TrainedNetwork';
+    experiments(7).Folder =    'sparsitycheck-0MOVESTIM_7.00/S=0.80_/TrainedNetwork';
+    experiments(6).Folder =    'sparsitycheck-0MOVESTIM_6.00/S=0.80_/TrainedNetwork';
+    experiments(5).Folder =    'sparsitycheck-0MOVESTIM_5.00/S=0.80_/TrainedNetwork';
+    experiments(4).Folder =    'sparsitycheck-0MOVESTIM_4.00/S=0.80_/TrainedNetwork';
+    experiments(3).Folder =    'sparsitycheck-0MOVESTIM_3.00/S=0.80_/TrainedNetwork';
+    experiments(2).Folder =    'sparsitycheck-0MOVESTIM_2.00/S=0.80_/TrainedNetwork';
+    experiments(1).Folder =    'sparsitycheck-0MOVESTIM_1.00/S=0.80_/TrainedNetwork';
     experiments(26).tick =   26;
     experiments(25).tick =   25;
     experiments(24).tick =   24;
@@ -98,6 +93,61 @@ function superPlotParameters()
     experiments(3).tick =    3;
     experiments(2).tick =    2;
     experiments(1).tick =    1;
+
+    %{
+    experiments(26).Folder =   '0MOVESTIM_26.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(25).Folder =   '0MOVESTIM_25.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(24).Folder =   '0MOVESTIM_24.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(23).Folder =   '0MOVESTIM_23.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(22).Folder =   '0MOVESTIM_22.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(21).Folder =   '0MOVESTIM_21.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(20).Folder =   '0MOVESTIM_20.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(19).Folder =   '0MOVESTIM_19.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(18).Folder =   '0MOVESTIM_18.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(17).Folder =   '0MOVESTIM_17.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(16).Folder =   '0MOVESTIM_16.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(15).Folder =   '0MOVESTIM_15.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(14).Folder =   '0MOVESTIM_14.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(13).Folder =   '0MOVESTIM_13.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(12).Folder =   '0MOVESTIM_12.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(11).Folder =   '0MOVESTIM_11.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(10).Folder =   '0MOVESTIM_10.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(9).Folder =    '0MOVESTIM_9.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(8).Folder =    '0MOVESTIM_8.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(7).Folder =    '0MOVESTIM_7.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(6).Folder =    '0MOVESTIM_6.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(5).Folder =    '0MOVESTIM_5.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(4).Folder =    '0MOVESTIM_4.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(3).Folder =    '0MOVESTIM_3.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(2).Folder =    '0MOVESTIM_2.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(1).Folder =    '0MOVESTIM_1.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(26).tick =   26;
+    experiments(25).tick =   25;
+    experiments(24).tick =   24;
+    experiments(23).tick =   23;
+    experiments(22).tick =   22;
+    experiments(21).tick =   21;
+    experiments(20).tick =   20;
+    experiments(19).tick =   19;
+    experiments(18).tick =   18;
+    experiments(17).tick =   17;
+    experiments(16).tick =   16;
+    experiments(15).tick =   15;
+    experiments(14).tick =   14;
+    experiments(13).tick =   13;
+    experiments(12).tick =   12;
+    experiments(11).tick =   11;
+    experiments(10).tick =   10;
+    experiments(9).tick =    9;
+    experiments(8).tick =    8;
+    experiments(7).tick =    7;
+    experiments(6).tick =    6;
+    experiments(5).tick =    5;
+    experiments(4).tick =    4;
+    experiments(3).tick =    3;
+    experiments(2).tick =    2;
+    experiments(1).tick =    1;
+    %}
     
     
     

@@ -10,6 +10,9 @@ function pouget()
 
     % A. Pouget & T. Sejnowski (1997)
     
+    % Seed rng
+    rng(33, 'twister');
+    
     % Input:
     % 121 units
     % \mu uniform in 12 increments \in [-60,60]
@@ -22,7 +25,7 @@ function pouget()
     eyePreferences = centerDistance(40*2, 8);
     
     [retMesh,eyeMesh] = meshgrid(retinalPreferences, eyePreferences);
-    numInputNeurons = length(retMesh)*length(eyeMesh);
+    numInputNeurons = numel(retMesh);
     
     % Output:
     % 1 unit
@@ -30,7 +33,8 @@ function pouget()
     % \mu = 0
     outputSigma = 18;
     outputHeadPreferences = [0];
-    numOutputNeurons = length(outputHeadPreferences);
+    outputEyePreferences = [0];
+    numOutputNeurons = length(outputHeadPreferences) + length(outputEyePreferences);
     
     % Stimuli:
     % 441=21*21 pairs of retinal and eye positions.
@@ -38,7 +42,7 @@ function pouget()
     % 21 eye positions in [-20,20]
     retinalTargets = centerN(80, 21);
     eyeTargets = centerN(40, 21);
-    numPatterns = length(retinalTargets)*length(eyeTargets); %[retTargetMesh,eyeTargetMesh] = meshgrid(retinalPreferences, eyePreferences);
+    numPatterns = length(retinalTargets)*length(eyeTargets);
     
     % Network Parameters
     learningrate = 0.001;
@@ -48,7 +52,6 @@ function pouget()
     
     % Create network
     untrainedNet = feedforwardnet([]);
-    %net = newff(repmat([0 1], numInputNeurons, 1), 1, 'sig', 'trainlm', 'learngdm', 'mse');
     
     % Setup Training
     untrainedNet.trainParam.epochs = numEpochs;
@@ -56,31 +59,14 @@ function pouget()
     untrainedNet.trainParam.lr = learningrate;
     untrainedNet.trainParam.show = 1;
     untrainedNet.trainParam.time = 1000;
-    
-    %{
-    % Train over multiple trials
-    %numTrials = 10;
-    %numBins = 15;
-    %histVector = zeros(numTrials, numBins);
-    %for t=1:numTrials,
-        
-        %[trainedNet, tr] = train(untrainedNet, inputPatterns, outputPatterns);
-        %histVector(t,:) = hist(trainedNet.IW{1},numBins);
-        
-    %end
-    
-    % Process data
-    %means = mean(histVector);
-    %stdev = std(histVector);
-    %}
-    
+     
     % Train
     [trainedNet, tr] = train(untrainedNet, inputPatterns, outputPatterns);
     synapses = trainedNet.IW{1};
     
     % Figure
     figure();
-    hist(synapses, 15);
+    hist(synapses(:), -1.3:0.1:1.3);
     %errorbar(means,stdev);
     %ymax = max(h)*1.1;
     %ylim([0 ymax]);
@@ -90,6 +76,34 @@ function pouget()
     hYLabel = ylabel('Frequency');
     
     disp(['Number of Inhibitory: ' num2str(nnz(synapses < 0))]);
+    
+    set([hXLabel, hYLabel], ...
+        'FontName'   , 'AvantGarde');
+
+    set(hYLabel  , ...
+        'FontSize'   , 18          );
+    set(hXLabel  , ...
+        'FontSize'   , 18          );
+
+    set(gca, ...
+      'FontName'    , 'Helvetica', ...
+      'FontSize'    , 10         , ...         
+      'Box'         , 'on'       , ...
+      'TickDir'     , 'in'       , ...
+      'TickLength'  , [.02 .02]  , ...
+      'XMinorTick'  , 'off'      , ...
+      'YMinorTick'  , 'off'      , ...
+      'LineWidth'   , 2         );
+  
+    %% DALE principle
+    figure();
+    iMoreExcitatory = sum(trainedNet.IW{1} >= 0) - sum(trainedNet.IW{1} < 0);
+    hMoreExcitatory = sum(trainedNet.LW{1} >= 0) - sum(trainedNet.LW{1} < 0);
+
+    hist([iMoreExcitatory hMoreExcitatory],-9:1:9);
+    
+    hXLabel = xlabel('#Surplus Excitatory Projections');
+    hYLabel = ylabel('Frequency');
     
     set( gca                   , ...
         'FontName'   , 'Helvetica' , ...
@@ -122,21 +136,36 @@ function pouget()
         for r=retinalTargets,
             for e=eyeTargets,
                 
+                % Input
+                in = exp(-(r - retMesh).^2/(2*inputSigma^2)) .* 1./(1 + exp(sigmoidSlope * (eyeMesh - e)));
+                
+                inputPatterns(:,counter) = in(:);
+                
+                % Output
                 h = r+e;
-                
-                v = exp(-(r - retMesh).^2/(2*inputSigma^2)) .* 1./(1 + exp(sigmoidSlope * (eyeMesh - e)));
-                %v = exp(-(r - retMesh).^2/(2*inputSigma^2)) .* exp(-(eyeMesh - e).^2/(2*inputSigma^2));
-                
-                %imagesc(v);
-                
-                inputPatterns(:,counter) = v(:);
-                
-                outputPatterns(:,counter) = exp(-((h - outputHeadPreferences).^2)/(2*outputSigma^2));
+                outputPatterns(:,counter) = [exp(-((h - outputHeadPreferences).^2)/(2*outputSigma^2)) exp(-((e - outputEyePreferences).^2)/(2*outputSigma^2))];
                 
                 counter = counter + 1;
             end
         end
 
     end
+
+    %{
+    % Train over multiple trials
+    %numTrials = 10;
+    %numBins = 15;
+    %histVector = zeros(numTrials, numBins);
+    %for t=1:numTrials,
+        
+        %[trainedNet, tr] = train(untrainedNet, inputPatterns, outputPatterns);
+        %histVector(t,:) = hist(trainedNet.IW{1},numBins);
+        
+    %end
+    
+    % Process data
+    %means = mean(histVector);
+    %stdev = std(histVector);
+    %}
 
 end

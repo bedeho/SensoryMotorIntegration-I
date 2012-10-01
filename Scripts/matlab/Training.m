@@ -3,7 +3,7 @@
 %  SMI
 %
 %  Created by Bedeho Mender on 08/02/12.
-%  Copyright 2012 OFTNAI. All rights reserved.
+%  Copyright 2012 OFTNAI. All rights reserved.''
 %
 %  Purpose: Generates the simplest possible 1d dynamical data
 %  
@@ -35,11 +35,11 @@ function Training(prefix,fixationsPerTargetChange)
     saccadeVelocity             = 400;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     samplingRate                = 1000;	%<=============change to 1000=========================%1000 % (Hz)
     fixationDuration            = 0.500;  % 0.02;	% (s) - fixation period after each saccade
-    nrOfEyePositions            = 10;
+    nrOfEyePositions            = 6;
     
     % Dynamics
-    numberOfTargetPresentations = ceil(2*(n*nrOfEyePositions)/fixationsPerTargetChange);
-    %fixationsPerTargetChange    = nrOfEyePositions;%2*nrOfEyePositions;%coeff; % floor(2*nrOfEyePositions); < == for simplicity always make this a multiple if it is greater than nrOfEyePositions
+    numberOfTargetPresentations = n; %ceil(2*(n*nrOfEyePositions)/fixationsPerTargetChange);
+    fixationsPerTargetChange    = nrOfEyePositions;%2*nrOfEyePositions;%coeff; % floor(2*nrOfEyePositions); < == for simplicity always make this a multiple if it is greater than nrOfEyePositions
     
     if numberOfTargetPresentations < n,
         error('Not enough to presentations see all targets!!');

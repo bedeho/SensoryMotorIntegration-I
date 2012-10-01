@@ -27,9 +27,9 @@
    	
    	# "1.00","2.00","3.00",
    	
-   	our @ftCArray				= ("1.00","2.00","3.00","4.00","5.00","6.00","7.00","8.00","9.00","10.00","11.00","12.00","13.00","14.00","15.00","16.00","17.00","18.00","19.00","20.00","21.00","22.00","23.00","24.00","25.00","26.00","27.00","28.00","29.00","30.00");
+   	#our @ftCArray				= ("1.00","2.00","3.00","4.00","5.00","6.00","7.00","8.00","9.00","10.00","11.00","12.00","13.00","14.00","15.00","16.00","17.00","18.00","19.00","20.00","21.00","22.00","23.00","24.00","25.00","26.00","27.00","28.00","29.00","30.00");
    	
-   	for my $ftC (@ftCArray) {
+   	#for my $ftC (@ftCArray) {
    		
    	# 
    	#my $experiment						= "multi-peaked-sigma=8";
@@ -42,18 +42,23 @@
 	#my $stim 							= "new-movestim-Tar=2.00-nTP=${nTP}-ftC=${ftC}-Sim=1.00-fD=0.50-nF=10.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-sE=44.00";
 
 	# 0MOVESTIM
-	my $nTP 							= ceil((2 * 4 * 10)/$ftC);
-	$nTP								= "${nTP}.00";
-	my $experiment						= "sparsitycheck-0MOVESTIM_${ftC}";
-	my $stim							= "0MOVESTIM-Tar=4.00-nTP=${nTP}-ftC=${ftC}-Sim=1.00-fD=0.50-nF=10.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=44.00";
+	#my $nTP 							= ceil((2 * 4 * 10)/$ftC);
+	#$nTP								= "${nTP}.00";
+	#my $experiment						= "sparsitycheck-0MOVESTIM_${ftC}";
+	#my $stim							= "0MOVESTIM-Tar=4.00-nTP=${nTP}-ftC=${ftC}-Sim=1.00-fD=0.50-nF=10.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=44.00";
 
 	# movementstatistics
 	#my $experiment	 					= "sparsity_movementstatistics_6"; #${ftC}
 	#my $stim							= "movementstatistics-Tar=2.00-nTP=28.00-ftC=6.00-Sim=1.00-fD=0.50-nF=14.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-sE=17.00";
 	
 	# classic
-	#my $experiment	 					= "peaked";
-	#my $stim							= "Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=17.00";
+	my $experiment	 					= "dt0.1_peaked-NOreset";
+	#my $experiment						= "dt0.05_peaked_learningrate";
+	#my $experiment						= "dt0.05_peaked_sparseness";
+	#my $experiment						= "dt0.05_peaked_tracetimeconstant";
+	#my $experiment						= "dt0.05_sigmoidal";
+	my $stim							= "classic-Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=44.00";
+	#my $stim							= "test-Tar=4.00-nTP=4.00-ftC=6.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=44.00";
 	
 	# bigsigma
 	#my $experiment	 					= "peaked_bigsigma_sparseness_steep";
@@ -76,15 +81,15 @@
 	my $learningRule					= TRACE; # TRACE, HEBB
 
 	my $nrOfEpochs						= 10; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 12;
-	my $outputAtTimeStepMultiple		= 1;
+	my $saveNetworkAtEpochMultiple 		= 1;
+	my $outputAtTimeStepMultiple		= 3;
 
 	my $lateralInteraction				= COMP; # NONE, COMP, SOM
 	my $sparsenessRoutine				= HEAP; # NONE, HEAP, GLOBAL
 
 	
 	my $resetActivity					= "false"; # "false", Reset activation between objects of training
-	my $resetTrace						= "false"; # "false", Reset trace between objects of training
+	my $resetTrace						= "true"; # "false", Reset trace between objects of training
 	
 	my $sigmoidModulationPercentage		= "0.0";
 
@@ -637,4 +642,4 @@ TEMPLATE
 	}
 
 
-}
+#}

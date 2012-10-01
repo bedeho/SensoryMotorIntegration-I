@@ -38,7 +38,7 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
     
     fig = figure();
     plotStimuli(trainingStimuliName, 'r','o', 1, 6);
-    %plotStimuli(testingStimuliName, 'b','x', 3, 14);
+    plotStimuli(testingStimuliName, 'b','x', 3, 14);
     
     hTitle = title(''); % title('Input Data');
     hXLabel = xlabel('Eye-position (deg)');
