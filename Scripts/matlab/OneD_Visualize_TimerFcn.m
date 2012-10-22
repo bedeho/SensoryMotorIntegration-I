@@ -47,7 +47,7 @@ function OneD_Visualize_TimerFcn(obj, event)
 
         retinalPositions = buffer(lineCounter, 2:(numberOfSimultanousObjects + 1)); 
          
-        disp(['Read: eye =' num2str(eyePosition) ', ret=' num2str(retinalPositions)]);
+        %disp(['Read: eye =' num2str(eyePosition) ', ret=' num2str(retinalPositions)]);
         
         % Select figure
         figure(fig);
@@ -66,19 +66,23 @@ function OneD_Visualize_TimerFcn(obj, event)
     % draw LIP sig*gauss neurons and input space
     function draw()
 
+        
         v = OneD_DG_InputLayer(dimensions, [eyePosition retinalPositions]);
+        
         
         % Clean up so that it is not hidden from us that stimuli is off
         % retina
-        v(v < 0.001) = 0;
+        %v(v < 0.001) = 0;
         sigmoidPositive = squeeze(v(1,:,:));
         sigmoidNegative = squeeze(v(2,:,:));
         
-        fullNorm = norm([sigmoidPositive(:); sigmoidNegative(:)])
+        disp(['Total: ' num2str(sum(sum(sigmoidPositive)))]);
+        
+        %fullNorm = norm([sigmoidPositive(:); sigmoidNegative(:)]);
         
         % + sigmoid
         subplot(4,1,1);
-        im = imagesc(sigmoidPositive/fullNorm);
+        im = imagesc(sigmoidPositive);%/fullNorm
         daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
         
         tickTitle = [sprintf('%02d', fullMin) ':' sprintf('%02d', fullSec) ':' sprintf('%03d',fullMs)];
@@ -88,8 +92,9 @@ function OneD_Visualize_TimerFcn(obj, event)
         
         % - sigmoid
         subplot(4,1,2);
-        imagesc(sigmoidNegative/fullNorm);
+        imagesc(sigmoidNegative); % /fullNorm
         daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
+        
         
         %% input space
         subplot(4,1,3);
@@ -99,6 +104,8 @@ function OneD_Visualize_TimerFcn(obj, event)
         daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
         axis([dimensions.leftMostEyePosition dimensions.rightMostEyePosition dimensions.leftMostVisualPosition dimensions.rightMostVisualPosition]);
         title('Present input');
+        
+        set(gca, 'ButtonDownFcn', @responseCallBack); % Setup callback
         
         %% input space
         subplot(4,1,4);
@@ -129,7 +136,7 @@ function OneD_Visualize_TimerFcn(obj, event)
         % double right click => 'SelectionType' = 'open'
         clickType = get(gcf,'SelectionType')
         
-        stopVisualizer();
+        stop();
         
         disp('You stopped the visualizer');
 

@@ -39,8 +39,6 @@ class HiddenNeuron: public Neuron {
         unsigned long synapseHistoryCounter;
 		bool saveNeuronHistory;
 		
-    
-    
         // History buffers
         float * activationHistory;
         float * inhibitedActivationHistory;
@@ -56,21 +54,6 @@ class HiddenNeuron: public Neuron {
     
         // temporarily moved
         bool saveSynapseHistory;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
         
         // Data structures
         vector<Synapse> afferentSynapses;
@@ -135,6 +118,10 @@ class HiddenNeuron: public Neuron {
 
 #include <cfloat>
 #include <cmath>
+
+//////////////////// DEBUG
+#include <math.h>
+#include <iostream.h>
 
 inline void HiddenNeuron::clearState(bool resetTrace) {
 	
@@ -213,7 +200,7 @@ inline void HiddenNeuron::normalize() {
 // is computed along with the weight update.
 inline void HiddenNeuron::normalize(float norm) {
 	
-	norm = sqrt(norm);
+	norm = static_cast<float>(sqrt(norm));
 	for(u_short s = 0;s < afferentSynapses.size();s++)
 		afferentSynapses[s].weight /= norm;
 }

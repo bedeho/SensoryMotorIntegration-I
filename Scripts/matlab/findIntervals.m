@@ -4,9 +4,9 @@
 % delta  = distance between consecutive points
 
 % test:  hold on;g=rand(1,10);disp(g);plot(g);plot(ones(1,length(g))*mean(g));findIntervals(g,1,1)
-function intervals = findIntervals(pts, offset, delta)
+function intervals = findIntervals(pts, offset, delta, cutoff)
     
-    avg = mean(pts)
+    cutoff = mean(pts);
     isInInterval = false;
     intervals = [];
         
@@ -20,7 +20,7 @@ function intervals = findIntervals(pts, offset, delta)
 
             % and next is below:
             % start b_i at intersection and set isInterval <- false
-            if(pts(j) < avg)
+            if(pts(j) < cutoff)
                 b_i = findIntercept();
                 intervals(2,end) = b_i;
 
@@ -32,7 +32,7 @@ function intervals = findIntervals(pts, offset, delta)
 
             % and next is above:
             % start a_i at intersection and set isInterval <- true
-            if(pts(j) > avg)
+            if(pts(j) > cutoff)
 
                 if(j == 1)
                     a_i = offset;
@@ -61,7 +61,7 @@ function intervals = findIntervals(pts, offset, delta)
         %offset + (j-2)*delta + findIntercept(, , avg, delta); % interpoalte end of interval
         
         slope = (pts(j) - pts(j-1))/delta;
-        intercept_x = offset + (j-2)*delta + (avg - pts(j-1))/slope;
+        intercept_x = offset + (j-2)*delta + (cutoff - pts(j-1))/slope;
 
     end
 

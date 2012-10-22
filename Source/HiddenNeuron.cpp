@@ -133,16 +133,18 @@ void HiddenNeuron::setupAfferentSynapses(Region & preSynapticRegion, CONNECTIVIT
         }
     } else if (connectivity == SPARSE_BIASED) {
         
+        cerr << "BIASED BIASED BIASED" << endl;
+        
         u_short connectionsMade = 0;
         
         // Sample row
-        int rowSource = gsl_rng_uniform_int(rngController, preSynapticRegion.verDimension);
+        unsigned long int rowSource = gsl_rng_uniform_int(rngController, preSynapticRegion.verDimension);
         // In the future just set int rowSourcMean to something, and use it to set int rowSource = Gauss(rowSourcMean) inside loop
 
         while(connectionsMade < desiredFanIn) {
             
             // Sample location
-            int colSource = gsl_rng_uniform_int(rngController, preSynapticRegion.horDimension);
+            unsigned long int colSource = gsl_rng_uniform_int(rngController, preSynapticRegion.horDimension);
             
             for(int d = 0;d < preSynapticRegion.depth;d++) {
                 
@@ -243,8 +245,11 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
     }
 }
 
+
+
 void HiddenNeuron::output(BinaryWrite & file, const float * buffer) {
     
     for(unsigned long t = 0;t < neuronHistoryCounter;t++)
         file << buffer[t];
+    
 }

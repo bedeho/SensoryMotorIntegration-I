@@ -39,7 +39,7 @@ void BinaryRead::openFile(const char * filename) {
         
         // get length of file:
         seekg (0, std::ios::end);
-        int length = tellg();
+        int long long length = tellg();
         seekg (0, std::ios::beg);
         
         if(length == 0) {

@@ -27,7 +27,27 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
     info = C.info;
     cd(startDir);
     
-    %[analysis] = metrics(filename, info);
+    [analysis] = metrics(filename, info);
+    
+    lambdaMatrix = squeeze(analysis(1,:,:));
+    lmat = lambdaMatrix(:);
+    
+    psiMatrix = squeeze(analysis(2,:, :));
+    
+    hMatrix = squeeze(analysis(4,:,:));
+    hmat = hMatrix(:);
+    
+    scatterSpace = [lmat, hmat];
+    
+
+    % Clear out NaN neurons that did not respond to anything.
+    lmat(isnan(hmat)) = []; % Clear out lambda score of neurons corresponding to dead NaN) h-values
+    hmat(isnan(hmat)) = []; % Clear out dead (NaN) h=values
+    disp(['Neurons with invalid h-value:' num2str(length(hmat) - numel(hMatrix))]);
+    
+    hmatTOP = hmat
+    hmatTOP(lmat < 0.8) = [];     % shave out
+
     
     % Load single unit recordings
   
@@ -54,21 +74,13 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
     topLayerRowDim = networkDimensions(numRegions).x_dimension;
     numEyePositions = length(info.eyePositions);
     numTargets = length(info.targets);
-    
-    %if doHeadCentered,
-    %    objectLegend = cell(nrOfEyePositionsInTesting,1);
-    %    
-    %    for s=1:nrOfEyePositionsInTesting,
-    %        objectLegend{s} = [num2str(info.targets(s)) '^{\circ}'];
-    %    end
-    %else
-        
-        objectLegend = cell(numTargets,1);
+       
+    objectLegend = cell(numTargets,1);
 
-        for s=1:numTargets,
-            objectLegend{s} = [num2str(info.targets(s)) '^{\circ}'];
-        end
-    %end
+    for s=1:numTargets,
+        objectLegend{s} = [num2str(info.targets(s)) '^{\circ}'];
+    end
+
     
     if doHeadCentered,
         xTickLabels = cell(numTargets,1);
@@ -123,7 +135,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
             set(im, 'ButtonDownFcn', {@singleUnitCallBack, r}); % Setup callback
         end
         
-        if ~isempty(data{r-1}),
+        if ~isempty(data),%{r-1}),
             
             % Activity indicator
             axisVals(r-1,2) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 2); % Save axis
@@ -135,8 +147,8 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
             %}
 
             % SIMON
-            %%{
-            v0 = data{r-1};
+            %{
+            v0 = data;%{r-1};
             v0(v0 > 0) = 1;  % count all nonzero as 1, error terms have already been removed
             
             
@@ -148,26 +160,38 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
             end
             
             v2 = v1(:,:,1);
-            im = imagesc(v2);         % only do first region
-            daspect([size(v2) 1]);
-            title('Number of testing locations responded to');
+            %im = imagesc(v2);         % only do first region
+            %}
+            im = imagesc(lambdaMatrix);
+            %daspect([size(v2) 1]);
+            %title('Number of testing locations responded to');
+            title('\lambda');
             colorbar;
-            %%}
-
-            %% ResponseCount historgram
+            
+            % ResponseCount historgram
             axisVals(r-1,3) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 3); % Save axis
-            noZeros = v2(:);
-            noZeros(noZeros == 0) = [];
-            hist(noZeros,1:(max(max(v2))));
-            title(['Mean: ' num2str(mean2(v2))]);
+            hist(hmatTOP,50);
+            
+            %noZeros = v2(:);
+            %noZeros(noZeros == 0) = [];
+            %hist(noZeros,1:(max(max(v2))));
+            %title(['Mean: ' num2str(mean2(v2))]);
             set(im, 'ButtonDownFcn', {@responseCallBack, r}); % Setup callback
+            
+            
 
-            %% Invariance heuristic
+            
+            % Invariance heuristic
             axisVals(r-1,PLOT_COLS) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + PLOT_COLS); % Save axis
 
+            scatterAxis = plot(hmat,lmat,'o');
+            set(scatterAxis, 'ButtonDownFcn', @scatterCallBack); % Setup callback
+            ylim([-0.1 1]);
+            %{
             responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting);
 
             bar(responseCounts);
+            %}
             
             %{
             % Plot a line for each object
@@ -199,26 +223,34 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
         pos = get(axisVals(region-1,2), 'CurrentPoint');
         [row, col] = imagescClick(pos(1, 2), pos(1, 1), networkDimensions(region).y_dimension, networkDimensions(region).x_dimension);
 
+        responseClick(row,col,region)
+    end
+
+    function responseClick(row,col,region)
+        
+        disp(['Row,Col: ' num2str(row) ',' num2str(col)]);
+        disp(['lambda: ' num2str(lambdaMatrix(row,col))]);
+        disp(['h-value: ' num2str(hMatrix(row,col))]);
+        disp(['psi: ' num2str(psiMatrix(row,col))]);
+        
         % single left  click => 'SelectionType' = 'normal'
         % single right click => 'SelectionType' = 'alt'
         % double right click => 'SelectionType' = 'open'
-        clickType = get(gcf,'SelectionType')
+        clickType = get(gcf,'SelectionType');
         
         if strcmp(clickType,'normal'),
             
             % Dump correlation
-            disp(['Correlation: ' num2str(regionCorrs{region-1}(row,col))]);
+            %disp(['Correlation: ' num2str(regionCorrs{region-1}(row,col))]);
 
             % Setup blank plot
             axisVals(numRegions, [1 PLOT_COLS]) = subplot(numRegions, PLOT_COLS, [PLOT_COLS*(numRegions - 1) + 1 PLOT_COLS*(numRegions - 1) + PLOT_COLS]);
 
-            %% SIMON STYLE - object based line plot
-            %%{
+            cellData = data(:, :, row, col); % {region-1}
+            plot(cellData');
             
-            cellData = data{region-1}(:, :, row, col)
-            bar(cellData);
-            
-            set(gca,'YLim',[-0.1 1.1]);
+            ylim([-0.1 1.1]);
+            xlim([1 objectsPrEyePosition]);
             
         elseif strcmp(clickType,'alt'),
                 
@@ -232,6 +264,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
         else
             prettyPlot(region,row,col);
         end 
+        
     end
 
     % Callback 2
@@ -244,23 +277,55 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
         [row, col] = imagescClick(pos(1, 2), pos(1, 1), networkDimensions(region).y_dimension, networkDimensions(region).x_dimension);
 
         if singleUnits{region}(row, col, 1).isPresent,
+            responseClick(row,col,region);
             plotSingleUnit(singleUnits{region}(row, col, 1), historyDimensions);
+            
         else
             disp('Not recorded.');
         end
         
     end
 
+    function scatterCallBack(varargin)
+        
+        pos = get(gca,'Currentpoint'); %get(scatterAxis, 'CurrentPoint');
+        %[row, col] = imagescClick(pos(1, 2), pos(1, 1), networkDimensions(region).y_dimension, networkDimensions(region).x_dimension);
+        
+        hvalueClick = pos(1,1);
+        lambdaClick = pos(1,2);
+        
+        % Find neuron with closest match
+        d = [ones(length(scatterSpace),1)*lambdaClick ones(length(scatterSpace),1)*hvalueClick];
+        
+        error = sum(((scatterSpace - d).^2)');
+        
+        [e leastErrorIndex] = min(error);
+        
+        [row col] = ind2sub(size(lambdaMatrix), leastErrorIndex);
+
+        % Update response plot
+        responseClick(row,col,2)
+        
+    end
+
     function prettyPlot(region,row,col)
 
-        %% GEt single cell score
+        % Get single cell score
         
         % Load analysis file for experiments
         collation = load([pathstr '/collation.mat']);
-        sCell = collation.singleCell(row,col);
+        %sCell = collation.lambda(row,col);
+        sCell = lambdaMatrix(row, col);
         
         cellNr = (row-1)*topLayerRowDim + col;
         
+        f = figure();
+
+        y = squeeze(data(:, :, row, col)); %data{region-1}(:, :, row, col)
+        
+        imagesc(y');
+        
+        %{
         % Dialogs
         answer = inputdlg('Qualifier')
 
@@ -269,6 +334,9 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
         else
             qualifier = '';
         end
+        %}
+        
+        %{
 
         if doHeadCentered,
             
@@ -336,7 +404,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
                 
                 xlim([(xTick(1)-0.5) (xTick(end)+0.5)]);
                 
-                %% SAVE
+                % SAVE
                 chap = 'chap-2';
                 fname = [THESIS_FIGURE_PATH chap '/neuron_response_' num2str(h) '_' num2str(cellNr) qualifier '.eps'];
                 set(gcf,'renderer','painters');
@@ -346,6 +414,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
             
             %hXLabel = xlabel('Head-centered location (deg)');
         else
+            %{
             
             f = figure();
         
@@ -404,28 +473,18 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
             set(gca,'YLim',[-0.1 1.1]);
             %set(gca,'XTick',1:nrOfBins);
             
-            %% SAVE
+            % SAVE
             chap = 'chap-2';
             fname = [THESIS_FIGURE_PATH chap '/neuron_response_m_' num2str(cellNr) '.eps'];
             set(gcf,'renderer','painters');
             print(f,'-depsc2','-painters',fname);
+            
+            %}
         
         end
+        
+        %}
        
     end
     
-    % OLD STYLE - Bar plot
-    %cla
-
-    %Simon Style
-    %plot(data{region-1}(:, :, row, col));
-    %set(gca,'XLim',[0 nrOfEyePositionsInTesting]);
-    %set(gca,'YLim',[-0.1 1.1]);
-
-    % Old Style
-    %bar(data{region-1}(:, :, row, col));
-    %set(gca,'XLim',[0 (objectsPrEyePosition+1)])
-
-    %set(gca,'XTick', 1:objectsPrEyePosition)
-    
-    end
+end

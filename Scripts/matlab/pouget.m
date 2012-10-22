@@ -73,7 +73,7 @@ function pouget()
     axis tight;
     %plot(m*[1 1], [0 ymax],'r-');
     hXLabel = xlabel('Synaptic Weight');
-    hYLabel = ylabel('Frequency');
+    hYLabel = ylabel('Number of Synapses');
     
     disp(['Number of Inhibitory: ' num2str(nnz(synapses < 0))]);
     
@@ -102,8 +102,8 @@ function pouget()
 
     hist([iMoreExcitatory hMoreExcitatory],-9:1:9);
     
-    hXLabel = xlabel('#Surplus Excitatory Projections');
-    hYLabel = ylabel('Frequency');
+    hXLabel = xlabel('Number of Surplus Excitatory Projections');
+    hYLabel = ylabel('Number of Neurons');
     
     set( gca                   , ...
         'FontName'   , 'Helvetica' , ...

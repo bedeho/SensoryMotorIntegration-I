@@ -21,7 +21,7 @@ function [regionCorrelation] = regionCorrelation(filename, nrOfEyePositionsInTes
     % Compute correlation for each region
     for r=2:numRegions,
         
-        dataPrEyePosition = data{r-1,1};
+        dataPrEyePosition = data;%{r-1,1};
         
         y_dimension = networkDimensions(r).y_dimension;
         x_dimension = networkDimensions(r).x_dimension;

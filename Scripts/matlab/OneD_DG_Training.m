@@ -31,10 +31,10 @@ function OneD_DG_Training(prefix)
     
     % Parameters
     saccadeVelocity             = 400;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    samplingRate                = 100;	%1000 % (Hz)
+    samplingRate                = 1000;	%1000 % (Hz)
     fixationDuration            = 0.500; % 0.02;	% (s) - fixation period after each saccade
     %saccadeAmplitude           = 25;    % 35= 13 hp(deg) - angular magnitude of each saccade, after which there is a fixation periode
-    numberOfFixations           = 4; %6;
+    numberOfFixations           = 6; %6;
     nrOfOrderings               = 2;
 
     % Derived
@@ -128,10 +128,11 @@ function OneD_DG_Training(prefix)
     cd(startDir);
     
     % Generate complementary testing data
-    OneD_DG_Test(tSFolderName, samplingRate, fixationDuration, dimensions, possibleEyePositions);
+    %OneD_DG_Test(tSFolderName, samplingRate, fixationDuration, dimensions, possibleEyePositions);
+    Stimuli_Testing(tSFolderName, samplingRate, fixationDuration, dimensions, dimensions.eyePositionFieldSize, dimensions.visualFieldEccentricity);
     
     % Generate correlation data
-    OneD_DG_Correlation([tSFolderName '-stdTest']);
+    %OneD_DG_Correlation([tSFolderName '-stdTest']);
     
     % Visualize
     OneD_Overlay([tSFolderName '-training'],[tSFolderName '-stdTest'])

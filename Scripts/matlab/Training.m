@@ -31,15 +31,15 @@ function Training(prefix,fixationsPerTargetChange)
     r = dimensions.numberOfSimultanousObjects;
     
     % Parameters
-    seed                        = 44; % classic = 72
-    saccadeVelocity             = 400;	% (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    samplingRate                = 1000;	%<=============change to 1000=========================%1000 % (Hz)
-    fixationDuration            = 0.500;  % 0.02;	% (s) - fixation period after each saccade
+    seed                        = 112;       % classic = 72
+    saccadeVelocity             = 400;      % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
+    samplingRate                = 100;      % <=============change to 1000=========================%1000 % (Hz)
+    fixationDuration            = 0.500;    % 0.02;	% (s) - fixation period after each saccade
     nrOfEyePositions            = 6;
     
     % Dynamics
     numberOfTargetPresentations = n; %ceil(2*(n*nrOfEyePositions)/fixationsPerTargetChange);
-    fixationsPerTargetChange    = nrOfEyePositions;%2*nrOfEyePositions;%coeff; % floor(2*nrOfEyePositions); < == for simplicity always make this a multiple if it is greater than nrOfEyePositions
+    fixationsPerTargetChange    = 2*nrOfEyePositions;%2*nrOfEyePositions;%coeff; % floor(2*nrOfEyePositions); < == for simplicity always make this a multiple if it is greater than nrOfEyePositions
     
     if numberOfTargetPresentations < n,
         error('Not enough to presentations see all targets!!');
@@ -91,6 +91,9 @@ function Training(prefix,fixationsPerTargetChange)
     
     % Set index
     rng(seed, 'twister');
+    
+    %% RESHUFLE TARGETS TO CONTROL FOR ORER EFFECT
+    dimensions.targets = dimensions.targets(randperm(length(dimensions.targets)));
     
     % Setup for generating target combinations
     unsampledPerms = combnk(1:n, r);
@@ -211,7 +214,7 @@ function Training(prefix,fixationsPerTargetChange)
     hold on;
     
     % Generate complementary testing data
-    OneD_DG_Test(tSFolderName, samplingRate, fixationDuration, dimensions, possibleEyePositions);
+    OneD_DG_Test(tSFolderName, samplingRate, fixationDuration, dimensions, possibleEyePositions, 'NEW');
     
     % Generate correlation data
     %OneD_DG_Correlation([tSFolderName '-stdTest']);

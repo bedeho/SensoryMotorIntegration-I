@@ -6,12 +6,15 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot,thetaPlot, thetaMatrix, omegaMatrix, dist, omegaBins, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
+%function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot,thetaPlot, thetaMatrix, omegaMatrix, dist, omegaBins, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
+function plotRegion(filename, info, dotproduct, region, depth, netDir)
 
+
+%{
     % Get dimensions
-    [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
+    %[networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
     
-    numCells = networkDimensions(end).y_dimension * networkDimensions(end).x_dimension;
+    %numCells = networkDimensions(end).y_dimension * networkDimensions(end).x_dimension;
     
     % Fill in missing arguments    
     if nargin < 5,
@@ -26,24 +29,9 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
         error('Region is to small');
     end
     
-    numTargets = length(info.targets);
-    nrOfEyePositionsInTesting = length(info.eyePositions);
-    
-    %% OLD CORRELATION
-    
-    %{
-    % Compute region correlation
-    corr = regionCorrelation(filename, info.nrOfEyePositionsInTesting);
-    
-    % Plot region correlation
-    regionCorrelationPlot = figure();
-    
-    % IMAGESC CORRELATION
-    imagesc(corr{region-1});
-    colorbar;
-    %}
-    
-    %% NEW ANALYSIS
+%}
+    %numTargets = length(info.targets);
+    %nrOfEyePositionsInTesting = length(info.eyePositions);
     
     % analysis
     % (1) = \lambda^a
@@ -51,19 +39,125 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     % (3) = \Omega^a
     % (4) = best match target
     % (5...[5+#targets]) = \chi
-    [analysis, thetaMatrix] = metrics(filename, info);
     
-    omegaMatrix = squeeze(analysis(3,:,:));
-    preferenceMatrix = squeeze(analysis(4,:,:));
-    corr = sort(omegaMatrix(:),'descend');
+    [headCenteredNess RFSize RFLocation DiscardStatus] = metrics(filename, info);
     
-    % Plot region correlation
-    regionCorrelationPlot = figure();
+    % Data
+    lambdaMatrix = squeeze(analysis(1,:,:));
+    lambda = lambdaMatrix(:);
+
+    psiMatrix = squeeze(analysis(2,:,:));
+    psi = psiMatrix(:);
     
-    plot(corr);
-    axis([0 numel(corr) -1.1 1.1]);
+    hMatrix = squeeze(analysis(4,:,:));
+    hval = hMatrix(:);
+    
+    % Lambda
+    lambdaPlot = figure();
+    plot(sort(lambda,'descend'));
+    axis([0 numel(lambda) -1.1 1.1]);
     xlabel('Cell Rank');
-    ylabel('\Omega_a');
+    ylabel('\lambda');
+    saveFigureAndDelete(lambdaPlot, 'lambda');
+    
+    % Psi
+    psiPlot = figure();
+    plot(sort(psi,'descend'));
+    %axis([0 numel(psi) -1.1 1.1]);
+    xlabel('Cell Rank');
+    ylabel('\psi');
+    saveFigureAndDelete(psiPlot, 'psi');
+    
+    % h-value
+    hValuePlot = figure();
+    hTOP = hval;
+    hTOP(lambda < 0.8) = [];     % shave out bottom
+    hist(hTOP,50);
+    xlabel('Head-centered Space (deg)');
+    ylabel('h-value');
+    saveFigureAndDelete(hValuePlot, 'hvalue');
+    
+    % Psi/lambda scatter plot
+    psiLambdaPlot = figure();
+    scatter(psi,lambda); % scatterhist
+    xlabel('\psi');
+    ylabel('\lambda');
+    ylim([-0.1 1]);
+    saveFigureAndDelete(psiLambdaPlot, 'psilambda');
+    
+    % lambda/h scatter plot
+    lambdahPlot = figure();
+    scatter(hval,lambda); % scatterhist
+    xlabel('h-value');
+    ylabel('\lambda');
+    ylim([-0.1 1]);
+    saveFigureAndDelete(lambdahPlot, 'lambdah');
+    
+    % Psi/h
+    psiHPlot = figure();
+    scatter(psi,hval); % scatterhist
+    xlabel('\psi');
+    ylabel('h-value');
+    saveFigureAndDelete(psiHPlot, 'psih');
+    
+    % h/Psi/Lambda
+    hPsiLambdaPlot = figure();
+    scatter3(hval,psi,lambda);
+    xlabel('h-value');
+    ylabel('\psi');
+    zlabel('\lambda');
+    saveFigureAndDelete(hPsiLambdaPlot, 'hpsilambda');
+    
+    % Save for collation
+    save([netDir '/collation.mat'], 'lambdaMatrix', 'psiMatrix', 'hMatrix'); %,'multiCell','omegaBins','thetaMatrix');
+    
+    function saveFigureAndDelete(fig,name)
+        
+        saveas(fig, [netDir '/' name '.eps']);
+        saveas(fig, [netDir '/' name '.png']);
+        delete(fig);  
+    end
+    
+    %{
+    % regionOrthogonalizationPlot
+    saveas(regionOrthogonalizationPlot, [netDir '/orthogonality.eps']);
+    saveas(regionOrthogonalizationPlot, [netDir '/orthogonality.png']);
+    delete(regionOrthogonalizationPlot);
+
+    % outputPatternsPlot
+    saveas(outputPatternsPlot, [netDir '/outputOrthogonality.eps']);
+    saveas(outputPatternsPlot, [netDir '/outputOrthogonality.png']);
+    delete(outputPatternsPlot);
+
+    %}
+
+    % outputPatternsPlot
+    %saveas(invariancePlot, [netDir '/invariance.eps']);
+    %saveas(invariancePlot, [netDir '/invariance.png']);
+    %print(invariancePlot, '-depsc2', '-painters', [netDir '/' experiment '_invariance.eps']);
+    %delete(invariancePlot);
+
+    % distributionPlot
+    %saveas(distributionPlot, [netDir '/dist.eps']);
+    %saveas(distributionPlot, [netDir '/dist.png']);
+    %delete(distributionPlot);
+
+    % thetaPlot
+    %saveas(thetaPlot, [netDir '/theta.eps']);
+    %saveas(thetaPlot, [netDir '/theta.png']);
+    %delete(thetaPlot);
+
+    % Save results for summary
+
+    %summary(counter).nrOfHeadCenteredCells = nnz(singleCell > 0); % Count number of cells with positive correlation
+    %summary(counter).orthogonalityIndex = orthogonalityIndex;
+    %summary(counter).MeanObjects = MeanObjects;
+    %summary(counter).MeanTransforms = MeanTransforms;
+
+    %summary(counter).fullInvariance = fullInvariance;
+    %summary(counter).meanInvariance = meanInvariance;
+    %summary(counter).multiCell = multiCell;
+    %summary(counter).nrOfSingleCell = nrOfSingleCell;
     
     % Plot Omega/preference
     %figure();
@@ -74,7 +168,7 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     %title('region');
     
     % Head distribution
-    [distributionPlot, dist, omegaBins] = doDistributionPlot(omegaMatrix,preferenceMatrix);
+    %[distributionPlot, dist, omegaBins] = doDistributionPlot(omegaMatrix,preferenceMatrix);
     
     % IMAGESC CORRELATION
     %correlationVector = corr{region-1}(:);
@@ -83,10 +177,10 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     %axis([0 length(correlationVector) -1.1 1.1]);
     
     %% Theta plot
-    thetaPlot = figure();
-    theta = thetaMatrix(:);
-    plot(sort(theta,'descend'));
-    title('Retinal Confusion');
+    %thetaPlot = figure();
+    %theta = thetaMatrix(:);
+    %plot(sort(theta,'descend'));
+    %title('Retinal Confusion');
     %ylim([0 0.005]);
     %axis([0 numel(theta) -1.1 1.1]);
     %xlabel('Cell Rank');
@@ -115,14 +209,16 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
     colorbar;
     %}
     
+    %{
     outputPatternsPlot = 0;
     regionOrthogonalizationPlot = 0;
     outputPatterns = 0;
     orthogonalityIndex = 0;
     inputCorrelations = 0;
     outputCorrelations = 0;
+    %}
     
-    
+    %{
     %% Invariance & Selectivity
     [MeanObjects, MeanTransforms] = regionTrace(filename, nrOfEyePositionsInTesting);
     
@@ -146,6 +242,7 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
 
     set( gca                       , ...
         'FontName'   , 'Helvetica' );
+    
     set([hTitle, hXLabel, hYLabel], ...
         'FontName'   , 'AvantGarde');
     set([hLegend, gca]             , ...
@@ -169,7 +266,9 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
       'LineWidth'   , 2         );
     
     ylim([0 0.13*numCells]); % We dont normalize with peak, but rather with fixed number so visual comparison is easy
+    %}
 
+    %{
     function [p,dist,omegaBins] = doDistributionPlot(omegaMatrix,preferenceMatrix)
         
         % Make figure
@@ -216,4 +315,19 @@ function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, r
         %plot(1:length(dist),dist(2,:));
         
     end
+    %}
+    
+    % OLD CORRELATION
+    
+    %{
+    % Compute region correlation
+    corr = regionCorrelation(filename, info.nrOfEyePositionsInTesting);
+    
+    % Plot region correlation
+    regionCorrelationPlot = figure();
+    
+    % IMAGESC CORRELATION
+    imagesc(corr{region-1});
+    colorbar;
+    %}
 end

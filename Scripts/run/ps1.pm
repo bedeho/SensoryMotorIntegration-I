@@ -53,25 +53,25 @@
 
  		# RANGE PARAMS - permutable
     	our @sigmoidSlopes					= (
-									#["00000001.0"]
+									#["100000000.0"],
 									#["00000000.8"],								
 									#["00000000.7"],								
 									#["00000000.6"],
 									#["00000000.5"],								
-									["00000000.4"]
+									#["00000000.4"]
 									#["00000000.3"],
 									#["00000000.2"],
+									["0000000.01"],
+									["00000000.1"],
+									#["00000000.7"]
 									#["0000000.15"]
 									#["0000000.10"]
 									#["0000000.05"]
-									#,
-									#["00000000.1"],
-									#["0000000.01"],
-									#["000000.001"],
-    								#["00000001.0"],
-    								#["00000010.0"],
-									#["00000100.0"],
-									#["00001000.0"],
+									#["000000.005"]
+    								["00000001.0"],
+    								["00000010.0"],
+									["00000100.0"]
+									#["00001000.0"]
 									#["00010000.0"],
 									#["00100000.0"],
 									#["01000000.0"],
@@ -96,28 +96,36 @@
 										
     # Notice, layer one needs 3x because of small filter magnitudes, and 5x because of
     # number of afferent synapses, total 15x.
-    our @learningRates 					= (
-#learningrate
+    our @learningRates 					= ( #learningrate
+#["0.00010"],
+#["0.00020"],
+#["0.00030"],
+#["0.00040"],
+#["0.00050"],
+#["0.00060"],
+#["0.00070"],
+#["0.00080"],
+#["0.00090"], 
+# <= not typically used for a classif fanin
 #["0.00100"],
 #["0.00200"],
 #["0.00300"],
-#["0.00400"],
+#["0.00400"]#,
 #["0.00500"],
 #["0.00600"],
 #["0.00700"],
 #["0.00800"],
 #["0.00900"],
-#
-#["0.01000"],
+["0.01000"],
 #["0.02000"],
 #["0.03000"],
 #["0.04000"],
-["0.05000"]
+#["0.01000"],
 #["0.06000"],
 #["0.07000"],
 #["0.08000"],
 #["0.09000"],
-#["0.10000"],
+["0.10000"]
 #
 #["0.20000"],
 #["0.30000"],
@@ -128,7 +136,7 @@
 #["0.80000"],
 #["0.90000"],
 #
-#["1.00000"],
+#["1.00000"]
 #["2.00000"],
 #["3.00000"],
 #["4.00000"],
@@ -138,7 +146,7 @@
 #["8.00000"],
 #["9.00000"]
 );								
- 	die "Invalid array r: learningRates" if !validateArray(\@learningRates);
+ 	die "Invalid array: learningRates" if !validateArray(\@learningRates);
 
     our @sparsenessLevels				= (
 # 10
@@ -183,38 +191,37 @@
 #["0.9998"]
 ##############
 #["0.98"],
-#["0.96"],
-#["0.94"],
+["0.96"],
+#["0.94"]
 #["0.92"],
 #["0.90"],
-#["0.85"],
 #["0.88"],
-#["0.86"],
-#["0.84"],
+["0.86"],
+#["0.80"],
 #["0.82"],
 #["0.80"],
 #["0.78"],
-#["0.76"],
+["0.76"]
 #["0.74"],
 #["0.72"],
-["0.70"]
+#["0.70"],
 #["0.68"],
 #["0.66"],
 #["0.64"],
 #["0.62"],
-#["0.60"],
+#["0.60"]
 #["0.58"],
-#["0.56"],
+#["0.56"]
 #["0.54"],
-#["0.52"],
-#["0.50"],
+#["0.52"]
+#["0.50"]
 #["0.48"],
-#["0.46"],
+#["0.46"]
 #["0.44"],
 #["0.42"],
 #["0.40"],
 #["0.38"],
-#["0.36"],
+#["0.36"]
 #["0.34"],
 #["0.32"],
 #["0.30"]
@@ -227,7 +234,7 @@
     									);
     die "Invalid array: timeConstants" if !validateArray(\@timeConstants);
  	
-    our @stepSizeFraction				= ("0.1");  #"0.1",0.1 = 1/10, 0.05 = 1/20, 0.02 = 1/50, 0.01
+    our @stepSizeFraction				= ("0.1");#,"0.05","0.02","0.01");  #"0.1",0.1 = 1/10, 0.05 = 1/20, 0.02 = 1/50, 0.01
     die "Invalid array: stepSizeFraction" if !validateArray(\@stepSizeFraction);
     
     our @traceTimeConstant				= (
@@ -251,7 +258,7 @@
     #"0.800",
     #"0.900",
     #
-    #"1.000",
+    #"1.000"
     #"2.000",
     #"3.000",
     #"4.000",
@@ -291,7 +298,7 @@
     our @depth							= (1);
     our @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     our @fanInRadius 					= (6); # not used
-    our @fanInCountPercentage 			= ("0.2"); # 0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    our @fanInCountPercentage 			= ("0.01"); # 0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
     our @learningrate					= ("0.1"); # < === is permuted below
     our @eta							= ("0.8");
     our @timeConstant					= ("0.1"); # < === is permuted below
@@ -312,7 +319,7 @@
     our @epochs							= (10); # only used in discrete model
 
 	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-	#our @recordedSingleCells			= ("( (8,20), (11,11), (11,23), (21,21) , (29,6) , (9,6) , (6,7))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	#our @recordedSingleCells			= ("( (8,20), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) , (6,7))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 	
 	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
 	our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 

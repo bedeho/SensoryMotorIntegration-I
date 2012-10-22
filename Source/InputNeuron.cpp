@@ -37,21 +37,7 @@ void InputNeuron::setFiringRate(const vector<float> & sample) {
      * sigmoidPositive(j,i) = sigmoidPositive(j,i) * 1/(1 + exp(sigmoidSlope * (eyePosition - e))); % positive slope
      * sigmoidNegative(j,i) = sigmoidNegative(j,i) * 1/(1 + exp(-1 * sigmoidSlope * (eyePosition - e))); % negative slope
      */
-    
-    /*
-     * FLAW
-    // iterate all visual stimuli and compute gaussian of all
-    float norm = 0;
-    for(unsigned i = 1;i < sample.size();i++)
-        norm += (horVisualPreference - sample[i])*(horVisualPreference - sample[i]); // (a - b)^2
-    
-    // firing = sigmoid * gaussian
-    float firing;
-    firing  = 1 / (1 + exp(horEyePositionSigmoidSlope * (sample.front() - horEyePositionPreference))); // sigmoid
-    //firing  = exp((-(sample.front() - horEyePositionPreference) * (sample.front() - horEyePositionPreference))/(2*horVisualSigma*horVisualSigma) ); // sigmoid
-    firing *= exp(-norm/(2*horVisualSigma*horVisualSigma)); // gaussian
-    */
-    
+        
     // NEW WORKING VERSION!
     // iterate all visual stimuli and compute gaussian of all
     // firing = sigmoid(gauss_1 + ... + gauss_n)

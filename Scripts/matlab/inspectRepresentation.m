@@ -24,7 +24,7 @@ function inspectRepresentation(filename, nrOfEyePositionsInTesting)
     
     total = zeros(objectsPrEyePosition, nrOfEyePositionsInTesting);
     %for r=1:(numRegions-1),
-        v1 = permute(data{numRegions-1}, [3 4 1 2]); % expose the last two dimensions to be summed away
+        v1 = permute(data, [3 4 1 2]); %{numRegions-1}, expose the last two dimensions to be summed away
         v1(v1 > 0) = 1;                   % count nonzero response as 1, all error terms have previously been removed
         v2 = squeeze(sum(sum(v1)));       % sum over all neurons in all regions
         total = v2;
@@ -59,11 +59,11 @@ function inspectRepresentation(filename, nrOfEyePositionsInTesting)
         for r=2:numRegions,
             subplot(numRegions, 1, r);
             
-            if ~isempty(data{r-1})
-                m = squeeze(data{r-1}(row, col, :, :));   
-            else
-                m = zeros(networkDimensions(r).y_dimension, networkDimensions(r).x_dimension);
-            end
+            %if ~isempty(data{r-1})
+                m = squeeze(data(row, col, :, :));   % {r-1}
+            %else
+            %    m = zeros(networkDimensions(r).y_dimension, networkDimensions(r).x_dimension);
+            %end
             
             %cla
             imagesc(m); % > 0

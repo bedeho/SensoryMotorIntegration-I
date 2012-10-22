@@ -7,11 +7,13 @@
 %
 %  Purpose: 
 %  * Load header of history file
+%
 %  Input:
 %  * filname
-%  Output:
-%  *networkDimensions: struct array (dimension,depth) of regions (incl. V1)
-%  *historyDimensions: struct (numEpochs,numObjects,numTransforms,numOutputsPrTransform)
+%
+%  OUTPUT:
+%  * networkDimensions: struct array (dimension,depth) of regions (including V1)
+%  * historyDimensions: struct {numEpochs,numObjects, numOutputsPrObject array, epochSize, streamSize}
 
 function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets] = loadHistoryHeader(filename)
 
@@ -21,22 +23,22 @@ function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets
     global SOURCE_PLATFORM_USHORT;
     global SOURCE_PLATFORM_USHORT_SIZE;
     global SOURCE_PLATFORM_FLOAT_SIZE;
+    global SOURCE_PLATFORM_LONG_LONG_UINT;
+    global SOURCE_PLATFORM_LONG_LONG_UINT_SIZE;
 
     % Seek to start of file
     fileID = fopen(filename);
     
     % Read history dimensions & number of regions
-    v = fread(fileID, 4, SOURCE_PLATFORM_USHORT);
-    
-    historyDimensions.numEpochs = v(1);
-    historyDimensions.numObjects = v(2);
-    historyDimensions.numOutputsPrObject = v(3);
-    numRegions = v(4);
-    HEADER_START_SIZE = 4;
+    historyDimensions.numEpochs = fread(fileID, 1, SOURCE_PLATFORM_USHORT);
+    numRegions = fread(fileID, 1, SOURCE_PLATFORM_USHORT);
+    historyDimensions.numObjects = fread(fileID, 1, SOURCE_PLATFORM_USHORT);
+    historyDimensions.numOutputsPrObject = fread(fileID, historyDimensions.numObjects, SOURCE_PLATFORM_LONG_LONG_UINT);
+   
+    HEADER_BYTE_SIZE = 3*SOURCE_PLATFORM_USHORT_SIZE + historyDimensions.numObjects*SOURCE_PLATFORM_LONG_LONG_UINT_SIZE;
     
     % Compound stream sizes
-    historyDimensions.objectSize = historyDimensions.numOutputsPrObject;
-    historyDimensions.epochSize = historyDimensions.objectSize * historyDimensions.numObjects;
+    historyDimensions.epochSize = sum(historyDimensions.numOutputsPrObject);
     historyDimensions.streamSize = historyDimensions.epochSize * historyDimensions.numEpochs;
     
     % Preallocate struct array
@@ -70,7 +72,8 @@ function [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets
     
     % We compute the size of header just read
     NUM_FIELDS_PER_REGION = 4;
-    headerSize = SOURCE_PLATFORM_USHORT_SIZE*(HEADER_START_SIZE + NUM_FIELDS_PER_REGION * numRegions);
+    
+    headerSize = HEADER_BYTE_SIZE + numRegions*SOURCE_PLATFORM_USHORT_SIZE*NUM_FIELDS_PER_REGION;
     
     % Compute and store the offset of each neuron's datastream in the file, not V1
     offset = headerSize; 

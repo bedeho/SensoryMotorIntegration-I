@@ -5,11 +5,76 @@
 %  Created by Bedeho Mender on 29/04/11.
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
-%  Result: (object, eye_position, row, col, region)
+%  Result: (eye_position, object, row, col)
 
 function [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting)
 
     % Import global variables
+    declareGlobalVars();
+    global floatError;
+
+    % Read header 
+    [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets] = loadHistoryHeader(filename);
+    
+    % Setup vars
+    depth                = 1;
+    numRegions           = length(networkDimensions);
+    numEpochs            = historyDimensions.numEpochs;
+    numObjects           = historyDimensions.numObjects;
+    numOutputsPrObject   = historyDimensions.numOutputsPrObject;
+    objectsPrEyePosition = numObjects / nrOfEyePositionsInTesting;
+    
+    % Check for compatibility
+    if mod(numObjects, nrOfEyePositionsInTesting) ~= 0,
+        error(['The number of "objects" is not divisible by nrOfEyePositionsInTesting: o=' num2str(numObjects) ', neps=' num2str(nrOfEyePositionsInTesting)]);
+    end
+    
+    % Get dimensions for this region
+    y_dimension = networkDimensions(numRegions).y_dimension;
+    x_dimension = networkDimensions(numRegions).x_dimension;
+    
+    % Check presence of region: Cant see this ever failing
+    if ~networkDimensions(numRegions).isPresent,
+        error('Last region is not present'); 
+    end
+    
+    % Allocate space
+    data = zeros(nrOfEyePositionsInTesting , objectsPrEyePosition, y_dimension, x_dimension);
+    
+    % Open file
+    fileID = fopen(filename);
+    
+    % Tried using mat2cell stuff in regionHistory, but wasnt worth it.
+    % Iterate neurons
+    for row=1:y_dimension, % Region row
+        for col=1:x_dimension, % Region col
+            
+            % Get neuron historay
+            activity = neuronHistory(fileID, networkDimensions, historyDimensions, neuronOffsets, numRegions, depth, row, col, 1); % {object,epoch}->timestep
+            
+            % Allocate space
+            dataAtLastStepPrObject = zeros(1, numObjects);
+            for o=1:numObjects,
+                dataAtLastStepPrObject(o) = activity{o,numEpochs}(end);
+            end
+            
+            % Restructure to access data on eye position basis
+            dataPrEyePosition = reshape(dataAtLastStepPrObject, [objectsPrEyePosition nrOfEyePositionsInTesting]); % (object, eye_position)
+            
+            % Reshufle dimensions
+            dataPrEyePosition = permute(dataPrEyePosition, [2 1]);
+            
+            % Save result
+            data(:,:,row,col) = dataPrEyePosition;
+            
+        end
+    end
+    
+    % Close file
+    fclose(fileID);
+    
+    %{
+        % Import global variables
     declareGlobalVars();
     global floatError;
 
@@ -63,3 +128,4 @@ function [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEy
         
     end
    
+    %}

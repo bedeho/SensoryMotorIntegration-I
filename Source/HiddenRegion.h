@@ -50,7 +50,7 @@ class HiddenRegion : public Region {
         vector<float> effectiveTraceBuffer;
 
 		// Init - instead of ctor
-        void init(u_short regionNr, Param & p, bool isTraining, u_short nrOfObjects, u_short samplesPrObject, u_short samplingRate, u_short desiredFanIn);
+        void init(u_short regionNr, Param & p, bool isTraining, unsigned long int outputtedTimeStepsPerEpoch, u_short samplingRate, u_short desiredFanIn);
 
         // Destructor
         ~HiddenRegion();
@@ -116,12 +116,11 @@ class HiddenRegion : public Region {
 		float learningRate;							    // duplicate of p.learningRates[regionNr-1]
 		float eta;										// duplicate of p.etas[regionNr-1]
 		float timeConstant;								// duplicate of p.timeConstants[regionNr-1]
-		float stepSize;
+		double stepSize;
 		float traceTimeConstant;
         float globalInhibitoryConstant;
         float externalStimulation;
     
-		NEURONTYPE neuronType;
         //TRANSFER_FUNCTION transferFunction;
 		SPARSENESSROUTINE sparsenessRoutine;
 		LEARNING_RULE rule;

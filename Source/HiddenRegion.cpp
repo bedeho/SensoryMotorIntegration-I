@@ -28,7 +28,7 @@ using std::cerr;
 // reason we use init and not ctor is because Network class puts a bunch of 
 // objects of this type in a vector in its ctor auto list, which does not allow passing args,
 // should have just used ptrs in retrospect.
-void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nrOfObjects, u_short samplesPrObject, u_short samplingRate, u_short desiredFanIn) {
+void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, unsigned long int outputtedTimeStepsPerEpoch, u_short samplingRate, u_short desiredFanIn) {
 	
 	// Call base constructor
 	Region::init(regionNr, p);
@@ -53,7 +53,6 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
     
 	this->stepSize = p.stepSize;
 	this->traceTimeConstant = p.traceTimeConstant;
-	this->neuronType = p.neuronType;
 	this->sparsenessRoutine = p.sparsenessRoutine;
     //this->transferFunction = p.transferFunction;
 	this->rule = p.rule;
@@ -74,24 +73,7 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
 	Neurons = tmp1;
     
     // Compute epoch size
-    unsigned outputsPerCellPerEpoch;
-    
-	if(p.neuronType == CONTINUOUS) {
-        
-        float objectDuration = ((float)1/samplingRate) * samplesPrObject;
-        unsigned outputsPrObject = (unsigned)(floor(objectDuration / p.stepSize) / p.outputAtTimeStepMultiple);
-        
-        if(outputsPrObject == 0 && samplesPrObject > 0) { // check that we are not building network by checking 
-            
-            cerr << "No data saved, objectDuration to short vs. stepSize*outputAtTimeStepMultiple - objectDuration:" << objectDuration << ", stepSize: " << p.stepSize << ",outputAtTimeStepMultiple: " << p.outputAtTimeStepMultiple << endl;
-            cerr.flush();
-            exit(EXIT_FAILURE);
-        }
-        
-        outputsPerCellPerEpoch = outputsPrObject * nrOfObjects; 
-
-	} else if(p.neuronType == DISCRETE)
-        outputsPerCellPerEpoch = samplesPrObject * nrOfObjects;
+    unsigned long int outputsPerCellPerEpoch = outputtedTimeStepsPerEpoch;
     
     // Deduce history buffer sizes based on on whether there is learning or not
     unsigned long long int outputsPerCell, outputsPerSynapse, outputsPerRegion, bufferSize;
@@ -118,7 +100,7 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
                 else if(saveHistory == SH_SINGLE_CELLS)
                     bufferSize *= p.nrOfRecordedSingleCells[regionNr-1];
                 
-                int regionSynapseBufferSize = bufferSize*desiredFanIn;
+                unsigned long long int regionSynapseBufferSize = bufferSize*desiredFanIn;
                 synapseHistoryBuffer.resize(regionSynapseBufferSize,-1); // put in -1 junk for safety
                 
                 cout << "***>> Allocated synapse buffer space for region #" << regionNr << " = " << regionSynapseBufferSize << " data points (float)." << endl;
@@ -194,7 +176,8 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, u_short nr
 	inhibitoryFilter = tmp2;
 	somFilter = tmp2;
 	
-	setupFilters();
+    if(lateralInteraction != NONE)
+        setupFilters();
 }
 
 HiddenRegion::~HiddenRegion() {
@@ -263,7 +246,7 @@ void HiddenRegion::computeNewFiringRate() {
             #pragma omp for nowait
             for(int i = 0;i < verDimension; i++)
                 for(int j = 0;j < horDimension; j++)
-                    Neurons[d][i][j].newFiringRate = 1/(1+exp(-2*sigmoidSlope*(Neurons[d][i][j].newInhibitedActivation-threshold))); //Neurons[d][i][j].newInhibitedActivation > threshold ? 1 : 0;
+                    Neurons[d][i][j].newFiringRate = 1/(1+exp(-2*sigmoidSlope*(Neurons[d][i][j].newInhibitedActivation-threshold)));
         }
     }
     else if(sparsenessRoutine == GLOBAL) {
@@ -316,22 +299,12 @@ void HiddenRegion::computeNewActivation() {
                 
                 HiddenNeuron * n = &Neurons[d][i][j];
 				float stimulation = 0;
-				
-				if(neuronType == CONTINUOUS) {
-					
-					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++)
-						stimulation += (*s).weight * (*s).preSynapticNeuron->firingRate;
-                    
-					n->newActivation = (1 - stepSize/timeConstant) * n->activation + (stepSize/timeConstant) * stimulation;
-					
-				} else {
-					
-					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++)
-						stimulation += (*s).weight * (*s).preSynapticNeuron->newFiringRate;
-					
-					n->newActivation = stimulation;
-				}
+
+				for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++)
+                    stimulation += (*s).weight * (*s).preSynapticNeuron->firingRate;
                 
+                n->newActivation = (1 - stepSize/timeConstant) * n->activation + (stepSize/timeConstant) * stimulation;
+					
                 n->stimulation = stimulation;
 				
     			// Is copied forward in case do not have inhibition routine
@@ -431,57 +404,25 @@ void HiddenRegion::applyLearningRule() {
                 HiddenNeuron * n = &Neurons[d][i][j];
                 float norm = 0;
                 
-                float danThreshold = 0.03;
-                
+                //float danThreshold = 0.03;
                 
                 // REMEMBER TO FUDGE weight normalization.
                 
-                
-                
-                
-                
-                
-                
-				
-				if(neuronType == CONTINUOUS) {
-					
-					//n->effectiveTrace = 1 / (1 + exp(100000000 * (0.1 - n->trace))); //sigmoid, slope=10^8, threshold=0.01
+				//n->effectiveTrace = 1 / (1 + exp(100000000 * (0.1 - n->trace))); //sigmoid, slope=10^8, threshold=0.01
 
-					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
+				for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
 
-                        // effectiveTrace
-                        // (danThreshold - (*s).weight)
-						//(*s).weight +=  (danThreshold - (*s).weight)*learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->effectiveTrace) * (*s).preSynapticNeuron->firingRate;
+                    // effectiveTrace
+                    // (danThreshold - (*s).weight)
+					//(*s).weight +=  (danThreshold - (*s).weight)*learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->effectiveTrace) * (*s).preSynapticNeuron->firingRate;
                         
-                        // trace
-                        (*s).weight += learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->trace) * (*s).preSynapticNeuron->firingRate;
+                    // trace
+                    (*s).weight += learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->trace) * (*s).preSynapticNeuron->firingRate;
                         
-						norm += (*s).weight * (*s).weight;
-					}
-					
-					n->newTrace = (1 - stepSize/traceTimeConstant)*n->trace + (stepSize/traceTimeConstant)*n->firingRate;
-                    
-				} else {
-					
-					//n->effectiveTrace = 1 / (1 + exp(100000000 * (0.08 - n->newTrace))); // sigmoid, slope=10^8, threshold=0.01
-                    n->effectiveTrace = 0;
-                    
-					for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
-
-                        // effectiveTrace
-						//(*s).weight += learningRate * (rule == HEBB_RULE ? n->newFiringRate : n->effectiveTrace) * (*s).preSynapticNeuron->newFiringRate;
-                        
-                        // trace
-                        (*s).weight += learningRate * (rule == HEBB_RULE ? n->newFiringRate : n->trace) * (*s).preSynapticNeuron->newFiringRate;
-						norm += (*s).weight * (*s).weight;
-					}
-					
-					// Update trace term, whether it is being used or not
-					// in theory we do not need newTrace, we can just use trace and
-					// copy back in since trace term is only read/written two for one neuron
-					n->newTrace = eta*n->newTrace + (1-eta)*n->newFiringRate;
+					norm += (*s).weight * (*s).weight;
 				}
-                
+					
+				n->newTrace = (1 - stepSize/traceTimeConstant)*n->trace + (stepSize/traceTimeConstant)*n->firingRate;
 
 				// Normalization
 				if(weightNormalization == CLASSIC)
@@ -586,7 +527,7 @@ float * HiddenRegion::getSynapseHistorySlot() {
     synapseHistoryCounter += singleSynapseBufferSize;
     
     // Check that we have enough space
-    int size = synapseHistoryBuffer.size();
+    unsigned long long size = synapseHistoryBuffer.size();
     if(size < synapseHistoryCounter) {
         
         // Allocate more space
@@ -599,53 +540,3 @@ float * HiddenRegion::getSynapseHistorySlot() {
     // Return slot
     return bufferSlot;
 }
-
-/*
-void HiddenRegion::outputNeuronHistory(BinaryStream & firingRateFile, 
-                                    BinaryStream & inhibitedActivationFile, 
-                                    BinaryStream & activationFile, 
-                                    BinaryStream & traceFile,
-                                    BinaryStream & stimulationFile) {
-	
-    for(int d = 0;d < depth;d++)                   
-        for(int i = 0;i < verDimension;i++)
-            for(int j = 0;j < horDimension;j++) {
-                
-                Neurons[d][i][j].outputFiringRateHistory(firingRateFile);
-                Neurons[d][i][j].outputActivationHistory(inhibitedActivationFile);
-                Neurons[d][i][j].outputInhibitedActivationHistory(activationFile);
-                Neurons[d][i][j].outputTraceHistory(traceFile);
-                Neurons[d][i][j].outputStimulationHistory(stimulationFile);
-            }
-}
-
-void HiddenRegion::outputAfferentSynapses(BinaryStream & weightFile, bool onlyPresentState) {
-    
-    for(int d = 0;d < depth;d++)
-    	for(int i = 0;i < verDimension;i++)
-    		for(int j = 0;j < horDimension;j++) {
-    			
-                const HiddenNeuron * n = &Neurons[d][i][j];
-            	
-            	
-    		}
-}
-
-void HiddenRegion::outputAfferentSynapseList(BinaryStream & weightFile, bool disregardHistoryFlag) {
-    
-    for(int d = 0;d < depth;d++)
-    	for(int i = 0;i < verDimension;i++)
-    		for(int j = 0;j < horDimension;j++) {
-                
-                if(disregardHistoryFlag || saveHistory == ALL) // Either we are saving untrained network, or we are saving a layer recording
-                    v
-                else if(saveHistory == SINGLE_CELLS && recordedSingleCells[i][j]) // Save only this individual neuron
-                    weightFile << Neurons[d][i][j].numberOfAfferentSynapses
-                            << preSynapticNeuron->region->regionNr 
-                            << preSynapticNeuron->depth 
-                            << preSynapticNeuron->row 
-                            << preSynapticNeuron->col;
-            }
-                    
-}
-*/

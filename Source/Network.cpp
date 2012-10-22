@@ -68,7 +68,7 @@ Network::Network(const char * parameterFile, bool verbose) :
         
         cout << "Layer " << i+1 << " desiredFanIn: " << desiredFanIn * r.depth << endl;
         
-        ESPathway[i].init(i+1, p, false, 0, 0, 1, desiredFanIn); // The constructor we are in now is the build constructor, so no learning will happen
+        ESPathway[i].init(i+1, p, false, 0, 1, desiredFanIn); // The constructor we are in now is the build constructor, so no learning will happen
     }
     
 
@@ -126,10 +126,6 @@ Network::Network(const char * dataFile, const char * parameterFile, bool verbose
         cerr.flush();
         exit(EXIT_FAILURE);
     }
-                                                                                                
-    // ---
-    cout << "Outputted data per object: " << area7a.continousTimeStepsPrObject / p.outputAtTimeStepMultiple << endl; 
-    // ---
     
     // Init regions																																							
     for(u_short i = 0;i < ESPathway.size();i++) {
@@ -145,7 +141,7 @@ Network::Network(const char * dataFile, const char * parameterFile, bool verbose
         
         cout << "Layer " << i+1 << " desiredFanIn: " << desiredFanIn<< endl;
         
-        ESPathway[i].init(i+1, p, isTraining, area7a.nrOfObjects, area7a.samplesPrObject, area7a.samplingRate, desiredFanIn);
+        ESPathway[i].init(i+1, p, isTraining, area7a.outputtedTimeStepsPerEpoch, area7a.samplingRate, desiredFanIn);
     }
                                                                                                 
     try {                                                                                            
@@ -244,12 +240,7 @@ void Network::run(const char * outputDirectory, bool isTraining, int numberOfThr
     	cout << endl;
 	#endif
 
-	u_short nrOfEpochs;
-	
-	if(p.neuronType == CONTINUOUS)
-		nrOfEpochs = runContinous(outputDirectory, isTraining, xgrid);
-	else if(p.neuronType == DISCRETE)
-		nrOfEpochs = runDiscrete(outputDirectory, isTraining, xgrid);
+	u_short nrOfEpochs = runContinous(outputDirectory, isTraining, xgrid);
 	
 	#ifdef OMP_ENABLE
         double finish = omp_get_wtime();
@@ -260,108 +251,11 @@ void Network::run(const char * outputDirectory, bool isTraining, int numberOfThr
 	#endif
 }
 
-u_short Network::runDiscrete(const char * outputDirectory, bool isTraining, bool xgrid) {
-	
-	u_short nrOfEpochs = 0;
-	u_short totalEpochCounter = 0;
-	
-	if(isTraining) {
-		
-		// Find total number of epochs, used in xgrid progress report
-		for(unsigned r = 0; r < p.epochs.size();r++)
-			nrOfEpochs += p.epochs[r];
-		
-		#pragma omp parallel private(totalEpochCounter)
-		{
-			// Iterate each region
-			for(unsigned r = 0; r < ESPathway.size();r++) {
-				
-				// Train each region r epochs[r] times
-				for(unsigned e = 0; e < p.epochs[r];e++) {
-					
-					#pragma omp single
-					{
-						cout << ">> layer #" << r << " >> epoch #" << e << endl;
-						
-						if(xgrid)
-							cout << "<xgrid>{control = statusUpdate; percentDone = " << static_cast<int>(((float)(++totalEpochCounter)*100)/nrOfEpochs) << "; }</xgrid>";
-					}
-					
-					// For object/sample - each and every sample is shown ones
-					for(u_short o = 0; o < area7a.nrOfObjects;o++) {
-						for(u_short s = 0; s < area7a.samplesPrObject;s++) {
-                        
-                            area7a.setFiringRate(o, s * area7a.interSampleTime);
-                            
-                            // Compute new firing rates
-                            for(unsigned k = 0; k <= r;k++) {
-                                
-                                ESPathway[k].computeNewFiringRate();
-                                #pragma omp barrier
-                            }
-                            
-                            // Learn in present layer
-                            ESPathway[r].applyLearningRule();
-                            
-                            // Need barrier due to nowait in applyLearningRule()
-                            #pragma omp barrier
-                            
-                            // Save activity
-                            for(unsigned k = 0;k < ESPathway.size();k++)
-                                ESPathway[k].doTimeStep(true);
-                        }
-                        
-                        // Reset trace
-                        if(p.rule == TRACE_RULE && p.resetTrace)
-                            ESPathway[r].resetTrace();
-                    }
-				}
-			}
-		}
-        
-	} else {
-		
-		// Testing
-		#pragma omp parallel
-		{
-			#pragma omp single
-			{
-				cout << ">> epoch #1" << endl;
-			}
-            
-            // For object/sample  - each and every sample is shown ones
-			for(u_short o = 0; o < area7a.nrOfObjects;o++)
-                for(int s = 0; s < area7a.samplesPrObject;s++) {
-
-				area7a.setFiringRate(o, s * area7a.interSampleTime);
-				
-				// Compute new firing rates
-				for(unsigned k = 0; k < ESPathway.size();k++) {
-					
-					ESPathway[k].computeNewFiringRate();
-					#pragma omp barrier	
-				}
-
-				// Save activity
-				for(unsigned k = 0;k < ESPathway.size();k++)
-					ESPathway[k].doTimeStep(true);
-			}
-		}
-		
-		nrOfEpochs = 1;
-	}
-    
-    cout << "Saving history..." << endl;
-    outputHistory(outputDirectory, isTraining);
-	return nrOfEpochs;
-}
-
 u_short Network::runContinous(const char * outputDirectory, bool isTraining, bool xgrid) {
 
 	const u_short nrOfEpochs = isTraining ? p.nrOfEpochs : 1;
     
-    cout << "*** STEPS PER EPOCH = " << area7a.continousTimeStepsPrObject * area7a.nrOfObjects << " steps" << endl;
-    cout << "*** OBJECT DURATION = " << area7a.objectDuration << "s" << endl;
+    cout << "*** EPOCH DURATION = " << area7a.epochDuration << "s" << endl;
 	cout << "*** STEP SIZE = " << p.stepSize << "s" << endl;
 
 	#pragma omp parallel
@@ -384,11 +278,14 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
 			// For object/timestep
 			for(u_short o = 0; o < area7a.nrOfObjects;o++) {
                 
-                //repogram this code to make continousTimeStepsPrObject time dependent
-                for(unsigned t = 0; t < area7a.continousTimeStepsPrObject;t++) {
+                for(unsigned long int t = 0; t < area7a.timeStepsInObject[o];t++) {
                     
-                    // Due to normalization of inputs we have to let one cell do write back
                     //#pragma omp single
+                    //{
+                    //    cout << ">> step #" << t << endl;
+                    //}
+                    
+                    //#pragma omp single // Due to normalization of inputs we have to let one cell do write back
                     //{
                         area7a.setFiringRate(o, t * p.stepSize);
                     //}
@@ -417,7 +314,7 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
                 
                 #pragma omp single
                 {
-                    cout << ">Object " << o << endl;
+                    cout << ">Completed Periode nr." << o+1 << endl;
                 }
                 
                 // During learning, reset activity/trace on last sample of object
@@ -501,9 +398,12 @@ void Network::openHistoryFile(BinaryWrite & file, const char * outputDirectory, 
     
 	// Header
     file << (isTraining ? p.nrOfEpochs : U_SHORT_1);
-    file << area7a.nrOfObjects;
-    file << (p.neuronType == CONTINUOUS ? static_cast<u_short>(area7a.continousTimeStepsPrObject / p.outputAtTimeStepMultiple) : area7a.samplesPrObject);
     file << p.numberOfLayers;
+    file << area7a.nrOfObjects;
+    
+    // Iterate and output size of each
+    for(u_short o = 0; o < area7a.nrOfObjects;o++)
+        file << area7a.outputtedTimeStepsInObject[o];
     
     // Input layer dimensions
     file << area7a.horVisualDimension;

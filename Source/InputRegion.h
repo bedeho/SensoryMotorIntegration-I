@@ -34,12 +34,15 @@ class InputRegion : public Region {
     
         vector<float> horVisualPreferences;
         vector<float> horEyePreferences;
+    
+        vector<u_short> stimuliSamplesInObject;
+        vector<double> objectDuration;
         
         // Load file names from file list
-        void loadDataFile(const char * dataFile);
+        void loadDataFile(const char * dataFile, float stepSize, u_short outputAtTimeStepMultiple);
     
         // Get data by interpolating from loaded data
-        void linearInterpolate(u_short object, float time);
+        void linearInterpolate(u_short object, double time);
     
         // Matlab counter part
         void centerDistance(vector<float> & v, float width, float distance);
@@ -50,7 +53,7 @@ class InputRegion : public Region {
     
         // Read from data file
         u_short nrOfObjects;
-        u_short samplesPrObject;
+        
         u_short samplingRate;
         u_short numberOfSimultanousObjects;
         float horVisualFieldSize;
@@ -60,10 +63,13 @@ class InputRegion : public Region {
         // Derived from data read from file
         u_short horVisualDimension;
         u_short horEyeDimension;
-        float interSampleTime;
-        float objectDuration;
-        float totalDuration;
-        unsigned continousTimeStepsPrObject;
+        double interSampleTime;
+    
+        vector<unsigned long int> timeStepsInObject;
+        vector<unsigned long int> outputtedTimeStepsInObject;
+        unsigned long int timeStepsPerEpoch;
+        unsigned long int outputtedTimeStepsPerEpoch;
+        double epochDuration;
         
         // Neurons[depth][rows][col]
         vector<vector<vector<InputNeuron> > > Neurons;
@@ -72,7 +78,7 @@ class InputRegion : public Region {
 		void init(Param & p, const char * dataFile, gsl_rng * rngController);
 
 		// Load switch content from buffer
-        void setFiringRate(u_short object, float time);
+        void setFiringRate(u_short object, double time);
 	
         Neuron * getNeuron(u_short depth, u_short row, u_short col);
 };

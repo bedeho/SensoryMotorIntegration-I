@@ -37,14 +37,20 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
     fig = figure('name',filename,'NumberTitle','off');
     title('Number of testing locations responded to');
     
+    [analysis] = metrics(filename, info);
+    
+    lambdaMatrix = squeeze(analysis(1,:,:));
+    
     for r=2:numRegions
         
         % Save axis
         clickAxis(r-1,1) = subplot(numRegions-1, 3, 3*(r-2)+1);
         
+        %{
         % Plot
-        if ~isempty(data{r-1})
-            v0 = data{r-1};
+        if ~isempty(data) %{r-1})
+            
+            v0 = data;%{r-1};
             v0(v0 > 0) = 1;  % count all nonzero as 1, error terms have already been removed
             
             % Fix when only one object in Simon Mode
@@ -62,8 +68,9 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         
         % Decorate
         title(['Region: ' num2str(r)]);
-        im = imagesc(v2);         % only do first region
-        daspect([size(v2) 1]);
+        %}
+        im = imagesc(lambdaMatrix);         % only do first region
+        %daspect([size(v2) 1]);
         colorbar;
         
         % Setup callback
@@ -83,7 +90,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         [row, col] = imagescClick(pos(1, 2), pos(1, 1), networkDimensions(region).y_dimension, networkDimensions(region).x_dimension);
         
         % Response count
-        disp(['# responding: ' num2str(v2(row,col))]);
+        disp(['row,col =' num2str(row) ',' num2str(col)]);
         
         % Check if we right clicked
         rightClicked =  strcmp(get(gcf,'SelectionType'),'alt');

@@ -8,7 +8,7 @@
 %  Purpose: Generate testing data
 %
 
-function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, dimensions, eyePositions)
+function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, dimensions, eyePositions, testingStyle)
 
     % Import global variables
     declareGlobalVars();
@@ -28,10 +28,6 @@ function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, dimensions, e
     if ~isdir(stimuliFolder),
         mkdir(stimuliFolder);
     end
-    
-    %if nargin < 8,
-    %    iterateEyeWise = true;
-    %end
         
     % Derived
     timeStep                    = 1/samplingRate;
@@ -46,25 +42,44 @@ function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, dimensions, e
     fwrite(fileID, 1, 'ushort');                          % Number of simultanously visible targets, needed to parse data
     fwrite(fileID, visualFieldSize, 'float');
     fwrite(fileID, eyePositionFieldSize, 'float');
-   
-    % The ordering of these two loops
-    % controls interpretation of nrOfEyePositionsInTesting
-    % Output data sequence for each target
-    %if iterateEyeWise,
+    
+    % Save relevant information for post processing
+    info.testingStyle = testingStyle;
+    info.visualPreferences = visualPreferences;
+    info.eyePositionPreferences = eyePositionPreferences;
+    
+    if strcmp(testingStyle,'old'),
         
         for e = eyePositions,
             for t = targets,
                 outputSample(e,t)
             end
         end
-    %else
-    %    
-    %    for t = targets,
-    %        for e = eyePositions,
-    %            outputSample(e,t)
-    %        end
-    %    end
-    %end
+        
+        % For post processing
+        info.targets = targets;
+        info.eyePositions = eyePositions;
+        
+    else
+        
+        % Had bugs here, assuming order!! 
+        trainingEyePositionFieldSize = max(eyePositions)*2;
+        trainingTargetFieldSize = max(targets)*2;
+        
+        testingEyePositions = centerN2(trainingEyePositionFieldSize, 10); % eyePositionFieldSize
+        testingTargets = centerN2(trainingTargetFieldSize, 20); % dimensions.visualFieldEccentricity
+
+        for e = testingEyePositions,
+            for t = testingTargets,
+                outputSample(e,t)
+            end
+        end
+        
+        % For post processing
+        info.targets = testingTargets;
+        info.eyePositions = testingEyePositions;
+    
+    end
 
     % Close file
     fclose(fileID);
@@ -77,13 +92,7 @@ function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, dimensions, e
         error(['Could not create xgridPayload.tbz' result]);
     end
     
-    % Save stats
-    info.targets = targets;
-    info.eyePositions = eyePositions;
-    info.testingStyle = 'stdTest';
-    info.visualPreferences = visualPreferences;
-    info.eyePositionPreferences = eyePositionPreferences;
-    
+    % Save info
     save info;
 
     cd(startDir);

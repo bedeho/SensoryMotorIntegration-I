@@ -39,6 +39,9 @@
         die "No stimuli name provided\n";
 	}
 	
+	print "Experiment: $experiment\n";
+	print "Stimuli: $stimuli\n";
+	
 	#my $nrOfEyePositionsInTesting;
 	#if($#ARGV >= 2) {
     #    $nrOfEyePositionsInTesting = $ARGV[2];

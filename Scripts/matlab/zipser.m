@@ -79,7 +79,7 @@ function zipser()
     hist([hLayer(:)' iLayer(:)'], -3:0.1:3);
     
     hXLabel = xlabel('Synaptic Weight');
-    hYLabel = ylabel('Frequency');
+    hYLabel = ylabel('Number of Synapses');
     
     set( gca                   , ...
         'FontName'   , 'Helvetica' , ...
@@ -110,8 +110,8 @@ function zipser()
 
     hist([iMoreExcitatory hMoreExcitatory],-9:1:9);
     
-    hXLabel = xlabel('#Surplus Excitatory Projections');
-    hYLabel = ylabel('Frequency');
+    hXLabel = xlabel('Number of Surplus Excitatory Projections');
+    hYLabel = ylabel('Number of Neurons');
     
     set( gca                   , ...
         'FontName'   , 'Helvetica' , ...

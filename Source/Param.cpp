@@ -28,9 +28,6 @@ Param::Param(const char * filename, bool isTraining) {
 		cfg.readFile(filename);
 
 		int tmp;
-
-		cfg.lookupValue("neuronType", tmp);
-		neuronType = static_cast<NEURONTYPE>(tmp);
         
         //cfg.lookupValue("transferFunction", tmp);
 		//transferFunction = static_cast<TRANSFER_FUNCTION>(tmp);
@@ -211,8 +208,6 @@ Param::Param(const char * filename, bool isTraining) {
 
 void Param::validate(bool isTraining) {
 
-	if(neuronType == CONTINUOUS) {
-		
 		float smallestTimeConstant = FLT_MAX;
 		
 		// Find the smallest time constant
@@ -233,7 +228,6 @@ void Param::validate(bool isTraining) {
             cerr.flush();
             exit(EXIT_FAILURE);
         }
-	}
 	
 	if(traceTimeConstant <= 0) {
 		// Cannot be zero, because then traceFactor = -inf, 

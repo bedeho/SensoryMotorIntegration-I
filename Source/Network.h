@@ -73,7 +73,6 @@ class Network {
 		// isTraining = true means that we apply learning rule in param file and run the number of epochs in the param file
 		// isTraining = false means that we have no learning and only run ONE epoch
     	void run(const char * outputDirectory, bool isTraining, int numberOfThreads, bool xgrid);
-		u_short runDiscrete(const char * outputDirectory, bool isTraining, bool xgrid);
 		u_short runContinous(const char * outputDirectory, bool isTraining, bool xgrid);
 	
     	// Save final weights of network

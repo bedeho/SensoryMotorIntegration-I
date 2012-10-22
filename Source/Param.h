@@ -20,8 +20,7 @@ enum FEEDBACK				{ NOFEEDBACK = 0,		SYMMETRIC = 1 };
 enum LEARNING_RULE			{ TRACE_RULE = 0,		HEBB_RULE = 1 };
 enum SPARSENESSROUTINE		{ NOSPARSENESS = 0,		HEAP = 1,           GLOBAL = 2};
 enum WEIGHTNORMALIZATION	{ NONORMALIZATION = 0,	CLASSIC = 1 };
-enum NEURONTYPE				{ DISCRETE = 0,			CONTINUOUS = 1 };
-//enum TRANSFER_FUNCTION      { IDENTITY = 0,         SIGMOID = 1 };
+//enum TRANSFER_FUNCTION    { IDENTITY = 0,         SIGMOID = 1 };
 enum INITIALWEIGHT          { ZERO = 0,				RANDOMEQUAL = 1,	RANDOMINDEPENDENT = 2 };
 enum LATERAL				{ NONE = 0,				COMP = 1,			SOM = 2 };
 enum CONNECTIVITY			{ FULL = 0,				SPARSE = 1,         SPARSE_BIASED = 2 };
@@ -90,7 +89,6 @@ class Param  {
         
         vector<vector<vector<short> > > recordedSingleCells; // Should be bool, but STL is fucked up!
         
-		NEURONTYPE neuronType;
         //TRANSFER_FUNCTION transferFunction;
 		WEIGHTNORMALIZATION weightNormalization;
 		SPARSENESSROUTINE sparsenessRoutine;

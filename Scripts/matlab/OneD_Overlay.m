@@ -21,7 +21,7 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
     % Plot spatial data
     subplot(1,3,1);
     plotStimuli(trainingStimuliName, 'r','.', 1, 6);
-    plotStimuli(testingStimuliName, 'b','x', 2, 6);
+    plotStimuli(testingStimuliName, 'b','x', 1, 6);
     
     % Plot temporal eye movement data of training
     subplot(1,3,2);
@@ -38,7 +38,7 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
     
     fig = figure();
     plotStimuli(trainingStimuliName, 'r','o', 1, 6);
-    plotStimuli(testingStimuliName, 'b','x', 3, 14);
+    plotStimuli(testingStimuliName, 'b','x', 1, 14);
     
     hTitle = title(''); % title('Input Data');
     hXLabel = xlabel('Eye-position (deg)');
@@ -65,7 +65,7 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
               'XMinorTick'  , 'off'    , ...
               'LineWidth',  2);
                                     
-     %% SAVE
+    % SAVE
     fname = [base 'Stimuli/' testingStimuliName '/inputData.eps'];
     set(gcf,'renderer','painters');
     print(fig,'-depsc2','-painters',fname);
@@ -80,7 +80,7 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
     %function project(name,)
     %end
     
-        % New pretty figure
+    % New pretty figure
     
     fig = figure();
     plotEyeMovements(trainingStimuliName);
@@ -110,7 +110,7 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
               'XMinorTick'  , 'off'    , ...
               'LineWidth',  2);
           
-         %% SAVE
+    % SAVE
     fname = [base 'Stimuli/' testingStimuliName '/inputDynamics.eps'];
     set(gcf,'renderer','painters');
     print(fig,'-depsc2','-painters',fname);
@@ -133,6 +133,9 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
         temp = buffer;
         v = isnan(buffer); % v(:,1) = get logical indexes for all nan rows
         temp(v(:,1),:) = [];  % blank out all these rows
+        
+        X = [];
+        Y = [];
 
         % Plot spatial data
         for o = 1:numberOfSimultanousObjects,
@@ -144,9 +147,14 @@ function OneD_Overlay(trainingStimuliName, testingStimuliName)
             end
             
             plot(temp(:,1), temp(:,o + 1) , [cCode markstyle],'LineWidth',linewidth,'MarkerSize', markersize);
-
+            
+            X = [X temp(:,1)];
+            Y = [Y temp(:,o + 1)];
+            
             hold on;
         end
+        
+        %scatterhist(X,Y);
 
         daspect([eyePositionFieldSize visualFieldSize 1]);
         axis([leftMostEyePosition rightMostEyePosition leftMostVisualPosition rightMostVisualPosition]);

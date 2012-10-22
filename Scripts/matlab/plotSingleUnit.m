@@ -43,6 +43,8 @@ function plotSingleUnit(unit, historyDimensions, includeSynapses, maxEpoch)
     
     %% Plot synapses
     
+    return;
+    
     if includeSynapses,
         
         synapses = unit.synapses;
@@ -72,19 +74,19 @@ function plotSingleUnit(unit, historyDimensions, includeSynapses, maxEpoch)
         % Plot history of each synapse
         historyView = zeros(numberOfSynapses,streamSize);
         
-        %% fix later, factor out axes slowness businuess
+        % fix later, factor out axes slowness businuess
         potentiatedSynapses = subplot(3,1,2);
         maxSynapseValue = 0;
         for s=1:numberOfSynapses,
 
-            v = synapses(:, :, 1:maxEpoch, s);
-            vect = reshape(v, [1 streamSize]);
-            historyView(s,:) = vect;
+            %v = synapses(:, :, 1:maxEpoch, s);
+            %vect = reshape(v, [1 streamSize]);
+            %historyView(s,:) = vect;
             
             hold on;
-            plot(vect);
+            plot(synapses(:,s));
             
-            tmpMax = max(vect);
+            tmpMax = max(synapses(:,s));
             
             if tmpMax > maxSynapseValue,
                 maxSynapseValue = tmpMax;
@@ -99,7 +101,7 @@ function plotSingleUnit(unit, historyDimensions, includeSynapses, maxEpoch)
         %colormap gray
         %axis tight
         
-        %% Traditional view
+        % Traditional view
         allSynapses = subplot(3,1,3);
         for s=1:numberOfSynapses,
 
@@ -121,21 +123,23 @@ function plotSingleUnit(unit, historyDimensions, includeSynapses, maxEpoch)
     function [lineHandle, maxValue] = plotUnitData(unitData, color)
         
         % Get history array
-        activity = reshape(unitData, [historyDimensions.numOutputsPrObject historyDimensions.numObjects maxEpoch]);
+        %activity = reshape(unitData, [historyDimensions.numOutputsPrObject historyDimensions.numObjects maxEpoch]);
 
         % Plot
-        v = activity(:, :, 1:maxEpoch);
+        %v = activity(:, :, 1:maxEpoch);
 
-        streamSize = maxEpoch * historyDimensions.epochSize;
-        vect = reshape(v, [1 streamSize]);
-        lineHandle = plot(vect, color);
+        %streamSize = maxEpoch * historyDimensions.epochSize;
+        %vect = reshape(v, [1 streamSize]);
+        lineHandle = plot(unitData, color);
         hold on;
         
-        maxValue = max(vect);
+        maxValue = max(unitData);
 
     end
 
     function addGrid() 
+        
+        return;
 
         % No longer valid, transforms dont exist!
         % Draw vertical divider for each transform

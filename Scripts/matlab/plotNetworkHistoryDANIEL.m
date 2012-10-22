@@ -29,10 +29,7 @@ function plotNetworkHistoryDANIEL(filename, region, depth, maxEpoch)
     end
     
     % Get history array
-    %for r=2:numRegions,
-    %    activity{r-1} = regionHistory(filename, r, depth, maxEpoch);
-    %end
-    activity = regionHistory(filename, region, depth, maxEpoch);
+    activity = regionHistory_EQUALOBJECTLENGTH(filename, region, depth, maxEpoch);
     
     y_dimension = networkDimensions(region).y_dimension;
     x_dimension = networkDimensions(region).x_dimension;
@@ -56,6 +53,6 @@ function plotNetworkHistoryDANIEL(filename, region, depth, maxEpoch)
 
         %makeFigureFullScreen(fig);
         title(['Epoch: ' num2str(e)]);
-        pause
+        %pause
 
     end

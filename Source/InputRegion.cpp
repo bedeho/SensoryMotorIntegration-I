@@ -50,44 +50,21 @@ void InputRegion::init(Param & p, const char * dataFile, gsl_rng * rngController
 
     // Set variables
     this->regionNr = 0;
-    
     this->depth = (p.sigmoidModulationPercentage == 0 ? 1 : 2); // comparison with 0 works, because it is perfectly represented
     //cout << "Depth: " << this->depth << ", P(sig): " << p.sigmoidModulationPercentage << endl;
     this->horVisualDimension = horVisualPreferences.size();
     this->horEyeDimension = horEyePreferences.size();
     this->verDimension = this->horVisualDimension;
     this->horDimension = this->horEyeDimension;
-    
     this->horVisualFieldSize = p.horVisualFieldSize;
     this->horEyePositionFieldSize = p.horEyePositionFieldSize;
     
     // Load data if it is provided
-	if(dataFile != NULL) {
-        
-        loadDataFile(dataFile);
-        
-        this->interSampleTime = (float)1/samplingRate;
-        this->objectDuration = interSampleTime * samplesPrObject;
-        this->continousTimeStepsPrObject = (unsigned)(objectDuration / p.stepSize);
-        this->totalDuration = this->objectDuration * nrOfObjects;
-    }
-    else {
-        
-        // set variables that otherwise would have been read from file,
-        // means they will not be used
-        
-        this->nrOfObjects = 0;
-        this->samplesPrObject = 0;
-        this->samplingRate = 0;
-        this->numberOfSimultanousObjects = 0;
-        this->interSampleTime = 0;
-        this->objectDuration = 0;
-        this->continousTimeStepsPrObject = 0;
-        this->totalDuration = 0;
-    }
+	if(dataFile != NULL)
+        loadDataFile(dataFile, p.stepSize, p.outputAtTimeStepMultiple);
     
     // Space for sample
-    sample.resize(1 + numberOfSimultanousObjects);
+    sample.resize(1 + numberOfSimultanousObjects); // Do not put above loadDataFile
     
     /*
     //test
@@ -110,7 +87,7 @@ void InputRegion::init(Param & p, const char * dataFile, gsl_rng * rngController
                 float hslope = (d == 0 ? p.sigmoidSlope : -1 * p.sigmoidSlope);
                 float hsigma = p.gaussianSigma;
                 
-                INPUT_EYE_MODULATION modulationType = static_cast<INPUT_EYE_MODULATION>(gsl_ran_bernoulli(rngController, p.sigmoidModulationPercentage));
+                INPUT_EYE_MODULATION modulationType = static_cast<INPUT_EYE_MODULATION>(gsl_ran_bernoulli(rngController, static_cast<double>(p.sigmoidModulationPercentage)));
                 
                 Neurons[d][i][j].init(this, d, i, j, heye, hslope, hvisual, hsigma, modulationType);
             }
@@ -131,7 +108,7 @@ InputRegion::~InputRegion() {
 
 void InputRegion::centerDistance(vector<float> & v, float width, float distance) {
     
-    int length = floor(width/distance);
+    int length = static_cast<int>(floor(width/distance));
     
     for(int i = 0;i <= length;i++) {
     	//cerr << -width/2 + i*distance << " ";
@@ -152,21 +129,20 @@ void InputRegion::centerDistance(vector<float> & v, float width, float distance)
     //cerr << "\n\n";
 }
 
-void InputRegion::loadDataFile(const char * dataFile) {
-    
-    // Initialize som variables we will be working with
-	u_short maxSamplesFound = 0;
-    this->nrOfObjects = 0;
-    this->samplesPrObject = 0;
+void InputRegion::loadDataFile(const char * dataFile, float stepSize, u_short outputAtTimeStepMultiple) {
     
     // Open file
     BinaryRead file(dataFile);
-    
-    // Variables that must be visible in catch clause
-    //u_short lastNrOfSamplesFound = 0; // For validation of file list
+
+    // Initialize som variables we will be working with
+    this->nrOfObjects = 0;
+    this->outputtedTimeStepsPerEpoch = 0;
+    this->timeStepsPerEpoch = 0;
+    this->epochDuration = 0;
     
     bool readAFullSample = false;
     bool readHeader = false;
+    unsigned long int objectSamples = 0;
     
     try {
         
@@ -179,12 +155,14 @@ void InputRegion::loadDataFile(const char * dataFile) {
         file >> v;
         file >> e;
         
+        this->interSampleTime = (float)1/samplingRate;
+        
         readHeader = true;
         
         // Check compatibility of parameter file
         if(v != this->horVisualFieldSize || e != this->horEyePositionFieldSize) {
             
-            cerr << "visual field or eye movement field is not the same as in input file:" << v << "!=" << this->horVisualFieldSize << " || " <<  e << " != " << this->horEyePositionFieldSize << endl;
+            cerr << "Visual field or eye movement field is not the same as in input file:" << v << "!=" << this->horVisualFieldSize << " || " <<  e << " != " << this->horEyePositionFieldSize << endl;
             cerr.flush();
             exit(EXIT_FAILURE);
         }
@@ -194,26 +172,44 @@ void InputRegion::loadDataFile(const char * dataFile) {
             
             // NaN encodes end of "object", like '*' did in VisNet
             if(std::isnan(e)) {
-                
-                //if(lastNrOfSamplesFound != 0 && lastNrOfSamplesFound != samplesPrObject) {
-                //
-                //    cerr << "Number of samples varied across objects" << endl;
-                //    cerr.flush();
-                //    exit(EXIT_FAILURE);
-                //}
-                
+
                 cout << "Loaded object " << nrOfObjects << endl;
                 
+                // Save sample vector
                 data.push_back(objectData);
+                
+                // Clear sample variable
                 objectData.clear();
+                
+                // Save duration of object
+                stimuliSamplesInObject.push_back(objectSamples);
+                
+                // Save object duration
+                double duration = interSampleTime * objectSamples;
+                this->objectDuration.push_back(duration);
+                
+                // Increase epoch duration
+                epochDuration += duration;
+                
+                // Save number of timesteps in object
+                unsigned long int timeStepsInObject = (unsigned)(duration / stepSize);
+                this->timeStepsInObject.push_back(timeStepsInObject);
+                
+                // Increase total duration of epoch
+                this->timeStepsPerEpoch += timeStepsInObject;
+                
+                // Save number timesteps in object that will be outputted
+                unsigned long int outputtedTimeSteps = timeStepsInObject / outputAtTimeStepMultiple;
+                this->outputtedTimeStepsInObject.push_back(outputtedTimeSteps);
+                 
+                //Increase total number of outputted timestepds
+                outputtedTimeStepsPerEpoch += outputtedTimeSteps;
+                
+                // Increase number of objects
                 nrOfObjects++;
                 
-                // Save if this is greater present maximum
-                if(maxSamplesFound < samplesPrObject)
-                	maxSamplesFound = samplesPrObject;
-
-                //lastNrOfSamplesFound = samplesPrObject;
-                samplesPrObject = 0;
+                // Reset samplecounter
+                objectSamples = 0;
                 
             } else {
                 
@@ -232,7 +228,7 @@ void InputRegion::loadDataFile(const char * dataFile) {
                 }
                 
                 objectData.push_back(sample);
-                samplesPrObject++;
+                objectSamples++;
                 readAFullSample = true;
             }        
         
@@ -246,14 +242,6 @@ void InputRegion::loadDataFile(const char * dataFile) {
             cerr << "Reading of " << dataFile << " interrupted: " << strerror(errno) << endl;
             cerr.flush();
             exit(EXIT_FAILURE);
-           
-        //} else if (samplesPrObject != 0) {
-        //
-        //    // Last object had different number of samples
-        //    cerr << "Number of samples varied across objects" << endl;
-        //    cerr.flush();
-        //    exit(EXIT_FAILURE);
-        //
             
         } else if (!readHeader){          
             cout << "Was unable to read header of data file." << endl;
@@ -263,12 +251,11 @@ void InputRegion::loadDataFile(const char * dataFile) {
         else { 
 
             // Success!
-            //samplesPrObject = lastNrOfSamplesFound;
-            samplesPrObject = maxSamplesFound;
-            cout << "Objects: " << nrOfObjects << ", Samples/Object: " << samplesPrObject << endl;
+            cout << "Objects loaded: " << nrOfObjects << endl;
         }
     }
 }
+
 /*
 // Normalized scheme!
 void InputRegion::setFiringRate(u_short object, float time) {
@@ -304,8 +291,44 @@ void InputRegion::setFiringRate(u_short object, float time) {
 }
 */
 
+#include <fstream>
+
 // Classic
-void InputRegion::setFiringRate(u_short object, float time) {
+void InputRegion::setFiringRate(u_short object, double time) {
+    
+    /*
+    #pragma omp single
+    {
+        // Linear interpolation
+        linearInterpolate(object, time);
+        
+        // OPEN DEBUG FILE
+        std::ofstream dump;
+        stringstream s;
+        s << "/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/InputLayerDump/o-" << object << "_t-" << time;
+        string filename = s.str();
+        dump.open(filename.c_str());
+        
+        cerr << " Dumping: " << filename << endl;
+
+        // Set neurons firing rates
+        for(int d = 0;d < depth;d++) {
+            //#pragma omp for // we moved pragma one step in because SMI model has so small depth
+            for(int i = 0;i < horVisualDimension;i++) {
+                for(int j = 0;j < horEyeDimension;j++) {
+                    Neurons[d][i][j].setFiringRate(sample);
+                    dump << Neurons[d][i][j].firingRate << " ";
+                }
+                
+                dump << endl;
+            }
+        }
+        
+        // CLOSE DEBUG FILE
+        dump.close();
+        
+    }
+     */
     
     #pragma omp single
     {
@@ -315,34 +338,35 @@ void InputRegion::setFiringRate(u_short object, float time) {
     
     // Set neurons firing rates
 	for(int d = 0;d < depth;d++)
-    #pragma omp for // we moved pragma one step in because SMI model has so small depth
+        #pragma omp for // we moved pragma one step in because SMI model has so small depth
 		for(int i = 0;i < horVisualDimension;i++)
 			for(int j = 0;j < horEyeDimension;j++)
 				Neurons[d][i][j].setFiringRate(sample);
+    
 }
 
-void InputRegion::linearInterpolate(u_short object, float time) {
+void InputRegion::linearInterpolate(u_short object, double time) {
 
     // use <time> to find/interpolate present eye/visual location
-    unsigned sampleIndex = (int)floor(time * samplingRate); // (time/interSampleTime) = time * samplingRate
+    unsigned long long sampleIndex = (int)floor(time * samplingRate); 
     
     // Test that there is one more data point
     if(!(data[object].size() > sampleIndex)) {
         
         cerr << "Time is outside of recorded data: time=" << time << ", sampleIndex=" << sampleIndex << ", size=" << data[object].size() << endl;
-        //cerr.flush();
-        //exit(EXIT_FAILURE);
-        sampleIndex = data[object].size() - 1; // JUST PUT IN LAST SAMPLE
+        cerr.flush();
+        exit(EXIT_FAILURE);
+        //sampleIndex = data[object].size() - 1; // JUST PUT IN LAST SAMPLE
     }
     
     // Time between 
-    float interSampleOverflow = time - sampleIndex * interSampleTime;
+    double interSampleOverflow = time - sampleIndex * interSampleTime;
     
     //cout << " time = " << setw(8) << left << time;
     //cout << "over = " << setw(5) << left << interSampleOverflow;
     //cout << "index = " << setw(5) << left << sampleIndex << ": ";  
     
-    float val;
+    double val;
     
     // Interpolate for each data point in sample
     for(unsigned i = 0;i < sample.size();i++){
@@ -355,14 +379,14 @@ void InputRegion::linearInterpolate(u_short object, float time) {
         } else { 
             
             // use linear interpolation otherwise,
-            float dy = data[object][sampleIndex + 1][i] - data[object][sampleIndex][i];
-            float slope = dy/interSampleTime;
-            float intercept = data[object][sampleIndex][i];
+            double dy = data[object][sampleIndex + 1][i] - data[object][sampleIndex][i];
+            double slope = dy/interSampleTime;
+            double intercept = data[object][sampleIndex][i];
             
             val = intercept + slope * interSampleOverflow;
         }
         
-        sample[i] = val;
+        sample[i] = static_cast<float>(val);
         
         //cout << " " << setw(10) << val;
     }

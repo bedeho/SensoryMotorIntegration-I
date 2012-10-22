@@ -76,14 +76,14 @@ function plotExperiment(experiment, stimuliName)
     fprintf(fileID, '<thead><tr>');
     fprintf(fileID, '<th>Name</th>');
     fprintf(fileID, '<th>Network</th>');
-    %fprintf(fileID, '<th>Result 1</th>');
-    fprintf(fileID, '<th>Result 2</th>');
-    %fprintf(fileID, '<th>Result 3</th>');
+    fprintf(fileID, '<th>L/Psi</th>');
+    fprintf(fileID, '<th>L/h</th>');
+    %fprintf(fileID, '<th>Psi/h</th>');
     for p = 1:nrOfParams,
         fprintf(fileID, ['<th>' parameters{p,1} '</th>']);
     end
     %fprintf(fileID, '<th>#nrOfHeadCenteredCells</th>');
-    fprintf(fileID, '<th>orthogonalityIndex</th>');
+    %fprintf(fileID, '<th>orthogonalityIndex</th>');
     %fprintf(fileID, '<th>MeanObjects</th>');
     %fprintf(fileID, '<th>MeanTransforms</th>');
     fprintf(fileID, '<th>Action</th>');
@@ -125,19 +125,23 @@ function plotExperiment(experiment, stimuliName)
                     % Network
                     fprintf(fileID, '<td> %s </td>\n', summary(s).directory);
                     
-                    %% Result 0
-                    %%fprintf(fileID, '<td><img src="%s" width="100px" height="90px"/></td>\n', [netDir '/result_1.png']);
+                    % psilambda
+                    fprintf(fileID, '<td><img src="%s" width="100px" height="90px"/></td>\n', [netDir '/psilambda.png']);
                     
-                    %% Result 1
-                    %fprintf(fileID, '<td><img src="%s" width="100px" height="100px"/></td>\n', [netDir '/dist.png']); % orthogonality
+                    % hvalue
+                    fprintf(fileID, '<td><img src="%s" width="100px" height="100px"/></td>\n', [netDir '/lambdah.png']);
+                    
+                    % hpsilambda
+                    %fprintf(fileID, '<td><img src="%s" width="100px" height="100px"/></td>\n', [netDir '/hpsilambda.png']);
+                    
 
-                    %% Result 2
-                    fprintf(fileID, '<td><img src="%s" width="80px" height="80px"/></td>\n', [netDirRelative '/invariance.png']);
+                    % Result 2
+                    %fprintf(fileID, '<td><img src="%s" width="80px" height="80px"/></td>\n', [netDirRelative '/invariance.png']);
 
-                    %% Result 3
+                    % Result 3
                     %fprintf(fileID, '<td><img src="%s" width="100px" height="100px"/></td>\n', [netDir '/result_1.png']);
                     
-                    %% Parameters
+                    % Parameters
                     parameters = getParameters(simulation);
                     
                     for p = 1:nrOfParams,
@@ -153,11 +157,11 @@ function plotExperiment(experiment, stimuliName)
                     %}
                     
                     % Orthoganlity Index
-                    if summary(s).orthogonalityIndex < 1,
-                        fprintf(fileID, '<td style=''background-color:green;''> %d </td>\n', summary(s).orthogonalityIndex);
-                    else    
-                        fprintf(fileID, '<td> %d </td>\n', summary(s).orthogonalityIndex);
-                    end
+                    %if summary(s).orthogonalityIndex < 1,
+                    %    fprintf(fileID, '<td style=''background-color:green;''> %d </td>\n', summary(s).orthogonalityIndex);
+                    %else    
+                    %    fprintf(fileID, '<td> %d </td>\n', summary(s).orthogonalityIndex);
+                    %end
                     
                     %{
                     % MeanObjects
