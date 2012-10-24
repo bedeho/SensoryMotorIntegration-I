@@ -11,7 +11,6 @@ function [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEy
 
     % Import global variables
     declareGlobalVars();
-    global floatError;
 
     % Read header 
     [networkDimensions, nrOfPresentLayers, historyDimensions, neuronOffsets] = loadHistoryHeader(filename);

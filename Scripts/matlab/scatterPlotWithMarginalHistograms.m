@@ -33,6 +33,8 @@ function handle = scatterPlotWithMarginalHistograms(X, Y, XLabel, YLabel, Legend
     %ML = 0;
     %v = [, 'Padding', padding, 'Margin', margin];
     
+    ADD COLOR to transparant plot, and make line more solid
+    
     for i=1:nrOfDatasets,
         
         % Add scatter plots

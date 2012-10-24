@@ -37,9 +37,12 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
     fig = figure('name',filename,'NumberTitle','off');
     title('Number of testing locations responded to');
     
-    [analysis] = metrics(filename, info);
+    % Read out analysis results
+    [pathstr, name, ext] = fileparts(filename);
     
-    lambdaMatrix = squeeze(analysis(1,:,:));
+    collation = load([pathstr '/collation.mat']);
+    
+    analysisResults = collation.analysisResults;
     
     for r=2:numRegions
         
@@ -69,7 +72,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         % Decorate
         title(['Region: ' num2str(r)]);
         %}
-        im = imagesc(lambdaMatrix);         % only do first region
+        im = imagesc(analysisResults.headCenteredNess);         % only do first region
         %daspect([size(v2) 1]);
         colorbar;
         

@@ -41,8 +41,17 @@ function Stimuli_Testing(stimuliName, samplingRate, fixationDuration, dimensions
     info.visualPreferences = dimensions.visualPreferences;
     info.eyePositionPreferences = dimensions.eyePositionPreferences;
     
-    testingEyePositions = centerN2(trainingEyePositionFieldSize, 6); % eyePositionFieldSize
-    testingTargets = fliplr(centerN2(trainingTargetFieldSize, 50)); % 0.8* dimensions.visualFieldEccentricity
+    eyePositions = 6;
+    retinalPositions = 30;
+    
+    if trainingEyePositionFieldSize < eyePositions,
+        error('To many eye positions');
+    elseif trainingTargetFieldSize < retinalPositions,
+        error('To many retinal positions');
+    end
+    
+    testingEyePositions = centerN2(trainingEyePositionFieldSize, eyePositions); % eyePositionFieldSize
+    testingTargets = fliplr(centerN2(trainingTargetFieldSize, retinalPositions)); % 0.8* dimensions.visualFieldEccentricity
 
     for e = testingEyePositions,
         for t = testingTargets,

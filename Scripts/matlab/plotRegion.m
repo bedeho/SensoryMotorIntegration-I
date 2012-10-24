@@ -7,7 +7,86 @@
 %
 
 %function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot,thetaPlot, thetaMatrix, omegaMatrix, dist, omegaBins, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
-function plotRegion(filename, info, dotproduct, region, depth, netDir)
+function plotRegion(filename, info, dotproduct, netDir)
+    
+    analysisResults = metrics(filename, info);
+    
+    disp(['Discarded: ' num2str(100*nnz(analysisResults.DiscardStatus_Linear > 0)/numel(analysisResults.DiscardStatus_Linear)) '%']);
+    
+    % Psi/lambda scatter plot
+    psiLambdaPlot = figure();
+    plot(analysisResults.RFSize_Linear, analysisResults.headCenteredNess_Linear, 'ob');
+    hold on;
+    plot(analysisResults.RFSize_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 2);
+    xlabel('\psi');
+    ylabel('\lambda');
+    ylim([-0.1 1]);
+    saveFigureAndDelete(psiLambdaPlot, 'psilambda');
+    
+    % lambda/h scatter plot
+    lambdahPlot = figure();
+    plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'ob');
+    hold on;
+    plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 2);
+    xlabel('h-value');
+    ylabel('\lambda');
+    ylim([-0.1 1]);
+    saveFigureAndDelete(lambdahPlot, 'lambdah');
+    
+    % Psi/h
+    psiHPlot = figure();
+    plot(analysisResults.RFSize_Linear, analysisResults.RFLocation_Linear, 'ob');
+    hold on;
+    plot(analysisResults.RFSize_Linear_Clean, analysisResults.RFLocation_Linear_Clean, 'or', 'LineWidth', 2);
+    xlabel('\psi');
+    ylabel('h-value');
+    saveFigureAndDelete(psiHPlot, 'psih');
+    
+    % h/Psi/Lambda
+    hPsiLambdaPlot = figure();
+    scatter3(analysisResults.RFLocation_Linear_Clean, analysisResults.RFSize_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean);
+    xlabel('h-value');
+    ylabel('\psi');
+    zlabel('\lambda');
+    saveFigureAndDelete(hPsiLambdaPlot, 'hpsilambda');
+    
+    % Save for collation
+    save([netDir '/collation.mat'], 'analysisResults' );
+    
+    function saveFigureAndDelete(fig, name)
+        
+        saveas(fig, [netDir '/' name '.eps']);
+        saveas(fig, [netDir '/' name '.png']);
+        delete(fig);  
+    end
+    
+
+    %{
+    % Lambda
+    lambdaPlot = figure();
+    plot(sort(headCenteredNess_LIN,'descend'));
+    axis([0 numel(headCenteredNess_LIN) -1.1 1.1]);
+    xlabel('Cell Rank');
+    ylabel('\lambda');
+    saveFigureAndDelete(lambdaPlot, 'headCenteredNess');
+    
+    % Psi
+    psiPlot = figure();
+    plot(sort(RFSize_LIN,'descend'));
+    %axis([0 numel(psi) -1.1 1.1]);
+    xlabel('Cell Rank');
+    ylabel('\psi');
+    saveFigureAndDelete(psiPlot, 'RFSize');
+    
+    % h-value
+    hValuePlot = figure();
+    hTOP = RFLocation_LIN;
+    hTOP(headCenteredNess_LIN < 0.8) = [];     % shave out bottom
+    hist(hTOP,50);
+    xlabel('Head-centered Space (deg)');
+    ylabel('h-value');
+    saveFigureAndDelete(hValuePlot, 'RFLocation_LIN');
+    %}
 
 
 %{
@@ -40,84 +119,7 @@ function plotRegion(filename, info, dotproduct, region, depth, netDir)
     % (4) = best match target
     % (5...[5+#targets]) = \chi
     
-    [headCenteredNess RFSize RFLocation DiscardStatus] = metrics(filename, info);
-    
-    % Data
-    lambdaMatrix = squeeze(analysis(1,:,:));
-    lambda = lambdaMatrix(:);
 
-    psiMatrix = squeeze(analysis(2,:,:));
-    psi = psiMatrix(:);
-    
-    hMatrix = squeeze(analysis(4,:,:));
-    hval = hMatrix(:);
-    
-    % Lambda
-    lambdaPlot = figure();
-    plot(sort(lambda,'descend'));
-    axis([0 numel(lambda) -1.1 1.1]);
-    xlabel('Cell Rank');
-    ylabel('\lambda');
-    saveFigureAndDelete(lambdaPlot, 'lambda');
-    
-    % Psi
-    psiPlot = figure();
-    plot(sort(psi,'descend'));
-    %axis([0 numel(psi) -1.1 1.1]);
-    xlabel('Cell Rank');
-    ylabel('\psi');
-    saveFigureAndDelete(psiPlot, 'psi');
-    
-    % h-value
-    hValuePlot = figure();
-    hTOP = hval;
-    hTOP(lambda < 0.8) = [];     % shave out bottom
-    hist(hTOP,50);
-    xlabel('Head-centered Space (deg)');
-    ylabel('h-value');
-    saveFigureAndDelete(hValuePlot, 'hvalue');
-    
-    % Psi/lambda scatter plot
-    psiLambdaPlot = figure();
-    scatter(psi,lambda); % scatterhist
-    xlabel('\psi');
-    ylabel('\lambda');
-    ylim([-0.1 1]);
-    saveFigureAndDelete(psiLambdaPlot, 'psilambda');
-    
-    % lambda/h scatter plot
-    lambdahPlot = figure();
-    scatter(hval,lambda); % scatterhist
-    xlabel('h-value');
-    ylabel('\lambda');
-    ylim([-0.1 1]);
-    saveFigureAndDelete(lambdahPlot, 'lambdah');
-    
-    % Psi/h
-    psiHPlot = figure();
-    scatter(psi,hval); % scatterhist
-    xlabel('\psi');
-    ylabel('h-value');
-    saveFigureAndDelete(psiHPlot, 'psih');
-    
-    % h/Psi/Lambda
-    hPsiLambdaPlot = figure();
-    scatter3(hval,psi,lambda);
-    xlabel('h-value');
-    ylabel('\psi');
-    zlabel('\lambda');
-    saveFigureAndDelete(hPsiLambdaPlot, 'hpsilambda');
-    
-    % Save for collation
-    save([netDir '/collation.mat'], 'lambdaMatrix', 'psiMatrix', 'hMatrix'); %,'multiCell','omegaBins','thetaMatrix');
-    
-    function saveFigureAndDelete(fig,name)
-        
-        saveas(fig, [netDir '/' name '.eps']);
-        saveas(fig, [netDir '/' name '.png']);
-        delete(fig);  
-    end
-    
     %{
     % regionOrthogonalizationPlot
     saveas(regionOrthogonalizationPlot, [netDir '/orthogonality.eps']);

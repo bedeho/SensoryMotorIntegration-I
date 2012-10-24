@@ -6,7 +6,7 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
+function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimuliName)
 
     declareGlobalVars();
     
@@ -17,8 +17,10 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
     
     % Load data
+    [networkDimensions, neuronOffsets] = loadWeightFileHeader(networkFile); % Load weight file header
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting); % (object, eye_position, row, col, region)
     regionCorrs = regionCorrelation(filename, nrOfEyePositionsInTesting);
+    
         
     % Load stimuli
     startDir = pwd;
@@ -27,32 +29,24 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
     info = C.info;
     cd(startDir);
     
-    [analysis] = metrics(filename, info);
+    % Read out analysis results
+    [pathstr, name, ext] = fileparts(filename);
     
-    lambdaMatrix = squeeze(analysis(1,:,:));
-    lmat = lambdaMatrix(:);
+    collation = load([pathstr '/collation.mat']);
     
-    psiMatrix = squeeze(analysis(2,:, :));
+    analysisResults = collation.analysisResults;
     
-    hMatrix = squeeze(analysis(4,:,:));
-    hmat = hMatrix(:);
+    % For scatter
+    scatterSpace = [analysisResults.RFLocation_Linear , analysisResults.headCenteredNess_Linear ];
     
-    scatterSpace = [lmat, hmat];
-    
-
-    % Clear out NaN neurons that did not respond to anything.
-    lmat(isnan(hmat)) = []; % Clear out lambda score of neurons corresponding to dead NaN) h-values
-    hmat(isnan(hmat)) = []; % Clear out dead (NaN) h=values
-    disp(['Neurons with invalid h-value:' num2str(length(hmat) - numel(hMatrix))]);
-    
-    hmatTOP = hmat
-    hmatTOP(lmat < 0.8) = [];     % shave out
+    % For distribution
+    hmatTOP = analysisResults.RFLocation_Linear;
+    hmatTOP(analysisResults.headCenteredNess_Linear < 0.8) = [];     % shave out
 
     
     % Load single unit recordings
   
     % Decouple name
-    [pathstr, name, ext] = fileparts(filename);
     [pathstr2, name2, ext2] = fileparts(pathstr);
     manualData = [pathstr '/singleUnits.dat'];
     trainingData = [pathstr2 '/Training/singleUnits.dat'];
@@ -162,7 +156,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
             v2 = v1(:,:,1);
             %im = imagesc(v2);         % only do first region
             %}
-            im = imagesc(lambdaMatrix);
+            im = imagesc(analysisResults.headCenteredNess);
             %daspect([size(v2) 1]);
             %title('Number of testing locations responded to');
             title('\lambda');
@@ -184,9 +178,14 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
             % Invariance heuristic
             axisVals(r-1,PLOT_COLS) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + PLOT_COLS); % Save axis
 
-            scatterAxis = plot(hmat,lmat,'o');
+            plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'ob');
+            hold on;
+            scatterAxis = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 2);
+
+            %scatterAxis = plot(hmat,lmat,'o');
             set(scatterAxis, 'ButtonDownFcn', @scatterCallBack); % Setup callback
             ylim([-0.1 1]);
+            
             %{
             responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting);
 
@@ -229,9 +228,9 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
     function responseClick(row,col,region)
         
         disp(['Row,Col: ' num2str(row) ',' num2str(col)]);
-        disp(['lambda: ' num2str(lambdaMatrix(row,col))]);
-        disp(['h-value: ' num2str(hMatrix(row,col))]);
-        disp(['psi: ' num2str(psiMatrix(row,col))]);
+        disp(['lambda: ' num2str(analysisResults.headCenteredNess(row,col))]);
+        disp(['h-value: ' num2str(analysisResults.RFLocation(row,col))]);
+        disp(['psi: ' num2str(analysisResults.RFSize(row,col))]);
         
         % single left  click => 'SelectionType' = 'normal'
         % single right click => 'SelectionType' = 'alt'
@@ -262,7 +261,8 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
             
             plotSynapseHistory(trainingFolder, region, 1, row, col,1);
         else
-            prettyPlot(region,row,col);
+            showWeights(networkFile, networkDimensions, neuronOffsets, region, row, col, 1); %depth
+            %prettyPlot(region,row,col);
         end 
         
     end
@@ -301,7 +301,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
         
         [e leastErrorIndex] = min(error);
         
-        [row col] = ind2sub(size(lambdaMatrix), leastErrorIndex);
+        [row col] = ind2sub(size(analysisResults.headCenteredNess), leastErrorIndex);
 
         % Update response plot
         responseClick(row,col,2)
@@ -315,7 +315,7 @@ function inspectResponse(filename, nrOfEyePositionsInTesting, stimuliName)
         % Load analysis file for experiments
         collation = load([pathstr '/collation.mat']);
         %sCell = collation.lambda(row,col);
-        sCell = lambdaMatrix(row, col);
+        sCell = analysisResults.headCenteredNess(row, col);
         
         cellNr = (row-1)*topLayerRowDim + col;
         

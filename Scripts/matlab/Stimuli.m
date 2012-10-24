@@ -34,7 +34,7 @@ function Stimuli(prefix)
     fixationDuration            = 0.200;    % 0.02;	% (s) - fixation period after each saccade
     fixationSequenceLength      = 30;
     
-    k = 30;
+    k = 1;
     numberOfFixations           = fixationSequenceLength * k;%7*50;
     
     % Deduced
@@ -164,7 +164,11 @@ function Stimuli(prefix)
     %hold on;
     
     % Generate complementary testing data
-    buffer = abs(potentialTargets(2) - potentialTargets(1))/2
+    if length(potentialTargets) > 1,
+        buffer = abs(potentialTargets(2) - potentialTargets(1))/2
+    else
+        buffer = 20;
+    end
     maxDev
     Stimuli_Testing(tSFolderName, samplingRate, fixationDuration, dimensions, eyePositionRange, 2*(maxDev + buffer)); % visualRange
     

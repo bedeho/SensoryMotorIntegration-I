@@ -6,7 +6,7 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function [headCenteredNess RFSize RFLocation DiscardStatus] = metrics(filename, info)
+function analysisResults = metrics(filename, info)
 
     % Get dimensions
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
@@ -25,14 +25,16 @@ function [headCenteredNess RFSize RFLocation DiscardStatus] = metrics(filename, 
 
     headCenteredNess = zeros(y_dimension, x_dimension);
     RFSize = zeros(y_dimension, x_dimension);
+    RFSize_Confidence = zeros(y_dimension, x_dimension);
     RFLocation = zeros(y_dimension, x_dimension);
+    RFLocation_Confidence = zeros(y_dimension, x_dimension);
     DiscardStatus = zeros(y_dimension, x_dimension);
     
     targets = info.targets;
     eyePositions = info.eyePositions;
     
     %offset = targets(1);
-    delta = targets(2) - targets(1);
+    delta = abs(targets(2) - targets(1));
 
     % Compute metrics
     if networkDimensions(numRegions).isPresent,
@@ -41,17 +43,21 @@ function [headCenteredNess RFSize RFLocation DiscardStatus] = metrics(filename, 
         for row = 1:y_dimension,
             for col = 1:x_dimension,
                 
+                % Head-centeredness
                 headCenteredNess(row, col) = computeHeadCenteredNess(row,col);
                 
+                % Receptive Field Size
                 [psi rfSTDEV maxNumIntervals] = computeRFSize(row,col);
                 RFSize(row, col) = psi;
+                RFSize_Confidence(row, col) = rfSTDEV;
+                 
+                % Receptive Field Location
+                [h residue] = computeRFLocation(row,col);
+                RFLocation(row, col) = h;
+                RFLocation_Confidence(row, col) = residue;
                 
-                save error decoding
-                save discading
-                
-                
-                RFLocation(row, col) = computeRFLocation(row,col);
-                DiscardStatus(row,col) = discardStatus(row,col);
+                % Discard Status
+                DiscardStatus(row,col) = discardStatus(row,col,maxNumIntervals);
 
             end
         end
@@ -59,20 +65,61 @@ function [headCenteredNess RFSize RFLocation DiscardStatus] = metrics(filename, 
         error('Last layer is not present!');
     end
     
-    function discard = discardStatus(row,col)
+    % Data
+    headCenteredNess_Linear = headCenteredNess(:);
+    RFSize_Linear = RFSize(:);
+    %RFSize_Confidence_LIN = RFSize_Confidence(:);
+    RFLocation_Linear = RFLocation(:);
+    %RFLocation_Confidence_LIN = RFLocation_Confidence(:);
+    DiscardStatus_Linear = DiscardStatus(:);
+    
+    % Discard neurons
+    headCenteredNess_Linear_Clean = headCenteredNess_Linear;
+    RFSize_Linear_Clean = RFSize_Linear;
+    RFLocation_Linear_Clean = RFLocation_Linear;
+    
+    headCenteredNess_Linear_Clean(DiscardStatus_Linear > 0) = [];
+    RFSize_Linear_Clean(DiscardStatus_Linear > 0) = [];
+    RFLocation_Linear_Clean(DiscardStatus_Linear > 0) = [];
+    
+    % analysis results
+    analysisResults.headCenteredNess = headCenteredNess;
+    analysisResults.RFSize = RFSize;
+    analysisResults.RFLocation = RFLocation;
+    analysisResults.RFSize_Confidence = RFSize_Confidence;
+    analysisResults.RFLocation_Confidence = RFLocation_Confidence;
+    
+    analysisResults.headCenteredNess_Linear = headCenteredNess_Linear;
+    analysisResults.RFSize_Linear = RFSize_Linear;
+    analysisResults.RFLocation_Linear = RFLocation_Linear;
+    analysisResults.DiscardStatus_Linear = DiscardStatus_Linear;
+    
+    analysisResults.headCenteredNess_Linear_Clean = headCenteredNess_Linear_Clean;
+    analysisResults.RFSize_Linear_Clean = RFSize_Linear_Clean;
+    analysisResults.RFLocation_Linear_Clean = RFLocation_Linear_Clean;
+        
+    analysisResults.DiscardStatus = DiscardStatus;
+    
+    function discard = discardStatus(row,col,num)
         
         peakResponse = ratio*max(max(dataPrEyePosition(:,:,row,col)));
         response = dataPrEyePosition(:,:,row,col)';
-        discard = false;
+        discard = 0;
 
-        % Discontinous rf: there is an eye position for which it is non-respnse ($r_i =0$) to all retinal locations 
-        discard = discard || any(sum(response > 0) == 0);
+        % Discontinous rf: there is an eye position for which it is non-respnse ($r_i =0$) to all retinal locations
+        if any(sum(response > 0) == 0),
+            discard = discard + 2;
+        end
         
         % Edge bias: there is an eye position for which the firing rate ($r_i$) is above the cut off in at least one of the two most eccentric retinal locations
-        discard = discard || response(1,:) > peakResponse || response(end,:) > peakResponse;
+        if any(response(1,:) > peakResponse) || any(response(end,:) > peakResponse),
+            discard = discard + 4;
+        end
         
         % Multi peaked:
-        discard = discard || ...;
+        if num > 1,
+            discard = discard + 8;
+        end
         
     end
     
@@ -87,14 +134,14 @@ function [headCenteredNess RFSize RFLocation DiscardStatus] = metrics(filename, 
         for ep_1 = 1:(nrOfEyePositionsInTesting - 1),
             for ep_2 = (ep_1+1):nrOfEyePositionsInTesting,
 
-                %{
+                %
                 %Classic
                 observationMatrix = [dataPrEyePosition(ep_1,:,row,col)' dataPrEyePosition(ep_2,:,row,col)'];
                 correlationMatrix = corrcoef(observationMatrix);
                 c = correlationMatrix(1,2); % pick one of the two identical non-diagonal element :)
-                %}
                 
-                c = dot(dataPrEyePosition(ep_1,:,row,col) - peakResponse,dataPrEyePosition(ep_2,:,row,col) - peakResponse)/(objectsPrEyePosition*(peakResponse*(1-ratio))^2);
+                
+                %c = dot(dataPrEyePosition(ep_1,:,row,col) - peakResponse,dataPrEyePosition(ep_2,:,row,col) - peakResponse)/(objectsPrEyePosition*(peakResponse*(1-ratio))^2);
                 
                 corr = corr + c;
                 combinations = combinations + 1;
@@ -120,8 +167,8 @@ function [headCenteredNess RFSize RFLocation DiscardStatus] = metrics(filename, 
             
             receptiveFieldSizes(e) = sum(subReceptiveFieldSizes);
             
-            [num q] = size(intervals);
-            maxNumIntervals = max(maxNumIntervals, num);
+            [rubish numIntervals] = size(intervals);
+            maxNumIntervals = max(maxNumIntervals, numIntervals);
             
         end
         
@@ -147,6 +194,7 @@ function [headCenteredNess RFSize RFLocation DiscardStatus] = metrics(filename, 
         usedEyePositions = eyePositions;
         usedEyePositions(isnan(centersOfMass)) = [];
         centersOfMass(isnan(centersOfMass)) = [];
+        numUsedEyePositions = length(usedEyePositions);
         
         %2) Do regression to find best fitting: ax+b
         
@@ -157,11 +205,18 @@ function [headCenteredNess RFSize RFLocation DiscardStatus] = metrics(filename, 
             b = p(2);
 
             %3) Deduce best fitting x+h for ax+b
-            h = b - (1-a)/length(usedEyePositions)*sum(usedEyePositions);
+            h = b - (1-a)/numUsedEyePositions*sum(usedEyePositions);
             
-            %4) fit
-            R = corrcoef(usedEyePositions,centersOfMass);
-            residue = 1-R(1,2);
+            %4) Fitness
+            
+            % sum of square
+            sse = sum((centersOfMass - (usedEyePositions + h)).^2);
+            
+            % total sum of square
+            meanCenterOfMass = mean(centersOfMass);
+            sst = sum((centersOfMass - meanCenterOfMass).^2);
+
+            residue = sse/sst; % 1-sse/sst;
         else
             h = NaN;
             residue = NaN;

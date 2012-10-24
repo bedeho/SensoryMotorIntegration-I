@@ -32,7 +32,7 @@
    	#for my $ftC (@ftCArray) {
    		
    	# 
-   	my $experiment						= "slope-fanIn01-mod-H8-sigma6";
+   	my $experiment						= "H1-sigma18"; # fanIn01-mod-H3-sigma18
    	#my $stim							= "multi-peaked-Tar=8.00-nTP=28.00-ftC=6.00-Sim=2.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=116.00-sE=44.00";
 
 	# new-movestim
@@ -112,67 +112,22 @@
 	#my $stim							= "dense-sigma4-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=2.00-epD=2.00-gS=4.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00";
 	#my $stim							= "dense-sigma6-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00"; 
 	
+	# sigm=6, # works at 01 fanin
 	# worked
 	#my $stim							= "H3-sigma6-Tar=0.00-nTP=0.00-nOF=90.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
-	
-	# worked
 	#my $stim							= "H4-sigma6-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
-	
-	# worked
 	#my $stim							= "mod-H4-sigma6-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
-	
-	# works at 01 fanin
 	#my $stim							= "mod-H8-sigma6-Tar=0.00-nTP=0.00-nOF=240.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
+	#my $stim							= "mod-H30-sigma6-Tar=0.00-nTP=0.00-nOF=900.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	
-	my $stim							= "mod-H30-sigma6-Tar=0.00-nTP=0.00-nOF=900.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
+	# sigma=18
+	#my $stim							= "H3-sigma18-Tar=0.00-nTP=0.00-nOF=90.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	
-	
-	#my $stim							= "sparse-sigma6-Tar=0.00-nTP=0.00-nOF=50.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00";
-	
-	# sig = 9
-	#my $stim							= "denseSMALL-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=9.00-sS=0.06-vF=250.00-eF=138.00-sE=114.00-sR=100.00";
-	
-	#my $stim							= "scaledDown-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=10.00-epD=10.00-gS=18.00-sS=0.06-vF=250.00-eF=138.00-sE=114.00-sR=100.00";
-	
-	#my $stim							= "fully-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=4.00-epD=4.00-gS=18.00-sS=0.06-vF=250.00-eF=138.00-sE=114.00-sR=100.00";
-	
-	#my $stim							= "simple-Tar=0.00-nTP=0.00-nOF=20.00-Sim=1.00-fD=0.20-fSL=5.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=250.00-eF=138.00-sE=114.00-sR=100.00";
-	
-	#my $stim							= "simple2-Tar=0.00-nTP=0.00-nOF=40.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=250.00-eF=138.00-sE=114.00-sR=100.00";
-	
-	#my $stim							= "denser-PD5-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=5.00-epD=5.00-gS=18.00-sS=0.06-vF=500.00-eF=276.00-sE=114.00-sR=100.00";
-	
-	#my $stim							= "denser-PD15-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=15.00-epD=15.00-gS=18.00-sS=0.06-vF=500.00-eF=276.00-sE=114.00-sR=100.00";
-	
-	#my $stim							= "denserSMALL-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=500.00-eF=276.00-sE=114.00-sR=100.00";
-	
-	#my $stim							= "untrained-Tar=0.00-nTP=0.00-nOF=140.00-Sim=1.00-fD=0.20-fSL=20.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "gauss-Tar=0.00-nTP=0.00-nOF=60.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "anotherdeep-Tar=0.00-nTP=0.00-nOF=50.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "largesigma-dense-Tar=0.00-nTP=0.00-nOF=600.00-Sim=1.00-fD=0.20-fSL=20.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "sparser-Tar=0.00-nTP=0.00-nOF=160.00-Sim=1.00-fD=0.20-fSL=20.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=113.00-sR=100.00";
-	
-	#my $stim 							= "CLASSICOLD-Tar=8.00-Ord=2.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00";
-	
-	# bigsigma
-	#my $experiment	 					= "peaked_bigsigma_sparseness_steep";
-	#my $stim							= "bigsigma-Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=18.00-sS=0.06-vF=200.00-eF=122.00-sE=17.00";
-	
-	# get 12 to wok
-	#my $experiment	 					= "E=12";
-	#my $stim							= "getE=12towork-Tar=2.00-nTP=2.00-ftC=24.00-Sim=1.00-fD=0.50-nF=12.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-sE=17.00";
-
-	# bigsigma
-	#my $experiment	 					= "resolution_bigsigma";
-	#my $stim							= "resolution_bigsigma-Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=8.00-epD=6.00-gS=18.00-sS=0.06-vF=200.00-eF=122.00-sE=17.00";
+	my $stim							= "H1-sigma18-Tar=0.00-nTP=0.00-nOF=30.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	
 	my $offset							= 0; # -1 == old style
 	
-	my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
+	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $seed							= 55; # 55 is standard
 
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
