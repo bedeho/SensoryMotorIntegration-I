@@ -34,11 +34,11 @@ function Stimuli(prefix)
     fixationDuration            = 0.200;    % 0.02;	% (s) - fixation period after each saccade
     fixationSequenceLength      = 30;
     
-    k = 1;
+    k = 4;
     numberOfFixations           = fixationSequenceLength * k;%7*50;
     
     % Deduced
-    scaleDown = 1/2;
+    scaleDown = 1/3;% 1/2;
     visualRange = dimensions.visualFieldSize*scaleDown;
     eyePositionRange = dimensions.visualFieldSize/2 - visualRange/2;
     

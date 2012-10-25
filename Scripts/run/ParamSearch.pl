@@ -17,9 +17,9 @@
 	use myConfig;
 
 
-	use ps1; # <-------- only change this to change to different number of layers!! jippi
+	use ps2; # ps1, ps2 # <-------- only change this to change to different number of layers!! jippi
 	
-	my $imported = "ps1";
+	my $imported = "ps2"; # psi1,ps2
 
 	####################################################################
 	# Input
@@ -32,7 +32,7 @@
    	#for my $ftC (@ftCArray) {
    		
    	# 
-   	my $experiment						= "H1-sigma18"; # fanIn01-mod-H3-sigma18
+   	my $experiment						= "ORTH-H3-sigma18"; # dtrefine-H30-sigma6-fanin0.10
    	#my $stim							= "multi-peaked-Tar=8.00-nTP=28.00-ftC=6.00-Sim=2.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=116.00-sE=44.00";
 
 	# new-movestim
@@ -112,6 +112,8 @@
 	#my $stim							= "dense-sigma4-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=2.00-epD=2.00-gS=4.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00";
 	#my $stim							= "dense-sigma6-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00"; 
 	
+	
+	
 	# sigm=6, # works at 01 fanin
 	# worked
 	#my $stim							= "H3-sigma6-Tar=0.00-nTP=0.00-nOF=90.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
@@ -123,11 +125,11 @@
 	# sigma=18
 	#my $stim							= "H3-sigma18-Tar=0.00-nTP=0.00-nOF=90.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	
-	my $stim							= "H1-sigma18-Tar=0.00-nTP=0.00-nOF=30.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
+	my $stim							= "H4-sigma18-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	
 	my $offset							= 0; # -1 == old style
 	
-	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
+	my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $seed							= 55; # 55 is standard
 
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE

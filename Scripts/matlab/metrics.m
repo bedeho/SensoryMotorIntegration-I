@@ -68,9 +68,9 @@ function analysisResults = metrics(filename, info)
     % Data
     headCenteredNess_Linear = headCenteredNess(:);
     RFSize_Linear = RFSize(:);
-    %RFSize_Confidence_LIN = RFSize_Confidence(:);
+    RFSize_Confidence_Linear = RFSize_Confidence(:);
     RFLocation_Linear = RFLocation(:);
-    %RFLocation_Confidence_LIN = RFLocation_Confidence(:);
+    RFLocation_Confidence_Linear = RFLocation_Confidence(:);
     DiscardStatus_Linear = DiscardStatus(:);
     
     % Discard neurons
@@ -78,9 +78,14 @@ function analysisResults = metrics(filename, info)
     RFSize_Linear_Clean = RFSize_Linear;
     RFLocation_Linear_Clean = RFLocation_Linear;
     
+    RFSize_Confidence_Linear_Clean = RFSize_Confidence_Linear;
+    RFLocation_Confidence_Linear_Clean = RFLocation_Confidence_Linear;
+    
     headCenteredNess_Linear_Clean(DiscardStatus_Linear > 0) = [];
     RFSize_Linear_Clean(DiscardStatus_Linear > 0) = [];
     RFLocation_Linear_Clean(DiscardStatus_Linear > 0) = [];
+    RFSize_Confidence_Linear_Clean(DiscardStatus_Linear > 0) = [];
+    RFLocation_Confidence_Linear_Clean(DiscardStatus_Linear > 0) = [];
     
     % analysis results
     analysisResults.headCenteredNess = headCenteredNess;
@@ -97,7 +102,9 @@ function analysisResults = metrics(filename, info)
     analysisResults.headCenteredNess_Linear_Clean = headCenteredNess_Linear_Clean;
     analysisResults.RFSize_Linear_Clean = RFSize_Linear_Clean;
     analysisResults.RFLocation_Linear_Clean = RFLocation_Linear_Clean;
-        
+    analysisResults.RFSize_Confidence_Linear_Clean = RFSize_Confidence_Linear_Clean;
+    analysisResults.RFLocation_Confidence_Linear_Clean = RFLocation_Confidence_Linear_Clean;
+    
     analysisResults.DiscardStatus = DiscardStatus;
     
     function discard = discardStatus(row,col,num)

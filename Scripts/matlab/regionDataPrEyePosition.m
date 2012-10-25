@@ -63,6 +63,9 @@ function [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEy
             % Reshufle dimensions
             dataPrEyePosition = permute(dataPrEyePosition, [2 1]);
             
+            % Clean out errors
+            dataPrEyePosition(dataPrEyePosition < 0.01) = 0;
+            
             % Save result
             data(:,:,row,col) = dataPrEyePosition;
             

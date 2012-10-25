@@ -1,58 +1,58 @@
-    #
-    #  ps2.pm
-    #  SMI
-    #
-    #  Created by Bedeho Mender on 04/08/12.
-    #  Copyright 2012 OFTNAI. All rights reserved.
-    #
+        #
+        #  ps2.pm
+        #  SMI
+        #
+        #  Created by Bedeho Mender on 04/08/12.
+        #  Copyright 2012 OFTNAI. All rights reserved.
+        #
 
-    package ps2;
+        package ps2;
 	
 	use myLib;
-    use strict;
-    use warnings FATAL => 'all';
-    use base qw(Exporter);
+        use strict;
+        use warnings FATAL => 'all';
+        use base qw(Exporter);
 
-    our @EXPORT = qw(
-					$pathWayLength
-					@dimension
-					@depth
-					@connectivity
-					@fanInRadius
-					@fanInCountPercentage
-					@learningrate
-					@eta
-					@timeConstant
-					@sparsenessLevel
-					@sigmoidSlope
-					@sigmoidThreshold
-					@globalInhibitoryConstant	
-					@externalStimulation
-					@inhibitoryRadius
-					@inhibitoryContrast
-					@somExcitatoryRadius
-					@somExcitatoryContrast
-					@somInhibitoryRadius
-					@somInhibitoryContrast
-					@filterWidth
-					@epochs
-					@saveHistory
-					@recordedSingleCells
-					
-					@sigmoidSlopes
-					@sigmoidThresholds
-					@globalInhibitoryConstants
-					@externalStimulations
-					@learningRates
-					@sparsenessLevels
-					@timeConstants
-					@stepSizeFraction
-					@traceTimeConstant
-					);
-					#@$sigmoidModulationPercentage
+        our @EXPORT = qw(
+			$pathWayLength
+			@dimension
+			@depth
+			@connectivity
+			@fanInRadius
+			@fanInCountPercentage
+			@learningrate
+			@eta
+			@timeConstant
+			@sparsenessLevel
+			@sigmoidSlope
+			@sigmoidThreshold
+			@globalInhibitoryConstant	
+			@externalStimulation
+			@inhibitoryRadius
+			@inhibitoryContrast
+			@somExcitatoryRadius
+			@somExcitatoryContrast
+			@somInhibitoryRadius
+			@somInhibitoryContrast
+			@filterWidth
+			@epochs
+			@saveHistory
+			@recordedSingleCells
+
+			@sigmoidSlopes
+			@sigmoidThresholds
+			@globalInhibitoryConstants
+			@externalStimulations
+			@learningRates
+			@sparsenessLevels
+			@timeConstants
+			@stepSizeFraction
+			@traceTimeConstant
+			);
+			#@$sigmoidModulationPercentage
 
  	# RANGE PARAMS - permutable
-    our @sigmoidSlopes					= (
+    	our @sigmoidSlopes					= (
 
 									["10.0","10.0"]
 	
@@ -77,36 +77,94 @@
     # Notice, layer one needs 3x because of small filter magnitudes, and 5x because of
     # number of afferent synapses, total 15x.
     our @learningRates 					= (
-									["0.00000","0.05000"]						
-										);								
+["0.05000","0.05000"]						
+);								
  	die "Invalid array: learningRates" if !validateArray(\@learningRates);
 
     our @sparsenessLevels				= (
-									#["0.9998","0.90"],
-									["0.999","0.90"],
-									["0.99","0.90"],
-									["0.98","0.90"],
-									["0.97","0.90"],
-									["0.96","0.90"],
-									["0.95","0.90"],
-									["0.90","0.90"]
-									
-									# orthognalization 2
-									#["0.999","0.999"],
-									#["0.999","0.99"],
-									#["0.999","0.95"],
-									#["0.999","0.90"],
-									
-									#["0.99","0.999"],
-									#["0.99","0.95"],
-									
-									#["0.99","0.90"]
-									
-									#["0.90","0.999"],
-									#["0.90","0.99"],
-									#["0.90","0.95"],
-									#["0.90","0.90"]
-										);
+#["0.9998","0.90"],
+#["0.99","0.90"],
+#["0.98","0.90"],
+#["0.97","0.90"],
+#["0.96","0.90"],
+#["0.95","0.90"],
+#["0.94","0.90"],
+#["0.90","0.90"],
+#
+#["0.99","0.93"],
+#["0.98","0.93"],
+#["0.97","0.93"],
+#["0.96","0.93"],
+#["0.95","0.93"],
+#["0.94","0.93"],
+#["0.90","0.93"],
+#
+#["0.99","0.96"],
+#["0.98","0.96"],
+#["0.97","0.96"],
+#["0.96","0.96"],
+#["0.95","0.96"],
+#["0.94","0.96"],
+#["0.90","0.96"]
+#["0.99","0.99","0.95"],
+#["0.99","0.99","0.99"],
+#["0.90","0.90","0.99"]
+
+#["0.99","0.99","0.99","0.99","0.90"]
+#["0.99","0.99","0.99","0.90"]
+#["0.99","0.99","0.90"]
+#["0.99","0.90"]
+#["0.90"]
+
+# 1 HEBB
+#["0.9998","0.90"],
+#["0.999","0.90"],
+#["0.99","0.90"],
+#["0.98","0.90"],
+#["0.97","0.90"],
+#["0.96","0.90"],
+#["0.95","0.90"],
+#["0.90","0.90"]
+
+#orthogonalization
+#["0.95"],
+#["0.99"],
+#["0.995"],
+#["0.998"],
+#["0.999"],
+#["0.9993"],
+#["0.9998"]
+
+# orthognalization 2
+#["0.999","0.999"],
+#["0.999","0.99"],
+#["0.999","0.95"],
+#["0.999","0.90"],
+
+#["0.99","0.999"],
+#["0.99","0.95"],
+
+["0.99","0.90"]
+
+#["0.90","0.999"],
+#["0.90","0.99"],
+#["0.90","0.95"],
+#["0.90","0.90"]
+
+# orthognalization 3
+#["0.999","0.999","0.999"],
+#["0.99","0.99","0.99"],
+#["0.95","0.95","0.95"],
+#["0.90","0.90","0.90"]
+
+# trace 3
+#["0.99","0.99","0.98"],
+#["0.99","0.99","0.95"],
+#["0.99","0.99","0.90"],
+#["0.99","0.99","0.80"],
+
+#["0.99","0.99","0.95"]
+);
 
     die "Invalid array: sparsenessLevels" if !validateArray(\@sparsenessLevels);
     

@@ -41,8 +41,8 @@ function Stimuli_Testing(stimuliName, samplingRate, fixationDuration, dimensions
     info.visualPreferences = dimensions.visualPreferences;
     info.eyePositionPreferences = dimensions.eyePositionPreferences;
     
-    eyePositions = 6;
-    retinalPositions = 30;
+    eyePositions = 15;
+    retinalPositions = 20;
     
     if trainingEyePositionFieldSize < eyePositions,
         error('To many eye positions');

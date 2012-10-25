@@ -180,6 +180,8 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
 
             plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'ob');
             hold on;
+            
+            %scatterAxis = herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
             scatterAxis = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 2);
 
             %scatterAxis = plot(hmat,lmat,'o');
@@ -262,7 +264,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             plotSynapseHistory(trainingFolder, region, 1, row, col,1);
         else
             showWeights(networkFile, networkDimensions, neuronOffsets, region, row, col, 1); %depth
-            %prettyPlot(region,row,col);
+            prettyPlot(region,row,col);
         end 
         
     end
@@ -311,19 +313,38 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     function prettyPlot(region,row,col)
 
         % Get single cell score
-        
-        % Load analysis file for experiments
-        collation = load([pathstr '/collation.mat']);
-        %sCell = collation.lambda(row,col);
         sCell = analysisResults.headCenteredNess(row, col);
-        
         cellNr = (row-1)*topLayerRowDim + col;
+        response = data(:, :, row, col);
+        y = squeeze(response);
         
-        f = figure();
-
-        y = squeeze(data(:, :, row, col)); %data{region-1}(:, :, row, col)
-        
+        %{
+        figure();
         imagesc(y');
+        %}
+        
+        %{
+        figure();
+        x = info.targets;
+        y = info.eyePositions;
+
+        v = response;
+
+        [xq,yq] = meshgrid(info.targets(1):0.1:info.targets(end), info.eyePositions(1):0.1:info.eyePositions(end));
+
+        vq = griddata(x,y,v,xq,yq);
+
+        mesh(xq,yq,vq);
+        hold on
+        
+        [xq2,yq2] = meshgrid(info.targets, info.eyePositions);
+        %plot3(xq2(:),yq2(:),response(:),'o');
+        %}
+        
+        figure();
+        [xq,yq] = meshgrid(info.targets, info.eyePositions); 
+        mesh(xq,yq,response);
+ 
         
         %{
         % Dialogs
