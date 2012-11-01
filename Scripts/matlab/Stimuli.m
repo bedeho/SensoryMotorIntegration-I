@@ -169,8 +169,15 @@ function Stimuli(prefix)
     else
         buffer = 20;
     end
+    
     maxDev
+    
     Stimuli_Testing(tSFolderName, samplingRate, fixationDuration, dimensions, eyePositionRange, 2*(maxDev + buffer)); % visualRange
+    
+    % Generate correlation data
+    if samplingRate == 10,
+        OneD_DG_Correlation([tSFolderName '-stdTest']);
+    end
     
     % Visualize
     OneD_Overlay([tSFolderName '-training'],[tSFolderName '-stdTest'])

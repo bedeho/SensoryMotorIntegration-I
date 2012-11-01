@@ -17,9 +17,9 @@
 	use myConfig;
 
 
-	use ps2; # ps1, ps2 # <-------- only change this to change to different number of layers!! jippi
+	use ps1; # ps1, ps2 # <-------- only change this to change to different number of layers!! jippi
 	
-	my $imported = "ps2"; # psi1,ps2
+	my $imported = "ps1"; # psi1,ps2
 
 	####################################################################
 	# Input
@@ -32,7 +32,8 @@
    	#for my $ftC (@ftCArray) {
    		
    	# 
-   	my $experiment						= "ORTH-H3-sigma18"; # dtrefine-H30-sigma6-fanin0.10
+   	my $experiment						= "H4-sigma18"; # dtrefine-H30-sigma6-fanin0.10
+   	
    	#my $stim							= "multi-peaked-Tar=8.00-nTP=28.00-ftC=6.00-Sim=2.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=116.00-sE=44.00";
 
 	# new-movestim
@@ -86,35 +87,15 @@
 	
 	#my $stim							= "deep-Tar=0.00-nTP=0.00-nOF=60.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=2.00-sS=0.06-vF=200.00-eF=116.00-sE=113.00-sR=100.00";
 	
-	# WORKED
-	#my $stim							= "deep-Tar=0.00-nTP=0.00-nOF=60.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "new-Tar=0.00-nTP=0.00-nOF=600.00-Sim=1.00-fD=0.20-fSL=20.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "largesigma-dense-Tar=0.00-nTP=0.00-nOF=600.00-Sim=1.00-fD=0.20-fSL=20.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=113.00-sR=100.00";
-	
-	####my $stim						= "try2-Tar=0.00-nTP=0.00-nOF=140.00-Sim=1.00-fD=0.20-fSL=20.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=500.00-eF=276.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "control-Tar=0.00-nTP=0.00-nOF=140.00-Sim=1.00-fD=0.20-fSL=20.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=500.00-eF=276.00-sE=113.00-sR=100.00";
-	
-	
-	
 	#my $stim							= "baseline-Tar=0.00-nTP=0.00-nOF=70.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=500.00-eF=276.00-sE=114.00-sR=100.00";
-	
-	
-	# improved with lower fanin count
-	#my $stim							= "denser-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=500.00-eF=276.00-sE=114.00-sR=100.00";
-	
-	
-	#
+
+	# DENSE, varying sigma
 	#my $stim							= "dense-sigma18-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=2.00-epD=2.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00";
 	#my $stim							= "dense-sigma9-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=2.00-epD=2.00-gS=9.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00";
 	#my $stim							= "dense-sigma4-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=2.00-epD=2.00-gS=4.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00";
 	#my $stim							= "dense-sigma6-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00"; 
 	
-	
-	
-	# sigm=6, # works at 01 fanin
+	# sigm=6, works at 01 fanin
 	# worked
 	#my $stim							= "H3-sigma6-Tar=0.00-nTP=0.00-nOF=90.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	#my $stim							= "H4-sigma6-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
@@ -122,21 +103,20 @@
 	#my $stim							= "mod-H8-sigma6-Tar=0.00-nTP=0.00-nOF=240.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	#my $stim							= "mod-H30-sigma6-Tar=0.00-nTP=0.00-nOF=900.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	
-	# sigma=18
+	# sigma=18, 05 fanIn
 	#my $stim							= "H3-sigma18-Tar=0.00-nTP=0.00-nOF=90.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
-	
 	my $stim							= "H4-sigma18-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	
 	my $offset							= 0; # -1 == old style
 	
-	my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
+	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $seed							= 55; # 55 is standard
 
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
 	my $learningRule					= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs						= 5; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 100;
+	my $nrOfEpochs						= 1000; # 30,100
+	my $saveNetworkAtEpochMultiple 		= 33;
 	my $outputAtTimeStepMultiple		= 3;
 
 	my $lateralInteraction				= COMP; # NONE, COMP, SOM

@@ -181,8 +181,8 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'ob');
             hold on;
             
-            %scatterAxis = herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
-            scatterAxis = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 2);
+            scatterAxis = herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
+            %scatterAxis = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 2);
 
             %scatterAxis = plot(hmat,lmat,'o');
             set(scatterAxis, 'ButtonDownFcn', @scatterCallBack); % Setup callback
@@ -318,10 +318,10 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         response = data(:, :, row, col);
         y = squeeze(response);
         
-        %{
+        
         figure();
         imagesc(y');
-        %}
+        
         
         %{
         figure();
@@ -341,10 +341,11 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         %plot3(xq2(:),yq2(:),response(:),'o');
         %}
         
+        %{
         figure();
         [xq,yq] = meshgrid(info.targets, info.eyePositions); 
         mesh(xq,yq,response);
- 
+        %}
         
         %{
         % Dialogs
