@@ -34,7 +34,8 @@ void HiddenNeuron::init(HiddenRegion * region,
                         float * effectiveTraceHistory,
                         bool saveNeuronHistory, 
                         bool saveSynapseHistory, 
-                        u_short desiredFanIn) {
+                        u_short desiredFanIn,
+                        float weightVectorLength) {
 
     
 	// Call base constructor
@@ -46,6 +47,7 @@ void HiddenNeuron::init(HiddenRegion * region,
 	this->saveNeuronHistory = saveNeuronHistory;
 	this->saveSynapseHistory = saveSynapseHistory;
     this->desiredFanIn = desiredFanIn;
+    this->weightVectorLength = weightVectorLength;
     
     // Setup buffer pointers
     this->activationHistory = activationHistory;

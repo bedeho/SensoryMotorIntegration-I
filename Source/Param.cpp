@@ -58,6 +58,8 @@ Param::Param(const char * filename, bool isTraining) {
 		cfg.lookupValue("weightNormalization", tmp);
 		weightNormalization = static_cast<WEIGHTNORMALIZATION>(tmp);
 		
+        cfg.lookupValue("weightVectorLength", weightVectorLength);
+        
 		cfg.lookupValue("sparsenessRoutine", tmp);
 		sparsenessRoutine = static_cast<SPARSENESSROUTINE>(tmp);
 		

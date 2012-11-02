@@ -32,7 +32,7 @@
    	#for my $ftC (@ftCArray) {
    		
    	# 
-   	my $experiment						= "XGRID-H4-sigma18"; # dtrefine-H30-sigma6-fanin0.10
+   	my $experiment						= "W2-H4-sigma18"; # dtrefine-H30-sigma6-fanin0.10
    	
    	#my $stim							= "multi-peaked-Tar=8.00-nTP=28.00-ftC=6.00-Sim=2.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=116.00-sE=44.00";
 
@@ -51,43 +51,6 @@
 	# movementstatistics
 	#my $experiment	 					= "sparsity_movementstatistics_6"; #${ftC}
 	#my $stim							= "movementstatistics-Tar=2.00-nTP=28.00-ftC=6.00-Sim=1.00-fD=0.50-nF=14.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-sE=17.00";
-	
-	# classic
-	#my $experiment	 					= "largesigma-dense-works-parametersearch-NOreset"; # newtest-continous2-reset-local
-	#my $experiment						= "dt0.05_peaked_learningrate";
-	#my $experiment						= "dt0.05_peaked_sparseness";
-	#my $experiment						= "dt0.05_peaked_tracetimeconstant";
-	#my $experiment						= "dt0.05_sigmoidal";
-	#my $stim							= "classic-Tar=4.00-nTP=4.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=44.00";
-	#my $stim							= "test-Tar=4.00-nTP=4.00-ftC=6.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=44.00";
-	#my $stim							= "classic2-Tar=4.00-nTP=4.00-ftC=18.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=44.00";
-	#my $stim							= "CLASSIC-Tar=4.00-Ord=2.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00";
-	#my $stim							= "newtest-Tar=4.00-nTP=4.00-ftC=18.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=44.00";
-	#my $stim							= "denser-Tar=8.00-nTP=8.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=116.00-sE=44.00";
-	#my $stim							= "ordereffect-Tar=8.00-nTP=8.00-ftC=12.00-Sim=1.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=116.00-sE=112.00";
-	#my $stim							= "2continous-Tar=0.00-nTP=0.00-nOF=350.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=110.00";
-	
-	#my $stim							= "ONETARGETTEST-Tar=0.00-nTP=0.00-nOF=10.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=111.00";
-	
-	#my $stim							= "SUPERDENSE-Tar=0.00-nTP=0.00-nOF=800.00-Sim=1.00-fD=0.20-fSL=16.00-vpD=1.00-epD=1.00-gS=8.00-sS=0.06-vF=200.00-eF=200.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "NORM_SUPERDENSE-Tar=0.00-nTP=0.00-nOF=800.00-Sim=1.00-fD=0.20-fSL=16.00-vpD=1.00-epD=1.00-gS=8.00-sS=0.06-vF=200.00-eF=200.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "VERYDENSE-Tar=0.00-nTP=0.00-nOF=160.00-Sim=1.00-fD=0.20-fSL=4.00-vpD=1.00-epD=1.00-gS=8.00-sS=0.06-vF=200.00-eF=200.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "senowski-norm-Tar=0.00-nTP=0.00-nOF=800.00-Sim=1.00-fD=0.20-fSL=16.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=200.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "systematic-Tar=0.00-nTP=0.00-nOF=200.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=200.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "systematic-smallgs-Tar=0.00-nTP=0.00-nOF=400.00-Sim=1.00-fD=0.20-fSL=20.00-vpD=1.00-epD=1.00-gS=8.00-sS=0.06-vF=200.00-eF=116.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "systematic-smallgs2-Tar=0.00-nTP=0.00-nOF=400.00-Sim=1.00-fD=0.20-fSL=20.00-vpD=1.00-epD=1.00-gS=2.00-sS=0.06-vF=200.00-eF=116.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "systematic-smallgs18-Tar=0.00-nTP=0.00-nOF=400.00-Sim=1.00-fD=0.20-fSL=20.00-vpD=1.00-epD=1.00-gS=2.00-sS=0.06-vF=200.00-eF=116.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "deep-Tar=0.00-nTP=0.00-nOF=60.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=2.00-sS=0.06-vF=200.00-eF=116.00-sE=113.00-sR=100.00";
-	
-	#my $stim							= "baseline-Tar=0.00-nTP=0.00-nOF=70.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=500.00-eF=276.00-sE=114.00-sR=100.00";
 
 	# DENSE, varying sigma
 	#my $stim							= "dense-sigma18-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=2.00-epD=2.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00";
@@ -115,8 +78,8 @@
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
 	my $learningRule					= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs						= 1000; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 33;
+	my $nrOfEpochs						= 500; # 30,100
+	my $saveNetworkAtEpochMultiple 		= 50;
 	my $outputAtTimeStepMultiple		= 3;
 
 	my $lateralInteraction				= COMP; # NONE, COMP, SOM
@@ -127,6 +90,8 @@
 	my $resetTrace						= "true"; # "false", Reset trace between objects of training
 	
 	my $sigmoidModulationPercentage		= "0.0";
+	
+	my $weightVectorLength				= "2.0"; # classic = 1.0
 
     ###################################################################
 	# Preprocessing
@@ -570,6 +535,12 @@ initialWeight = 1;
 * 1 = CLASSIC
 */
 weightNormalization = 1;
+
+/*
+* Euclidean length of weight vector of each synapse,
+* classic = 1.0
+*/
+weightVectorLength = $weightVectorLength;
 
 /*
 * What type of sparsification routine to apply.

@@ -162,7 +162,7 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, unsigned l
                 }
                 
                 // Init cell
-                Neurons[d][i][j].init(this, d, i, j, activation, inibitedActivation, firingRate, trace, stimulation, effectiveTrace, saveNeuronHistory, saveSynapseHistory, desiredFanIn);
+                Neurons[d][i][j].init(this, d, i, j, activation, inibitedActivation, firingRate, trace, stimulation, effectiveTrace, saveNeuronHistory, saveSynapseHistory, desiredFanIn, p.weightVectorLength);
             }
                
 	

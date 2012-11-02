@@ -33,6 +33,7 @@ class HiddenNeuron: public Neuron {
 	private:
         
         u_short desiredFanIn;
+        float weightVectorLength;
     
         // History saving
         unsigned long neuronHistoryCounter;
@@ -85,7 +86,8 @@ class HiddenNeuron: public Neuron {
                   float * const effectiveTraceHistory,
                   bool saveNeuronHistory, 
                   bool saveSynapseHistory,
-                  u_short desiredFanIn);
+                  u_short desiredFanIn,
+                  float weightVectorLength);
         
         // Destructor
         ~HiddenNeuron();
@@ -202,7 +204,7 @@ inline void HiddenNeuron::normalize(float norm) {
 	
 	norm = static_cast<float>(sqrt(norm));
 	for(u_short s = 0;s < afferentSynapses.size();s++)
-		afferentSynapses[s].weight /= norm;
+		afferentSynapses[s].weight *= weightVectorLength/norm;
 }
 
 

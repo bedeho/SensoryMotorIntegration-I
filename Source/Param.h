@@ -47,7 +47,9 @@ class Param  {
         float playAtPrcntOfOriginalSpeed;
 		bool resetTrace;
 		bool resetActivity;
-		bool saveNetwork; 
+		bool saveNetwork;
+    
+        float weightVectorLength;
 
         // Only 7a
         float visualPreferenceDistance;         
