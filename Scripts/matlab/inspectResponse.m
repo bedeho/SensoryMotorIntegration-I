@@ -19,7 +19,8 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     % Load data
     [networkDimensions, neuronOffsets] = loadWeightFileHeader(networkFile); % Load weight file header
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting); % (object, eye_position, row, col, region)
-    regionCorrs = regionCorrelation(filename, nrOfEyePositionsInTesting);
+    
+    %regionCorrs = regionCorrelation(filename, nrOfEyePositionsInTesting);
     
         
     % Load stimuli

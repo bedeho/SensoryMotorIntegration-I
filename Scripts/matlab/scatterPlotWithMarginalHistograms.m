@@ -35,6 +35,21 @@ function handle = scatterPlotWithMarginalHistograms(X, Y, XLabel, YLabel, Legend
     
     ADD COLOR to transparant plot, and make line more solid
     
+    %{
+    figure
+hist(data1,20)
+h = findobj(gca,?Type?,'patch?);
+set(h,?FaceColor?,'r?,'EdgeColor?,'w?,'facealpha?,0.75)
+hold on
+hist(data2,20)
+h = findobj(gca,?Type?,'patch?);
+set(h,?facealpha?,0.75);
+ylabel(?counts?)
+xlabel(?gene-tree-length/species-tree-length?)
+legend(?no HGT?,'HGT?)
+title(?p = 0.5?);
+    %}
+    
     for i=1:nrOfDatasets,
         
         % Add scatter plots

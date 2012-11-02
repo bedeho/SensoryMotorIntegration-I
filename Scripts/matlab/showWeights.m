@@ -41,13 +41,17 @@ function showWeights(networkFile, networkDimensions, neuronOffsets, region, row,
         
     end
     
+    % Most attractive presentation
+    numCols = floor(sqrt(numSources));
+    numRows = ceil(numSources / numCols);
+    
     % Plot sources
     for s=1:numSources,
         
         sourceRegion = sources(1,s);
         sourceDepth = sources(2,s);
         
-        subplot(1,numSources,s);
+        subplot(numRows, numCols, s);
         
         weightBox = afferentSynapseMatrix(fileID, networkDimensions, neuronOffsets, region, depth, row, col, sourceRegion, sourceDepth);
         cla

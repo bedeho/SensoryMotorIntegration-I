@@ -32,7 +32,7 @@
    	#for my $ftC (@ftCArray) {
    		
    	# 
-   	my $experiment						= "H4-sigma18"; # dtrefine-H30-sigma6-fanin0.10
+   	my $experiment						= "XGRID-H4-sigma18"; # dtrefine-H30-sigma6-fanin0.10
    	
    	#my $stim							= "multi-peaked-Tar=8.00-nTP=28.00-ftC=6.00-Sim=2.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=116.00-sE=44.00";
 
@@ -109,7 +109,7 @@
 	
 	my $offset							= 0; # -1 == old style
 	
-	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
+	my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $seed							= 55; # 55 is standard
 
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
