@@ -37,17 +37,12 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     % percentile line
     
     color = {[0.4,0.4,0.9]; [0.9,0.4,0.4]}; % , [0.4,0.4,0.4]
+    colorDarker = {[0.3,0.3,0.8]; [0.8,0.3,0.3]};
     
     %% Main plot
 
     % Create figure
     maxPlot = figure('Units','Pixels','position', [800 800 totalFigureWidth totalFigureHeight]);
-    
-    % TODO
-    % control axis: limits & ticks - enough space for legends!
-    % colors
-    % Collapsing bug
-    % Color away y axis on projectins
 
     yProjectionAxis = subplot(2,2,1);
     scatterAxis = subplot(2,2,2);
@@ -58,7 +53,7 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
         
         % Add scatter plots
         axes(scatterAxis);
-        plot(X(:,i), Y(:,i), 'o','MarkerFaceColor', color{i}, 'MarkerEdgeColor', color{i}, 'MarkerSize', 4);
+        plot(X(:,i), Y(:,i), 'o','MarkerFaceColor', color{i}, 'MarkerEdgeColor', color{i}, 'MarkerEdgeColor', colorDarker{i}, 'MarkerSize', 4);
         hold on;
         
     end
@@ -86,6 +81,7 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     % y
     axes(yProjectionAxis);
     hBar = bar(YHistograms,1.0,'stacked');
+    view(270,270);%camroll(90);
     set(hBar,{'FaceColor'}, color);
     
 
@@ -101,20 +97,18 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     set(scatterAxis, 'Units','Pixels', 'pos', p);
     xlabel(XLabel);
     ylabel(YLabel);
-    
-    YLIM = 0.3;
-    
+
     % y-projection
     axes(yProjectionAxis);
     box off
     axis tight
-    %axis off
-    camroll(90)
+    axis off
+    
     set(gca,'xtick',[])
     set(gca,'ytick',[]);
     p = [outerMargin scatterOffset projectionHeight scatterDim];
     set(yProjectionAxis, 'Units','Pixels', 'pos', p);
-    ylim([0 0.25]);
+    %ylim([0 0.25]);
 
     % x-projection
     axes(xProjectionAxis);
@@ -122,12 +116,12 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     set(xProjectionAxis, 'Units','Pixels', 'pos', p);
     box off
     axis tight
-    %axis off
+    axis off
     set(gca,'YDir','reverse');
     set(gca,'XAxisLocation','top');
     set(gca,'xtick',[]);
     set(gca,'ytick',[]);
-    ylim([0 max(max(YHistograms))]);
+    %ylim([0 max(max(YHistograms))]);
     
     %% Mini plot
     miniPlot = figure;
