@@ -4,66 +4,94 @@
 %
 %  Created by Bedeho Mender on 12/10/12.
 %  Copyright 2012 OFTNAI. All rights reserved.
+%
+%  X = (point,dataset) for x components
+%  Y = (point,dataset) for y components
 
-function handle = scatterPlotWithMarginalHistograms(X, Y, XLabel, YLabel) % , Color, Mark
+function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(X, Y, XLabel, YLabel, Legends)
 
+    % Get dimensions
+    [sizeOfDataset nrOfDatasets] = size(X);
+
+    % Check arguments 
+    if(any([sizeOfDataset nrOfDatasets] ~= size(Y)))
+        error('X,Y data incompatible');
+    elseif(nrOfDatasets ~= length(Legends))
+        error('Number of data sets does not match number of legends');
+    end
+
+    %% Parameters
+    
     % Dimensions
     scatterDim = 200;
     outerMargin = 20;
-    
     projectionHeight = 42;
     projectionScatterMargin = 40;
-    
     totalFigureHeight = 2*outerMargin + scatterDim + projectionHeight + projectionScatterMargin;
     totalFigureWidth = totalFigureHeight;
     
-    % Colors
-    mainColor = {[1,0.4,0.6]};
-    borderColor = {[0.4,0.4,0.4]};
+    % Colors,
+    % untrained = blue, 
+    % trained = red,
+    % discarded = grey
+    % percentile line
+    
+    color = {[0.4,0.4,0.9]; [0.9,0.4,0.4]}; % , [0.4,0.4,0.4]
+    
+    %% Main plot
 
     % Create figure
-    handle = figure('Units','Pixels','position', [800 800 totalFigureWidth totalFigureHeight]);
+    maxPlot = figure('Units','Pixels','position', [800 800 totalFigureWidth totalFigureHeight]);
     
-    % Get dimensions
-    [nrOfDatasets sizeOfDataset] = size(X);
-    
-    % Get normalizing values
-    %maxX = max(max(X'));
-    %maxY = max(max(Y'));
-    
-    %
+    % TODO
+    % control axis: limits & ticks - enough space for legends!
     % colors
-    % legends
-    % max value on each projection
-    %ADD COLOR to transparant plot, and make line more solid
-    
+    % Collapsing bug
+    % Color away y axis on projectins
+
     yProjectionAxis = subplot(2,2,1);
     scatterAxis = subplot(2,2,2);
     xProjectionAxis = subplot(2,2,4);
     
+    % Do scatters
     for i=1:nrOfDatasets,
         
         % Add scatter plots
         axes(scatterAxis);
-        hold on;
-        plot(X(i,:), Y(i,:), 'o','Color',mainColor{i});
-        
-        % Add y projections
-        axes(yProjectionAxis);
-        hist(Y(i,:),30,'r');
-        h = findobj(gca,'Type','patch');
-        set(h,'FaceColor', mainColor{i},'EdgeColor', borderColor{i},'facealpha',0.75);
+        plot(X(:,i), Y(:,i), 'o','MarkerFaceColor', color{i}, 'MarkerEdgeColor', color{i}, 'MarkerSize', 4);
         hold on;
         
-        % Add x projections
-        axes(xProjectionAxis);
-        hist(X(i,:),30);
-        h = findobj(gca,'Type','patch');
-        set(h,'FaceColor', mainColor{i},'EdgeColor', borderColor{i},'facealpha',0.75);
-        hold on;
     end
     
-    % Do positioning: remimber, pos = [left, bottom, width, height]
+    % Add legend
+    legend(Legends)
+    
+    % Add Grid
+    grid
+    
+    % Make histograms
+    NumberOfBins = 30;
+    XHistograms = hist(X, NumberOfBins);
+    YHistograms = hist(Y, NumberOfBins);
+    
+    % Normalize datasets (independently)
+    XHistograms = XHistograms ./ sizeOfDataset;
+    YHistograms = YHistograms ./ sizeOfDataset;
+    
+    % x
+    axes(xProjectionAxis);
+    hBar = bar(XHistograms,1.0,'stacked');
+    set(hBar,{'FaceColor'}, color);
+    
+    % y
+    axes(yProjectionAxis);
+    hBar = bar(YHistograms,1.0,'stacked');
+    set(hBar,{'FaceColor'}, color);
+    
+
+    %%
+    % Do positioning: 
+    % remimber, pos = [left, bottom, width, height]
     scatterOffset = (outerMargin+projectionHeight+projectionScatterMargin); % Offset between left (or bottom) of scatter plot and figure left (or bottom)
     
     % scatter
@@ -73,6 +101,8 @@ function handle = scatterPlotWithMarginalHistograms(X, Y, XLabel, YLabel) % , Co
     set(scatterAxis, 'Units','Pixels', 'pos', p);
     xlabel(XLabel);
     ylabel(YLabel);
+    
+    YLIM = 0.3;
     
     % y-projection
     axes(yProjectionAxis);
@@ -84,6 +114,7 @@ function handle = scatterPlotWithMarginalHistograms(X, Y, XLabel, YLabel) % , Co
     set(gca,'ytick',[]);
     p = [outerMargin scatterOffset projectionHeight scatterDim];
     set(yProjectionAxis, 'Units','Pixels', 'pos', p);
+    ylim([0 0.25]);
 
     % x-projection
     axes(xProjectionAxis);
@@ -96,7 +127,19 @@ function handle = scatterPlotWithMarginalHistograms(X, Y, XLabel, YLabel) % , Co
     set(gca,'XAxisLocation','top');
     set(gca,'xtick',[]);
     set(gca,'ytick',[]);
+    ylim([0 max(max(YHistograms))]);
     
-    % Add legends: , Legends{nrOfDatasets}
-   
+    %% Mini plot
+    miniPlot = figure;
+    
+    for i=1:nrOfDatasets,
+        
+        plot(X(:,i), Y(:,i),'o','MarkerFaceColor', color{i}, 'MarkerEdgeColor', color{i}, 'MarkerSize', 4);
+        hold on;
+        
+    end
+    
+    set(gca,'xtick',[]);
+    set(gca,'ytick',[]);
+    
 end
