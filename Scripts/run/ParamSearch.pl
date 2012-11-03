@@ -32,7 +32,7 @@
    	#for my $ftC (@ftCArray) {
    		
    	# 
-   	my $experiment						= "W2-H4-sigma18"; # dtrefine-H30-sigma6-fanin0.10
+   	my $experiment						= "W14-H4-sigma18"; # dtrefine-H30-sigma6-fanin0.10
    	
    	#my $stim							= "multi-peaked-Tar=8.00-nTP=28.00-ftC=6.00-Sim=2.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=116.00-sE=44.00";
 
@@ -78,7 +78,7 @@
 	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
 	my $learningRule					= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs						= 500; # 30,100
+	my $nrOfEpochs						= 300; # 30,100
 	my $saveNetworkAtEpochMultiple 		= 50;
 	my $outputAtTimeStepMultiple		= 3;
 
@@ -91,7 +91,7 @@
 	
 	my $sigmoidModulationPercentage		= "0.0";
 	
-	my $weightVectorLength				= "2.0"; # classic = 1.0
+	my $weightVectorLength				= "14.0"; # classic = 1.0
 
     ###################################################################
 	# Preprocessing
