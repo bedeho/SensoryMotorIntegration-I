@@ -8,20 +8,17 @@
 %  X = (point,dataset) for x components
 %  Y = (point,dataset) for y components
 
-function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(X, Y, XLabel, YLabel, Legends)
+function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(X, Y, XLabel, YLabel, Legends, YLim, XLim)
 
     % Get dimensions
-    [sizeOfDataset nrOfDatasets] = size(X);
-
-    % Check arguments 
-    if(any([sizeOfDataset nrOfDatasets] ~= size(Y)))
-        error('X,Y data incompatible');
-    elseif(nrOfDatasets ~= length(Legends))
+    if(length(X) ~= length(Y))
+        error('Unqeual number of X and Y datasets');
+    elseif(length(X) ~= length(Legends))
         error('Number of data sets does not match number of legends');
     end
-
-    %% Parameters
     
+    nrOfDataSets = length(X);
+
     % Dimensions
     scatterDim = 200;
     outerMargin = 20;
@@ -48,46 +45,60 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     scatterAxis = subplot(2,2,2);
     xProjectionAxis = subplot(2,2,4);
     
+    % Allocate space for histograms
+    NumberOfBins = 30;
+    XHistograms = zeros(NumberOfBins, nrOfDataSets);
+    YHistograms = zeros(NumberOfBins, nrOfDataSets);
+    
     % Do scatters
-    for i=1:nrOfDatasets,
+    for i=1:nrOfDataSets,
+        
+        % Get data
+        xData = X{i};
+        yData = Y{i};
+        
+        if length(xData) ~= length(yData),
+            error(['X and Y component of of dataset ' num2str(i) ' do not match.');
+        else 
+            sizeOfDataSet = length(xData);
+        end
+        
+        % Make normalize histograms
+        XHistograms(:,i) = hist(xData, NumberOfBins) ./ sizeOfDataSet;
+        YHistograms(:,i) = hist(yData, NumberOfBins) ./ sizeOfDataSet;
         
         % Add scatter plots
         axes(scatterAxis);
-        plot(X(:,i), Y(:,i), 'o','MarkerFaceColor', color{i}, 'MarkerEdgeColor', color{i}, 'MarkerEdgeColor', colorDarker{i}, 'MarkerSize', 4);
+        plot(xData, yData, 'o','MarkerFaceColor', color{i}, 'MarkerEdgeColor', color{i}, 'MarkerEdgeColor', colorDarker{i}, 'MarkerSize', 4);
         hold on;
+        
+        % Add x percentile lines
+        if X
+        xPercentile = prctile(xData,p)
         
     end
     
     % Add legend
-    legend(Legends)
+    if nrOfDataSets > 1,
+        legend(Legends,'Location','SouthEast')
+    end
     
     % Add Grid
     grid
     
-    % Make histograms
-    NumberOfBins = 30;
-    XHistograms = hist(X, NumberOfBins);
-    YHistograms = hist(Y, NumberOfBins);
-    
-    % Normalize datasets (independently)
-    XHistograms = XHistograms ./ sizeOfDataset;
-    YHistograms = YHistograms ./ sizeOfDataset;
-    
-    % x
+    % Add x projection
     axes(xProjectionAxis);
-    hBar = bar(XHistograms,1.0,'stacked');
-    set(hBar,{'FaceColor'}, color);
+    hBar = bar(XHistograms,1.0,'stacked','LineStyle','none'); 
+    set(hBar,{'FaceColor'}, color); %, {'EdgeColor'}, colorDarker
     
-    % y
+    % Add y projection
     axes(yProjectionAxis);
-    hBar = bar(YHistograms,1.0,'stacked');
+    hBar = bar(YHistograms,1.0,'stacked','LineStyle','none'); 
     view(270,270);%camroll(90);
-    set(hBar,{'FaceColor'}, color);
+    set(hBar,{'FaceColor'}, color); %, {'EdgeColor'}, colorDarker
     
-
-    %%
-    % Do positioning: 
-    % remimber, pos = [left, bottom, width, height]
+    % Positioning: 
+    % remember, pos = [left, bottom, width, height]
     scatterOffset = (outerMargin+projectionHeight+projectionScatterMargin); % Offset between left (or bottom) of scatter plot and figure left (or bottom)
     
     % scatter
@@ -97,8 +108,15 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     set(scatterAxis, 'Units','Pixels', 'pos', p);
     xlabel(XLabel);
     ylabel(YLabel);
+    
+    if nargin > 5,
+        ylim(YLim);
+        if nargin > 6,
+            xlim(XLim);
+        end
+    end
 
-    % y-projection
+    % y projection
     axes(yProjectionAxis);
     box off
     axis tight
@@ -108,9 +126,8 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     set(gca,'ytick',[]);
     p = [outerMargin scatterOffset projectionHeight scatterDim];
     set(yProjectionAxis, 'Units','Pixels', 'pos', p);
-    %ylim([0 0.25]);
 
-    % x-projection
+    % x projection
     axes(xProjectionAxis);
     p = [scatterOffset outerMargin scatterDim projectionHeight];
     set(xProjectionAxis, 'Units','Pixels', 'pos', p);
@@ -121,7 +138,6 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     set(gca,'XAxisLocation','top');
     set(gca,'xtick',[]);
     set(gca,'ytick',[]);
-    %ylim([0 max(max(YHistograms))]);
     
     %% Mini plot
     miniPlot = figure;

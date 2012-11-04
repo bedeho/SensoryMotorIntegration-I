@@ -30,11 +30,11 @@ function Stimuli(prefix)
     % Parameters
     seed                        = 70;      % classic = 72
     saccadeVelocity             = 400;      % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    samplingRate                = 100;      % <=============change to 1000=========================%1000 % (Hz)
-    fixationDuration            = 0.200;    % 0.02;	% (s) - fixation period after each saccade
-    fixationSequenceLength      = 30;
+    samplingRate                = 1000;      % <=============change to 1000=========================%1000 % (Hz)
+    fixationDuration            = 0.400;    % 0.02;	% (s) - fixation period after each saccade
+    fixationSequenceLength      = 20;
     
-    k = 4;
+    k = 8;
     numberOfFixations           = fixationSequenceLength * k;%7*50;
     
     % Deduced
@@ -57,24 +57,20 @@ function Stimuli(prefix)
     end
     
     % Filename
-    encodePrefix = [prefix 'Tar=0.00'];
-    encodePrefix = [encodePrefix '-nTP=0.00'];
-    encodePrefix = [encodePrefix '-nOF=' num2str(numberOfFixations,'%.2f')]; 
-    encodePrefix = [encodePrefix '-Sim=' num2str(dimensions.numberOfSimultanousObjects,'%.2f')];
-    encodePrefix = [encodePrefix '-fD='  num2str(fixationDuration,'%.2f') ];
-    encodePrefix = [encodePrefix '-fSL=' num2str(fixationSequenceLength,'%.2f') ];
+    folderName = [prefix 'nOF=' num2str(numberOfFixations,'%.2f') ...
+                         '-Sim=' num2str(dimensions.numberOfSimultanousObjects,'%.2f') ...
+                         '-fD='  num2str(fixationDuration,'%.2f') ...
+                         '-fSL=' num2str(fixationSequenceLength,'%.2f') ...
+                         '-vpD=' num2str(dimensions.visualPreferenceDistance,'%.2f') ...
+                         '-epD=' num2str(dimensions.eyePositionPrefrerenceDistance,'%.2f') ...
+                         '-gS='  num2str(dimensions.gaussianSigma,'%.2f') ...
+                         '-sS='  num2str(dimensions.sigmoidSlope,'%.2f') ...
+                         '-vF='  num2str(dimensions.visualFieldSize,'%.2f') ...
+                         '-eF='  num2str(dimensions.eyePositionFieldSize,'%.2f') ...
+                         '-sE='  num2str(seed,'%.2f') ...
+                         '-sR='  num2str(samplingRate,'%.2f')];
     
-    encodePrefix = [encodePrefix '-vpD=' num2str(dimensions.visualPreferenceDistance,'%.2f')];
-    encodePrefix = [encodePrefix '-epD=' num2str(dimensions.eyePositionPrefrerenceDistance,'%.2f')];
-    encodePrefix = [encodePrefix '-gS='  num2str(dimensions.gaussianSigma,'%.2f')];
-    encodePrefix = [encodePrefix '-sS='  num2str(dimensions.sigmoidSlope,'%.2f')];
-    encodePrefix = [encodePrefix '-vF='  num2str(dimensions.visualFieldSize,'%.2f')];
-    encodePrefix = [encodePrefix '-eF='  num2str(dimensions.eyePositionFieldSize,'%.2f')];
-    encodePrefix = [encodePrefix '-sE='  num2str(seed,'%.2f')];
-    encodePrefix = [encodePrefix '-sR='  num2str(samplingRate,'%.2f')];
-    tSFolderName = [encodePrefix];
-    
-    tSPath = [base 'Stimuli/' tSFolderName '-training'];
+    tSPath = [base 'Stimuli/' folderName '-training'];
     
     % Make folder
     if ~isdir(tSPath),
@@ -97,7 +93,6 @@ function Stimuli(prefix)
     % SYSTEMATIC
     potentialTargets = fliplr(centerN2(visualRange, k));
     unsampledPerms = combnk(1:length(potentialTargets), dimensions.numberOfSimultanousObjects);
-    
     
     %leftMostTargetSeen = inf;
     %rightMostTargetSeen = -inf;
