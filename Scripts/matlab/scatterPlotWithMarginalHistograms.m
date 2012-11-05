@@ -7,14 +7,18 @@
 %
 %  X = (point,dataset) for x components
 %  Y = (point,dataset) for y components
+%  varargin = variable argument list for controlling appearance
 
-function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(X, Y, XLabel, YLabel, Legends, YLim, XLim)
+% scatterPlotWithMarginalHistograms({randn(200,1), randn(400,1)*0.3}, {randn(200,1)+1, randn(400,1)*1.6},'XTitle','Receptive Field Location (deg)','YTitle','Head-Centerednes','Legends',{'Untrained','Trained'})
 
+function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(X, Y, varargin)
+
+    % Process varargs
+    args = vararginProcessing(varargin, {'XTitle', 'YTitle', 'XLim', 'YLim', 'Legends', 'FaceColors', 'EdgeColors'}); % 'XPercentiles', 'YPercentiles',
+    
     % Get dimensions
     if(length(X) ~= length(Y))
         error('Unqeual number of X and Y datasets');
-    elseif(length(X) ~= length(Legends))
-        error('Number of data sets does not match number of legends');
     end
     
     nrOfDataSets = length(X);
@@ -33,8 +37,18 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     % discarded = grey
     % percentile line
     
-    color = {[0.4,0.4,0.9]; [0.9,0.4,0.4]}; % , [0.4,0.4,0.4]
-    colorDarker = {[0.3,0.3,0.8]; [0.8,0.3,0.3]};
+    if(isKey(args, 'FaceColors')),
+        faceColors = args('FaceColors')
+    else
+        faceColors ={[0.4,0.4,0.9]; [0.9,0.4,0.4]}; % , [0.4,0.4,0.4]
+    end
+       
+    if(isKey(args, 'EdgeColors')),
+        edgeColors = args('EdgeColors')
+    else
+        edgeColors = {[0.3,0.3,0.8]; [0.8,0.3,0.3]}; % , [0.3,0.3,0.3]
+    end
+
     
     %% Main plot
 
@@ -46,9 +60,48 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     xProjectionAxis = subplot(2,2,4);
     
     % Allocate space for histograms
-    NumberOfBins = 30;
+    NumberOfBins = 40;
     XHistograms = zeros(NumberOfBins, nrOfDataSets);
     YHistograms = zeros(NumberOfBins, nrOfDataSets);
+    
+    if(isKey(args, 'XLim') && isKey(args, 'YLim')),
+        
+        XLim = args('XLim');
+        YLim = args('YLim');
+        
+        minX = XLim(1);
+        maxX = XLim(2);
+        minY = YLim(1);
+        maxY = YLim(2);
+
+    else
+    
+        % Find maximum number
+        maxX = 0;
+        minX = inf;
+        maxY = 0;
+        minY = inf;
+        
+        for i=1:nrOfDataSets,
+
+            % Get data
+            xData = X{i};
+            yData = Y{i};
+
+            % Find limits
+            maxX = max(maxX, max(xData));
+            minX = min(minX, min(xData));
+            maxY = max(maxY, max(yData));
+            minY = min(minY, min(yData));
+
+        end
+        
+        XLim = [minX maxX];
+        YLim = [minY maxY];
+    end
+    
+    xDivide = linspace(minX, maxX, NumberOfBins);
+    yDivide = linspace(minY, maxY, NumberOfBins);
     
     % Do scatters
     for i=1:nrOfDataSets,
@@ -58,29 +111,42 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
         yData = Y{i};
         
         if length(xData) ~= length(yData),
-            error(['X and Y component of of dataset ' num2str(i) ' do not match.');
+            error(['X and Y component of of dataset ' num2str(i) ' do not match.']);
         else 
             sizeOfDataSet = length(xData);
         end
         
         % Make normalize histograms
-        XHistograms(:,i) = hist(xData, NumberOfBins) ./ sizeOfDataSet;
-        YHistograms(:,i) = hist(yData, NumberOfBins) ./ sizeOfDataSet;
+        XHistograms(:,i) = histc(xData, xDivide) ./ sizeOfDataSet;
+        YHistograms(:,i) = histc(yData, yDivide) ./ sizeOfDataSet;
         
         % Add scatter plots
         axes(scatterAxis);
-        plot(xData, yData, 'o','MarkerFaceColor', color{i}, 'MarkerEdgeColor', color{i}, 'MarkerEdgeColor', colorDarker{i}, 'MarkerSize', 4);
+        plot(xData, yData, 'o','MarkerFaceColor', faceColors{i}, 'MarkerEdgeColor', edgeColors{i}, 'MarkerSize', 4);
         hold on;
         
+        %{
         % Add x percentile lines
-        if X
-        xPercentile = prctile(xData,p)
+        if isKey(args, 'XPercentiles'),
+            p = args('XPercentiles');
+            xPercentile = prctile(xData,p(i));
+            xmax = 
+            
+        end
+        %}
         
     end
     
     % Add legend
-    if nrOfDataSets > 1,
-        legend(Legends,'Location','SouthEast')
+    if nrOfDataSets > 1 && isKey(args,'Legends'),
+        
+        Legends = args('Legends');
+        
+        if(nrOfDataSets == length(Legends))
+            legend(Legends, 'Location', 'SouthEast');
+        else
+            error('Number of data sets does not match number of legends');
+        end 
     end
     
     % Add Grid
@@ -89,13 +155,13 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     % Add x projection
     axes(xProjectionAxis);
     hBar = bar(XHistograms,1.0,'stacked','LineStyle','none'); 
-    set(hBar,{'FaceColor'}, color); %, {'EdgeColor'}, colorDarker
+    set(hBar,{'FaceColor'}, faceColors); %, {'EdgeColor'}, edgeColors
     
     % Add y projection
     axes(yProjectionAxis);
     hBar = bar(YHistograms,1.0,'stacked','LineStyle','none'); 
-    view(270,270);%camroll(90);
-    set(hBar,{'FaceColor'}, color); %, {'EdgeColor'}, colorDarker
+    view(-90,90);
+    set(hBar,{'FaceColor'}, faceColors); %, {'EdgeColor'}, edgeColors
     
     % Positioning: 
     % remember, pos = [left, bottom, width, height]
@@ -106,16 +172,28 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     box on;
     p = [scatterOffset scatterOffset scatterDim scatterDim];
     set(scatterAxis, 'Units','Pixels', 'pos', p);
-    xlabel(XLabel);
-    ylabel(YLabel);
     
-    if nargin > 5,
-        ylim(YLim);
-        if nargin > 6,
-            xlim(XLim);
-        end
+    if isKey(args,'XTitle'),
+        xlabel(args('XTitle'));
     end
-
+    
+    if isKey(args,'YTitle'),
+        ylabel(args('YTitle'));
+    end
+    
+    xlim(XLim);
+    ylim(YLim);
+    
+    %{
+    if isKey(args,'XLim'),
+        xlim(args('XLim'));
+    end
+    
+    if isKey(args,'YLim'),
+        ylim(args('YLim'));
+    end
+    %}
+    
     % y projection
     axes(yProjectionAxis);
     box off
@@ -142,9 +220,9 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     %% Mini plot
     miniPlot = figure;
     
-    for i=1:nrOfDatasets,
+    for i=1:nrOfDataSets,
         
-        plot(X(:,i), Y(:,i),'o','MarkerFaceColor', color{i}, 'MarkerEdgeColor', color{i}, 'MarkerSize', 4);
+        plot(X{i}, Y{i},'o','MarkerFaceColor', faceColors{i},'MarkerEdgeColor', faceColors{i}, 'MarkerSize', 4);
         hold on;
         
     end

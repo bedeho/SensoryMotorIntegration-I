@@ -10,6 +10,11 @@
 
 function map = vararginProcessing(variableArguments, knownArgumentNames)
 
+    if(length(variableArguments) == 0 || length(knownArgumentNames) == 0)
+        map = containers.Map
+        return
+    end
+
     % Check that all provided known arguments are strings: can't vectorize, its a cell!
     for i=length(knownArgumentNames),
         if(~strcmp(class(knownArgumentNames{i}), 'char')),

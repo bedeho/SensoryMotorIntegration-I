@@ -54,7 +54,7 @@ function dimensions = OneD_DG_Dimensions()
     
     % Derive eye movement range is sufficiently confined to keep ANY
     % target on retina
-    dimensions.eyePositionFieldSize = dimensions.visualFieldSize - 2*dimensions.targets(end);
+    %%%dimensions.eyePositionFieldSize = dimensions.visualFieldSize - 2*dimensions.targets(end);
     %dimensions.eyePositionEccentricity = dimensions.eyePositionFieldSize/2;
     dimensions.leftMostEyePosition = -dimensions.eyePositionFieldSize/2;
     dimensions.rightMostEyePosition = dimensions.eyePositionFieldSize/2; 
