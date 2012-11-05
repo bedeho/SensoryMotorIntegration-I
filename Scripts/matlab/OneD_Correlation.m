@@ -1,12 +1,12 @@
 %
-%  OneD_DG_Correlation.m
+%  OneD_Correlation.m
 %  SMI
 %
 %  Created by Bedeho Mender on 27/01/12.
 %  Copyright 2012 OFTNAI. All rights reserved.
 %
 
-function OneD_DG_Correlation(stimuliName)
+function OneD_Correlation(stimuliName)
 
     % Import global variables
     declareGlobalVars();

@@ -32,10 +32,10 @@ Param::Param(const char * filename, bool isTraining) {
         //cfg.lookupValue("transferFunction", tmp);
 		//transferFunction = static_cast<TRANSFER_FUNCTION>(tmp);
 		
-		cfg.lookupValue("continuous.traceTimeConstant", traceTimeConstant);
-		cfg.lookupValue("continuous.stepSizeFraction", stepSizeFraction);
-		cfg.lookupValue("continuous.resetActivity", resetActivity);
-		cfg.lookupValue("continuous.outputAtTimeStepMultiple", tmp);
+		cfg.lookupValue("traceTimeConstant", traceTimeConstant);
+		cfg.lookupValue("stepSizeFraction", stepSizeFraction);
+		cfg.lookupValue("resetActivity", resetActivity);
+		cfg.lookupValue("outputAtTimeStepMultiple", tmp);
 		outputAtTimeStepMultiple = static_cast<u_short>(tmp);
 		
 		// training

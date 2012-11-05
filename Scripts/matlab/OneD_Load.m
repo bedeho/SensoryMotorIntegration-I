@@ -8,7 +8,7 @@
 %  Purpose: load 1d data
 %
 
-function [samplingRate, numberOfSimultanousObjects, visualFieldSize, eyePositionFieldSize, buffer] = OneD_Load(stimuliName)
+function [samplingRate, numberOfSimultanousTargets, visualFieldSize, eyePositionFieldSize, buffer] = OneD_Load(stimuliName)
 
     % Import global variables
     declareGlobalVars();
@@ -22,7 +22,7 @@ function [samplingRate, numberOfSimultanousObjects, visualFieldSize, eyePosition
 
     % Read header
     samplingRate = fread(fileID, 1, 'ushort');               % Rate of sampling
-    numberOfSimultanousObjects = fread(fileID, 1, 'ushort'); % Number of simultanously visible targets, needed to parse data
+    numberOfSimultanousTargets = fread(fileID, 1, 'ushort'); % Number of simultanously visible targets, needed to parse data
     visualFieldSize = fread(fileID, 1, 'float');           % Size of visual field
     eyePositionFieldSize = fread(fileID, 1, 'float');
     
@@ -44,15 +44,16 @@ function [samplingRate, numberOfSimultanousObjects, visualFieldSize, eyePosition
         % Consume reset
         if ~isnan(eyePosition),
             
-            retinalPositions = fread(fileID, numberOfSimultanousObjects,'float');
+            retinalPositions = fread(fileID, numberOfSimultanousTargets,'float');
             buffer = [buffer; eyePosition retinalPositions'];
         else
 
             % Reset counter at last object
-            buffer = [buffer; nan (nan * ones(1,numberOfSimultanousObjects))];
+            buffer = [buffer; nan (nan * ones(1, numberOfSimultanousTargets))];
         end
         
         counter = counter + 1;
     end
     
     fclose(fileID);
+end

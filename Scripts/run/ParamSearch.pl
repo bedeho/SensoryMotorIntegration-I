@@ -16,7 +16,6 @@
 	use Cwd 'abs_path';
 	use myConfig;
 
-
 	use ps1; # ps1, ps2 # <-------- only change this to change to different number of layers!! jippi
 	
 	my $imported = "ps1"; # psi1,ps2
@@ -31,32 +30,13 @@
    	
    	#for my $ftC (@ftCArray) {
    		
-   	# 
    	my $experiment						= "W14-H4-sigma18"; # dtrefine-H30-sigma6-fanin0.10
    	
-   	#my $stim							= "multi-peaked-Tar=8.00-nTP=28.00-ftC=6.00-Sim=2.00-fD=0.50-nF=6.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=116.00-sE=44.00";
-
-	# new-movestim
-	#my $nTP 							= ceil((2 * 2 * 10)/$ftC);
-	#$nTP								= "${nTP}.00";
-	#my $experiment						= "new-movestim_${ftC}";
-	#my $stim 							= "new-movestim-Tar=2.00-nTP=${nTP}-ftC=${ftC}-Sim=1.00-fD=0.50-nF=10.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-sE=44.00";
-
 	# 0MOVESTIM
 	#my $nTP 							= ceil((2 * 4 * 10)/$ftC);
 	#$nTP								= "${nTP}.00";
 	#my $experiment						= "sparsitycheck-0MOVESTIM_${ftC}";
 	#my $stim							= "0MOVESTIM-Tar=4.00-nTP=${nTP}-ftC=${ftC}-Sim=1.00-fD=0.50-nF=10.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=44.00";
-
-	# movementstatistics
-	#my $experiment	 					= "sparsity_movementstatistics_6"; #${ftC}
-	#my $stim							= "movementstatistics-Tar=2.00-nTP=28.00-ftC=6.00-Sim=1.00-fD=0.50-nF=14.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-sE=17.00";
-
-	# DENSE, varying sigma
-	#my $stim							= "dense-sigma18-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=2.00-epD=2.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00";
-	#my $stim							= "dense-sigma9-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=2.00-epD=2.00-gS=9.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00";
-	#my $stim							= "dense-sigma4-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=2.00-epD=2.00-gS=4.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00";
-	#my $stim							= "dense-sigma6-Tar=0.00-nTP=0.00-nOF=300.00-Sim=1.00-fD=0.20-fSL=10.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=114.00-sR=100.00"; 
 	
 	# sigm=6, works at 01 fanin
 	# worked
@@ -70,39 +50,37 @@
 	#my $stim							= "H3-sigma18-Tar=0.00-nTP=0.00-nOF=90.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	my $stim							= "H4-sigma18-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	
-	my $offset							= 0; # -1 == old style
-	
 	my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
-	my $seed							= 55; # 55 is standard
-
-	my $neuronType						= CONTINOUS; # CONTINOUS, DISCRETE
 	my $learningRule					= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs						= 300; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 50;
-	my $outputAtTimeStepMultiple		= 3;
+	my $nrOfEpochs						= 50; # 30,100
+	my $saveNetworkAtEpochMultiple 		= 10;
+	my $outputAtTimeStepMultiple		= 1;
 
 	my $lateralInteraction				= COMP; # NONE, COMP, SOM
 	my $sparsenessRoutine				= HEAP; # NONE, HEAP, GLOBAL
 
-	
 	my $resetActivity					= "false"; # "false", Reset activation between objects of training
-	my $resetTrace						= "true"; # "false", Reset trace between objects of training
+	my $resetTrace						= "false"; # "false", Reset trace between objects of training
 	
 	my $sigmoidModulationPercentage		= "0.0";
-	
 	my $weightVectorLength				= "14.0"; # classic = 1.0
+	my $seed							= 55; # 55 is standard
+	
+	my $visualPreferenceDistance		= "1.0";
+	my $eyePositionPrefrerenceDistance	= "1.0";
+	my $gaussianSigma					= "6.0"; 
+	my $sigmoidSlope					= "0.0625"; #1/16
+	
+	my $stimuliTraining 				= $stim."-training";
+	my $stimuliTesting 					= $stim."-stdTest";
 
     ###################################################################
 	# Preprocessing
-    ####################################################################
-
-	my $stimuliTraining 			= $stim."-training";
-	my $stimuliTesting 			= $stim."-stdTest";
-
+    ###################################################################
 	# Load params from stimuli name	
 	# Tar=2.00-nTP=6.00-ftC=3.00-Sim=1.00-fD=0.50-nF=3.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-training
-	my @res 				= ($stimuliTraining =~ m/(\d+\.\d+)/g);
+	#my @res 				= ($stimuliTraining =~ m/(\d+\.\d+)/g);
 
 	#my $Tar 							= $res[0];
 	#my $nTP 							= $res[1];
@@ -110,19 +88,24 @@
 	#my $Sim 							= $res[3];
 	#my $fD 							= $res[4];
 	#my $nF								= $res[5]
-	my $visualPreferenceDistance		= $res[6 + $offset];
-	my $eyePositionPrefrerenceDistance	= $res[7 + $offset];
-	my $gaussianSigma					= $res[8 + $offset];
-	my $sigmoidSlope					= $res[9 + $offset];
-	my $horVisualFieldSize				= $res[10 + $offset];
-	my $horEyePositionFieldSize			= $res[11 + $offset];
 	
-	print "Visual Preference Distance: $visualPreferenceDistance\n";
-	print "Eye Position Distance: $eyePositionPrefrerenceDistance\n";
-	print "Gaussian sigma: $gaussianSigma\n";
-	print "Slope: $sigmoidSlope\n";
-	print "Visual Field Size: $horVisualFieldSize\n";
-	print "Eye Position Field: $horEyePositionFieldSize\n\n";
+	# set manually
+	#my $offset							= 0; # -1 == old style
+	#my $visualPreferenceDistance		= $res[6 + $offset];
+	#my $eyePositionPrefrerenceDistance	= $res[7 + $offset];
+	#my $gaussianSigma					= $res[8 + $offset];
+	#my $sigmoidSlope					= $res[9 + $offset];
+	
+	# load fromstimuli file
+	#my $horVisualFieldSize				= $res[10 + $offset];
+	#my $horEyePositionFieldSize		= $res[11 + $offset];
+
+	#print "Visual Preference Distance: $visualPreferenceDistance\n";
+	#print "Eye Position Distance: 		$eyePositionPrefrerenceDistance\n";
+	#print "Gaussian sigma: 			$gaussianSigma\n";
+	#print "Slope: 						$sigmoidSlope\n";
+	#print "Visual Field Size: 			$horVisualFieldSize\n";
+	#print "Eye Position Field: 		$horEyePositionFieldSize\n\n";
     
 	# Build template parameter file from these    	    	    	    	    
 	my @esRegionSettings;
@@ -461,30 +444,22 @@
 */
 
 /*
-* What type of neuron type to use:
-* 0 = discrete, 1 = continous
+* This fraction of timeConstant is the step size of the forward euler solver
 */
-neuronType = $neuronType;
+stepSizeFraction = $stepSizeFraction;
 
-continuous : {
-	/*
-	* This fraction of timeConstant is the step size of the forward euler solver
-	*/
-	stepSizeFraction = $stepSizeFraction;
+/*
+* Time constant for trace term
+*/
+traceTimeConstant = $traceTimeConstant;
 
-	/*
-	* Time constant for trace term
-	*/
-	traceTimeConstant = $traceTimeConstant;
+/*
+* Whether or not to reset activity across objects in training
+*/
+resetActivity = $resetActivity;
 	
-	/*
-	* Whether or not to reset activity across objects in training
-	*/
-	resetActivity = $resetActivity;
-	
-	/* Only continous neurons, may lead to no output both in training and testing!*/
-	outputAtTimeStepMultiple = $outputAtTimeStepMultiple; 
-};
+/* Only continous neurons, may lead to no output both in training and testing!*/
+outputAtTimeStepMultiple = $outputAtTimeStepMultiple; 
 
 training: {
 	/*
@@ -558,14 +533,6 @@ sparsenessRoutine = $sparsenessRoutine;
 lateralInteraction = $lateralInteraction;
 
 /*
-* What percent of orignal speed should model be exposed to data.
-* playAtPrcntOfOriginalSpeed = 1.0   : live speed
-* playAtPrcntOfOriginalSpeed = 1.7 : 70% faster then live speed
-* playAtPrcntOfOriginalSpeed = 0.7 : 30% slower then live speed
-*/
-playAtPrcntOfOriginalSpeed = 1.0;
-
-/*
 * Only used in build command:
 * Random seed used to setup initial weight strength
 * and setup connectivity based on radii parameter.
@@ -582,16 +549,6 @@ area7a: {
 	* The distance between consecutive neuron preferences in eye position space
 	*/	
 	eyePositionPrefrerenceDistance = $eyePositionPrefrerenceDistance;
-	      
-	/*
-	* Size of visual field in degrees
-	*/
-	horVisualFieldSize = $horVisualFieldSize;
-	
-	/*
-	* Size of movement field in degrees
-	*/
-	horEyePositionFieldSize = $horEyePositionFieldSize;
 	
 	/*
 	* Spread of gaussian component

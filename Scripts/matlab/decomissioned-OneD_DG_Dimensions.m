@@ -8,21 +8,17 @@
 
 function dimensions = OneD_DG_Dimensions()
 
-    % Stimuli
-    M = 8;
-    dimensions.nrOfVisualTargetLocations  = M;
-    dimensions.numberOfSimultanousObjects = 1;
+error(' no longer in use');
+%{
+
+    % Enviroment
+    dimensions.numberOfSimultanousObjects           = 1;
+    dimensions.visualFieldSize                      = 200; % Entire visual field (rougly 100 per eye), (deg)
+    dimensions.targetRangeProportionOfVisualField   = 1/3;
     
-    % Enviroment (non-Elmsley) 
-    dimensions.visualFieldSize             = 200; % Entire visual field (rougly 100 per eye), (deg)
-    dimensions.targetRangeProportionOfVisualField = 0.5;
-    dimensions.visualFieldEccentricity     = dimensions.visualFieldSize * dimensions.targetRangeProportionOfVisualField;
-    
-    % Elmsley eye model
-    % DistanceToScreen          = ;     % Eye centers line to screen distance (meters)
-    % Eyeball                   = ;     % Radius of each eyeball (meters)
-    % EyeSpacing                = ;     % Half eye center distance (meters)
-    % OnScreenTargetSpacing     = ;     % On screen target distance (meters)
+    % Deduced
+    dimensions.visualFieldEccentricity              = dimensions.visualFieldSize * dimensions.targetRangeProportionOfVisualField;
+    dimensions.eyePositionRange                     = dimensions.visualFieldSize/2 - visualRange/2;
 
     % LIP Parameters
     
@@ -33,13 +29,20 @@ function dimensions = OneD_DG_Dimensions()
     dimensions.sigmoidSlope = 1/16; % (1/8)/2; % num
     
     %% Modified:
-    %dimensions.visualPreferenceDistance = 1;
-    %dimensions.eyePositionPrefrerenceDistance = 1;
-    %dimensions.gaussianSigma = 6; % deg
-    %dimensions.sigmoidSlope = 1/16 % (1/8)/2; % num
+    %{
+    dimensions.visualPreferenceDistance = 1;
+    dimensions.eyePositionPrefrerenceDistance = 1;
+    dimensions.gaussianSigma = 6; % deg
+    dimensions.sigmoidSlope = 1/16 % (1/8)/2; % num
+    %}
     
-    % Dump to screen
-    dimensions
+    %{
+    % Stimuli
+    M = 8;
+    dimensions.nrOfVisualTargetLocations  = M;
+    %}
+    
+    %{
     
     % Place targets
     if dimensions.nrOfVisualTargetLocations > 1,
@@ -69,6 +72,7 @@ function dimensions = OneD_DG_Dimensions()
     
     dimensions.nrOfVisualPreferences = length(dimensions.visualPreferences);
     dimensions.nrOfEyePositionPrefrerence = length(dimensions.eyePositionPreferences);
-
     
+    %}   
+%}
 end

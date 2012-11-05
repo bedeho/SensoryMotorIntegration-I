@@ -1,5 +1,5 @@
 %
-%  OneDVisualize_TimerFcn.m
+%  OneD_Visualize_TimerFcn.m
 %  SMI
 %
 %  Created by Bedeho Mender on 15/11/11.
@@ -19,7 +19,15 @@ function OneD_Visualize_TimerFcn(obj, event)
     global timeStep;
     global fig;
     
-    global numberOfSimultanousObjects;
+    global numberOfSimultanousTargets;
+    global visualPreferences;
+    global nrOfEyePositionPrefrerence;
+    global gaussianSigma;
+    global sigmoidSlope;
+    
+    global eyePositionFieldSize;
+    global visualFieldSize;
+    
     
     global dimensions;
         
@@ -45,7 +53,7 @@ function OneD_Visualize_TimerFcn(obj, event)
     % Consume reset
     if ~isnan(eyePosition),
 
-        retinalPositions = buffer(lineCounter, 2:(numberOfSimultanousObjects + 1)); 
+        retinalPositions = buffer(lineCounter, 2:(numberOfSimultanousTargets + 1)); 
          
         %disp(['Read: eye =' num2str(eyePosition) ', ret=' num2str(retinalPositions)]);
         
@@ -66,9 +74,7 @@ function OneD_Visualize_TimerFcn(obj, event)
     % draw LIP sig*gauss neurons and input space
     function draw()
 
-        
-        v = OneD_DG_InputLayer(dimensions, [eyePosition retinalPositions]);
-        
+        v = OneD_DG_InputLayer([eyePosition retinalPositions], visualPreferences, nrOfEyePositionPrefrerence, gaussianSigma, sigmoidSlope);
         
         % Clean up so that it is not hidden from us that stimuli is off
         % retina
@@ -99,7 +105,7 @@ function OneD_Visualize_TimerFcn(obj, event)
         %% input space
         subplot(4,1,3);
         
-        plot(eyePosition*ones(numberOfSimultanousObjects), retinalPositions , 'o');
+        plot(eyePosition*ones(numberOfSimultanousTargets), retinalPositions , 'o');
         
         daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
         axis([dimensions.leftMostEyePosition dimensions.rightMostEyePosition dimensions.leftMostVisualPosition dimensions.rightMostVisualPosition]);
@@ -118,7 +124,7 @@ function OneD_Visualize_TimerFcn(obj, event)
         % plot
         %cla
         rows = 1:(lineCounter - nrOfObjectsFoundSoFar);
-        for o = 1:dimensions.numberOfSimultanousObjects,
+        for o = 1:numberOfSimultanousTargets,
             plot(temp(rows, 1), temp(rows ,o + 1) , 'o');
             
             hold on;

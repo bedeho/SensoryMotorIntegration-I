@@ -1,72 +1,66 @@
 %
-%  Stimuli.m
+%  OneD_Training.m
 %  SMI
 %
 %  Created by Bedeho Mender on 05/10/12.
 %  Copyright 2012 OFTNAI. All rights reserved.''
 %
-%  Purpose: Generates the simplest possible 1d dynamical data
+%  Purpose: Generates 1d dynamical data
 %  
 %           Works by first generating a sequence of system
 %           states at each non-smooth point in the dynamics
 %           of the linear system, i.e. start and end of every 
-%           saccade. These points ARE NOT temporally quidistant
+%           saccade. These points ARE NOT temporally equidistant
 %           because fixations last longer than saccades.
 %           Than this piecewise linear sequence is stepped through
 %           at fixed temporal intervals and the system state is
 %           linearly interpolated and saved at each point to file.
 %
 
-function Stimuli(prefix)
+function OneD_Training(prefix)
 
     % Import global variables
     declareGlobalVars();
     
     global base;
     
-    % Load enviromental paramters
-    dimensions = OneD_DG_Dimensions();
+    % Environment
+    numberOfSimultanousTargets          = 1;
+    q                                   = 1/3; % targetRangeProportionOfVisualField
+    visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
+    eyePositionFieldSize                = (1-q)*visualFieldSize; % visualFieldSize/2 - targetVisualRange/2;
+    targetVisualRange                   = visualFieldSize * q;
+    targetEyePositionRange              = 1*eyePositionFieldSize;
     
-    % Parameters
-    seed                        = 70;      % classic = 72
-    saccadeVelocity             = 400;      % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    samplingRate                = 1000;      % <=============change to 1000=========================%1000 % (Hz)
-    fixationDuration            = 0.400;    % 0.02;	% (s) - fixation period after each saccade
-    fixationSequenceLength      = 20;
+    % Agent
+    seed                                = 72;  % classic = 72
+    saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
+    samplingRate                        = 1000;% (Hz)
+    fixationDuration                    = 0.3; % (s) - fixation period after each saccade
+    fixationSequenceLength              = 20;
+    k                                   = 8;
+    numberOfFixations                   = fixationSequenceLength * k;
     
-    k = 8;
-    numberOfFixations           = fixationSequenceLength * k;%7*50;
-    
-    % Deduced
-    scaleDown = 1/3;% 1/2;
-    visualRange = dimensions.visualFieldSize*scaleDown;
-    eyePositionRange = dimensions.visualFieldSize/2 - visualRange/2;
-    
-    % Check 
+    % Error check 
     if mod(numberOfFixations, fixationSequenceLength) ~= 0,
         error('The number of fixations is not divisible by fixation sequences');
     else
         numberOfSequences = numberOfFixations / fixationSequenceLength;
     end
     
-    % No multiline concat... damn
+    % Filename
     if nargin < 1,
         prefix = '';
     else
         prefix = [prefix '-']
     end
     
-    % Filename
     folderName = [prefix 'nOF=' num2str(numberOfFixations,'%.2f') ...
-                         '-Sim=' num2str(dimensions.numberOfSimultanousObjects,'%.2f') ...
+                         '-Sim=' num2str(numberOfSimultanousTargets,'%.2f') ...
                          '-fD='  num2str(fixationDuration,'%.2f') ...
                          '-fSL=' num2str(fixationSequenceLength,'%.2f') ...
-                         '-vpD=' num2str(dimensions.visualPreferenceDistance,'%.2f') ...
-                         '-epD=' num2str(dimensions.eyePositionPrefrerenceDistance,'%.2f') ...
-                         '-gS='  num2str(dimensions.gaussianSigma,'%.2f') ...
-                         '-sS='  num2str(dimensions.sigmoidSlope,'%.2f') ...
-                         '-vF='  num2str(dimensions.visualFieldSize,'%.2f') ...
-                         '-eF='  num2str(dimensions.eyePositionFieldSize,'%.2f') ...
+                         '-vF='  num2str(visualFieldSize,'%.2f') ...
+                         '-eF='  num2str(eyePositionFieldSize,'%.2f') ...
                          '-sE='  num2str(seed,'%.2f') ...
                          '-sR='  num2str(samplingRate,'%.2f')];
     
@@ -83,16 +77,16 @@ function Stimuli(prefix)
 
     % Make header
     fwrite(fileID, samplingRate, 'ushort');               % Rate of sampling
-    fwrite(fileID, dimensions.numberOfSimultanousObjects, 'ushort'); % Number of simultanously visible targets, needed to parse data
-    fwrite(fileID, dimensions.visualFieldSize, 'float');
-    fwrite(fileID, dimensions.eyePositionFieldSize, 'float');
+    fwrite(fileID, numberOfSimultanousTargets, 'ushort'); % Number of simultanously visible targets, needed to parse data
+    fwrite(fileID, visualFieldSize, 'float');
+    fwrite(fileID, eyePositionFieldSize, 'float');
     
     % Set seed
     rng(seed, 'twister');
     
     % SYSTEMATIC
-    potentialTargets = fliplr(centerN2(visualRange, k));
-    unsampledPerms = combnk(1:length(potentialTargets), dimensions.numberOfSimultanousObjects);
+    potentialTargets = fliplr(centerN2(targetVisualRange, k));
+    unsampledPerms = combnk(1:length(potentialTargets), numberOfSimultanousTargets);
     
     %leftMostTargetSeen = inf;
     %rightMostTargetSeen = -inf;
@@ -104,12 +98,13 @@ function Stimuli(prefix)
         % Produce targets
          
         %% UNIFORM
-        %targets = visualRange*(rand(1,dimensions.numberOfSimultanousObjects) - 0.5);
+        %targets = targetVisualRange*(rand(1, numberOfSimultanousTargets) - 0.5);
         
         %% GAUSSIAN (fixed mean)
-        %targets = (visualRange+1)*ones(1,dimensions.numberOfSimultanousObjects);
-        %while any(abs(targets) > visualTargetEccentricity/2),
-        %    targets = normrnd(0,visualTargetEccentricity/6);
+        %targets = (targetVisualRange+1)*ones(1, numberOfSimultanousTargets);
+        %while any(abs(targets) > targetVisualRange/2),
+        %    targets = normrnd(0, targetVisualRange/6); % Find better way
+        %    to set std
         %end
         
         %% SYSTEMATIC
@@ -125,7 +120,7 @@ function Stimuli(prefix)
         maxDev = max(maxDev,abs(targets));
         
         % Produce fixation order
-        eyePositions = eyePositionRange*(rand(1,fixationSequenceLength) - 0.5);
+        eyePositions = targetEyePositionRange*(rand(1, fixationSequenceLength) - 0.5);
 
         % Generate the cirtical points
         criticalPoints = generateCriticalPoints(eyePositions);
@@ -150,8 +145,18 @@ function Stimuli(prefix)
     end
     
     % Save dimensions used
-    save('dimensions.mat','dimensions','seed');
-    
+    save('dimensions.mat', ...
+         'numberOfSimultanousTargets', ...
+         'visualFieldSize', ...
+         'targetVisualRange', ...
+         'targetEyePositionRange', ...
+         'seed', ...
+         'saccadeVelocity', ...
+         'samplingRate', ...
+         'fixationDuration', ...
+         'fixationSequenceLength', ...
+         'numberOfFixations');
+                      
     cd(startDir);
     
     % Start plotting
@@ -160,22 +165,22 @@ function Stimuli(prefix)
     
     % Generate complementary testing data
     if length(potentialTargets) > 1,
-        buffer = abs(potentialTargets(2) - potentialTargets(1))/2
+        buffer = abs(potentialTargets(2) - potentialTargets(1))/2;
     else
         buffer = 20;
     end
     
     maxDev
     
-    Stimuli_Testing(tSFolderName, samplingRate, fixationDuration, dimensions, eyePositionRange, 2*(maxDev + buffer)); % visualRange
+    OneD_Testing(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, eyePositionRange, 2*(maxDev + buffer)); % targetVisualRange
     
     % Generate correlation data
     if samplingRate == 10,
-        OneD_DG_Correlation([tSFolderName '-stdTest']);
+        OneD_Correlation([folderName '-stdTest']);
     end
     
     % Visualize
-    OneD_Overlay([tSFolderName '-training'],[tSFolderName '-stdTest'])
+    OneD_Overlay([folderName '-training'], [folderName '-stdTest'])
     
     function points = generateCriticalPoints(order)
         
@@ -183,7 +188,7 @@ function Stimuli(prefix)
         
         % Allocate space
         numberOfDataPoints = 2 * length(order); % start and end of each fixation
-        dimensionOfDataPoints = 1 + 1 + dimensions.numberOfSimultanousObjects; % time + eye_position + ret_1,...,ret_n
+        dimensionOfDataPoints = 1 + 1 + numberOfSimultanousTargets; % time + eye_position + ret_1,...,ret_n
         points = zeros(dimensionOfDataPoints, numberOfDataPoints);
         
         % Generate

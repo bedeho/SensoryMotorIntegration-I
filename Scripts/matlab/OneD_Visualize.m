@@ -5,8 +5,6 @@
 %  Created by Bedeho Mender on 15/11/11.
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
-%  Purpose: visualizes 1d data
-%
 
 function OneD_Visualize(stimuliName)
   
@@ -17,13 +15,56 @@ function OneD_Visualize(stimuliName)
     global nrOfObjectsFoundSoFar;
     global timeStep;
     global fig;
-    global numberOfSimultanousObjects;
-
+    
     global dimensions;
-    dimensions = OneD_DG_Dimensions();
+    global visualPreferenceDistance;
+    
+    % Load supplementary stimuli dimensions
+    [stimuliFolder, name, ext] = fileparts(stimuliName);
+    startDir = pwd;
+    cd(stimuliFolder);
 
-    % Load file
-    [samplingRate, numberOfSimultanousObjects, visualFieldSize, eyePositionFieldSize, buffer] = OneD_Load(stimuliName);
+    dimensions = load('dimensions.mat');
+
+    cd(startDir);
+    dimensions = ... OneD_DG_Dimensions();
+
+
+
+
+    % LIP Parameters
+    visualPreferenceDistance            = 1;
+    eyePositionPrefrerenceDistance      = 1;
+    
+    gaussianSigma                       = 18; % deg
+    sigmoidSlope                        = 1/16; % (1/8)/2; % num
+    
+    visualPreferences                   = centerDistance(visualFieldSize, visualPreferenceDistance);
+    eyePositionPreferences              = centerDistance(eyePositionFieldSize, eyePositionPrefrerenceDistance);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    % Load data
+    [samplingRate, numberOfSimultanousTargets, visualFieldSize, eyePositionFieldSize, buffer] = OneD_Load(stimuliName);
     
     % Init
     lineCounter = 1;
@@ -32,9 +73,6 @@ function OneD_Visualize(stimuliName)
     playAtPrcntOfOriginalSpeed = 1;                 % Parameters
     timeStep = 1/samplingRate;                      % Derived
     period = timeStep / playAtPrcntOfOriginalSpeed; % Derived
-    
-    %OneD_Visualize_TimerFcn('', '')
-     
     
     % Setup timer
     % Good video on timers: http://blogs.mathworks.com/pick/2008/05/05/advanced-matlab-timer-objects/

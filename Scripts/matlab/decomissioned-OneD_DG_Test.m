@@ -10,6 +10,9 @@
 
 function OneD_DG_Test(stimuliName, samplingRate, fixationDuration, dimensions, eyePositions, testingStyle)
 
+
+    error('decomissioned');
+
     % Import global variables
     declareGlobalVars();
     

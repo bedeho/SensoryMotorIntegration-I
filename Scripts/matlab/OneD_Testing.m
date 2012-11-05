@@ -1,5 +1,5 @@
 %
-%  Stimuli_Testing.m
+%  OneD_Testing.m
 %  SMI
 %
 %  Created by Bedeho Mender on 06/10/12.
@@ -8,12 +8,19 @@
 %  Purpose: Generate testing data
 %
 
-function Stimuli_Testing(stimuliName, samplingRate, fixationDuration, dimensions, trainingEyePositionFieldSize, trainingTargetFieldSize)
+function OneD_Testing(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, trainingEyePositionFieldSize, trainingTargetFieldSize, nrOfTestingEyePositions, nrOfRetinalTestingPositions)
 
     % Import global variables
     declareGlobalVars();
     
     global base;
+    
+    % Check arguments
+    if trainingEyePositionFieldSize < nrOfTestingEyePositions,
+        error('To many eye positions');
+    elseif trainingTargetFieldSize < nrOfRetinalTestingPositions,
+        error('To many retinal positions');
+    end
     
     % Make folder
     stimuliFolder = [base 'Stimuli/' stimuliName '-stdTest'];
@@ -24,7 +31,7 @@ function Stimuli_Testing(stimuliName, samplingRate, fixationDuration, dimensions
         
     % Derived
     timeStep                    = 1/samplingRate;
-    samplesPrLocation           = fixationDuration / timeStep;
+    samplesPrLocation           = fixationDuration/timeStep;
         
     % Open file
     filename = [stimuliFolder '/data.dat'];
@@ -33,35 +40,18 @@ function Stimuli_Testing(stimuliName, samplingRate, fixationDuration, dimensions
     % Make header
     fwrite(fileID, samplingRate, 'ushort');               % Rate of sampling
     fwrite(fileID, 1, 'ushort');                          % Number of simultanously visible targets, needed to parse data
-    fwrite(fileID, dimensions.visualFieldSize, 'float');
-    fwrite(fileID, dimensions.eyePositionFieldSize, 'float');
+    fwrite(fileID, visualFieldSize, 'float');
+    fwrite(fileID, eyePositionFieldSize, 'float');
     
-    % Save relevant information for post processing
-    info.testingStyle = 'NEW';
-    info.visualPreferences = dimensions.visualPreferences;
-    info.eyePositionPreferences = dimensions.eyePositionPreferences;
-    
-    eyePositions = 15;
-    retinalPositions = 20;
-    
-    if trainingEyePositionFieldSize < eyePositions,
-        error('To many eye positions');
-    elseif trainingTargetFieldSize < retinalPositions,
-        error('To many retinal positions');
-    end
-    
-    testingEyePositions = centerN2(trainingEyePositionFieldSize, eyePositions); % eyePositionFieldSize
-    testingTargets = fliplr(centerN2(trainingTargetFieldSize, retinalPositions)); % 0.8* dimensions.visualFieldEccentricity
+    % Make data
+    testingEyePositions = centerN2(trainingEyePositionFieldSize, nrOfTestingEyePositions); % eyePositionFieldSize
+    testingTargets = fliplr(centerN2(trainingTargetFieldSize, nrOfRetinalTestingPositions)); % 0.8* dimensions.visualFieldEccentricity
 
     for e = testingEyePositions,
         for t = testingTargets,
             outputSample(e,t)
         end
     end
-
-    % For post processing
-    info.targets = testingTargets;
-    info.eyePositions = testingEyePositions;
 
     % Close file
     fclose(fileID);
@@ -74,12 +64,16 @@ function Stimuli_Testing(stimuliName, samplingRate, fixationDuration, dimensions
         error(['Could not create xgridPayload.tbz' result]);
     end
     
+    % For post processing
+    info.targets = testingTargets;
+    info.eyePositions = testingEyePositions;
+    
     % Save info
-    save info;
+    save('info.mat','info');
 
     cd(startDir);
     
-    function outputSample(e,t)
+    function outputSample(e, t)
         
         for sampleCounter = 1:samplesPrLocation,
 

@@ -1,5 +1,5 @@
 %
-%  OneDVisualize_StopFcn.m
+%  OneD_Visualize_StopFcn.m
 %  SMI
 %
 %  Created by Bedeho Mender on 15/11/11.
@@ -7,7 +7,7 @@
 %
 
 %  Purpose: StopFcn callback
-function OneDVisualize_StopFcn(obj, event)
+function OneD_Visualize_StopFcn(obj, event)
 
     global OneDVisualizeTimeObject;
     

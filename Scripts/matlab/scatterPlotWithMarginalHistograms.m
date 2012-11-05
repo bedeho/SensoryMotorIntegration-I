@@ -9,12 +9,12 @@
 %  Y = (point,dataset) for y components
 %  varargin = variable argument list for controlling appearance
 
-% scatterPlotWithMarginalHistograms({randn(200,1), randn(400,1)*0.3}, {randn(200,1)+1, randn(400,1)*1.6},'XTitle','Receptive Field Location (deg)','YTitle','Head-Centerednes','Legends',{'Untrained','Trained'})
+%  scatterPlotWithMarginalHistograms({randn(200,1), randn(400,1)*0.3}, {randn(200,1)+1, randn(400,1)*1.6},'XTitle','Receptive Field Location (deg)','YTitle','Head-Centerednes','Legends',{'Untrained','Trained'},'XLim',[-5 2],'YLim',[-5 7])
 
 function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(X, Y, varargin)
 
     % Process varargs
-    args = vararginProcessing(varargin, {'XTitle', 'YTitle', 'XLim', 'YLim', 'Legends', 'FaceColors', 'EdgeColors'}); % 'XPercentiles', 'YPercentiles',
+    args = vararginProcessing(varargin, {'XTitle', 'YTitle', 'XLim', 'YLim', 'Legends', 'FaceColors', 'EdgeColors','NumberOfBins'}); % 'XPercentiles', 'YPercentiles',
     
     % Get dimensions
     if(length(X) ~= length(Y))
@@ -30,6 +30,13 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     projectionScatterMargin = 40;
     totalFigureHeight = 2*outerMargin + scatterDim + projectionHeight + projectionScatterMargin;
     totalFigureWidth = totalFigureHeight;
+    
+    % Process arguments
+    if(isKey(args, 'NumberOfBins')),
+        NumberOfBins = args('NumberOfBins');
+    else
+        NumberOfBins = 40;
+    end
     
     % Colors,
     % untrained = blue, 
@@ -48,19 +55,18 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     else
         edgeColors = {[0.3,0.3,0.8]; [0.8,0.3,0.3]}; % , [0.3,0.3,0.3]
     end
-
     
     %% Main plot
 
     % Create figure
-    maxPlot = figure('Units','Pixels','position', [800 800 totalFigureWidth totalFigureHeight]);
+    maxPlot = figure('Units','Pixels','position', [1000 1000 totalFigureWidth totalFigureHeight]);
 
     yProjectionAxis = subplot(2,2,1);
     scatterAxis = subplot(2,2,2);
     xProjectionAxis = subplot(2,2,4);
     
     % Allocate space for histograms
-    NumberOfBins = 40;
+    
     XHistograms = zeros(NumberOfBins, nrOfDataSets);
     YHistograms = zeros(NumberOfBins, nrOfDataSets);
     
