@@ -1,14 +1,14 @@
 %
-%  OneD_Parse.m
+%  OneD_Stimuli_Parse.m
 %  SMI
 %
 %  Created by Bedeho Mender on 15/11/11.
-%  Copyright 2012 OFTNAI. All rights reserved.
+%  Copyright 2011 OFTNAI. All rights reserved.
 %
-%  Purpose: Parse 1d data into object form
+%  Purpose: Parse 1D data into object form
 %
 
-function [objects, minSequenceLength, objectsFound] = OneD_Parse(buffer)
+function [objects, minSequenceLength, objectsFound] = OneD_Stimuli_Parse(buffer)
 
     % Parse data
     lastObjectEnd = 0;

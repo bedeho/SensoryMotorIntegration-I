@@ -8,7 +8,7 @@
 
 function stop()
 
-    global OneD_VisualizeTimeObject;
+    global OneD_Stimuli_VisualizeTimeObject;
     
-    stop(OneD_VisualizeTimeObject);
+    stop(OneD_Stimuli_VisualizeTimeObject);
 end

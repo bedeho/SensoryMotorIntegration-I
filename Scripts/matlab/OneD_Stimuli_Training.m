@@ -17,29 +17,33 @@
 %           linearly interpolated and saved at each point to file.
 %
 
-function OneD_Training(prefix)
+function OneD_Stimuli_Training(prefix)
 
     % Import global variables
     declareGlobalVars();
     
     global base;
     
+    % Misc Params
+    seed                                = 72;  % classic = 72
+    samplingRate                        = 1000;% (Hz)
+    
     % Environment
     numberOfSimultanousTargets          = 1;
-    q                                   = 1/3; % targetRangeProportionOfVisualField
+    q                                   = 1/2; % targetRangeProportionOfVisualField
     visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
     eyePositionFieldSize                = (1-q)*visualFieldSize; % visualFieldSize/2 - targetVisualRange/2;
     targetVisualRange                   = visualFieldSize * q;
-    targetEyePositionRange              = 1*eyePositionFieldSize;
+    targetEyePositionRange              = 0.8*eyePositionFieldSize;
     
-    % Agent
-    seed                                = 72;  % classic = 72
+    % Agent Behaviour
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    samplingRate                        = 1000;% (Hz)
     fixationDuration                    = 0.3; % (s) - fixation period after each saccade
     fixationSequenceLength              = 20;
-    k                                   = 8;
+    k                                   = 4;
     numberOfFixations                   = fixationSequenceLength * k;
+    nrOfTestingEyePositions             = 6;
+    nrOfRetinalTestingPositions         = 20;
     
     % Error check 
     if mod(numberOfFixations, fixationSequenceLength) ~= 0,
@@ -52,17 +56,17 @@ function OneD_Training(prefix)
     if nargin < 1,
         prefix = '';
     else
-        prefix = [prefix '-']
+        prefix = [prefix '-'];
     end
     
-    folderName = [prefix 'nOF=' num2str(numberOfFixations,'%.2f') ...
-                         '-Sim=' num2str(numberOfSimultanousTargets,'%.2f') ...
-                         '-fD='  num2str(fixationDuration,'%.2f') ...
-                         '-fSL=' num2str(fixationSequenceLength,'%.2f') ...
-                         '-vF='  num2str(visualFieldSize,'%.2f') ...
-                         '-eF='  num2str(eyePositionFieldSize,'%.2f') ...
-                         '-sE='  num2str(seed,'%.2f') ...
-                         '-sR='  num2str(samplingRate,'%.2f')];
+    folderName = [prefix 'fixations=' num2str(numberOfFixations,'%.2f') ...
+                         '-targets=' num2str(numberOfSimultanousTargets,'%.2f') ...
+                         '-fixduration='  num2str(fixationDuration,'%.2f') ...
+                         '-fixationsequence=' num2str(fixationSequenceLength,'%.2f') ...
+                         '-visualfield='  num2str(visualFieldSize,'%.2f') ...
+                         '-eyepositionfield='  num2str(eyePositionFieldSize,'%.2f') ...
+                         '-seed='  num2str(seed,'%.2f') ...
+                         '-samplingrate='  num2str(samplingRate,'%.2f')];
     
     tSPath = [base 'Stimuli/' folderName '-training'];
     
@@ -148,6 +152,7 @@ function OneD_Training(prefix)
     save('dimensions.mat', ...
          'numberOfSimultanousTargets', ...
          'visualFieldSize', ...
+         'eyePositionFieldSize', ...
          'targetVisualRange', ...
          'targetEyePositionRange', ...
          'seed', ...
@@ -159,10 +164,6 @@ function OneD_Training(prefix)
                       
     cd(startDir);
     
-    % Start plotting
-    %figure;
-    %hold on;
-    
     % Generate complementary testing data
     if length(potentialTargets) > 1,
         buffer = abs(potentialTargets(2) - potentialTargets(1))/2;
@@ -170,17 +171,26 @@ function OneD_Training(prefix)
         buffer = 20;
     end
     
-    maxDev
+    % Testing Parameters
+    testingRetinalFieldSize = 2*(maxDev + buffer);
+    testingTargets = fliplr(centerN2(testingRetinalFieldSize, nrOfRetinalTestingPositions));
     
-    OneD_Testing(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, eyePositionRange, 2*(maxDev + buffer)); % targetVisualRange
+    testingEyePositionFieldSize = 0.95*targetEyePositionRange;
+    testingEyePositions = centerN2(testingEyePositionFieldSize, nrOfTestingEyePositions);
+    
+    % Generate testing data
+    OneD_Stimuli_Testing(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets);
+    
+    % Make stimuli figures
+    OneD_Stimuli_SpatialFigure([folderName '-training'], [folderName '-stdTest']);
+    OneD_Stimuli_MovementDynamicsFigure([folderName '-training']);
     
     % Generate correlation data
     if samplingRate == 10,
-        OneD_Correlation([folderName '-stdTest']);
+        OneD_Stimuli_Correlation([folderName '-stdTest']);
+    else
+        disp('No correlation data computed.');
     end
-    
-    % Visualize
-    OneD_Overlay([folderName '-training'], [folderName '-stdTest'])
     
     function points = generateCriticalPoints(order)
         

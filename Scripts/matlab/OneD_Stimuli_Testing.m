@@ -1,5 +1,5 @@
 %
-%  OneD_Testing.m
+%  OneD_Stimuli_Testing.m
 %  SMI
 %
 %  Created by Bedeho Mender on 06/10/12.
@@ -8,19 +8,12 @@
 %  Purpose: Generate testing data
 %
 
-function OneD_Testing(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, trainingEyePositionFieldSize, trainingTargetFieldSize, nrOfTestingEyePositions, nrOfRetinalTestingPositions)
+function OneD_Stimuli_Testing(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets)
 
     % Import global variables
     declareGlobalVars();
     
     global base;
-    
-    % Check arguments
-    if trainingEyePositionFieldSize < nrOfTestingEyePositions,
-        error('To many eye positions');
-    elseif trainingTargetFieldSize < nrOfRetinalTestingPositions,
-        error('To many retinal positions');
-    end
     
     % Make folder
     stimuliFolder = [base 'Stimuli/' stimuliName '-stdTest'];
@@ -44,9 +37,6 @@ function OneD_Testing(stimuliName, samplingRate, fixationDuration, visualFieldSi
     fwrite(fileID, eyePositionFieldSize, 'float');
     
     % Make data
-    testingEyePositions = centerN2(trainingEyePositionFieldSize, nrOfTestingEyePositions); % eyePositionFieldSize
-    testingTargets = fliplr(centerN2(trainingTargetFieldSize, nrOfRetinalTestingPositions)); % 0.8* dimensions.visualFieldEccentricity
-
     for e = testingEyePositions,
         for t = testingTargets,
             outputSample(e,t)

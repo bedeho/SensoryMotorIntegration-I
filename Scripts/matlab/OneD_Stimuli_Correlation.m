@@ -1,12 +1,12 @@
 %
-%  OneD_Correlation.m
+%  OneD_Stimuli_Correlation.m
 %  SMI
 %
 %  Created by Bedeho Mender on 27/01/12.
 %  Copyright 2012 OFTNAI. All rights reserved.
 %
 
-function OneD_Correlation(stimuliName)
+function OneD_Stimuli_Correlation(stimuliName)
 
     % Import global variables
     declareGlobalVars();
@@ -19,7 +19,7 @@ function OneD_Correlation(stimuliName)
     % Allocate space, is reused
     tempspacetemp = zeros(2, dimensions.nrOfVisualPreferences, dimensions.nrOfEyePositionPrefrerence);
 
-    [samplingRate, numberOfSimultanousObjects, visualFieldSize, eyePositionFieldSize, bufferTesting] = OneD_Load(stimuliName);
+    [samplingRate, numberOfSimultanousObjects, visualFieldSize, eyePositionFieldSize, bufferTesting] = OneD_Stimuli_Load(stimuliName);
     [objects, minSequenceLength, objectsFound] = OneD_Parse(bufferTesting);
     
     dotproduct = zeros(objectsFound, objectsFound);
@@ -36,8 +36,8 @@ function OneD_Correlation(stimuliName)
             pattern1 = tmp1(1,:);
             pattern2 = tmp2(1,:);
             
-            v1 = OneD_DG_InputLayer(dimensions, pattern1);
-            v2 = OneD_DG_InputLayer(dimensions, pattern2);
+            v1 = OneD_Stimuli_InputLayer(dimensions, pattern1);
+            v2 = OneD_Stimuli_InputLayer(dimensions, pattern2);
             
             % Normalized dot product
             dotproduct(o1,o2) = dot(v1(:),v2(:)) / (norm(v1(:)) * norm(v2(:)));

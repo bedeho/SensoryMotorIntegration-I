@@ -38,22 +38,20 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
         NumberOfBins = 40;
     end
     
-    % Colors,
-    % untrained = blue, 
-    % trained = red,
-    % discarded = grey
-    % percentile line
+    % Colors
+    % Light = {[0.4,0.4,0.9]; [0.9,0.4,0.4]}; % , [0.4,0.4,0.4]
+    % Dark  = {[0.3,0.3,0.8]; [0.8,0.3,0.3]}; % , [0.3,0.3,0.3] 
     
     if(isKey(args, 'FaceColors')),
         faceColors = args('FaceColors')
     else
-        faceColors ={[0.4,0.4,0.9]; [0.9,0.4,0.4]}; % , [0.4,0.4,0.4]
+        faceColors = {[0.3,0.3,0.8]; [0.8,0.3,0.3]};
     end
        
     if(isKey(args, 'EdgeColors')),
-        edgeColors = args('EdgeColors')
+        edgeColors = args('EdgeColors');
     else
-        edgeColors = {[0.3,0.3,0.8]; [0.8,0.3,0.3]}; % , [0.3,0.3,0.3]
+        edgeColors = faceColors;
     end
     
     %% Main plot
@@ -149,7 +147,7 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
         Legends = args('Legends');
         
         if(nrOfDataSets == length(Legends))
-            legend(Legends, 'Location', 'SouthEast');
+            legend(Legends); % , 'Location', 'SouthEast'
         else
             error('Number of data sets does not match number of legends');
         end 
@@ -190,16 +188,6 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     xlim(XLim);
     ylim(YLim);
     
-    %{
-    if isKey(args,'XLim'),
-        xlim(args('XLim'));
-    end
-    
-    if isKey(args,'YLim'),
-        ylim(args('YLim'));
-    end
-    %}
-    
     % y projection
     axes(yProjectionAxis);
     box off
@@ -223,6 +211,11 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     set(gca,'xtick',[]);
     set(gca,'ytick',[]);
     
+    % Move label closer, some sort of issue here
+    axes(scatterAxis);
+    xlabh = get(gca,'YLabel');
+    set(xlabh,'Position', get(xlabh,'Position') + [5 0 0])
+
     %% Mini plot
     miniPlot = figure;
     

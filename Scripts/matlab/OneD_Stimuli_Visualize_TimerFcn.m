@@ -1,5 +1,5 @@
 %
-%  OneD_Visualize_TimerFcn.m
+%  OneD_Stimuli_Visualize_TimerFcn.m
 %  SMI
 %
 %  Created by Bedeho Mender on 15/11/11.
@@ -7,30 +7,17 @@
 %
 %  Draws graphics - TimerFcn callback 
 
-function OneD_Visualize_TimerFcn(obj, event)
+function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope, dimensions, timeStep)
 
     % Exporting
-    global OneD_VisualizeTimeObject; % to expose it to make it stoppable in console
+    global OneD_Stimuli_VisualizeTimeObject; % to expose it to make it stoppable in console
 
     % Importing
     global buffer;
     global lineCounter;             % must be global to be visible across callbacks
     global nrOfObjectsFoundSoFar;
-    global timeStep;
     global fig;
     
-    global numberOfSimultanousTargets;
-    global visualPreferences;
-    global nrOfEyePositionPrefrerence;
-    global gaussianSigma;
-    global sigmoidSlope;
-    
-    global eyePositionFieldSize;
-    global visualFieldSize;
-    
-    
-    global dimensions;
-        
     % Update time counter
     OneDVisualizeTimer = (lineCounter - nrOfObjectsFoundSoFar)*timeStep;
     total = uint64(OneDVisualizeTimer * 1000);
@@ -46,7 +33,7 @@ function OneD_Visualize_TimerFcn(obj, event)
     if lineCounter <= length(buffer),
         eyePosition = buffer(lineCounter, 1);
     else
-        stop(OneD_VisualizeTimeObject);
+        stop(OneD_Stimuli_VisualizeTimeObject);
         return;
     end
     
@@ -74,7 +61,7 @@ function OneD_Visualize_TimerFcn(obj, event)
     % draw LIP sig*gauss neurons and input space
     function draw()
 
-        v = OneD_DG_InputLayer([eyePosition retinalPositions], visualPreferences, nrOfEyePositionPrefrerence, gaussianSigma, sigmoidSlope);
+        v = OneD_Stimuli_InputLayer([eyePosition retinalPositions], visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
         
         % Clean up so that it is not hidden from us that stimuli is off
         % retina
@@ -108,7 +95,7 @@ function OneD_Visualize_TimerFcn(obj, event)
         plot(eyePosition*ones(numberOfSimultanousTargets), retinalPositions , 'o');
         
         daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
-        axis([dimensions.leftMostEyePosition dimensions.rightMostEyePosition dimensions.leftMostVisualPosition dimensions.rightMostVisualPosition]);
+        axis([-dimensions.eyePositionFieldSize/2 dimensions.eyePositionFieldSize/2 -dimensions.visualFieldSize/2 dimensions.visualFieldSize/2]);
         title('Present input');
         
         set(gca, 'ButtonDownFcn', @responseCallBack); % Setup callback
@@ -130,7 +117,7 @@ function OneD_Visualize_TimerFcn(obj, event)
             hold on;
         end
         daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
-        axis([dimensions.leftMostEyePosition dimensions.rightMostEyePosition dimensions.leftMostVisualPosition dimensions.rightMostVisualPosition]);
+        axis([-dimensions.eyePositionFieldSize/2 dimensions.eyePositionFieldSize/2 -dimensions.visualFieldSize/2 dimensions.visualFieldSize/2]);
         title('History input');
     end
 

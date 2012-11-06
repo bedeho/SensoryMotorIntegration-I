@@ -1,5 +1,5 @@
 %
-%  OneD_Load.m
+%  OneD_Stimuli_Load.m
 %  SMI
 %
 %  Created by Bedeho Mender on 15/11/11.
@@ -8,7 +8,7 @@
 %  Purpose: load 1d data
 %
 
-function [samplingRate, numberOfSimultanousTargets, visualFieldSize, eyePositionFieldSize, buffer] = OneD_Load(stimuliName)
+function [samplingRate, numberOfSimultanousTargets, visualFieldSize, eyePositionFieldSize, buffer] = OneD_Stimuli_Load(stimuliName)
 
     % Import global variables
     declareGlobalVars();

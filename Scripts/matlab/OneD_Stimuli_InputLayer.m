@@ -1,16 +1,16 @@
 %
-%  OneD_InputLayer.m
+%  OneD_Stimuli_InputLayer.m
 %  SMI
 %
 %  Created by Bedeho Mender on 27/01/12.
 %  Copyright 2012 OFTNAI. All rights reserved.
 %
 
-function v = OneD_InputLayer(pattern, visualPreferences, nrOfEyePositionPrefrerence, gaussianSigma, sigmoidSlope)
+function v = OneD_Stimuli_InputLayer(pattern, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope)
 
     % Allocate space
     nrOfVisualPreferences = length(visualPreferences);
-    nrOfEyePositionPrefrerence = length(nrOfEyePositionPrefrerence);
+    nrOfEyePositionPrefrerence = length(eyePositionPreferences);
 
     % v(1,x,y) - sigmoid positive
     % v(2,x,y) - sigmoid negative
