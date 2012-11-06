@@ -51,7 +51,7 @@ function plotRegion(filename, info, dotproduct, netDir)
     saveFigureAndDelete(hPsiLambdaPlot, 'hpsilambda');
     
     % Save for collation
-    save([netDir '/collation.mat'], 'analysisResults' );
+    save([netDir '/analysisResults.mat'], 'analysisResults' );
     
     function saveFigureAndDelete(fig, name)
         

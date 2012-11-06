@@ -30,7 +30,10 @@
    	
    	#for my $ftC (@ftCArray) {
    		
-   	my $experiment						= "W14-H4-sigma18"; # dtrefine-H30-sigma6-fanin0.10
+   	my $experiment						= "test"; # baseline-H5-S6
+   	
+   	# final
+   	my $stim							= "fixations=100.00-targets=1.00-fixduration=0.30-fixationsequence=20.00-visualfield=200.00-eyepositionfield=100.00-seed=72.00-samplingrate=1000.00";
    	
 	# 0MOVESTIM
 	#my $nTP 							= ceil((2 * 4 * 10)/$ftC);
@@ -48,12 +51,12 @@
 	
 	# sigma=18, 05 fanIn
 	#my $stim							= "H3-sigma18-Tar=0.00-nTP=0.00-nOF=90.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
-	my $stim							= "H4-sigma18-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
+	#my $stim							= "H4-sigma18-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	
-	my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
+	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $learningRule					= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs						= 50; # 30,100
+	my $nrOfEpochs						= 1; #50; # 30,100
 	my $saveNetworkAtEpochMultiple 		= 10;
 	my $outputAtTimeStepMultiple		= 1;
 
@@ -68,7 +71,7 @@
 	my $seed							= 55; # 55 is standard
 	
 	my $visualPreferenceDistance		= "1.0";
-	my $eyePositionPrefrerenceDistance	= "1.0";
+	my $eyePositionPrefrerenceDistance 	= "1.0";
 	my $gaussianSigma					= "6.0"; 
 	my $sigmoidSlope					= "0.0625"; #1/16
 	
@@ -78,34 +81,17 @@
     ###################################################################
 	# Preprocessing
     ###################################################################
+    
 	# Load params from stimuli name	
-	# Tar=2.00-nTP=6.00-ftC=3.00-Sim=1.00-fD=0.50-nF=3.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=150.00-training
-	#my @res 				= ($stimuliTraining =~ m/(\d+\.\d+)/g);
-
-	#my $Tar 							= $res[0];
-	#my $nTP 							= $res[1];
-	#my $fTC 							= $res[2];
-	#my $Sim 							= $res[3];
-	#my $fD 							= $res[4];
-	#my $nF								= $res[5]
+	# fixations=100.00-targets=1.00-fixduration=0.30-fixationsequence=20.00-visualfield=200.00-eyepositionfield=100.00-seed=72.00-samplingrate=1000.00-training
 	
-	# set manually
-	#my $offset							= 0; # -1 == old style
-	#my $visualPreferenceDistance		= $res[6 + $offset];
-	#my $eyePositionPrefrerenceDistance	= $res[7 + $offset];
-	#my $gaussianSigma					= $res[8 + $offset];
-	#my $sigmoidSlope					= $res[9 + $offset];
+	my @res 							= ($stimuliTraining =~ m/(\d+\.\d+)/g);
 	
-	# load fromstimuli file
-	#my $horVisualFieldSize				= $res[10 + $offset];
-	#my $horEyePositionFieldSize		= $res[11 + $offset];
+	my $horVisualFieldSize				= $res[4];
+	my $horEyePositionFieldSize			= $res[5];
 
-	#print "Visual Preference Distance: $visualPreferenceDistance\n";
-	#print "Eye Position Distance: 		$eyePositionPrefrerenceDistance\n";
-	#print "Gaussian sigma: 			$gaussianSigma\n";
-	#print "Slope: 						$sigmoidSlope\n";
-	#print "Visual Field Size: 			$horVisualFieldSize\n";
-	#print "Eye Position Field: 		$horEyePositionFieldSize\n\n";
+	print "Visual Field Size: 			$horVisualFieldSize\n";
+	print "Eye Position Field: 			$horEyePositionFieldSize\n\n";
     
 	# Build template parameter file from these    	    	    	    	    
 	my @esRegionSettings;
@@ -301,9 +287,9 @@
 
 						# Build name so that only varying parameters are included.
 						my $simulationCode = "";
-						$simulationCode .= "tC=${tCstr}_" if ($neuronType == CONTINOUS) && scalar(@timeConstants) > 1;
-						$simulationCode .= "sSF=${sSF}_" if ($neuronType == CONTINOUS) && scalar(@stepSizeFraction) > 1;
-						$simulationCode .= "ttC=${ttC}_" if ($neuronType == CONTINOUS) && scalar(@traceTimeConstant) > 1;
+						$simulationCode .= "tC=${tCstr}_" if scalar(@timeConstants) > 1;
+						$simulationCode .= "sSF=${sSF}_" if scalar(@stepSizeFraction) > 1;
+						$simulationCode .= "ttC=${ttC}_" if scalar(@traceTimeConstant) > 1;
 						$simulationCode .= "L=${Lstr}_" if scalar(@learningRates) > 1;
 						$simulationCode .= "S=${Sstr}_" if scalar(@sparsenessLevels) > 1;
 						$simulationCode .= "sS=${sSPstr}_" if scalar(@sigmoidSlopes) > 1;
@@ -315,7 +301,7 @@
 						# If there is only a single parameter combination being explored, then just give a long precise name,
 						# it's essentially not a parameter search.
 						if($simulationCode eq "") {
-							$simulationCode = "tC=${tCstr}_sSF=${sSF}_ttC=${ttC}_" if ($neuronType == CONTINOUS);
+							$simulationCode = "tC=${tCstr}_sSF=${sSF}_ttC=${ttC}_"; # if ($neuronType == CONTINOUS);
 							$simulationCode = "L=${Lstr}_S=${Sstr}_sS=${sSPstr}_sT=${sTstr}_gIC=${gICstr}_eS=${eSstr}_"; #_F=${ficPstr}
 						}
 						
@@ -553,7 +539,17 @@ area7a: {
 	/*
 	* Spread of gaussian component
 	*/
-	gaussianSigma = $gaussianSigma; 
+	gaussianSigma = $gaussianSigma;
+	
+	/*
+	* Horizontal visual field size
+	*/	
+	horVisualFieldSize = $horVisualFieldSize;
+
+	/*
+	* Horizontal eye position field size
+	*/		
+	horEyePositionFieldSize = $horEyePositionFieldSize;
 	
 	/*
 	* Slope of eye position sigmoid component

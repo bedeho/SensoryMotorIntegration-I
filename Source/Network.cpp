@@ -71,7 +71,6 @@ Network::Network(const char * parameterFile, bool verbose) :
         ESPathway[i].init(i+1, p, false, 0, 1, desiredFanIn); // The constructor we are in now is the build constructor, so no learning will happen
     }
     
-
 	// Make afferent synapses for V2,V3,V4,V5,...
 	ESPathway[0].setupAfferentSynapses(area7a, p.weightNormalization, p.connectivities[0], p.initialWeight, rngController);
                                                                     
@@ -191,6 +190,8 @@ Network::Network(const char * dataFile, const char * parameterFile, bool verbose
                             //cout << "(" << regionNr << "," << depth << "," << row << "," << col << "," << weight << ")" << endl;
 
                             Neuron * n;
+                            
+                            // put in error checking on this presynaptic source, does it exist?
 
                             if(regionNr == 0)
                                 n = area7a.getNeuron(depth,row,col);

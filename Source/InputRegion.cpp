@@ -158,7 +158,7 @@ void InputRegion::loadDataFile(const char * dataFile, float stepSize, u_short ou
         this->interSampleTime = (float)1/samplingRate;
         
         readHeader = true;
-        
+    
         // Check compatibility of parameter file
         if(v != this->horVisualFieldSize || e != this->horEyePositionFieldSize) {
             

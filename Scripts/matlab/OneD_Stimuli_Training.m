@@ -40,7 +40,7 @@ function OneD_Stimuli_Training(prefix)
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     fixationDuration                    = 0.3; % (s) - fixation period after each saccade
     fixationSequenceLength              = 20;
-    k                                   = 4;
+    k                                   = 5;
     numberOfFixations                   = fixationSequenceLength * k;
     nrOfTestingEyePositions             = 6;
     nrOfRetinalTestingPositions         = 20;

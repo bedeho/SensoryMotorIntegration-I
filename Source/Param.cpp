@@ -66,7 +66,7 @@ Param::Param(const char * filename, bool isTraining) {
 		cfg.lookupValue("lateralInteraction", tmp);
 		lateralInteraction = static_cast<LATERAL>(tmp);
 
-        cfg.lookupValue("playAtPrcntOfOriginalSpeed", playAtPrcntOfOriginalSpeed);
+        //cfg.lookupValue("playAtPrcntOfOriginalSpeed", playAtPrcntOfOriginalSpeed);
         
 		cfg.lookupValue("seed", tmp);
 		seed = static_cast<u_short>(tmp);

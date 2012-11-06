@@ -56,7 +56,7 @@ class Param  {
         float eyePositionPrefrerenceDistance;   
         float gaussianSigma;                    
         float sigmoidSlope;                     
-        float horVisualFieldSize;               
+        float horVisualFieldSize;
         float horEyePositionFieldSize;
         float sigmoidModulationPercentage;
         //INPUT_EYE_MODULATION modulationType;

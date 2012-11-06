@@ -1,6 +1,8 @@
 
 function superPlot()
 
+    error('Decomissioned');
+
     declareGlobalVars();
 
     global base;

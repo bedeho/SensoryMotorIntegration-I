@@ -79,7 +79,7 @@ int main (int argc, char *argv[]) {
 		cout << "Expected atleast three arguments." << endl;
 	else {
         
-        const char * paramFile = NULL, 
+         const char * paramFile = NULL, 
                     * net = NULL, 
                     * dataFile = NULL, 
                     * outputDir = NULL;
