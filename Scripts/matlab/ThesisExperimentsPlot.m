@@ -17,84 +17,47 @@ function ThesisExperimentsPlot()
 
     % Save all experiments to include  
     experiment(1).Name = '2 fixations';
-    experiment(1).Folder = expFolder('peaked_movementstatistics_2.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    experiment(1).Folder = expFolder('test/S=0.60_/TrainedNetwork');
     experiment(2).Name = '3 fixations';
-    experiment(2).Folder = expFolder('peaked_movementstatistics_3.00/L=0.05000_S=0.70_sS=00000000.4_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    experiment(2).Folder = expFolder('test/S=0.90_/TrainedNetwork');
     
     % Setup buffers
     headCenteredNess_X  = [];
     headCenteredNess_Y  = [];
-    RFSize_Linear_Clean = [];
+    RFSize = [];
 
     % Iterate experiments and plot
     for e = 1:length(experiment),
 
         % Load analysis file for experiments
-        analysisResults = load([experiment(e).Folder '/analysisResults.mat']);
+        data = load([experiment(e).Folder '/analysisResults.mat']);
         
         % Project out data
-        headCenteredNess_X{e}  = analysisResults.RFLocation_Linear_Clean;
-        headCenteredNess_Y{e}  = analysisResults.headCenteredNess_Linear_Clean;
-        RFSize_Linear_Clean{e} = analysisResults.RFSize_Linear_Clean;
+        headCenteredNess_X{e}  = data.analysisResults.RFLocation_Linear_Clean;
+        headCenteredNess_Y{e}  = data.analysisResults.headCenteredNess_Linear_Clean;
+        RFSize{e}              = data.analysisResults.RFSize_Linear_Clean;
         
-        %analysisResults.RFSize_Confidence_Linear_Clean;
-        %analysisResults.RFLocation_Confidence_Linear_Clean;
-
-        %{
+        % Check that we have non-empty dataset
+        if(isempty(headCenteredNess_X{e})),
+            error(['Empty data set found' experiment(e).Name]);
+        end
         
-        % Add line plot to single cell plot
-        figure(singleCellPlot);
-        hold on;
-        sortedData = sort(collation.singleCell(:),'descend');
-        singleCellMinY = min(singleCellMinY,min(sortedData));
-        plot(sortedData, [colors{c} linestyle{c}],'LineWidth',2,'MarkerSize',8); % ['-' colors{c}]
-        numCells = length(sortedData);
-        
-        % Do multi cell plot
-        figure(multiplCellPlot);
-        hold on;
-        dist = collation.multiCell;
-        upper = dist(3,:) - dist(2,:);
-        lower = dist(2,:) - dist(1,:);
-        X = 1:length(collation.omegaBins);
-        Y = dist(2,:);
-        h = errorbar(X,Y,lower,upper,[colors{c} linestyle{c}],'LineWidth',2,'MarkerSize',8);
-        
-        % Do confusion plot
-        figure(confusionPlot);
-        hold on;
-        theta = sort(collation.thetaMatrix(:),'descend');
-        plot(theta, [colors{c} linestyle{c}],'LineWidth',2,'MarkerSize',8);
-        thetaMaxY = max(thetaMaxY,max(theta));
-        
-        % Find Number of Perfect cells
-        numPerfectCells(e) = nnz(sortedData > 0.8);
-        %}
-        
-        %{
-        % Save for post-processing
-        maxY = max(maxY,max(dist(3,:)));
-        nrOfBins = length(dist);
-        errorBarHandles(e) = h;
-
-        %set(h,'Color',colors{c});
-        %set(h,'Color','k');
-        %set(h,'LineWidth',1);
-        %}
-        
-        % Output stats
-        %disp(['Experiment' experiment(e).Name]);
-        %disp(['Perfect Head-centered: ' num2str(nnz(collation.singleCell(:) == 1))]);
-        %disp(['Last bin:' num2str(dist(4:end,end)')]);
-        
+        % Output key numbers
+        %disp(['Experiment: ' experiment(e).Name]);
+        %disp(['Fraction discarded due to DISCONTINOUS: ' num2str(analysisResults.fractionDiscarded)]);
+        %disp(['Fraction discarded due to EDGE: ' num2str(analysisResults.fractionDiscarded_Edge)]);
+        %disp(['Fraction discarded due to MULTIPEAK: ' num2str(analysisResults.fractionDiscarded_MultiPeak)]);
     end
     
     % Put in discarded
     % ...
     
+    % lambda/h plot
     % 'XLim', XLim, 'YLim', YLim,
-    [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(headCenteredNess_X, headCenteredNess_Y, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Head-Centeredness (\lambda)', 'Legends', {'Untrained','Trained'});
+    [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(headCenteredNess_X, headCenteredNess_Y, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Head-Centeredness (\lambda)', 'Legends', {'Trained','Untrained'});
     
+    % lambda/psi plot
+    [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(RFSize, headCenteredNess_Y, 'XTitle', 'Receptive Field Size (deg)', 'YTitle', 'Head-Centeredness (\lambda)');
     
     
     

@@ -53,17 +53,19 @@
 
  		# RANGE PARAMS - permutable
     	our @sigmoidSlopes					= (
+    									#["00000000.01"],
+    	
 										#["00000000.1"]
 										#["00000000.2"],
 										#["00000000.3"],
-										#["00000000.4"]
-										["00000000.01"]
+										#["00000000.4"],
+										#["00000000.5"],
 										#["00000000.6"],
 										#["00000000.7"],
 										#["00000000.8"],
 										#["00000000.9"],
 										#
-	    								#["00000001.0"],
+	    								["00000001.0"]
 	    								#["00000010.0"],
 										#["00000100.0"],
 										#["00001000.0"],
@@ -111,7 +113,7 @@
 										#["0.00800"],
 										#["0.00900"],
 										#
-										["0.01000"]
+										#["0.01000"],
 										#["0.02000"],
 										#["0.03000"],
 										#["0.04000"],
@@ -121,7 +123,7 @@
 										#["0.08000"],
 										#["0.09000"],
 										#
-										#["0.10000"],
+										["0.10000"]
 										#["0.20000"],
 										#["0.30000"],
 										#["0.40000"],
@@ -189,22 +191,22 @@
 										#["0.96"],
 										#["0.94"]
 										#["0.92"],
-										["0.90"],
+										##["0.90"],
 										#["0.88"],
 										#["0.86"],
 										#["0.80"],
 										#["0.82"],
-										["0.80"],
+										["0.80"]
 										#["0.78"],
 										#["0.76"]
 										#["0.74"],
 										#["0.72"],
-										["0.70"],
+										##["0.70"],
 										#["0.68"],
 										#["0.66"],
 										#["0.64"],
 										#["0.62"],
-										["0.60"]
+										##["0.60"]
 										#["0.58"],
 										#["0.56"]
 										#["0.54"],
@@ -291,7 +293,7 @@
     our @depth							= (1);
     our @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     our @fanInRadius 					= (6); # not used
-    our @fanInCountPercentage 			= ("0.01"); # 0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    our @fanInCountPercentage 			= ("0.10"); # 0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
     our @learningrate					= ("0.1"); # < === is permuted below
     our @eta							= ("0.8");
     our @timeConstant					= ("0.1"); # < === is permuted below

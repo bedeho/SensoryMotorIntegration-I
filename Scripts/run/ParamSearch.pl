@@ -30,7 +30,7 @@
    	
    	#for my $ftC (@ftCArray) {
    		
-   	my $experiment						= "test"; # baseline-H5-S6
+   	my $experiment						= "test-fanin10-reset"; # baseline-H5-S6
    	
    	# final
    	my $stim							= "fixations=100.00-targets=1.00-fixduration=0.30-fixationsequence=20.00-visualfield=200.00-eyepositionfield=100.00-seed=72.00-samplingrate=1000.00";
@@ -56,15 +56,15 @@
 	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $learningRule					= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs						= 1; #50; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 10;
+	my $nrOfEpochs						= 10; #50; # 30,100
+	my $saveNetworkAtEpochMultiple 		= 1;
 	my $outputAtTimeStepMultiple		= 1;
 
 	my $lateralInteraction				= COMP; # NONE, COMP, SOM
 	my $sparsenessRoutine				= HEAP; # NONE, HEAP, GLOBAL
 
 	my $resetActivity					= "false"; # "false", Reset activation between objects of training
-	my $resetTrace						= "false"; # "false", Reset trace between objects of training
+	my $resetTrace						= "true"; # "false", Reset trace between objects of training
 	
 	my $sigmoidModulationPercentage		= "0.0";
 	my $weightVectorLength				= "14.0"; # classic = 1.0

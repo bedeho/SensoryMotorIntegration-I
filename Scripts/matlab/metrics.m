@@ -22,6 +22,7 @@ function analysisResults = metrics(filename, info)
     numRegions = length(networkDimensions);
     y_dimension = networkDimensions(numRegions).y_dimension;
     x_dimension = networkDimensions(numRegions).x_dimension;
+    numNeurons = x_dimension*y_dimension;
 
     headCenteredNess = zeros(y_dimension, x_dimension);
     RFSize = zeros(y_dimension, x_dimension);
@@ -106,6 +107,25 @@ function analysisResults = metrics(filename, info)
     analysisResults.RFLocation_Confidence_Linear_Clean = RFLocation_Confidence_Linear_Clean;
     
     analysisResults.DiscardStatus = DiscardStatus;
+    
+    % Discarding cases
+    analysisResults.fractionDiscarded               = nnz(DiscardStatus) / numNeurons;
+    analysisResults.fractionDiscarded_Discontinous  = nnz(bitget(DiscardStatus,2)) / numNeurons;
+    analysisResults.fractionDiscarded_Edge          = nnz(bitget(DiscardStatus,3)) / numNeurons;
+    analysisResults.fractionDiscarded_MultiPeak     = nnz(bitget(DiscardStatus,4)) / numNeurons;
+    
+    % Very head-centered
+    lambdaCutoff = 0.8;
+    analysisResults.fractionVeryHeadCentered     = nnz(headCenteredNess_Linear_Clean >= lambdaCutoff) / numNeurons;
+    
+    % Uniformity
+    vals = RFLocation_Linear_Clean(headCenteredNess_Linear_Clean >= lambdaCutoff);
+    numEntropyBins = 15;
+    dist = hist(vals,numEntropyBins)./ numel(vals);
+    entropy = -dot(dist,log(dist)/log(2)); % -(dist*.log(dist)/log(2));
+    maxEntropy = log(numEntropyBins)/log(2);
+    
+    analysisResults.uniformityOfVeryHeadCentered = entropy/maxEntropy;
     
     function discard = discardStatus(row,col,num)
         

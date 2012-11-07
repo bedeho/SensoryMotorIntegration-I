@@ -33,7 +33,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     % Read out analysis results
     [pathstr, name, ext] = fileparts(filename);
     
-    collation = load([pathstr '/collation.mat']);
+    collation = load([pathstr '/analysisResults.mat']);
     
     analysisResults = collation.analysisResults;
     
@@ -182,8 +182,8 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'ob');
             hold on;
             
-            scatterAxis = herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
-            %scatterAxis = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 2);
+            %scatterAxis = herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
+            scatterAxis = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 2);
 
             %scatterAxis = plot(hmat,lmat,'o');
             set(scatterAxis, 'ButtonDownFcn', @scatterCallBack); % Setup callback
