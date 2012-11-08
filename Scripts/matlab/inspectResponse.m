@@ -32,13 +32,20 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     
     % Read out analysis results
     [pathstr, name, ext] = fileparts(filename);
+    x = load([pathstr '/analysisResults.mat']);
+    analysisResults = x.analysisResults;
     
-    collation = load([pathstr '/analysisResults.mat']);
-    
-    analysisResults = collation.analysisResults;
+    % Network summary
+    disp(['fractionVeryHeadCentered: ' num2str(analysisResults.fractionVeryHeadCentered)]);
+    disp(['fractionDiscarded: ' num2str(analysisResults.fractionDiscarded)]);
+    disp(['fractionDiscarded_Discontinous: ' num2str(analysisResults.fractionDiscarded_Discontinous)]);
+    disp(['fractionDiscarded_Edge: ' num2str(analysisResults.fractionDiscarded_Edge)]);
+    disp(['fractionDiscarded_MultiPeak: ' num2str(analysisResults.fractionDiscarded_MultiPeak)]);
     
     % For scatter
-    scatterSpace = [analysisResults.RFLocation_Linear , analysisResults.headCenteredNess_Linear ];
+    wellBehavedNeurons  = analysisResults.wellBehavedNeurons;
+    scatterSpace = [wellBehavedNeurons(:,6) wellBehavedNeurons(:,3)]; %[analysisResults.RFLocation_Linear , analysisResults.headCenteredNess_Linear ];%  % 
+    numInScatter = length(scatterSpace);
     
     % For distribution
     hmatTOP = analysisResults.RFLocation_Linear;
@@ -171,10 +178,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             %noZeros(noZeros == 0) = [];
             %hist(noZeros,1:(max(max(v2))));
             %title(['Mean: ' num2str(mean2(v2))]);
-            set(im, 'ButtonDownFcn', {@responseCallBack, r}); % Setup callback
-            
-            
-
+            set(im, 'ButtonDownFcn', {@imagescCallback, r}); % Setup callback
             
             % Invariance heuristic
             axisVals(r-1,PLOT_COLS) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + PLOT_COLS); % Save axis
@@ -183,10 +187,10 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             hold on;
             
             %scatterAxis = herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
-            scatterAxis = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 2);
+            scatterAxis = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 1);
 
             %scatterAxis = plot(hmat,lmat,'o');
-            set(scatterAxis, 'ButtonDownFcn', @scatterCallBack); % Setup callback
+            set(scatterAxis, 'ButtonDownFcn', {@scatterCallBack,r}); % Setup callback
             ylim([-0.1 1]);
             
             %{
@@ -216,8 +220,8 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     
     makeFigureFullScreen(fig);
     
-    % Callback
-    function responseCallBack(varargin)
+    % imagescCallback
+    function imagescCallback(varargin)
         
         % Extract region,row,col
         region = varargin{3};
@@ -225,15 +229,41 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         pos = get(axisVals(region-1,2), 'CurrentPoint');
         [row, col] = imagescClick(pos(1, 2), pos(1, 1), networkDimensions(region).y_dimension, networkDimensions(region).x_dimension);
 
-        responseClick(row,col,region)
+        viewNeuron(row,col,region);
     end
 
-    function responseClick(row,col,region)
+    function scatterCallBack(varargin)
+        
+        pos = get(gca,'Currentpoint'); %get(scatterAxis, 'CurrentPoint');
+        %[row, col] = imagescClick(pos(1, 2), pos(1, 1), networkDimensions(region).y_dimension, networkDimensions(region).x_dimension);
+        
+        hvalueClick = pos(1,1);
+        lambdaClick = pos(1,2);
+        
+        % Find neuron with closest match
+        d = repmat([hvalueClick lambdaClick], numInScatter, 1);
+        
+        error = sum(((scatterSpace - d).^2)');
+        
+        [e leastErrorIndex] = min(error)
+        
+        %[row col] = ind2sub(size(analysisResults.headCenteredNess), leastErrorIndex);
+
+        row = wellBehavedNeurons(leastErrorIndex,1);
+        col = wellBehavedNeurons(leastErrorIndex,2);
+        
+        % Update response plot
+        viewNeuron(row,col,2);
+        
+    end
+
+    function viewNeuron(row,col,region)
         
         disp(['Row,Col: ' num2str(row) ',' num2str(col)]);
         disp(['lambda: ' num2str(analysisResults.headCenteredNess(row,col))]);
         disp(['h-value: ' num2str(analysisResults.RFLocation(row,col))]);
         disp(['psi: ' num2str(analysisResults.RFSize(row,col))]);
+        disp(['Discard:' num2str(analysisResults.DiscardStatus(row,col))]);
         
         % single left  click => 'SelectionType' = 'normal'
         % single right click => 'SelectionType' = 'alt'
@@ -253,6 +283,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             
             ylim([-0.1 1.1]);
             xlim([1 objectsPrEyePosition]);
+            title(['Row,Col: ' num2str(row) ',' num2str(col)]);
             
         elseif strcmp(clickType,'alt'),
                 
@@ -286,28 +317,6 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         else
             disp('Not recorded.');
         end
-        
-    end
-
-    function scatterCallBack(varargin)
-        
-        pos = get(gca,'Currentpoint'); %get(scatterAxis, 'CurrentPoint');
-        %[row, col] = imagescClick(pos(1, 2), pos(1, 1), networkDimensions(region).y_dimension, networkDimensions(region).x_dimension);
-        
-        hvalueClick = pos(1,1);
-        lambdaClick = pos(1,2);
-        
-        % Find neuron with closest match
-        d = [ones(length(scatterSpace),1)*lambdaClick ones(length(scatterSpace),1)*hvalueClick];
-        
-        error = sum(((scatterSpace - d).^2)');
-        
-        [e leastErrorIndex] = min(error);
-        
-        [row col] = ind2sub(size(analysisResults.headCenteredNess), leastErrorIndex);
-
-        % Update response plot
-        responseClick(row,col,2)
         
     end
 

@@ -38,6 +38,7 @@ function analysisResults = metrics(filename, info)
     delta = abs(targets(2) - targets(1));
 
     % Compute metrics
+    wellBehavedNeurons = [];
     if networkDimensions(numRegions).isPresent,
         
         % Iterate cells
@@ -59,6 +60,12 @@ function analysisResults = metrics(filename, info)
                 
                 % Discard Status
                 DiscardStatus(row,col) = discardStatus(row,col,maxNumIntervals);
+                
+                
+                if(DiscardStatus(row,col) == 0),
+                    v = [row col headCenteredNess(row, col) RFSize(row, col) RFSize_Confidence(row, col) RFLocation(row, col) RFLocation_Confidence(row,col)];
+                    wellBehavedNeurons = [wellBehavedNeurons; v];
+                end
 
             end
         end
@@ -67,26 +74,26 @@ function analysisResults = metrics(filename, info)
     end
     
     % Data
-    headCenteredNess_Linear = headCenteredNess(:);
-    RFSize_Linear = RFSize(:);
-    RFSize_Confidence_Linear = RFSize_Confidence(:);
-    RFLocation_Linear = RFLocation(:);
-    RFLocation_Confidence_Linear = RFLocation_Confidence(:);
-    DiscardStatus_Linear = DiscardStatus(:);
+    headCenteredNess_Linear             = headCenteredNess(:);
+    RFSize_Linear                       = RFSize(:);
+    RFSize_Confidence_Linear            = RFSize_Confidence(:);
+    RFLocation_Linear                   = RFLocation(:);
+    RFLocation_Confidence_Linear        = RFLocation_Confidence(:);
+    DiscardStatus_Linear                = DiscardStatus(:);
     
     % Discard neurons
-    headCenteredNess_Linear_Clean = headCenteredNess_Linear;
-    RFSize_Linear_Clean = RFSize_Linear;
-    RFLocation_Linear_Clean = RFLocation_Linear;
+    headCenteredNess_Linear_Clean       = headCenteredNess_Linear;
+    RFSize_Linear_Clean                 = RFSize_Linear;
+    RFLocation_Linear_Clean             = RFLocation_Linear;
     
-    RFSize_Confidence_Linear_Clean = RFSize_Confidence_Linear;
-    RFLocation_Confidence_Linear_Clean = RFLocation_Confidence_Linear;
+    RFSize_Confidence_Linear_Clean      = RFSize_Confidence_Linear;
+    RFLocation_Confidence_Linear_Clean  = RFLocation_Confidence_Linear;
     
-    headCenteredNess_Linear_Clean(DiscardStatus_Linear > 0) = [];
-    RFSize_Linear_Clean(DiscardStatus_Linear > 0) = [];
-    RFLocation_Linear_Clean(DiscardStatus_Linear > 0) = [];
-    RFSize_Confidence_Linear_Clean(DiscardStatus_Linear > 0) = [];
-    RFLocation_Confidence_Linear_Clean(DiscardStatus_Linear > 0) = [];
+    headCenteredNess_Linear_Clean(DiscardStatus_Linear > 0)         = [];
+    RFSize_Linear_Clean(DiscardStatus_Linear > 0)                   = [];
+    RFLocation_Linear_Clean(DiscardStatus_Linear > 0)               = [];
+    RFSize_Confidence_Linear_Clean(DiscardStatus_Linear > 0)        = [];
+    RFLocation_Confidence_Linear_Clean(DiscardStatus_Linear > 0)    = [];
     
     % analysis results
     analysisResults.headCenteredNess = headCenteredNess;
@@ -107,6 +114,7 @@ function analysisResults = metrics(filename, info)
     analysisResults.RFLocation_Confidence_Linear_Clean = RFLocation_Confidence_Linear_Clean;
     
     analysisResults.DiscardStatus = DiscardStatus;
+    analysisResults.wellBehavedNeurons = wellBehavedNeurons;
     
     % Discarding cases
     analysisResults.fractionDiscarded               = nnz(DiscardStatus) / numNeurons;
@@ -125,7 +133,7 @@ function analysisResults = metrics(filename, info)
     entropy = -dot(dist,log(dist)/log(2)); % -(dist*.log(dist)/log(2));
     maxEntropy = log(numEntropyBins)/log(2);
     
-    analysisResults.uniformityOfVeryHeadCentered = entropy/maxEntropy;
+    analysisResults.uniformityOfVeryHeadCentered = entropy;%/maxEntropy;
     
     function discard = discardStatus(row,col,num)
         
@@ -133,7 +141,7 @@ function analysisResults = metrics(filename, info)
         response = dataPrEyePosition(:,:,row,col)';
         discard = 0;
 
-        % Discontinous rf: there is an eye position for which it is non-respnse ($r_i =0$) to all retinal locations
+        % Non-responsive rf: there is an eye position for which it is non-respnse ($r_i =0$) to all retinal locations
         if any(sum(response > 0) == 0),
             discard = discard + 2;
         end

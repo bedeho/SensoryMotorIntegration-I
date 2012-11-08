@@ -1,36 +1,34 @@
 
 function prewiredModel(filename)
 
-    % Open file
-    fileID = fopen(filename,'w+');
-    
-    % Init variables
-    dimensions = OneD_DG_Dimensions();
-    
-    numRegions = 2;
-    targets = dimensions.targets;
-    numTargets = length(targets);
+    % Stimuli/Model Parameters
+    q                                   = 0.8; % targetRangeProportionOfVisualField
+    visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
+    eyePositionFieldSize                = (1-q)*visualFieldSize; % (1-q)*visualFieldSize OR equivalently (visualFieldSize/2 - targetVisualRange/2)
+    targetVisualRange                   = visualFieldSize * q;
+    targetEyePositionRange              = 0.8*eyePositionFieldSize; %eyePositionFieldSize;
+    visualPreferenceDistance            = 1;
+    eyePositionPrefrerenceDistance      = 1;
+    numTargetPositions                  = 5;
     
     % Setup random number generator
     seed = 3;
     rng(seed, 'twister');
-
-    % Write number of regions
-    fwrite(fileID, numRegions, 'uint16');
     
-    % Write 7a dimensions, dummy info really
-    fwrite(fileID, [dimensions.nrOfVisualPreferences dimensions.nrOfEyePositionPrefrerence 2], 'uint16');
-    
-    % Layer 1
+    % Init variables
+    visualPreferences                   = centerDistance(visualFieldSize, visualPreferenceDistance);
+    eyePositionPreferences              = centerDistance(eyePositionFieldSize, eyePositionPrefrerenceDistance);
+    nrOfVisualPreferences               = length(visualPreferences);
+    nrOfEyePositionPrefrerence          = length(eyePositionPreferences);
+    targets                             =  centerN(targetVisualRange, numTargetPositions);
+   
+    % Output layer
+    numRegions = 2;
     dim = 30;
     verticalDimension = dim;
     horizontalDimension = dim;
     
-    % Write LIP dimensions, dummy info really
-    fwrite(fileID, [verticalDimension horizontalDimension 1], 'uint16');
-    
     % Allocate space to keep network,
-    
     % online generation is not possible since there is a header,
     % numberOfAFferentSynapses varies across neurons
     synapseBuffer = cell(verticalDimension,horizontalDimension);
@@ -59,18 +57,18 @@ function prewiredModel(filename)
             mat2 = zeros(dimensions.nrOfVisualPreferences,dimensions.nrOfEyePositionPrefrerence);
             %}
             
-            % CLEAR <== damn this bug
+            % FORGOT TO CLEAR <== damn this bug
             clearvars synapses
             
             % Connect
             for d=1:2,
-                for ret=1:dimensions.nrOfVisualPreferences,
+                for ret=1:nrOfVisualPreferences,
                     
-                    retPref = dimensions.visualPreferences(dimensions.nrOfVisualPreferences - (ret - 1));
+                    retPref = visualPreferences(nrOfVisualPreferences - (ret - 1));
                     
-                    for eye=1:dimensions.nrOfEyePositionPrefrerence,
+                    for eye=1:nrOfEyePositionPrefrerence,
                     
-                        eyePref = dimensions.eyePositionPreferences(eye);
+                        eyePref = eyePositionPreferences(eye);
                                                 
                         if rand([1 1]) > 0.9 && ((eyePref+retPref <= target && d==1) || (eyePref+retPref >= target && d==2)),
                         %if eye == col,    
@@ -101,12 +99,12 @@ function prewiredModel(filename)
             
             % FIGURE
             %{
-            subplot(1,2,1);
-            imagesc(mat1);
-            colorbar
-            subplot(1,2,2);
-            imagesc(mat2);
-            colorbar
+                subplot(1,2,1);
+                imagesc(mat1);
+                colorbar
+                subplot(1,2,2);
+                imagesc(mat2);
+                colorbar
             %}
             
             % Normalize weight vector
@@ -124,12 +122,24 @@ function prewiredModel(filename)
         end
     end
     
-   % Synapse i:
-   % synapses(1,i) = regionNr
-   % synapses(2,i) = depth
-   % synapses(3,i) = row
-   % synapses(4,i) = col
-   % synapses(5,i) = weight
+    % Synapse i:
+    % synapses(1,i) = regionNr
+    % synapses(2,i) = depth
+    % synapses(3,i) = row
+    % synapses(4,i) = col
+    % synapses(5,i) = weight
+   
+    % Open file
+    fileID = fopen(filename,'w+');
+
+    % Write number of regions
+    fwrite(fileID, numRegions, 'uint16');
+    
+    % Write 7a dimensions, dummy info really
+    fwrite(fileID, [nrOfVisualPreferences nrOfEyePositionPrefrerence 2], 'uint16');
+    
+    % Write LIP dimensions, dummy info really
+    fwrite(fileID, [verticalDimension horizontalDimension 1], 'uint16');
     
     % Write out actual network
     for row=1:verticalDimension,

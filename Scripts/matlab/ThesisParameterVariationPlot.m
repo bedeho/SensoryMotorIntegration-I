@@ -507,7 +507,7 @@ function ThesisParameterVariationPlot()
         e
         
         % Load analysis file for experiments
-        collation = load([expFolder experiments(e).Folder '/collation.mat']);
+        collation = load([expFolder experiments(e).Folder '/analysisResults.mat']);
         
         % Find Number of Perfect cells
         %numPerfectCells(e) = nnz(collation.singleCell(:) > 0.8); % change to multi error bar thing!!

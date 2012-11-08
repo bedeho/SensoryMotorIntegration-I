@@ -30,17 +30,17 @@ function OneD_Stimuli_Training(prefix)
     
     % Environment
     numberOfSimultanousTargets          = 1;
-    q                                   = 1/3; % targetRangeProportionOfVisualField
+    q                                   = 0.8; % targetRangeProportionOfVisualField
     visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
-    eyePositionFieldSize                = (1-q)*visualFieldSize; % visualFieldSize/2 - targetVisualRange/2;
+    eyePositionFieldSize                = (1-q)*visualFieldSize; % (1-q)*visualFieldSize OR equivalently (visualFieldSize/2 - targetVisualRange/2)
     targetVisualRange                   = visualFieldSize * q;
-    targetEyePositionRange              = 0.8*eyePositionFieldSize;
+    targetEyePositionRange              = 0.8*eyePositionFieldSize; %eyePositionFieldSize;
     
     % Agent Behaviour
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     fixationDuration                    = 0.3; % (s) - fixation period after each saccade
-    fixationSequenceLength              = 60;
-    k                                   = 5;
+    fixationSequenceLength              = 30;
+    k                                   = 20;
     numberOfFixations                   = fixationSequenceLength * k;
     nrOfTestingEyePositions             = 6;
     nrOfRetinalTestingPositions         = 20;
