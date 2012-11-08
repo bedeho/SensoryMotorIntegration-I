@@ -141,75 +141,30 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             
             % Activity indicator
             axisVals(r-1,2) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 2); % Save axis
-
-            % TRADITIONAL
-            %{ 
-            im = imagesc(regionCorrs{r-1});
-            title('Head centerede correlation');
-            %}
-
-            % SIMON
-            %{
-            v0 = data;%{r-1};
-            v0(v0 > 0) = 1;  % count all nonzero as 1, error terms have already been removed
             
-            
-            % Fix when only one object in Simon Mode
-            if objectsPrEyePosition > 1,
-                v1 = squeeze(sum(sum(v0))); % sum away
-            else
-                v1 = squeeze(sum(v0)); % sum away
-            end
-            
-            v2 = v1(:,:,1);
-            %im = imagesc(v2);         % only do first region
-            %}
             im = imagesc(analysisResults.headCenteredNess);
-            %daspect([size(v2) 1]);
-            %title('Number of testing locations responded to');
+            pbaspect([size(im) 1]);
             title('\lambda');
             colorbar;
             
             % ResponseCount historgram
             axisVals(r-1,3) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 3); % Save axis
-            hist(hmatTOP,50);
             
-            %noZeros = v2(:);
-            %noZeros(noZeros == 0) = [];
-            %hist(noZeros,1:(max(max(v2))));
-            %title(['Mean: ' num2str(mean2(v2))]);
+            hist(hmatTOP,50);
             set(im, 'ButtonDownFcn', {@imagescCallback, r}); % Setup callback
             
-            % Invariance heuristic
+            % Scatter
             axisVals(r-1,PLOT_COLS) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + PLOT_COLS); % Save axis
-
-            plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'ob');
+            
+            scatterAxis_BLUE = plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'ob');
+            %set(scatterAxis_BLUE, 'ButtonDownFcn', {@scatterCallBack,r}); % Setup callback
             hold on;
             
             %scatterAxis = herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
-            scatterAxis = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 1);
-
-            %scatterAxis = plot(hmat,lmat,'o');
-            set(scatterAxis, 'ButtonDownFcn', {@scatterCallBack,r}); % Setup callback
+            scatterAxis_RED = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 1);
+            set(scatterAxis_RED, 'ButtonDownFcn', {@scatterCallBack,r}); % Setup callback
             ylim([-0.1 1]);
             
-            %{
-            responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting);
-
-            bar(responseCounts);
-            %}
-            
-            %{
-            % Plot a line for each object
-            %for e=1:nrOfEyePositionsInTesting,
-            %    plot(responseCounts{e}, ['-' markerSpecifiers{e}], 'Linewidth', PLOT_COLS);
-            %    hold all
-            %end
-
-            %axis tight
-            %legend(objectLegend);
-            %}
-
             hold off
         else
             subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 2); % Save axis
@@ -519,4 +474,107 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
        
     end
     
+%{
+        %{
+        % Delta plot
+        % Figure out what cells we have history for!!!!!, put it here!, all
+        % other cells we just gray out
+        %axisVals(r-1,1) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 1); % Save axis
+        %deltaMatrix = rand(10,10);% painstakingly slow regionDelta(network_1, network_2, r);
+        %im = imagesc(deltaMatrix);
+        %daspect([size(deltaMatrix) 1]);
+        %title('This vs. BlankNetwork weight matrix correlation per cell');
+        %colorbar;
+        %set(im, 'ButtonDownFcn', {@singleUnitCallBack, r}); % Setup callback
+        %}
+        
+        axisVals(r-1,1) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 1); % Save axis
+        
+        if thereIsSingleUnitRecording,
+            
+            height = networkDimensions(r).y_dimension;
+            width = networkDimensions(r).x_dimension;
+            v2 = reshape([singleUnits{r}(:, :, 1).isPresent],[height width]);
+            im = imagesc(v2);
+            daspect([size(v2) 1]);
+            title(['Recorded Units in Region: ' num2str(r)]);
+            colorbar;
+            set(im, 'ButtonDownFcn', {@singleUnitCallBack, r}); % Setup callback
+        end
+        
+        if ~isempty(data),%{r-1}),
+            
+            % Activity indicator
+            axisVals(r-1,2) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 2); % Save axis
+
+            % TRADITIONAL
+            %{ 
+            im = imagesc(regionCorrs{r-1});
+            title('Head centerede correlation');
+            %}
+
+            % SIMON
+            %{
+            v0 = data;%{r-1};
+            v0(v0 > 0) = 1;  % count all nonzero as 1, error terms have already been removed
+            
+            
+            % Fix when only one object in Simon Mode
+            if objectsPrEyePosition > 1,
+                v1 = squeeze(sum(sum(v0))); % sum away
+            else
+                v1 = squeeze(sum(v0)); % sum away
+            end
+            
+            v2 = v1(:,:,1);
+            %im = imagesc(v2);         % only do first region
+            %}
+            im = imagesc(analysisResults.headCenteredNess);
+            %daspect([size(v2) 1]);
+            %title('Number of testing locations responded to');
+            title('\lambda');
+            colorbar;
+            
+            % ResponseCount historgram
+            axisVals(r-1,3) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 3); % Save axis
+            hist(hmatTOP,50);
+            
+            %noZeros = v2(:);
+            %noZeros(noZeros == 0) = [];
+            %hist(noZeros,1:(max(max(v2))));
+            %title(['Mean: ' num2str(mean2(v2))]);
+            set(im, 'ButtonDownFcn', {@imagescCallback, r}); % Setup callback
+            
+            % Invariance heuristic
+            axisVals(r-1,PLOT_COLS) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + PLOT_COLS); % Save axis
+
+            plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'ob');
+            hold on;
+            
+            %scatterAxis = herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
+            scatterAxis = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 1);
+
+            %scatterAxis = plot(hmat,lmat,'o');
+            set(scatterAxis, 'ButtonDownFcn', {@scatterCallBack,r}); % Setup callback
+            ylim([-0.1 1]);
+            
+            %{
+            responseCounts = invarianceHeuristics(filename, nrOfEyePositionsInTesting);
+
+            bar(responseCounts);
+            %}
+            
+            %{
+            % Plot a line for each object
+            %for e=1:nrOfEyePositionsInTesting,
+            %    plot(responseCounts{e}, ['-' markerSpecifiers{e}], 'Linewidth', PLOT_COLS);
+            %    hold all
+            %end
+
+            %axis tight
+            %legend(objectLegend);
+            %}
+
+            hold off
+%}
 end

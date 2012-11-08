@@ -16,10 +16,10 @@ function ThesisExperimentsPlot()
     save_filename = 'test';
 
     % Save all experiments to include  
-    experiment(1).Name = '2 fixations';
-    experiment(1).Folder = expFolder('test/S=0.60_/TrainedNetwork');
-    experiment(2).Name = '3 fixations';
-    experiment(2).Folder = expFolder('test/S=0.90_/TrainedNetwork');
+    experiment(1).Name = 'Trained';
+    experiment(1).Folder = expFolder('base2/L=0.05000_S=0.80_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    experiment(2).Name = 'Untrained';
+    experiment(2).Folder = expFolder('base2/L=0.05000_S=0.80_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/BlankNetwork');
     
     % Setup buffers
     headCenteredNess_X  = [];
@@ -33,9 +33,9 @@ function ThesisExperimentsPlot()
         data = load([experiment(e).Folder '/analysisResults.mat']);
         
         % Project out data
-        headCenteredNess_X{e}  = data.analysisResults.RFLocation_Linear_Clean;
-        headCenteredNess_Y{e}  = data.analysisResults.headCenteredNess_Linear_Clean;
-        RFSize{e}              = data.analysisResults.RFSize_Linear_Clean;
+        headCenteredNess_X{e}  = data.analysisResults.RFLocation_Linear%;_Clean;
+        headCenteredNess_Y{e}  = data.analysisResults.headCenteredNess_Linear%;_Linear_Clean;
+        RFSize{e}              = data.analysisResults.RFSize_Linear%;_Clean;
         
         % Check that we have non-empty dataset
         if(isempty(headCenteredNess_X{e})),

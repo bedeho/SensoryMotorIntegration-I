@@ -30,7 +30,7 @@
    	
    	#for my $ftC (@ftCArray) {
    		
-   	my $experiment						= "base2"; #fanin10-reset, baseline-H5-S6
+   	my $experiment						= "base3"; #fanin10-reset, baseline-H5-S6
    	
    	# final
    	my $stim							= "fixations=600.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-visualfield=200.00-eyepositionfield=40.00-seed=72.00-samplingrate=1000.00";

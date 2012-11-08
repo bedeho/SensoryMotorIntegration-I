@@ -6,7 +6,6 @@
 %  Copyright 2012 OFTNAI. All rights reserved.
 %
 
-
 function ThesisParameterVariationPlot()
 
     declareGlobalVars();

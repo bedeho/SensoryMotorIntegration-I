@@ -14,7 +14,7 @@
 function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(X, Y, varargin)
 
     % Process varargs
-    args = vararginProcessing(varargin, {'XTitle', 'YTitle', 'XLim', 'YLim', 'Legends', 'FaceColors', 'EdgeColors','NumberOfBins'}); % 'XPercentiles', 'YPercentiles',
+    args = vararginProcessing(varargin, {'XTitle', 'YTitle', 'XLim', 'YLim', 'Legends', 'FaceColors', 'EdgeColors', 'NumberOfBins', 'MarkerSize', 'Location', 'YLabelOffset'}); % 'XPercentiles', 'YPercentiles',
     
     % Get dimensions
     if(length(X) ~= length(Y))
@@ -32,27 +32,16 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     totalFigureWidth = totalFigureHeight;
     
     % Process arguments
-    if(isKey(args, 'NumberOfBins')),
-        NumberOfBins = args('NumberOfBins');
-    else
-        NumberOfBins = 40;
-    end
-    
     % Colors
     % Light = {[0.4,0.4,0.9]; [0.9,0.4,0.4]}; % , [0.4,0.4,0.4]
     % Dark  = {[0.3,0.3,0.8]; [0.8,0.3,0.3]}; % , [0.3,0.3,0.3] 
     
-    if(isKey(args, 'FaceColors')),
-        faceColors = args('FaceColors')
-    else
-        faceColors = {[0.3,0.3,0.8]; [0.8,0.3,0.3]};
-    end
-       
-    if(isKey(args, 'EdgeColors')),
-        edgeColors = args('EdgeColors');
-    else
-        edgeColors = faceColors;
-    end
+    faceColors      = processOptionalArgument('FaceColors', {[0.3,0.3,0.8]; [0.8,0.3,0.3]});
+    edgeColors      = processOptionalArgument('EdgeColors', faceColors);
+    NumberOfBins    = processOptionalArgument('NumberOfBins', 40);
+    MarkerSize      = processOptionalArgument('MarkerSize', 3);
+    Location        = processOptionalArgument('Location', 'SouthWest');
+    YLabelOffset    = processOptionalArgument('YLabelOffset', 5);
     
     %% Main plot
 
@@ -126,7 +115,7 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
         
         % Add scatter plots
         axes(scatterAxis);
-        plot(xData, yData, 'o','MarkerFaceColor', faceColors{i}, 'MarkerEdgeColor', edgeColors{i}, 'MarkerSize', 4);
+        plot(xData, yData, 'o','MarkerFaceColor', faceColors{i}, 'MarkerEdgeColor', edgeColors{i}, 'MarkerSize', MarkerSize);
         hold on;
         
         %{
@@ -147,7 +136,7 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
         Legends = args('Legends');
         
         if(nrOfDataSets == length(Legends))
-            legend(Legends); % , 'Location', 'SouthEast'
+            legend(Legends,'Location', Location);
         else
             error('Number of data sets does not match number of legends');
         end 
@@ -214,19 +203,31 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     % Move label closer, some sort of issue here
     axes(scatterAxis);
     xlabh = get(gca,'YLabel');
-    set(xlabh,'Position', get(xlabh,'Position') + [5 0 0])
+    set(xlabh,'Position', get(xlabh,'Position') + [YLabelOffset 0 0])
 
     %% Mini plot
     miniPlot = figure;
     
     for i=1:nrOfDataSets,
         
-        plot(X{i}, Y{i},'o','MarkerFaceColor', faceColors{i},'MarkerEdgeColor', faceColors{i}, 'MarkerSize', 4);
+        plot(X{i}, Y{i},'o','MarkerFaceColor', faceColors{i},'MarkerEdgeColor', faceColors{i}, 'MarkerSize', MarkerSize);
         hold on;
         
     end
     
     set(gca,'xtick',[]);
     set(gca,'ytick',[]);
+    
+    %% Process an optional argument
+    function r = processOptionalArgument(key, default)
+        
+        if(isKey(args, key)),
+            r = args(key);
+        else
+            r = default;
+        end
+        
+    end
+        
     
 end

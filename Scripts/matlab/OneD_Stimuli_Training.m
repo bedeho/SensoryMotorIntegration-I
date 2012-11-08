@@ -166,13 +166,13 @@ function OneD_Stimuli_Training(prefix)
     
     % Generate complementary testing data
     if length(potentialTargets) > 1,
-        buffer = abs(potentialTargets(2) - potentialTargets(1))/2;
+        buffer = abs(potentialTargets(2) - potentialTargets(1));
     else
         buffer = 20;
     end
     
     % Testing Parameters
-    testingRetinalFieldSize = 2*(maxDev + buffer);
+    testingRetinalFieldSize = 2*(maxDev - buffer); % + buffer
     testingTargets = fliplr(centerN2(testingRetinalFieldSize, nrOfRetinalTestingPositions));
     
     testingEyePositionFieldSize = 0.95*targetEyePositionRange;
