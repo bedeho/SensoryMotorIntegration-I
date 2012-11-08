@@ -59,7 +59,7 @@ function showWeights(networkFile, networkDimensions, neuronOffsets, region, row,
         
         % imagesc
         imagesc(weightBox);
-        daspect([dim 1]);
+        pbaspect([dim 1]);
         
         % surf
         %surf(weightBox);

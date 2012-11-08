@@ -1,3 +1,12 @@
+%
+%  prewiredModel.m
+%  SMI
+%
+%  Created by Bedeho Mender on 08/11/12.
+%  Copyright 2012 OFTNAI. All rights reserved.''
+%
+%  Purpose: Generate prewired model, both PO and LIP
+%
 
 function prewiredModel(filename)
 
@@ -10,6 +19,7 @@ function prewiredModel(filename)
     visualPreferenceDistance            = 1;
     eyePositionPrefrerenceDistance      = 1;
     numTargetPositions                  = 5;
+    inputLayerSigma                     = 18;
     
     % Setup random number generator
     seed = 3;
@@ -20,9 +30,11 @@ function prewiredModel(filename)
     eyePositionPreferences              = centerDistance(eyePositionFieldSize, eyePositionPrefrerenceDistance);
     nrOfVisualPreferences               = length(visualPreferences);
     nrOfEyePositionPrefrerence          = length(eyePositionPreferences);
-    targets                             =  centerN(targetVisualRange, numTargetPositions);
+    targets                             = centerN(targetVisualRange, numTargetPositions);
    
     % Output layer
+    fanInPercentage                     = 0.30; % [0 1)
+    inputLayerDepth                     = 1; % 1 = PO, 2 = LIP
     numRegions = 2;
     dim = 30;
     verticalDimension = dim;
@@ -36,6 +48,18 @@ function prewiredModel(filename)
     coeff = 0.3;
     activeNeurons = coeff*(verticalDimension * horizontalDimension);
     
+    % Open file
+    fileID = fopen(filename,'w+');
+
+    % Write number of regions
+    fwrite(fileID, numRegions, 'uint16');
+    
+    % Write 7a dimensions, dummy info really
+    fwrite(fileID, [nrOfVisualPreferences nrOfEyePositionPrefrerence 2], 'uint16');
+    
+    % Write LIP dimensions, dummy info really
+    fwrite(fileID, [verticalDimension horizontalDimension 1], 'uint16');
+    
     % Write neuron spesific specs
     for row=1:verticalDimension,
         
@@ -44,7 +68,7 @@ function prewiredModel(filename)
         for col=1:horizontalDimension,
 
             % Pick target
-            target = targets(randi(numTargets,1,1));
+            target = targets(randi(numTargetPositions,1,1));
             
             % Setup neuron variables
             numberOfAfferentSynapses = 0;
@@ -61,7 +85,7 @@ function prewiredModel(filename)
             clearvars synapses
             
             % Connect
-            for d=1:2,
+            for d=1:inputLayerDepth,
                 for ret=1:nrOfVisualPreferences,
                     
                     retPref = visualPreferences(nrOfVisualPreferences - (ret - 1));
@@ -69,14 +93,13 @@ function prewiredModel(filename)
                     for eye=1:nrOfEyePositionPrefrerence,
                     
                         eyePref = eyePositionPreferences(eye);
-                                                
-                        if rand([1 1]) > 0.9 && ((eyePref+retPref <= target && d==1) || (eyePref+retPref >= target && d==2)),
-                        %if eye == col,    
+                        
+                        [connect, weight] = doConnect(eyePref,retPref,target,d,inputLayerDepth);
+                        
+                        if connect,
+
                             % Increase number of synapses
                             numberOfAfferentSynapses = numberOfAfferentSynapses + 1;
-                            
-                            % Get random weight
-                            weight = rand([1 1]);
                             
                             % Save synapse
                             synapses(:,numberOfAfferentSynapses) = [0 (d-1) (ret-1) (eye-1) weight];
@@ -95,7 +118,6 @@ function prewiredModel(filename)
                     end
                 end
             end
-            
             
             % FIGURE
             %{
@@ -129,18 +151,6 @@ function prewiredModel(filename)
     % synapses(4,i) = col
     % synapses(5,i) = weight
    
-    % Open file
-    fileID = fopen(filename,'w+');
-
-    % Write number of regions
-    fwrite(fileID, numRegions, 'uint16');
-    
-    % Write 7a dimensions, dummy info really
-    fwrite(fileID, [nrOfVisualPreferences nrOfEyePositionPrefrerence 2], 'uint16');
-    
-    % Write LIP dimensions, dummy info really
-    fwrite(fileID, [verticalDimension horizontalDimension 1], 'uint16');
-    
     % Write out actual network
     for row=1:verticalDimension,
         for col=1:horizontalDimension,
@@ -161,6 +171,47 @@ function prewiredModel(filename)
     end
     
     fclose(fileID);
+    
+    function [connect,weight] = doConnect(eyePref,retPref,target,d,inputLayerDepth)
+    
+        if inputLayerDepth == 1, % PEAKED
+            
+            connectWindow = 2;
+            cond1 = eyePref+retPref <= target+connectWindow*inputLayerSigma; % isBelowUpperBound
+            cond2 = eyePref+retPref >= target-connectWindow*inputLayerSigma; % isAboveLowerBound
+            
+            % Find distane to head-centeredness diagonal
+            % smallest distance between ax + bx + c = 0 and x0,y0 is:
+            %
+            % abs(ax_0 + b_y0 + c) / norm([a b])
+            %
+            % where
+            % x = e (eye position
+            % y = r (retinal position)
+            % c = -target (head position)
+            x0 = eyePref;
+            y0 = retPref;
+            a = 1;
+            b = 1;
+            c = -target;
+            
+            distance = abs(a*x0 + b*y0 + c) / norm([a b]);
+            
+            weight = exp(-(distance^2)/(2*inputLayerSigma^2)); 
+        elseif inputLayerDepth == 2 % SIGMOID
+            
+            cond1 = (eyePref+retPref <= target && d==1); % isToLeftOfTargets
+            cond2 = (eyePref+retPref >= target && d==2); % isAboveLowerBound
+            weight = rand([1 1]); % Get random weight
+        end
+        
+        % Make final stochastic decision
+        connect = cond1 && cond2 && rand([1 1]) > (1-fanInPercentage);
+        
+        %if rand([1 1]) > 0.9 && ((eyePref+retPref <= target && d==1) || (eyePref+retPref >= target && d==2)), % SIGMOID
+        %rand([1 1]) > 0.9 && ((eyePref+retPref <= target && d==1) && (eyePref+retPref >= target && d==2)), % PEAKED
+
+    end
 
 end
 
