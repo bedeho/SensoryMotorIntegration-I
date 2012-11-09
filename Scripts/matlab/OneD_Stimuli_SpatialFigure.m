@@ -27,7 +27,7 @@ function OneD_Stimuli_SpatialFigure(trainingStimuliName, testingStimuliName)
     YLim = [-visualFieldSize/2 visualFieldSize/2];
     
     % Do scatter plot
-    [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(X, Y, 'XTitle', 'Eye Position (deg)', 'YTitle', 'Receptive Field Location (deg)', 'XLim', XLim, 'YLim', YLim, 'Legends', {'Training', 'Testing'});
+    [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(X, Y, 'XTitle', 'Eye Position (deg)', 'YTitle', 'Receptive Field Location (deg)', 'XLim', XLim, 'YLim', YLim, 'Legends', {'Training', 'Testing'}, 'MarkerSize', 4);
     
     % Save - in testing folder, arbitrary choice
     fname = [base 'Stimuli/' testingStimuliName '/' testingStimuliName '.eps'];

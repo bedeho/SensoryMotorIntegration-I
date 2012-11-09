@@ -30,10 +30,11 @@
    	
    	#for my $ftC (@ftCArray) {
    		
-   	my $experiment						= "base3"; #fanin10-reset, baseline-H5-S6
+   	my $experiment						= "base4"; #fanin10-reset, baseline-H5-S6
    	
    	# final
-   	my $stim							= "fixations=600.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-visualfield=200.00-eyepositionfield=40.00-seed=72.00-samplingrate=1000.00";
+   	my $stim							= "narrowtest-visualfield=200.00-eyepositionfield=40.00-fixations=600.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=1000.00";
+   	#my $stim							= "fixations=600.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-visualfield=200.00-eyepositionfield=40.00-seed=72.00-samplingrate=1000.00";
    	#my $stim							= "fixations=150.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-visualfield=200.00-eyepositionfield=40.00-seed=72.00-samplingrate=1000.00";
    	
 	# 0MOVESTIM
@@ -54,7 +55,7 @@
 	#my $stim							= "H3-sigma18-Tar=0.00-nTP=0.00-nOF=90.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	#my $stim							= "H4-sigma18-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	
-	my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
+	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $learningRule					= TRACE; # TRACE, HEBB
 
 	my $nrOfEpochs						= 10; #50; # 30,100
@@ -68,7 +69,7 @@
 	my $resetTrace						= "false"; # "false", Reset trace between objects of training
 	
 	my $sigmoidModulationPercentage		= "0.0";
-	my $weightVectorLength				= "14.0"; # classic = 1.0
+	my $weightVectorLength				= "1.0"; # classic = 1.0
 	my $seed							= 55; # 55 is standard
 	
 	my $visualPreferenceDistance		= "1.0";
@@ -88,8 +89,8 @@
 	
 	my @res 							= ($stimuliTraining =~ m/(\d+\.\d+)/g);
 	
-	my $horVisualFieldSize				= $res[4];
-	my $horEyePositionFieldSize			= $res[5];
+	my $horVisualFieldSize				= $res[0];
+	my $horEyePositionFieldSize			= $res[1];
 
 	print "Visual Field Size: 			$horVisualFieldSize\n";
 	print "Eye Position Field: 			$horEyePositionFieldSize\n\n";

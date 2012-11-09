@@ -17,6 +17,13 @@ function ThesisParameterVariationPlot()
     
     
     expFolder = [base 'Experiments/' ];
+    
+    % Baseline
+    experiments(1).Folder   =   'base3/L=0.05000_S=0.80_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
+    experiments(2).Folder   =   'base3/L=0.05000_S=0.80_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/BlankNetwork';
+    experiments(1).tick     =    1;
+    experiments(2).tick     =    2;
+    
 
     %{
     experiments(13).Folder =    'movementstatistics_14.00/L=0.05000_S=0.60_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
@@ -48,6 +55,7 @@ function ThesisParameterVariationPlot()
     experiments(1).tick =    2;
     %}
     
+    %{
     experiments(26).Folder =   'sparsitycheck-0MOVESTIM_26.00/S=0.80_/TrainedNetwork';
     experiments(25).Folder =   'sparsitycheck-0MOVESTIM_25.00/S=0.80_/TrainedNetwork';
     experiments(24).Folder =   'sparsitycheck-0MOVESTIM_24.00/S=0.80_/TrainedNetwork';
@@ -100,6 +108,7 @@ function ThesisParameterVariationPlot()
     experiments(3).tick =    3;
     experiments(2).tick =    2;
     experiments(1).tick =    1;
+    %}
 
     %{
     experiments(26).Folder =   '0MOVESTIM_26.00/L=0.05000_S=0.70_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
@@ -488,6 +497,80 @@ function ThesisParameterVariationPlot()
     
     %}
     
+    numExperiments = length(experiments);
+    
+    % Start figures
+    ticks = zeros(1,numExperiments);
+    headCenteredNess = zeros(1,numExperiments);
+    coverage = zeros(1,numExperiments);
+    
+    %tickLabels = cell(1,numExperiments);
+    
+    % Iterate experiments and plot
+    for e = 1:numExperiments,
+        
+        % Save ticks
+        ticks(e) = experiments(e).tick;
+        
+        % Save tick label
+        %tickLabels(e) = [num2str(ticks(e)) '']; % add units?
+        
+        % Load analysis file for experiments
+        collation = load([expFolder experiments(e).Folder '/analysisResults.mat']);
+        
+        % Save data
+        headCenteredNess(e) = collation.analysisResults.fractionVeryHeadCentered
+        coverage(e) = collation.analysisResults.uniformityOfVeryHeadCentered
+    end
+    
+    figure();
+    
+    % Plot
+    [AX,H1,H2] = plotyy(ticks, headCenteredNess, ticks, coverage, 'Head-Centeredness Percentile (\lambda = 0.8)', 'Head-Centered Space Coverage (bits)')
+    
+    %ylim([0 1]);
+    %axis tight
+    
+    %% LOGARITHMIC
+    %errorbarlogx(0.02);
+    %set(gca,'xscale','log'); 
+    %grid on
+    
+    %% Movement
+    label_x = 'Fixations - (\kappa)';
+    hold on;
+    %plot(ticks,bottomValues,'-or','LineWidth',2,'MarkerSize',8);
+    
+    %% Trace time constant
+    %label_x = 'Trace Time Constant - \tau_{q} (s)';
+    %ticks = [0.01 0.1 1.0 10.0 100.0 900.0];
+    
+    %% Sparseness
+    %label_x = 'Sparseness - \pi (%)';
+    
+    %% Learningrate
+    %label_x = 'Learningrate - \rho';
+    %ticks = [0.001 0.01 0.1 0.9];
+    
+    legend('boxoff')
+    hTitle = title('')%; title('Varying Sparseness Percentile');
+    hXLabel = xlabel(label_x);
+    hYLabel = ylabel(label_y);
+  
+     %% Make it prettier
+     function s = fixLeadingZero(d)
+
+      s = num2str(d);
+
+      if s(1) == '0' && length(s) > 1
+          s = s(2:end);
+      end
+
+     end
+ 
+ 
+ %{
+     
     
     numExperiments = length(experiments);
     
@@ -591,15 +674,6 @@ function ThesisParameterVariationPlot()
       'XTick'       , ticks);
   %}
   
-     %% Make it prettier
-     function s = fixLeadingZero(d)
-
-      s = num2str(d);
-
-      if s(1) == '0' && length(s) > 1
-          s = s(2:end);
-      end
-
-     end
+%}
 end
   
