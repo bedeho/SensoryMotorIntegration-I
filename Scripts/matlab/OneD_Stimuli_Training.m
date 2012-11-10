@@ -173,7 +173,7 @@ function OneD_Stimuli_Training(prefix)
     end
     
     % Testing Parameters
-    testingRetinalFieldSize = 2*(maxDev - 8*buffer); % + buffer
+    testingRetinalFieldSize = 2*(maxDev + buffer); % + buffer
     testingTargets = fliplr(centerN2(testingRetinalFieldSize, nrOfRetinalTestingPositions));
     
     testingEyePositionFieldSize = 0.95*targetEyePositionRange;

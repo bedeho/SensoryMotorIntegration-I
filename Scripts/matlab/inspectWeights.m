@@ -17,19 +17,24 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
     [networkDimensions, neuronOffsets] = loadWeightFileHeader(networkFile); % Load weight file header
     [data, objectsPrEyePosition] = regionDataPrEyePosition(filename, nrOfEyePositionsInTesting); % (object, eye_position, row, col, region)
     
-    % Load stimuli
-    startDir = pwd;
-    cd([base 'Stimuli/' stimuliName]);
-    C = load('info.mat');
-    info = C.info;
-    cd(startDir);
+    % Load TRAINING stimuli
+    trainingStimuliName = strrep(stimuliName, '-stdTest', '-training');
     
+    startDir = pwd;
+    cd([base 'Stimuli/' trainingStimuliName]);
+    dimensions = load('dimensions.mat');
+    cd(startDir);
     
     % Setup vars
     numRegions = length(networkDimensions);
     axisVals = zeros(numRegions-1, 3); % Save axis that we can lookup 'CurrentPoint' property on callback
     topLayerRowDim = networkDimensions(numRegions).x_dimension;
     
+    visualPreferenceDistance            = 1;
+    eyePositionPrefrerenceDistance      = 1;
+    visualPreferences                   = centerDistance(dimensions.visualFieldSize, visualPreferenceDistance);
+    eyePositionPreferences              = centerDistance(dimensions.eyePositionFieldSize, eyePositionPrefrerenceDistance);
+
     % Iterate regions to do correlation plot and setup callbacks
     fig = figure('name',filename,'NumberTitle','off');
     title('Number of testing locations responded to');
@@ -37,9 +42,9 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
     % Read out analysis results
     [pathstr, name, ext] = fileparts(filename);
     
-    collation = load([pathstr '/collation.mat']);
+    x = load([pathstr '/analysisResults.mat']);
     
-    analysisResults = collation.analysisResults;
+    analysisResults = x.analysisResults;
     
     for r=2:numRegions
         
@@ -49,7 +54,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         % Decorate
         title(['Region: ' num2str(r)]);
         im = imagesc(analysisResults.headCenteredNess);         % only do first region
-        pbaspect([size(v2) 1]);
+        pbaspect([fliplr(size(im)) 1]);
         colorbar;
         
         % Setup callback
@@ -111,10 +116,8 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
 
             cellNr = (row-1)*topLayerRowDim + col;
             %hTitle = title(''); %; title(['Afferent synaptic weights of cell #' num2str(cellNr) extraTitle]);
-            hTitle = title(''); %title(['Cell #' num2str(cellNr) ]); % extraTitle
-            
-            hXLabel = xlabel('Eye-position preference (deg)'); % : \beta_{i}
-            hYLabel = ylabel('Retinal preference (deg)'); % : \alpha_{i}
+            xlabel('Eye-position preference (deg)'); % : \beta_{i}
+            ylabel('Retinal preference (deg)'); % : \alpha_{i}
             
           
             % Unbelievable: cannot
@@ -123,8 +126,8 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             
             % Width
             wTicks = 1:width;
-            wTicks = wTicks(1:4:end);
-            wLabels = info.eyePositionPreferences(1:4:end);
+            wTicks = wTicks(1:10:end);
+            wLabels = eyePositionPreferences(1:10:end);
             wCellLabels = cell(1,length(wLabels));
             for l=1:length(wLabels),
               wCellLabels{l} = num2str(wLabels(l));
@@ -136,7 +139,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             % Height
             hTicks = 1:height;
             hTicks = hTicks(1:10:end);
-            hLabels = info.visualPreferences(1:10:end);
+            hLabels = visualPreferences(1:10:end);
             hCellLabels = cell(1,length(hLabels));
             for l=1:length(hLabels),
               hCellLabels{l} = num2str(hLabels(l));
@@ -146,11 +149,12 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             set(gca,'YTickLabel',hCellLabels);
             
             % SAVE
+            %{
             chap = 'chap-2';
-            fname = [THESIS_FIGURE_PATH chap '/neuron_weight_' num2str(cellNr) qualifier '.eps'];
+            fname = [THESIS_FIGURE_PATH chap '/neuron_weight_' num2str(cellNr) '.eps'];
             set(gcf,'renderer','painters');
             print(f,'-depsc2','-painters',fname);
-            
+            %}
         end
     end
 end

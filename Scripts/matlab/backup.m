@@ -296,3 +296,286 @@
     end
 
     %}
+
+   
+    
+    % Start figures
+    
+    %singleCellPlot = figure();  % Single cell
+    %multiplCellPlot = figure(); % Multiple cell
+    %confusionPlot = figure();   % Theta cell
+    
+    %linestyle = {'-', '--', ':', '-.','-'};
+    %markstyle = {'o', '*', '.','x', 's', 'd'};
+    %colors = {'r', 'b','k','c', 'm', 'y', 'g', 'w'};
+
+    %nrOfBins = 0;
+    
+    %{
+
+    % Pretty up plots
+    % http://blogs.mathworks.com/loren/2007/12/11/making-pretty-graphs/
+
+    %% Single cell -------------------------------------
+    f = figure(singleCellPlot);
+    hLegend = legend(legends);
+    legend('boxoff')
+    hTitle = title('')%; title('Head-centerdness Analysis');
+    hXLabel = xlabel('Neuron Rank');
+    hYLabel = ylabel('\Omega');
+
+    set( gca                       , ...
+        'FontName'   , 'Helvetica' );
+    set([hTitle, hXLabel, hYLabel], ...
+        'FontName'   , 'AvantGarde');
+    set([hLegend, gca]             , ...
+        'FontSize'   , 14           );
+    set([hXLabel, hYLabel]  , ...
+        'FontSize'   , 18          );
+    set( hTitle                    , ...
+        'FontSize'   , 24          , ...
+        'FontWeight' , 'bold'      );
+
+    set(gca, ...
+      'Box'         , 'on'     , ...
+      'TickDir'     , 'in'     , ...
+      'TickLength'  , [.02 .02] , ...
+      'XMinorTick'  , 'off'      , ...
+      'YMinorTick'  , 'off'      , ...
+      'YGrid'       , 'off'      , ...
+      'YTick'       , 0:0.2:1, ...
+      'LineWidth'   , 2         );
+  
+    %plot([1 numCells],[0 0], 'k.-');
+    axis tight;
+    ylim([singleCellMinY 1.1]);
+    
+    % Save
+    chap = 'chap-2';
+    fname = [THESIS_FIGURE_PATH chap '/' save_filename '_singleCell.eps'];
+    set(gcf,'renderer','painters');
+    print(f,'-depsc2','-painters',fname);
+
+    %% Multicell ---------------------------------------
+    f = figure(multiplCellPlot);
+    legend(legends);
+
+    hLegend = legend(legends);
+    legend('boxoff')
+    hTitle = title(''); % title('Representation Analysis');
+    hXLabel = xlabel('\Omega Bin');
+    hYLabel = ylabel('Frequency');
+
+    set( gca                       , ...
+        'FontName'   , 'Helvetica' );
+    set([hTitle, hXLabel, hYLabel], ...
+        'FontName'   , 'AvantGarde');
+    set([hLegend, gca]             , ...
+        'FontSize'   , 14           );
+    set([hXLabel, hYLabel]  , ...
+        'FontSize'   , 18          );
+    set( hTitle                    , ...
+        'FontSize'   , 24          , ...
+        'FontWeight' , 'bold'      );
+    
+    set(hLegend        , ...
+      'LineWidth'       , 2  );
+
+    dY = floor(maxY/5);
+
+    set(gca, ...
+      'Box'         , 'on'     , ...
+      'TickDir'     , 'in'     , ...
+      'TickLength'  , [.02 .02] , ...
+      'XMinorTick'  , 'off'      , ...
+      'YMinorTick'  , 'off'      , ...
+      'YGrid'       , 'off'      , ...
+      'YTick'       , 0:dY:maxY, ...
+      'LineWidth'   , 2         );
+
+      %'XColor'      , [.3 .3 .3], ...
+      %'YColor'      , [.3 .3 .3], ...
+
+      tickLabels = cell(1,nrOfBins);
+      binEdges = [0 collation.omegaBins];
+      for b=1:(length(binEdges)-1),
+          tickLabels{b} = ['(' fixLeadingZero(binEdges(b)) ',' fixLeadingZero(binEdges(b+1)) ']'];
+      end
+
+    set(gca,'XTick',1:nrOfBins);
+    set(gca,'XTickLabel',tickLabels)
+
+    Y = max(maxY);
+    dY = 0.05*Y;
+    %xlim([0.85 (nrOfBins-1.85)]);
+    xlim([0.75 (nrOfBins+ 0.25)]);
+    ylim([-dY (Y+dY)])
+
+    for e=1:length(experiment),
+        set(errorBarHandles(e)        , ...
+      'LineWidth'       , 2           , ...
+      'Marker'          , markstyle{e} , ...
+      'MarkerSize'      , 8           );
+    end
+    
+    % Save
+    chap = 'chap-2';
+    fname = [THESIS_FIGURE_PATH chap '/' save_filename '_multiCell.eps'];
+    set(gcf,'renderer','painters');
+    print(f,'-depsc2','-painters',fname);
+
+     % 'MarkerEdgeColor' , colors{e}  , ...
+     % 'MarkerFaceColor' , [.7 .7 .7]  
+     
+    %% confusion plot
+    %{
+    
+    f = figure(confusionPlot);
+    hLegend = legend(legends);
+    legend('boxoff')
+    hTitle = title('')%; title('Head-centerdness Analysis');
+    hXLabel = xlabel('Neuron Rank');
+    hYLabel = ylabel('\Theta');
+
+    set( gca                       , ...
+        'FontName'   , 'Helvetica' );
+    set([hTitle, hXLabel, hYLabel], ...
+        'FontName'   , 'AvantGarde');
+    set([hLegend, gca]             , ...
+        'FontSize'   , 14           );
+    set([hXLabel, hYLabel]  , ...
+        'FontSize'   , 18          );
+    set( hTitle                    , ...
+        'FontSize'   , 24          , ...
+        'FontWeight' , 'bold'      );
+
+    yticklabel = cell(1,2);
+    yticklabel{1} = '0';
+    yticklabel{2} = 'max';
+    
+    set(gca, ...
+      'Box'         , 'on'     , ...
+      'TickDir'     , 'in'     , ...
+      'TickLength'  , [.02 .02] , ...
+      'XMinorTick'  , 'off'      , ...
+      'YMinorTick'  , 'off'      , ...
+      'YGrid'       , 'off'      , ...
+      'YTick'       , [0 thetaMaxY], ...
+      'YTickLabel'  , yticklabel, ...
+      'LineWidth'   , 2         );
+  
+    %plot([1 numCells],[0 0], 'k.-');
+    axis tight;
+    ylim([0 thetaMaxY]);
+    xlim([-0.1 numCells]);
+    
+    
+    
+    
+ 
+ %{
+     
+    
+    numExperiments = length(experiments);
+    
+    % Start figures
+    
+    ticks = zeros(1,numExperiments)
+    multiUpper = zeros(1,numExperiments);
+    multiLower = zeros(1,numExperiments);
+    multiMean = zeros(1,numExperiments);
+    
+    %tickLabels = cell(1,numExperiments);
+    %numPerfectCells = zeros(1,numExperiments);
+    % Iterate experiments and plot
+    for e = 1:numExperiments,
+        
+        e
+        
+        % Load analysis file for experiments
+        collation = load([expFolder experiments(e).Folder '/analysisResults.mat']);
+        
+        % Find Number of Perfect cells
+        %numPerfectCells(e) = nnz(collation.singleCell(:) > 0.8); % change to multi error bar thing!!
+        
+        % Save ticks
+        ticks(e) = experiments(e).tick;
+        
+        % Save tick label
+        %tickLabels(e) = [num2str(ticks(e)) '']; % add units?
+        
+        % Error bars
+        dist = collation.multiCell;
+        multiUpper(e) = dist(3,end) - dist(2,end);
+        multiLower(e) = dist(2,end) - dist(1,end);
+        multiMean(e) = dist(2,end);
+    end
+    
+    
+    f = figure();
+    
+    
+    errorbar(ticks,multiMean,multiLower,multiUpper,'LineWidth',2,'MarkerSize',8);
+    topValues = multiUpper+multiMean;
+    bottomValues = multiMean-multiLower;
+    ylim([max(topValues)*-0.01 max(topValues)*1.01]);
+    axis tight
+    label_y = 'Head-Centeredness Percentile (\lambda = 0.8)';
+    label_y2 = 'Head-Centered Space Coverage (bits)';
+    
+    %% LOGARITHMIC
+    %errorbarlogx(0.02);
+    %set(gca,'xscale','log'); 
+    %grid on
+    
+    %plot(ticks,numPerfectCells,'LineWidth',2,'MarkerSize',8);
+    
+    %% Movement
+    label_x = 'Fixations - (\kappa)';
+    hold on;
+    %plot(ticks,bottomValues,'-or','LineWidth',2,'MarkerSize',8);
+    
+    %% Trace time constant
+    %label_x = 'Trace Time Constant - \tau_{q} (s)';
+    %ticks = [0.01 0.1 1.0 10.0 100.0 900.0];
+    
+    
+    %% Sparseness
+    %label_x = 'Sparseness - \pi (%)';
+    
+    
+    %% Learningrate
+    %label_x = 'Learningrate - \rho';
+    %ticks = [0.001 0.01 0.1 0.9];
+    
+    legend('boxoff')
+    hTitle = title('')%; title('Varying Sparseness Percentile');
+    hXLabel = xlabel(label_x);
+    hYLabel = ylabel(label_y);
+    %{
+
+    set( gca                       , ...
+        'FontName'   , 'Helvetica' );
+    set([hTitle, hXLabel, hYLabel], ...
+        'FontName'   , 'AvantGarde');
+    set(gca             , ...
+        'FontSize'   , 10           );
+    set(hYLabel  , ...
+        'FontSize'   , 18          );
+    set(hXLabel  , ...
+        'FontSize'   , 18          );
+    set( hTitle                    , ...
+        'FontSize'   , 24          , ...
+        'FontWeight' , 'bold'      );
+    
+    set(gca, ...
+      'Box'         , 'on'     , ...
+      'TickDir'     , 'in'     , ...
+      'TickLength'  , [.02 .02] , ...
+      'XMinorTick'  , 'off'      , ...
+      'YMinorTick'  , 'off'      , ...
+      'LineWidth'   , 2         , ...
+      'XTick'       , ticks);
+  %}
+  
+%}

@@ -252,8 +252,14 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             y = squeeze(data(e, :, row, col));
 
             c = mod(e-1,length(colors)) + 1;
-
-            plot(y,['-' markerSpecifiers{c}],'Color',colors{c},'MarkerSize',8);
+            
+            % Curve
+            plot(y,'-','Color',colors{c});
+            %plot(y,['-' markerSpecifiers{c}],'Color',colors{c},'MarkerSize',8);
+            
+            % Mean
+            meanY = mean(y)
+            plot([1 length(y)], [meanY meanY], '.-','Color', colors{c});
             
             hold on;
         end
@@ -262,7 +268,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         set(gca,'XTickLabel', xTickLabels);
         xlim([0 (numTargets+1)]);
         ylim([-0.05 1.05]);
-        grid
+        %grid
         
         ylabel('Firing Rate');
         xlabel('Head-Centered Fixation Location (deg)');

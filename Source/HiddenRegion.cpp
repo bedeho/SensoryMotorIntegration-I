@@ -246,7 +246,7 @@ void HiddenRegion::computeNewFiringRate() {
             #pragma omp for nowait
             for(int i = 0;i < verDimension; i++)
                 for(int j = 0;j < horDimension; j++)
-                    Neurons[d][i][j].newFiringRate = 1/(1+exp(-2*sigmoidSlope*(Neurons[d][i][j].newInhibitedActivation-threshold)));
+                    Neurons[d][i][j].newFiringRate = 1/(1+exp(-2*sigmoidSlope*(Neurons[d][i][j].newInhibitedActivation-threshold - sigmoidThreshold)));
         }
     }
     else if(sparsenessRoutine == GLOBAL) {

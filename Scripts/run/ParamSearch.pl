@@ -30,12 +30,11 @@
    	
    	#for my $ftC (@ftCArray) {
    		
-   	my $experiment						= "base4"; #fanin10-reset, baseline-H5-S6
+   	my $experiment						= "base6"; #fanin10-reset, baseline-H5-S6
    	
    	# final
-   	my $stim							= "narrowtest-visualfield=200.00-eyepositionfield=40.00-fixations=600.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=1000.00";
-   	#my $stim							= "fixations=600.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-visualfield=200.00-eyepositionfield=40.00-seed=72.00-samplingrate=1000.00";
-   	#my $stim							= "fixations=150.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-visualfield=200.00-eyepositionfield=40.00-seed=72.00-samplingrate=1000.00";
+   	#my $stim							= "narrowtest-visualfield=200.00-eyepositionfield=40.00-fixations=600.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=1000.00";
+   	my $stim							= "visualfield=200.00-eyepositionfield=40.00-fixations=600.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=1000.00";
    	
 	# 0MOVESTIM
 	#my $nTP 							= ceil((2 * 4 * 10)/$ftC);
@@ -58,8 +57,8 @@
 	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $learningRule					= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs						= 10; #50; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 1;
+	my $nrOfEpochs						= 1; #50; # 30,100
+	my $saveNetworkAtEpochMultiple 		= 22;
 	my $outputAtTimeStepMultiple		= 1;
 
 	my $lateralInteraction				= COMP; # NONE, COMP, SOM

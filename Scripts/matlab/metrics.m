@@ -61,7 +61,6 @@ function analysisResults = metrics(filename, info)
                 % Discard Status
                 DiscardStatus(row,col) = discardStatus(row,col,maxNumIntervals);
                 
-                
                 if(DiscardStatus(row,col) == 0),
                     v = [row col headCenteredNess(row, col) RFSize(row, col) RFSize_Confidence(row, col) RFLocation(row, col) RFLocation_Confidence(row,col)];
                     wellBehavedNeurons = [wellBehavedNeurons; v];
