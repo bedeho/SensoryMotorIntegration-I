@@ -36,11 +36,16 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     %scatterhist(analysisResults.RFLocation_Linear,analysisResults.headCenteredNess_Linear,'NBins',60);
     
     % Network summary
+    disp('************************************************************');
     disp(['fractionVeryHeadCentered: ' num2str(analysisResults.fractionVeryHeadCentered)]);
     disp(['fractionDiscarded: ' num2str(analysisResults.fractionDiscarded)]);
     disp(['fractionDiscarded_Discontinous: ' num2str(analysisResults.fractionDiscarded_Discontinous)]);
     disp(['fractionDiscarded_Edge: ' num2str(analysisResults.fractionDiscarded_Edge)]);
     disp(['fractionDiscarded_MultiPeak: ' num2str(analysisResults.fractionDiscarded_MultiPeak)]);
+    %disp(['uniformityOfVeryHeadCentered: ' num2str(analysisResults.uniformityOfVeryHeadCentered)]);
+    %disp(['maxEntropy: ' num2str(analysisResults.maxEntropy)]);
+    disp(['coverage: ' num2str(analysisResults.uniformityOfVeryHeadCentered/analysisResults.maxEntropy)]);
+    disp('************************************************************');
     
     % For scatter
     wellBehavedNeurons  = analysisResults.wellBehavedNeurons;
@@ -49,7 +54,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     
     % For distribution
     hmatTOP = analysisResults.RFLocation_Linear;
-    hmatTOP(analysisResults.headCenteredNess_Linear < 0.8) = [];     % shave out
+    hmatTOP(analysisResults.headCenteredNess_Linear < 0.7) = [];     % shave out
 
     % Load single unit recordings
   
@@ -77,13 +82,22 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     targets = fliplr(info.targets);
        
     objectLegend = cell(numTargets,1);
-    xTickLabels = cell(numTargets,1);
-    xTick = zeros(numTargets,1);
+    
+    i = 1;
+    distance = 2;
+    t = 1:distance:numTargets;
+    xTick = zeros(length(t),1);
+    xTickLabels = cell(length(t),1);
+    
     for s=1:numTargets,
 
         objectLegend{s} = [num2str(targets(s)) '^{\circ}'];
-        xTickLabels{s} = sprintf([num2str(targets(s)) '%c'], char(176));
-        xTick(s) = targets(s);
+        
+        if any((t-s)==0),
+            xTickLabels{i} = sprintf([num2str(targets(s)) '%c'], char(176));
+            xTick(i) = s;%targets(s);
+            i = i + 1;
+        end
     end
 
     
@@ -133,6 +147,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             scatterAxis_RED = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 1);
             set(scatterAxis_RED, 'ButtonDownFcn', {@scatterCallBack,r}); % Setup callback
             ylim([-0.1 1]);
+            xlim([info.targets(end) info.targets(1)]);
             
             hold off
         else
@@ -169,7 +184,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         
         error = sum(((scatterSpace - d).^2)');
         
-        [e leastErrorIndex] = min(error)
+        [e leastErrorIndex] = min(error);
         
         %[row col] = ind2sub(size(analysisResults.headCenteredNess), leastErrorIndex);
 
@@ -264,9 +279,9 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             hold on;
         end
        
-        set(gca,'XTick', 1:numTargets);
+        set(gca,'XTick', xTick);
         set(gca,'XTickLabel', xTickLabels);
-        xlim([0 (numTargets+1)]);
+        xlim([1 numTargets]);
         ylim([-0.05 1.05]);
         %grid
         

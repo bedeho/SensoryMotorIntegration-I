@@ -31,6 +31,7 @@ function plotRegion(filename, info, dotproduct, netDir)
     xlabel('h-value');
     ylabel('\lambda');
     ylim([-0.1 1]);
+    xlim([info.targets(end) info.targets(1)]);
     saveFigureAndDelete(lambdahPlot, 'lambdah');
     
     % Psi/h

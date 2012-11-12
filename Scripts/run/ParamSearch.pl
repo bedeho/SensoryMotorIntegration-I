@@ -30,11 +30,11 @@
    	
    	#for my $ftC (@ftCArray) {
    		
-   	my $experiment						= "base6"; #fanin10-reset, baseline-H5-S6
+   	my $experiment						= "find_threshold"; #fanin10-reset, baseline-H5-S6
    	
    	# final
-   	#my $stim							= "narrowtest-visualfield=200.00-eyepositionfield=40.00-fixations=600.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=1000.00";
-   	my $stim							= "visualfield=200.00-eyepositionfield=40.00-fixations=600.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=1000.00";
+   	my $stim							= "newtest-visualfield=200.00-eyepositionfield=40.00-fixations=450.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=1000.00";
+   	
    	
 	# 0MOVESTIM
 	#my $nTP 							= ceil((2 * 4 * 10)/$ftC);
@@ -54,14 +54,14 @@
 	#my $stim							= "H3-sigma18-Tar=0.00-nTP=0.00-nOF=90.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	#my $stim							= "H4-sigma18-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	
-	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
+	my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $learningRule					= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs						= 1; #50; # 30,100
+	my $nrOfEpochs						= 10; #50; # 30,100
 	my $saveNetworkAtEpochMultiple 		= 22;
 	my $outputAtTimeStepMultiple		= 1;
 
-	my $lateralInteraction				= COMP; # NONE, COMP, SOM
+	my $lateralInteraction				= NONE; # NONE, SHORT_INHIBITION_LONG_EXCITATION = VISNET, SHORT_EXCITATION_LONG_INHIBITION = SOM
 	my $sparsenessRoutine				= HEAP; # NONE, HEAP, GLOBAL
 
 	my $resetActivity					= "false"; # "false", Reset activation between objects of training

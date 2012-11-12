@@ -245,12 +245,15 @@ void HiddenRegion::computeNewFiringRate() {
         {
             #pragma omp for nowait
             for(int i = 0;i < verDimension; i++)
-                for(int j = 0;j < horDimension; j++)
+                for(int j = 0;j < horDimension; j++){
                     Neurons[d][i][j].newFiringRate = 1/(1+exp(-2*sigmoidSlope*(Neurons[d][i][j].newInhibitedActivation-threshold - sigmoidThreshold)));
+                    
+                    //cout << "newInhibitedActivation: " << Neurons[d][i][j].newActivation << endl;
+                }
         }
     }
     else if(sparsenessRoutine == GLOBAL) {
-        
+        /*
         float cumulativeFiringRate = 0;
         
         for(int i = 0;i < verDimension; i++)
@@ -284,7 +287,7 @@ void HiddenRegion::computeNewFiringRate() {
                 
                 // Compute firing rate
                 n->newFiringRate = (1 - stepSize/timeConstant) * n->firingRate + (stepSize/timeConstant) * transferFunctionStimulation;			
-            }
+            }*/
     }
 }
 
@@ -338,7 +341,7 @@ void HiddenRegion::filter() {
 					n_i = wrap(n_i, verDimension);
 					n_j = wrap(n_j, horDimension);
 					
-					convolutionResult += Neurons[0][n_i][n_j].newActivation * (lateralInteraction == COMP ? inhibitoryFilter[f_i][f_j] : somFilter[f_i][f_j]);
+					convolutionResult += Neurons[0][n_i][n_j].newActivation * (lateralInteraction == SHORT_INHIBITION_LONG_EXCITATION ? inhibitoryFilter[f_i][f_j] : somFilter[f_i][f_j]);
                 }
             
             // Save result convolutionResult

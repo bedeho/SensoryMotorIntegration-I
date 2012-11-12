@@ -22,7 +22,7 @@ enum SPARSENESSROUTINE		{ NOSPARSENESS = 0,		HEAP = 1,           GLOBAL = 2};
 enum WEIGHTNORMALIZATION	{ NONORMALIZATION = 0,	CLASSIC = 1 };
 //enum TRANSFER_FUNCTION    { IDENTITY = 0,         SIGMOID = 1 };
 enum INITIALWEIGHT          { ZERO = 0,				RANDOMEQUAL = 1,	RANDOMINDEPENDENT = 2 };
-enum LATERAL				{ NONE = 0,				COMP = 1,			SOM = 2 };
+enum LATERAL				{ NONE = 0,				SHORT_INHIBITION_LONG_EXCITATION = 1,       SHORT_EXCITATION_LONG_INHIBITION = 2 };
 enum CONNECTIVITY			{ FULL = 0,				SPARSE = 1,         SPARSE_BIASED = 2 };
 enum SAVEHISTORY            { 
                               SH_NONE = 0,          

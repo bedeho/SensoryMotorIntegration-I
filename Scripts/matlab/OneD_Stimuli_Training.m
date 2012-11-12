@@ -40,7 +40,7 @@ function OneD_Stimuli_Training(prefix)
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     fixationDuration                    = 0.3; % (s) - fixation period after each saccade
     fixationSequenceLength              = 30;
-    k                                   = 20;
+    k                                   = 15;
     numberOfFixations                   = fixationSequenceLength * k;
     nrOfTestingEyePositions             = 6;
     nrOfRetinalTestingPositions         = 20;
@@ -173,7 +173,7 @@ function OneD_Stimuli_Training(prefix)
     end
     
     % Testing Parameters
-    testingRetinalFieldSize = 2*(maxDev + buffer); % + buffer
+    testingRetinalFieldSize = 2*(maxDev + 3*buffer); % + buffer
     testingTargets = fliplr(centerN2(testingRetinalFieldSize, nrOfRetinalTestingPositions));
     
     testingEyePositionFieldSize = 0.95*targetEyePositionRange;
