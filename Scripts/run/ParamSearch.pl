@@ -30,7 +30,7 @@
    	
    	#for my $ftC (@ftCArray) {
    		
-   	my $experiment						= "find_threshold"; #fanin10-reset, baseline-H5-S6
+   	my $experiment						= "find_sparsityAndthreshold"; #fanin10-reset, baseline-H5-S6
    	
    	# final
    	my $stim							= "newtest-visualfield=200.00-eyepositionfield=40.00-fixations=450.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=1000.00";

@@ -144,10 +144,11 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             hold on;
             
             %scatterAxis = herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
-            scatterAxis_RED = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 1);
+            %scatterAxis_RED = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 1);
+            scatterAxis_RED = plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'or', 'LineWidth', 1);
             set(scatterAxis_RED, 'ButtonDownFcn', {@scatterCallBack,r}); % Setup callback
-            ylim([-0.1 1]);
-            xlim([info.targets(end) info.targets(1)]);
+            %ylim([-0.1 1]);
+            %xlim([info.targets(end) info.targets(1)]);
             
             hold off
         else
