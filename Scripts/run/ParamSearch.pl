@@ -30,11 +30,11 @@
    	
    	#for my $ftC (@ftCArray) {
    		
-   	my $experiment						= "find_sparsityAndthreshold"; #fanin10-reset, baseline-H5-S6
+   	my $experiment						= "epoch_and_dt_0.02_test"; #fanin10-reset, baseline-H5-S6
    	
    	# final
-   	my $stim							= "newtest-visualfield=200.00-eyepositionfield=40.00-fixations=450.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=1000.00";
-   	
+   	#my $stim							= "newtest-visualfield=200.00-eyepositionfield=40.00-fixations=450.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=1000.00";
+   	my $stim							= "dense-visualfield=200.00-eyepositionfield=40.00-fixations=750.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=1000.00";
    	
 	# 0MOVESTIM
 	#my $nTP 							= ceil((2 * 4 * 10)/$ftC);
@@ -57,8 +57,8 @@
 	my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $learningRule					= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs						= 10; #50; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 22;
+	my $nrOfEpochs						= 100; #50; # 30,100
+	my $saveNetworkAtEpochMultiple 		= 10;
 	my $outputAtTimeStepMultiple		= 1;
 
 	my $lateralInteraction				= NONE; # NONE, SHORT_INHIBITION_LONG_EXCITATION = VISNET, SHORT_EXCITATION_LONG_INHIBITION = SOM

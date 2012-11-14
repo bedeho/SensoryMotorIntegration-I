@@ -34,9 +34,7 @@ function plotExperiment(experiment, stimuliName)
     
     cd(startDir);
     
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Find an example of simulation directory to extract column names- HORRIBLY CODED
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     for d = 1:length(listing),
 
         simulation = listing(d).name
@@ -46,7 +44,7 @@ function plotExperiment(experiment, stimuliName)
             break;
         end
     end
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
     
     % Save results for summary
     % num2str(length(listing))
@@ -120,12 +118,8 @@ function plotExperiment(experiment, stimuliName)
                 % Network
                 fprintf(fileID, '<td> %s </td>\n', summary(s).directory);
 
-
                 % hvalue
-                fprintf(fileID, '<td><img src="%s" width="150px" height="100px"/></td>\n', [netDir '/lambdah.png']);
-
-                % hpsilambda
-                %fprintf(fileID, '<td><img src="%s" width="100px" height="100px"/></td>\n', [netDir '/hpsilambda.png']);
+                fprintf(fileID, '<td><img src="%s" width="250px" height="250px"/></td>\n', [netDir '/lambdah.png']);
 
                 % Parameters
                 parameters = getParameters(simulation);
@@ -154,9 +148,6 @@ function plotExperiment(experiment, stimuliName)
                 outputButton('t-S', ['matlab:plotNetworkHistoryDANIEL(\\''' trDir '/stimulation.dat\\'')']); 
 
                 fprintf(fileID, '</td>');
-
-                % Network name: summary(s).directory '.txt\''
-                
                 fprintf(fileID, '</tr>\n\n');
             end
             

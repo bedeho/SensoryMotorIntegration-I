@@ -17,9 +17,9 @@ function ThesisExperimentsPlot()
 
     % Save all experiments to include  
     experiment(1).Name = 'Trained';
-    experiment(1).Folder = expFolder('base2/L=0.05000_S=0.80_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    experiment(1).Folder = expFolder('find_sigmoid_BIGGER-fc0.05/sS=00000004.0_sT=0.60_/TrainedNetwork');
     experiment(2).Name = 'Untrained';
-    experiment(2).Folder = expFolder('base2/L=0.05000_S=0.80_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/BlankNetwork');
+    experiment(2).Folder = expFolder('find_sigmoid_BIGGER-fc0.05/sS=00000004.0_sT=0.60_/BlankNetwork');
     
     % Setup buffers
     headCenteredNess_X  = [];

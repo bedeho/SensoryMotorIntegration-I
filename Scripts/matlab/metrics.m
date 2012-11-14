@@ -122,7 +122,7 @@ function analysisResults = metrics(filename, info)
     analysisResults.fractionDiscarded_MultiPeak     = nnz(bitget(DiscardStatus,4)) / numNeurons;
     
     % Very head-centered
-    lambdaCutoff = 0.8;
+    lambdaCutoff = 0.7;
     analysisResults.fractionVeryHeadCentered     = nnz(headCenteredNess_Linear_Clean >= lambdaCutoff) / numNeurons;
     
     % Uniformity

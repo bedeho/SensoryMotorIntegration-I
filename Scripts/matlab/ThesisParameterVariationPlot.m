@@ -12,18 +12,20 @@ function ThesisParameterVariationPlot()
 
     global base;
     
-    %expName = 'peaked_tracetimeconstant';
-    %expFolder = [base 'Experiments/' expName '/'];
-    
-    
     expFolder = [base 'Experiments/' ];
     
     % Baseline
-    experiments(1).Folder   =   'base3/L=0.05000_S=0.80_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
-    experiments(2).Folder   =   'base3/L=0.05000_S=0.80_sS=00000001.0_sT=0.000_gIC=0.0500_eS=0.0_/BlankNetwork';
+    experiments(1).Folder   =   'find_sigmoid_BIGGER-fc0.05/sS=00000001.0_sT=0.60_/TrainedNetwork';
+    experiments(2).Folder   =   'find_sigmoid_BIGGER-fc0.05/sS=00000002.0_sT=0.60_/TrainedNetwork';
+    experiments(3).Folder   =   'find_sigmoid_BIGGER-fc0.05/sS=00000003.0_sT=0.60_/TrainedNetwork';
+    experiments(4).Folder   =   'find_sigmoid_BIGGER-fc0.05/sS=00000004.0_sT=0.60_/TrainedNetwork';
+    experiments(5).Folder   =   'find_sigmoid_BIGGER-fc0.05/sS=00000005.0_sT=0.60_/TrainedNetwork';
+    
     experiments(1).tick     =    1;
     experiments(2).tick     =    2;
-    
+    experiments(3).tick     =    3;
+    experiments(4).tick     =    4;
+    experiments(5).tick     =    5;
 
     %{
     experiments(13).Folder =    'movementstatistics_14.00/L=0.05000_S=0.60_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
@@ -499,12 +501,14 @@ function ThesisParameterVariationPlot()
     
     numExperiments = length(experiments);
     
-    % Start figures
-    ticks = zeros(1,numExperiments);
+    % Data
     headCenteredNess = zeros(1,numExperiments);
+    rfSizes = zeros(1,numExperiments);
     coverage = zeros(1,numExperiments);
     
-    %tickLabels = cell(1,numExperiments);
+    % X Axis
+    ticks = zeros(1,numExperiments);
+    tickLabels = cell(1,numExperiments);
     
     % Iterate experiments and plot
     for e = 1:numExperiments,
@@ -513,34 +517,47 @@ function ThesisParameterVariationPlot()
         ticks(e) = experiments(e).tick;
         
         % Save tick label
-        %tickLabels(e) = [num2str(ticks(e)) '']; % add units?
+        tickLabels{e} = [num2str(ticks(e)) '']; % add units?
         
         % Load analysis file for experiments
         collation = load([expFolder experiments(e).Folder '/analysisResults.mat']);
+        res = collation.analysisResults;
         
         % Save data
-        headCenteredNess(e) = collation.analysisResults.fractionVeryHeadCentered
-        coverage(e) = collation.analysisResults.uniformityOfVeryHeadCentered
+        headCenteredNess(e) = res.fractionVeryHeadCentered;
+        %coverage(e) = collation.analysisResults.uniformityOfVeryHeadCentered
+        
+        rf = res.RFSize_Linear_Clean(res.headCenteredNess_Linear_Clean >= 0.7);
+        rfSizes(e) = mean(rf);
+        
     end
     
     figure();
     
     % Plot
-    [AX,H1,H2] = plotyy(ticks, headCenteredNess, ticks, coverage, 'Head-Centeredness Percentile (\lambda = 0.8)', 'Head-Centered Space Coverage (bits)')
+    [AX,H1,H2] = plotyy(ticks, headCenteredNess, ticks, rfSizes); 
     
-    %ylim([0 1]);
-    %axis tight
+    % Cosmetics
+    set(get(AX(1),'Ylabel'),'String', 'Head-Centeredness Rate (\lambda >= 0.8)');
+    set(get(AX(2),'Ylabel'),'String', 'Receptive Field Size (deg)');
     
+    set(AX(1),'XTick',ticks);
+    set(AX(1),'XTickLabel',tickLabels);
+    
+    set(AX(2),'XTick',ticks);
+    set(AX(2),'XTickLabel',tickLabels);
+    
+    set(H1,'LineStyle','-','Marker','o');
+    set(H2,'LineStyle','--','Marker','o');
+    
+    %title('Varying Sparseness Percentile');
+    xlabel('Fixations - (\kappa)');
+
     %% LOGARITHMIC
     %errorbarlogx(0.02);
     %set(gca,'xscale','log'); 
     %grid on
-    
-    %% Movement
-    label_x = 'Fixations - (\kappa)';
-    hold on;
-    %plot(ticks,bottomValues,'-or','LineWidth',2,'MarkerSize',8);
-    
+        
     %% Trace time constant
     %label_x = 'Trace Time Constant - \tau_{q} (s)';
     %ticks = [0.01 0.1 1.0 10.0 100.0 900.0];
@@ -552,11 +569,6 @@ function ThesisParameterVariationPlot()
     %label_x = 'Learningrate - \rho';
     %ticks = [0.001 0.01 0.1 0.9];
     
-    legend('boxoff')
-    hTitle = title('')%; title('Varying Sparseness Percentile');
-    hXLabel = xlabel(label_x);
-    hYLabel = ylabel(label_y);
-  
      %% Make it prettier
      function s = fixLeadingZero(d)
 

@@ -73,7 +73,6 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     PLOT_COLS = 4;
     numRegions = length(networkDimensions);
     axisVals = zeros(numRegions, PLOT_COLS); % Save axis that we can lookup 'CurrentPoint' property on callback
-    markerSpecifiers = {'+', 'v', 'x', 's', 'd', '^', '.', '>'};
     colors = {'r', 'b','k','c', 'm', 'y', 'g', 'w'};
     topLayerRowDim = networkDimensions(numRegions).x_dimension;
     
@@ -81,23 +80,26 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     numTargets = length(info.targets);
     targets = fliplr(info.targets);
        
-    objectLegend = cell(numTargets,1);
+    
     
     i = 1;
-    distance = 2;
+    distance = 6;
     t = 1:distance:numTargets;
     xTick = zeros(length(t),1);
     xTickLabels = cell(length(t),1);
     
     for s=1:numTargets,
 
-        objectLegend{s} = [num2str(targets(s)) '^{\circ}'];
-        
         if any((t-s)==0),
             xTickLabels{i} = sprintf([num2str(targets(s)) '%c'], char(176));
             xTick(i) = s;%targets(s);
             i = i + 1;
         end
+    end
+    
+    objectLegend = cell(numEyePositions,1);
+    for e=1:numEyePositions,
+        objectLegend{e} = ['Fixating ' num2str(info.eyePositions(e)) '^{\circ}'];
     end
 
     
@@ -144,8 +146,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             hold on;
             
             %scatterAxis = herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
-            %scatterAxis_RED = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 1);
-            scatterAxis_RED = plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'or', 'LineWidth', 1);
+            scatterAxis_RED = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 1);
             set(scatterAxis_RED, 'ButtonDownFcn', {@scatterCallBack,r}); % Setup callback
             %ylim([-0.1 1]);
             %xlim([info.targets(end) info.targets(1)]);
@@ -261,7 +262,19 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
 
     function prettyPlot(region,row,col)
         
-        f = figure();
+        % Dimensions
+        margin = 50;
+        fDim = 400;
+        sDim = 120;
+        tWidth = fDim + 2*margin;
+        tHeight = fDim + 2*margin;
+        
+        % Create figure
+        f = figure('Units','Pixels','position', [1000 1000 tWidth tHeight]);
+    
+        responsePlot = subplot(1,2,1);
+        
+        fixationAxes = zeros(1,numEyePositions);
 
         for e = 1:numEyePositions,
 
@@ -270,31 +283,57 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             c = mod(e-1,length(colors)) + 1;
             
             % Curve
-            plot(y,'-','Color',colors{c});
+            fixationAxes(e) = plot(y,'-','Color',colors{c});
             %plot(y,['-' markerSpecifiers{c}],'Color',colors{c},'MarkerSize',8);
+            
+            hold on;
             
             % Mean
             meanY = mean(y)
-            plot([1 length(y)], [meanY meanY], '.-','Color', colors{c});
-            
+            plot([1 length(y)], [meanY meanY], '.--','Color', colors{c});
             hold on;
+            
         end
        
         set(gca,'XTick', xTick);
         set(gca,'XTickLabel', xTickLabels);
+        axis square;
         xlim([1 numTargets]);
         ylim([-0.05 1.05]);
-        %grid
         
         ylabel('Firing Rate');
-        xlabel('Head-Centered Fixation Location (deg)');
+        xlabel('Head-Centered Stimuli Location (deg)');
         
-        legend(objectLegend);
+        legend(fixationAxes,objectLegend);
         legend('boxoff');
-        
-        cellNr = (row-1)*topLayerRowDim + col;
-        %hTitle = title(['Cell #' num2str(cellNr)]); % ', R:' num2str(region) % ', \Omega_{' num2str(cellNr) '} = ' num2str(sCell)
 
+        cellNr = (row-1)*topLayerRowDim + col;
+        
+        grid
+
+        %hTitle = title(['Cell #' num2str(cellNr)]); % ', R:' num2str(region) % ', \Omega_{' num2str(cellNr) '} = ' num2str(sCell)
+        
+
+        % Population plot        
+        scatterPlot = subplot(1,2,2);
+        
+        grey = [0.1 0.1 0.1];
+        plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'o', 'MarkerSize' , 1, 'MarkerFaceColor', grey, 'MarkerEdgeColor', grey);
+        hold on;
+        plot(analysisResults.RFLocation(row,col), analysisResults.headCenteredNess(row,col), 'o', 'MarkerSize' , 3, 'LineWidth', 3, 'MarkerFaceColor', 'r', 'MarkerEdgeColor', 'r');
+        ylim([-0.1 1]);
+        xlim([info.targets(end) info.targets(1)]);
+        
+        % Turn off ticks
+        set(gca,'xtick',[]);
+        set(gca,'ytick',[]);
+        axis square
+        
+        p = [margin margin fDim fDim];
+        set(responsePlot, 'Units','Pixels', 'pos', p);
+        
+        p = [(margin+15) (fDim-85) sDim sDim];
+        set(scatterPlot, 'Units','Pixels', 'pos', p);
         
         % SAVE
         %{
@@ -303,6 +342,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         set(gcf,'renderer','painters');
         print(f,'-depsc2','-painters',fname);
         %}
+        
         
     end
  

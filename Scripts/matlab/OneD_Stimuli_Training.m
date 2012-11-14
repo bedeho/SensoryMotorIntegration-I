@@ -24,7 +24,7 @@ function OneD_Stimuli_Training(prefix)
     
     global base;
     
-    % Misc Params
+    % Technical
     seed                                = 72;  % classic = 72
     samplingRate                        = 1000;% (Hz)
     
@@ -34,16 +34,16 @@ function OneD_Stimuli_Training(prefix)
     visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
     eyePositionFieldSize                = (1-q)*visualFieldSize; % (1-q)*visualFieldSize OR equivalently (visualFieldSize/2 - targetVisualRange/2)
     targetVisualRange                   = visualFieldSize * q;
-    targetEyePositionRange              = 0.8*eyePositionFieldSize; %eyePositionFieldSize;
+    targetEyePositionRange              = 0.8*eyePositionFieldSize;
     
-    % Agent Behaviour
+    % Agent
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     fixationDuration                    = 0.3; % (s) - fixation period after each saccade
     fixationSequenceLength              = 30;
-    k                                   = 15;
+    k                                   = 25;
     numberOfFixations                   = fixationSequenceLength * k;
-    nrOfTestingEyePositions             = 6;
-    nrOfRetinalTestingPositions         = 20;
+    nrOfTestingEyePositions             = 4;
+    nrOfRetinalTestingPositions         = 80;
     
     % Error check 
     if mod(numberOfFixations, fixationSequenceLength) ~= 0,
@@ -176,7 +176,7 @@ function OneD_Stimuli_Training(prefix)
     testingRetinalFieldSize = 2*(maxDev + 3*buffer); % + buffer
     testingTargets = fliplr(centerN2(testingRetinalFieldSize, nrOfRetinalTestingPositions));
     
-    testingEyePositionFieldSize = 0.95*targetEyePositionRange;
+    testingEyePositionFieldSize = targetEyePositionRange;
     testingEyePositions = centerN2(testingEyePositionFieldSize, nrOfTestingEyePositions);
     
     % Generate testing data

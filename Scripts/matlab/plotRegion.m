@@ -6,7 +6,6 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-%function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot,thetaPlot, thetaMatrix, omegaMatrix, dist, omegaBins, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
 function plotRegion(filename, info, dotproduct, netDir)
     
     analysisResults = metrics(filename, info);

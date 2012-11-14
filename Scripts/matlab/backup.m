@@ -1,6 +1,8 @@
 
 %% metrics.m
 
+%function [outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot,thetaPlot, thetaMatrix, omegaMatrix, dist, omegaBins, invariancePlot, distributionPlot] = plotRegion(filename, info, dotproduct, region, depth)
+
     %{
     % Lambda
     lambdaPlot = figure();
