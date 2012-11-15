@@ -77,24 +77,16 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     topLayerRowDim = networkDimensions(numRegions).x_dimension;
     
     numEyePositions = length(info.eyePositions);
-    numTargets = length(info.targets);
-    targets = fliplr(info.targets);
-       
     
     
-    i = 1;
-    distance = 6;
-    t = 1:distance:numTargets;
-    xTick = zeros(length(t),1);
-    xTickLabels = cell(length(t),1);
+    dist = 16;
+    upperhalf = dist:dist:(dist*floor(info.targets(1)/dist));
+    xTick = [-fliplr(upperhalf) 0 upperhalf];%centerN(floor(info.targets(1) - info.targets(end)),20);
+        
+    %xTick = centerDistance(info.targets(1) - info.targets(end), 20);
     
-    for s=1:numTargets,
-
-        if any((t-s)==0),
-            xTickLabels{i} = sprintf([num2str(targets(s)) '%c'], char(176));
-            xTick(i) = s;%targets(s);
-            i = i + 1;
-        end
+    for s=1:length(xTick),
+        xTickLabels{s} = sprintf([num2str(xTick(s)) '%c'], char(176));
     end
     
     objectLegend = cell(numEyePositions,1);
@@ -148,8 +140,8 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             %scatterAxis = herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
             scatterAxis_RED = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 1);
             set(scatterAxis_RED, 'ButtonDownFcn', {@scatterCallBack,r}); % Setup callback
-            %ylim([-0.1 1]);
-            %xlim([info.targets(end) info.targets(1)]);
+            ylim([-0.1 1]);
+            xlim([info.targets(end) info.targets(1)]);
             
             hold off
         else
@@ -220,11 +212,14 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             axisVals(numRegions, [1 PLOT_COLS]) = subplot(numRegions, PLOT_COLS, [PLOT_COLS*(numRegions - 1) + 1 PLOT_COLS*(numRegions - 1) + PLOT_COLS]);
 
             cellData = data(:, :, row, col); % {region-1}
-            plot(cellData');
+            plot(repmat(info.targets',1,numEyePositions),cellData');
             
             ylim([-0.1 1.1]);
-            xlim([1 objectsPrEyePosition]);
+            xlim([info.targets(end) info.targets(1)]);
+            set(gca,'XTick', xTick);
+            set(gca,'XTickLabel', xTickLabels);
             title(['Row,Col: ' num2str(row) ',' num2str(col)]);
+            
             
         elseif strcmp(clickType,'alt'),
                 
@@ -270,12 +265,16 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         tHeight = fDim + 2*margin;
         
         % Create figure
-        f = figure('Units','Pixels','position', [1000 1000 tWidth tHeight]);
+        figure('Units','Pixels','position', [1000 1000 tWidth tHeight]);
     
         responsePlot = subplot(1,2,1);
         
         fixationAxes = zeros(1,numEyePositions);
+        
+        cellData = data(:, :, row, col); % {region-1}
+        plot(info.targets,cellData');
 
+        %{
         for e = 1:numEyePositions,
 
             y = squeeze(data(e, :, row, col));
@@ -283,31 +282,32 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             c = mod(e-1,length(colors)) + 1;
             
             % Curve
-            fixationAxes(e) = plot(y,'-','Color',colors{c});
+            fixationAxes(e) = plot(info.targets, y,'-','Color',colors{c});
             %plot(y,['-' markerSpecifiers{c}],'Color',colors{c},'MarkerSize',8);
             
             hold on;
             
             % Mean
             meanY = mean(y)
-            plot([1 length(y)], [meanY meanY], '.--','Color', colors{c});
+            plot([info.targets(1) info.targets(end)], [meanY meanY], '.--','Color', colors{c});
             hold on;
             
         end
+        %}
        
         set(gca,'XTick', xTick);
         set(gca,'XTickLabel', xTickLabels);
         axis square;
-        xlim([1 numTargets]);
+        xlim([xTick(1) xTick(end)]);
         ylim([-0.05 1.05]);
         
         ylabel('Firing Rate');
         xlabel('Head-Centered Stimuli Location (deg)');
         
-        legend(fixationAxes,objectLegend);
+        legend(objectLegend); % fixationAxes
         legend('boxoff');
 
-        cellNr = (row-1)*topLayerRowDim + col;
+        cellNr = (row-1)*topLayerRowDim + col
         
         grid
 
@@ -342,7 +342,6 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         set(gcf,'renderer','painters');
         print(f,'-depsc2','-painters',fname);
         %}
-        
         
     end
  

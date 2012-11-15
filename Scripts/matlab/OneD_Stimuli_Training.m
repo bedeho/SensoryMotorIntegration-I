@@ -30,18 +30,22 @@ function OneD_Stimuli_Training(prefix)
     
     % Environment
     numberOfSimultanousTargets          = 1;
-    q                                   = 0.8; % targetRangeProportionOfVisualField
+    q                                   = 0.7; % targetRangeProportionOfVisualField
     visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
     eyePositionFieldSize                = (1-q)*visualFieldSize; % (1-q)*visualFieldSize OR equivalently (visualFieldSize/2 - targetVisualRange/2)
     targetVisualRange                   = visualFieldSize * q;
     targetEyePositionRange              = 0.8*eyePositionFieldSize;
     
-    % Agent
+    % Agent Movement
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
     fixationDuration                    = 0.3; % (s) - fixation period after each saccade
-    fixationSequenceLength              = 30;
-    k                                   = 25;
-    numberOfFixations                   = fixationSequenceLength * k;
+    
+    % Agent in Training
+    fixationSequenceLength              = 25;
+    headPositions                       = 8;
+    numberOfFixations                   = fixationSequenceLength * headPositions;
+    
+    % Agent in Testing
     nrOfTestingEyePositions             = 4;
     nrOfRetinalTestingPositions         = 80;
     
@@ -90,7 +94,7 @@ function OneD_Stimuli_Training(prefix)
     rng(seed, 'twister');
     
     % SYSTEMATIC
-    potentialTargets = fliplr(centerN2(targetVisualRange, k));
+    potentialTargets = fliplr(centerN2(targetVisualRange, headPositions));
     unsampledPerms = combnk(1:length(potentialTargets), numberOfSimultanousTargets);
     
     %leftMostTargetSeen = inf;

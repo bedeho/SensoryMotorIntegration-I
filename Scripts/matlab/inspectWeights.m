@@ -105,7 +105,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         % External figure
         if rightClicked,
             
-            f = figure();
+            figure('Units','Pixels','position', [1000 1000 300 500]);
             
             h = imagesc(weightBox1);
             
@@ -130,7 +130,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             wLabels = eyePositionPreferences(1:10:end);
             wCellLabels = cell(1,length(wLabels));
             for l=1:length(wLabels),
-              wCellLabels{l} = num2str(wLabels(l));
+              wCellLabels{l} = [num2str(wLabels(l)) ];
             end
 
             set(gca,'XTick',wTicks);
@@ -142,7 +142,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             hLabels = visualPreferences(1:10:end);
             hCellLabels = cell(1,length(hLabels));
             for l=1:length(hLabels),
-              hCellLabels{l} = num2str(hLabels(l));
+              hCellLabels{l} = [num2str(hLabels(l)) ];
             end
 
             set(gca,'YTick',hTicks);

@@ -36,7 +36,7 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     % Light = {[0.4,0.4,0.9]; [0.9,0.4,0.4]}; % , [0.4,0.4,0.4]
     % Dark  = {[0.3,0.3,0.8]; [0.8,0.3,0.3]}; % , [0.3,0.3,0.3] 
     
-    faceColors      = processOptionalArgument('FaceColors', {[1,0,0]; [0,1,0]}); % {[0.3,0.3,0.8]; [0.8,0.3,0.3]}
+    faceColors      = processOptionalArgument('FaceColors', {[1,0,0]; [0,0,1]}); % {[0.3,0.3,0.8]; [0.8,0.3,0.3]}
     edgeColors      = processOptionalArgument('EdgeColors', faceColors);
     NumberOfBins    = processOptionalArgument('NumberOfBins', 40);
     MarkerSize      = processOptionalArgument('MarkerSize', 3);

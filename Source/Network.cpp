@@ -534,6 +534,8 @@ void Network::outputFinalNetwork(const char * outputWeightFile) {
 	
 	BinaryWrite file(outputWeightFile);
     
+    cout << outputWeightFile << endl;
+    
     // Input layer dimensions
 	file << p.numberOfLayers;
     file << area7a.horVisualDimension;

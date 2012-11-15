@@ -11,15 +11,15 @@
 function prewiredModel(filename)
 
     % Stimuli/Model Parameters
-    q                                   = 0.8; % targetRangeProportionOfVisualField
+    q                                   = 0.7; % targetRangeProportionOfVisualField
     visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
     eyePositionFieldSize                = (1-q)*visualFieldSize; % (1-q)*visualFieldSize OR equivalently (visualFieldSize/2 - targetVisualRange/2)
     targetVisualRange                   = visualFieldSize * q;
-    targetEyePositionRange              = 0.8*eyePositionFieldSize; %eyePositionFieldSize;
+    %targetEyePositionRange              = 0.8*eyePositionFieldSize; %eyePositionFieldSize;
     visualPreferenceDistance            = 1;
     eyePositionPrefrerenceDistance      = 1;
-    numTargetPositions                  = 5;
-    inputLayerSigma                     = 18;
+    numTargetPositions                  = 8;
+    inputLayerSigma                     = 6;
     
     % Setup random number generator
     seed = 3;
@@ -35,10 +35,10 @@ function prewiredModel(filename)
     % Output layer
     fanInPercentage                     = 0.30; % [0 1)
     inputLayerDepth                     = 1; % 1 = PO, 2 = LIP
-    numRegions = 2;
-    dim = 30;
-    verticalDimension = dim;
-    horizontalDimension = dim;
+    numRegions                          = 2;
+    dim                                 = 30;
+    verticalDimension                   = dim;
+    horizontalDimension                 = dim;
     
     % Allocate space to keep network,
     % online generation is not possible since there is a header,
@@ -54,10 +54,10 @@ function prewiredModel(filename)
     % Write number of regions
     fwrite(fileID, numRegions, 'uint16');
     
-    % Write 7a dimensions, dummy info really
-    fwrite(fileID, [nrOfVisualPreferences nrOfEyePositionPrefrerence 2], 'uint16');
+    % Write input layer dimensions (7a?)
+    fwrite(fileID, [nrOfVisualPreferences nrOfEyePositionPrefrerence inputLayerDepth], 'uint16');
     
-    % Write LIP dimensions, dummy info really
+    % Write output layer dimensions (LIP), dummy info really
     fwrite(fileID, [verticalDimension horizontalDimension 1], 'uint16');
     
     % Write neuron spesific specs

@@ -27,7 +27,7 @@ function [networkDimensions, neuronOffsets] = loadWeightFileHeader(filename)
     fileID = fopen(filename);
     
     % Read number of regions
-    numRegions = fread(fileID, 1, SOURCE_PLATFORM_USHORT);
+    numRegions = fread(fileID, 1, 'uint16');%SOURCE_PLATFORM_USHORT);
 
     % Preallocate struct array
     networkDimensions(numRegions).y_dimension = [];

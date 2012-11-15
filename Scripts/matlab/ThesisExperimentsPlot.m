@@ -13,13 +13,13 @@ function ThesisExperimentsPlot()
     global base;
     global THESIS_FIGURE_PATH;
     
-    save_filename = 'test';
+    save_filename = 'prewiredPO';
 
     % Save all experiments to include  
-    experiment(1).Name = 'Trained';
-    experiment(1).Folder = expFolder('find_sigmoid_BIGGER-fc0.05/sS=00000004.0_sT=0.60_/TrainedNetwork');
-    experiment(2).Name = 'Untrained';
-    experiment(2).Folder = expFolder('find_sigmoid_BIGGER-fc0.05/sS=00000004.0_sT=0.60_/BlankNetwork');
+    experiment(1).Name = 'Prewired';
+    experiment(1).Folder = expFolder('prewiredPO/X=1_Y=1/TrainedNetwork');
+    experiment(2).Name = 'Random';
+    experiment(2).Folder = expFolder('prewiredPO/X=1_Y=1/BlankNetwork');
     
     % Setup buffers
     headCenteredNess_X  = [];
@@ -54,10 +54,10 @@ function ThesisExperimentsPlot()
     
     % lambda/h plot
     % 'XLim', XLim, 'YLim', YLim,
-    [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(headCenteredNess_X, headCenteredNess_Y, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Head-Centeredness (\lambda)', 'Legends', {'Trained','Untrained'});
+    [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(headCenteredNess_X, headCenteredNess_Y, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Head-Centeredness', 'Legends', {'Prewired','Random'},'YLabelOffset', 3);
     
     % lambda/psi plot
-    [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(RFSize, headCenteredNess_Y, 'XTitle', 'Receptive Field Size (deg)', 'YTitle', 'Head-Centeredness (\lambda)');
+    [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(RFSize, headCenteredNess_Y, 'XTitle', 'Receptive Field Size (deg)', 'YTitle', 'Head-Centeredness', 'Legends', {'Prewired','Random'} ,'YLabelOffset', 1);
     
     % SAVE
     %{
