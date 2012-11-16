@@ -138,7 +138,7 @@ Network::Network(const char * dataFile, const char * parameterFile, bool verbose
         else if(p.connectivities[i] == SPARSE_BIASED)
             desiredFanIn *= (p.fanInCountPercentage[i]/r.verDimension);
         
-        cout << "Layer " << i+1 << " desiredFanIn: " << desiredFanIn<< endl;
+        cout << "Layer " << i+1 << " desiredFanIn: " << desiredFanIn << " << AS READ FROM PARAMTER FILE, MAY NOT HOLD!!!" << endl;
         
         ESPathway[i].init(i+1, p, isTraining, area7a.outputtedTimeStepsPerEpoch, area7a.samplingRate, desiredFanIn);
     }
@@ -533,8 +533,6 @@ void Network::outputSynapticHistory(const char * outputDirectory) {
 void Network::outputFinalNetwork(const char * outputWeightFile) {
 	
 	BinaryWrite file(outputWeightFile);
-    
-    cout << outputWeightFile << endl;
     
     // Input layer dimensions
 	file << p.numberOfLayers;

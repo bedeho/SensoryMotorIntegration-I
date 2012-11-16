@@ -114,11 +114,14 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             
             colorbar
 
-            cellNr = (row-1)*topLayerRowDim + col;
             %hTitle = title(''); %; title(['Afferent synaptic weights of cell #' num2str(cellNr) extraTitle]);
             xlabel('Eye-position preference (deg)'); % : \beta_{i}
             ylabel('Retinal preference (deg)'); % : \alpha_{i}
             
+            % Diagnose
+            cellNr = (row-1)*topLayerRowDim + col;
+            disp(['Cell: ' num2str(cellNr)]);
+            disp(['Number of Afferent synapses: ' num2str(nnz(weightBox1 > 0))]);
           
             % Unbelievable: cannot
             % find matlab command to turn vector into string

@@ -127,13 +127,15 @@ function analysisResults = metrics(filename, info)
     
     % Uniformity
     vals = RFLocation_Linear_Clean(headCenteredNess_Linear_Clean >= lambdaCutoff);
-    numEntropyBins = 15;
+    numEntropyBins = 10;
     dist = hist(vals,numEntropyBins)./ numel(vals);
     entropy = -dot(dist,log(dist)/log(2)); % -(dist*.log(dist)/log(2));
     maxEntropy = log(numEntropyBins)/log(2);
     
-    analysisResults.uniformityOfVeryHeadCentered = entropy;%/maxEntropy;
+    analysisResults.entropy = entropy;
     analysisResults.maxEntropy = maxEntropy;
+    analysisResults.uniformityOfVeryHeadCentered = entropy/maxEntropy;
+    
     
     function discard = discardStatus(row,col,num)
         

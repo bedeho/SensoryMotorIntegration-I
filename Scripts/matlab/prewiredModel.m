@@ -30,11 +30,13 @@ function prewiredModel(filename)
     eyePositionPreferences              = centerDistance(eyePositionFieldSize, eyePositionPrefrerenceDistance);
     nrOfVisualPreferences               = length(visualPreferences);
     nrOfEyePositionPrefrerence          = length(eyePositionPreferences);
-    targets                             = centerN(targetVisualRange, numTargetPositions);
+    targets                             = centerDistance(targetVisualRange, floor(targetVisualRange/numTargetPositions)); %centerN(targetVisualRange, numTargetPositions);
    
     % Output layer
-    fanInPercentage                     = 0.30; % [0 1)
     inputLayerDepth                     = 1; % 1 = PO, 2 = LIP
+    fanInPercentage                     = 0.30; % [0 1)
+    desiredFanIn                        = 367; %fanInPercentage*(nrOfVisualPreferences*nrOfEyePositionPrefrerence*inputLayerDepth);
+    
     numRegions                          = 2;
     dim                                 = 30;
     verticalDimension                   = dim;
@@ -85,6 +87,7 @@ function prewiredModel(filename)
             clearvars synapses
             
             % Connect
+            %{
             for d=1:inputLayerDepth,
                 for ret=1:nrOfVisualPreferences,
                     
@@ -117,6 +120,41 @@ function prewiredModel(filename)
                         
                     end
                 end
+            end
+            %}
+            
+            % Connectivity matrix
+            isConnected = zeros(inputLayerDepth, nrOfVisualPreferences, nrOfEyePositionPrefrerence);
+            
+            % Connect to presynaptic sources
+            while(numberOfAfferentSynapses < desiredFanIn)
+                
+                % Generate random presynaptic neuron
+                d   = randi(inputLayerDepth);
+                ret = randi(nrOfVisualPreferences);
+                eye = randi(nrOfEyePositionPrefrerence);
+                
+                % Deduce preference
+                retPref = visualPreferences(nrOfVisualPreferences - (ret - 1));
+                eyePref = eyePositionPreferences(eye);
+                
+                % Check if it is inside diagonal
+                [connect, weight] = doConnect2(eyePref, retPref, target, d, inputLayerDepth);
+                
+                % Check that we are not already connected to it
+                if(~isConnected(d,ret,eye) && connect),
+                    
+                    % Increase number of synapses
+                    numberOfAfferentSynapses = numberOfAfferentSynapses + 1;
+
+                    % Save synapse
+                    synapses(:,numberOfAfferentSynapses) = [0 (d-1) (ret-1) (eye-1) weight];
+                    
+                    % Mark as connected
+                    isConnected(d,ret,eye) = 1;
+                    
+                end
+                
             end
             
             % FIGURE
@@ -172,7 +210,8 @@ function prewiredModel(filename)
     
     fclose(fileID);
     
-    function [connect,weight] = doConnect(eyePref,retPref,target,d,inputLayerDepth)
+    %{
+    function [connect,weight] = doConnect(eyePref, retPref, target, d, inputLayerDepth)
     
         if inputLayerDepth == 1, % PEAKED
             
@@ -210,6 +249,46 @@ function prewiredModel(filename)
         
         %if rand([1 1]) > 0.9 && ((eyePref+retPref <= target && d==1) || (eyePref+retPref >= target && d==2)), % SIGMOID
         %rand([1 1]) > 0.9 && ((eyePref+retPref <= target && d==1) && (eyePref+retPref >= target && d==2)), % PEAKED
+
+    end
+    %}
+    
+   function [connect,weight] = doConnect2(eyePref, retPref, target, d, inputLayerDepth)
+
+        if inputLayerDepth == 1, % PEAKED
+
+            connectWindow = 2;
+            cond1 = eyePref+retPref <= target+connectWindow*inputLayerSigma; % isBelowUpperBound
+            cond2 = eyePref+retPref >= target-connectWindow*inputLayerSigma; % isAboveLowerBound
+
+            % Find distane to head-centeredness diagonal
+            % smallest distance between ax + bx + c = 0 and x0,y0 is:
+            %
+            % abs(ax_0 + b_y0 + c) / norm([a b])
+            %
+            % where
+            % x = e (eye position
+            % y = r (retinal position)
+            % c = -target (head position)
+            x0 = eyePref;
+            y0 = retPref;
+            a = 1;
+            b = 1;
+            c = -target;
+
+            distance = abs(a*x0 + b*y0 + c) / norm([a b]);
+
+            weight = exp(-(distance^2)/(2*inputLayerSigma^2)); 
+            
+        elseif inputLayerDepth == 2 % SIGMOID
+
+            cond1 = (eyePref+retPref <= target && d==1); % isToLeftOfTargets
+            cond2 = (eyePref+retPref >= target && d==2); % isAboveLowerBound
+            weight = rand([1 1]); % Get random weight
+        end
+        
+        % Make final stochastic decision
+        connect = cond1 && cond2;
 
     end
 

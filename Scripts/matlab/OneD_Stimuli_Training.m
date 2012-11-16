@@ -41,7 +41,7 @@ function OneD_Stimuli_Training(prefix)
     fixationDuration                    = 0.3; % (s) - fixation period after each saccade
     
     % Agent in Training
-    fixationSequenceLength              = 25;
+    fixationSequenceLength              = 15;
     headPositions                       = 8;
     numberOfFixations                   = fixationSequenceLength * headPositions;
     
@@ -109,13 +109,15 @@ function OneD_Stimuli_Training(prefix)
         %% UNIFORM
         %targets = targetVisualRange*(rand(1, numberOfSimultanousTargets) - 0.5);
         
+        %{
         %% GAUSSIAN (fixed mean)
-        %targets = (targetVisualRange+1)*ones(1, numberOfSimultanousTargets);
-        %while any(abs(targets) > targetVisualRange/2),
-        %    targets = normrnd(0, targetVisualRange/6); % Find better way
-        %    to set std
-        %end
-        
+        targets = (targetVisualRange+1)*ones(1, numberOfSimultanousTargets);
+        while any(abs(targets) > targetVisualRange/2),
+            targets = normrnd(0, targetVisualRange/6); % Find better way
+            %to set std
+        end
+        %}
+                
         %% SYSTEMATIC
         dim = size(unsampledPerms);
         sampleId = randi(dim(1));
@@ -192,7 +194,7 @@ function OneD_Stimuli_Training(prefix)
     
     % Generate correlation data
     if samplingRate == 10,
-        OneD_Stimuli_Correlation([folderName '-stdTest']);
+        %OneD_Stimuli_Correlation([folderName '-stdTest']);
     else
         disp('No correlation data computed.');
     end

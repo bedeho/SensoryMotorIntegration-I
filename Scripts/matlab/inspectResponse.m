@@ -185,6 +185,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         row = wellBehavedNeurons(leastErrorIndex,1);
         col = wellBehavedNeurons(leastErrorIndex,2);
         
+        
         % Update response plot
         viewNeuron(row,col,2);
         
@@ -192,11 +193,14 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
 
     function viewNeuron(row,col,region)
         
+        cellNr = (row-1)*topLayerRowDim + col;
+        
         disp(['Row,Col: ' num2str(row) ',' num2str(col)]);
         disp(['lambda: ' num2str(analysisResults.headCenteredNess(row,col))]);
         disp(['h-value: ' num2str(analysisResults.RFLocation(row,col))]);
         disp(['psi: ' num2str(analysisResults.RFSize(row,col))]);
         disp(['Discard:' num2str(analysisResults.DiscardStatus(row,col))]);
+        disp(['cellNr:' num2str(cellNr)]);
         
         % single left  click => 'SelectionType' = 'normal'
         % single right click => 'SelectionType' = 'alt'
@@ -301,14 +305,15 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         xlim([xTick(1) xTick(end)]);
         ylim([-0.05 1.05]);
         
-        ylabel('Firing Rate');
-        xlabel('Head-Centered Stimuli Location (deg)');
+        hYLabeL = ylabel('Firing Rate');
+        hXLabeL = xlabel('Head-Centered Location (deg)');
+        
+        set(hYLabeL, 'FontSize', 13);
+        set(hXLabeL, 'FontSize', 13);
         
         legend(objectLegend); % fixationAxes
         legend('boxoff');
 
-        cellNr = (row-1)*topLayerRowDim + col
-        
         grid
 
         %hTitle = title(['Cell #' num2str(cellNr)]); % ', R:' num2str(region) % ', \Omega_{' num2str(cellNr) '} = ' num2str(sCell)

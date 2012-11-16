@@ -33,9 +33,10 @@ function ThesisExperimentsPlot()
         data = load([experiment(e).Folder '/analysisResults.mat']);
         
         % Project out data
-        headCenteredNess_X{e}  = data.analysisResults.RFLocation_Linear%;_Clean;
-        headCenteredNess_Y{e}  = data.analysisResults.headCenteredNess_Linear%;_Linear_Clean;
-        RFSize{e}              = data.analysisResults.RFSize_Linear%;_Clean;
+        headCenteredNess_X{e}  = data.analysisResults.RFLocation_Linear;%;_Clean;
+        headCenteredNess_Y{e}  = data.analysisResults.headCenteredNess_Linear;%;_Linear_Clean;
+        RFSize{e}              = data.analysisResults.RFSize_Linear;%;_Clean;
+        
         
         % Check that we have non-empty dataset
         if(isempty(headCenteredNess_X{e})),
@@ -43,10 +44,12 @@ function ThesisExperimentsPlot()
         end
         
         % Output key numbers
-        %disp(['Experiment: ' experiment(e).Name]);
-        %disp(['Fraction discarded due to DISCONTINOUS: ' num2str(analysisResults.fractionDiscarded)]);
-        %disp(['Fraction discarded due to EDGE: ' num2str(analysisResults.fractionDiscarded_Edge)]);
-        %disp(['Fraction discarded due to MULTIPEAK: ' num2str(analysisResults.fractionDiscarded_MultiPeak)]);
+        disp(['Experiment: ' experiment(e).Name]);
+        disp(['Fraction discarded due to DISCONTINOUS: ' num2str(data.analysisResults.fractionDiscarded)]);
+        disp(['Fraction discarded due to EDGE: ' num2str(data.analysisResults.fractionDiscarded_Edge)]);
+        disp(['Fraction discarded due to MULTIPEAK: ' num2str(data.analysisResults.fractionDiscarded_MultiPeak)]);
+        disp(['Mean head-centeredness projection: ' num2str(mean(headCenteredNess_Y{e}))]);
+        disp(['Entropy (> 0.7): ' num2str(data.analysisResults.uniformityOfVeryHeadCentered)]);
     end
     
     % Put in discarded

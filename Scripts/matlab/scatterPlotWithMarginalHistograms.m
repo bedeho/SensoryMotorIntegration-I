@@ -14,7 +14,7 @@
 function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(X, Y, varargin)
 
     % Process varargs
-    args = vararginProcessing(varargin, {'XTitle', 'YTitle', 'XLim', 'YLim', 'Legends', 'FaceColors', 'EdgeColors', 'NumberOfBins', 'MarkerSize', 'Location', 'YLabelOffset'}); % 'XPercentiles', 'YPercentiles',
+    args = vararginProcessing(varargin, {'XTitle', 'YTitle', 'XLim', 'YLim', 'Legends', 'FaceColors', 'EdgeColors', 'NumberOfBins', 'MarkerSize', 'Location', 'YLabelOffset', 'FontSize'}); % 'XPercentiles', 'YPercentiles',
     
     % Get dimensions
     if(length(X) ~= length(Y))
@@ -42,6 +42,7 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     MarkerSize      = processOptionalArgument('MarkerSize', 3);
     Location        = processOptionalArgument('Location', 'SouthWest');
     YLabelOffset    = processOptionalArgument('YLabelOffset', 5);
+    FontSize        = processOptionalArgument('FontSize', 12);
     
     %% Main plot
 
@@ -167,11 +168,15 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     set(scatterAxis, 'Units','Pixels', 'pos', p);
     
     if isKey(args,'XTitle'),
-        xlabel(args('XTitle'));
+        
+        hLabeL = xlabel(args('XTitle'));
+        set(hLabeL, 'FontSize', FontSize);
     end
     
     if isKey(args,'YTitle'),
-        ylabel(args('YTitle'));
+        
+        hLabeL = ylabel(args('YTitle'));
+        set(hLabeL, 'FontSize', FontSize);
     end
     
     xlim(XLim);
