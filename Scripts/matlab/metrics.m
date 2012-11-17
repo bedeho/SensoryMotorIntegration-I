@@ -143,12 +143,12 @@ function analysisResults = metrics(filename, info)
         response = dataPrEyePosition(:,:,row,col)';
         discard = 0;
 
-        %{
         % Non-responsive rf: there is an eye position for which it is non-respnse ($r_i =0$) to all retinal locations
         if any(sum(response > 0) == 0),
             discard = discard + 2;
         end
         
+        %{
         % Edge bias: there is an eye position for which the firing rate ($r_i$) is above the cut off in at least one of the two most eccentric retinal locations
         %{
         if any(response(1,:) > peakResponse) || any(response(end,:) > peakResponse),

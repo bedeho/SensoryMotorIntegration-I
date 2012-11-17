@@ -211,8 +211,9 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     set(xlabh,'Position', get(xlabh,'Position') + [YLabelOffset 0 0])
 
     %% Mini plot
-    miniPlot = figure;
+    miniPlot = 0; %figure;
     
+    %{
     for i=1:nrOfDataSets,
         
         plot(X{i}, Y{i},'o','MarkerFaceColor', faceColors{i},'MarkerEdgeColor', faceColors{i}, 'MarkerSize', MarkerSize);
@@ -222,7 +223,7 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     
     set(gca,'xtick',[]);
     set(gca,'ytick',[]);
-    
+    %}
     %% Process an optional argument
     function r = processOptionalArgument(key, default)
         

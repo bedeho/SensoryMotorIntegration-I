@@ -57,7 +57,7 @@
 	#my $stim							= "H3-sigma18-Tar=0.00-nTP=0.00-nOF=90.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	#my $stim							= "H4-sigma18-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
 	
-	my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
+	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $learningRule					= TRACE; # TRACE, HEBB
 
 	my $nrOfEpochs						= 20; #50; # 30,100
