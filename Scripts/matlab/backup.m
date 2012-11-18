@@ -1,3 +1,25 @@
+        %{
+        fixationAxes = zeros(1,numEyePositions);
+        for e = 1:numEyePositions,
+
+            y = squeeze(data(e, :, row, col));
+
+            c = mod(e-1,length(colors)) + 1;
+            
+            % Curve
+            fixationAxes(e) = plot(info.targets, y,'-','Color',colors{c});
+            %plot(y,['-' markerSpecifiers{c}],'Color',colors{c},'MarkerSize',8);
+            
+            hold on;
+            
+            % Mean
+            meanY = mean(y)
+            plot([info.targets(1) info.targets(end)], [meanY meanY], '.--','Color', colors{c});
+            hold on;
+            
+        end
+        %}
+
 %{
 OneD_Stimuli_SpatialFigure.m
 

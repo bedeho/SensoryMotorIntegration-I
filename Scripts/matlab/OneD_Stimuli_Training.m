@@ -17,7 +17,7 @@
 %           linearly interpolated and saved at each point to file.
 %
 
-function OneD_Stimuli_Training(prefix)
+function OneD_Stimuli_Training(prefix, fixationSequenceLength) 
 
     % Import global variables
     declareGlobalVars();
@@ -25,8 +25,8 @@ function OneD_Stimuli_Training(prefix)
     global base;
     
     % Technical
-    seed                                = 72;  % classic = 72
-    samplingRate                        = 1000;% (Hz)
+    seed                                = 72; % classic = 72
+    samplingRate                        = 1000; % (Hz)
     
     % Environment
     numberOfSimultanousTargets          = 1;
@@ -41,20 +41,25 @@ function OneD_Stimuli_Training(prefix)
     fixationDuration                    = 0.3; % (s) - fixation period after each saccade
     
     % Agent in Training
-    fixationSequenceLength              = 15;
     headPositions                       = 8;
-    numberOfFixations                   = fixationSequenceLength * headPositions;
     
+    if nargin == 2,
+        numberOfFixations               = 200;
+    else
+        fixationSequenceLength          = 15;
+        numberOfFixations               = fixationSequenceLength * headPositions;
+    end
+
     % Agent in Testing
     nrOfTestingEyePositions             = 4;
     nrOfRetinalTestingPositions         = 80;
     
     % Error check 
-    if mod(numberOfFixations, fixationSequenceLength) ~= 0,
-        error('The number of fixations is not divisible by fixation sequences');
-    else
-        numberOfSequences = numberOfFixations / fixationSequenceLength;
-    end
+    %if mod(numberOfFixations, fixationSequenceLength) ~= 0,
+    %    error('The number of fixations is not divisible by fixation sequences');
+    %else
+        numberOfSequences               = ceil(numberOfFixations / fixationSequenceLength);
+    %end
     
     % Filename
     if nargin < 1,
@@ -97,9 +102,9 @@ function OneD_Stimuli_Training(prefix)
     potentialTargets = fliplr(centerN2(targetVisualRange, headPositions));
     unsampledPerms = combnk(1:length(potentialTargets), numberOfSimultanousTargets);
     
-    %leftMostTargetSeen = inf;
-    %rightMostTargetSeen = -inf;
+    % Helpful variables
     maxDev = 0;
+    allShownTargets = [];
     
     % Perform fixation sequences
     for i=1:numberOfSequences,
@@ -122,12 +127,13 @@ function OneD_Stimuli_Training(prefix)
         dim = size(unsampledPerms);
         sampleId = randi(dim(1));
         showTargets = unsampledPerms(sampleId,:);
-        unsampledPerms(sampleId,:) = []; % Kill this combination
+        %unsampledPerms(sampleId,:) = []; % Kill this combination
         targets = potentialTargets(showTargets); % Output data sequence for each target
         
-        %% Update extremes
-        %leftMostTargetSeen = min(leftMostTargetSeen,targets);
-        %rightMostTargetSeen = max(rightMostTargetSeen,targets);
+        % Save targets seen
+        allShownTargets = [allShownTargets; targets];
+        
+        % Update extremes
         maxDev = max(maxDev,abs(targets));
         
         % Produce fixation order
@@ -167,19 +173,24 @@ function OneD_Stimuli_Training(prefix)
          'samplingRate', ...
          'fixationDuration', ...
          'fixationSequenceLength', ...
-         'numberOfFixations');
+         'numberOfFixations', ...
+         'allShownTargets');
                       
     cd(startDir);
     
     % Generate complementary testing data
+    %{
     if length(potentialTargets) > 1,
-        buffer = abs(potentialTargets(2) - potentialTargets(1));
+        margin = abs(potentialTargets(2) - potentialTargets(1));
     else
-        buffer = 20;
+        margin = 20;
     end
+    %}
+    
+    margin = 10;
     
     % Testing Parameters
-    testingRetinalFieldSize = 2*(maxDev + 3*buffer); % + buffer
+    testingRetinalFieldSize = 2*(maxDev + 3*margin); % + buffer
     testingTargets = fliplr(centerN2(testingRetinalFieldSize, nrOfRetinalTestingPositions));
     
     testingEyePositionFieldSize = targetEyePositionRange;

@@ -11,7 +11,6 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     declareGlobalVars();
     
     global base;
-    global THESIS_FIGURE_PATH;
     
     % Get dimensions
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
@@ -73,25 +72,23 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     PLOT_COLS = 4;
     numRegions = length(networkDimensions);
     axisVals = zeros(numRegions, PLOT_COLS); % Save axis that we can lookup 'CurrentPoint' property on callback
-    colors = {'r', 'b','k','c', 'm', 'y', 'g', 'w'};
+    %colors = {'r', 'b','k','c', 'm', 'y', 'g', 'w'};
     topLayerRowDim = networkDimensions(numRegions).x_dimension;
     
     numEyePositions = length(info.eyePositions);
-    
-    
+
     dist = 16;
     upperhalf = dist:dist:(dist*floor(info.targets(1)/dist));
     xTick = [-fliplr(upperhalf) 0 upperhalf];%centerN(floor(info.targets(1) - info.targets(end)),20);
         
     %xTick = centerDistance(info.targets(1) - info.targets(end), 20);
-    
     for s=1:length(xTick),
         xTickLabels{s} = sprintf([num2str(xTick(s)) '%c'], char(176));
     end
     
     objectLegend = cell(numEyePositions,1);
-    for e=1:numEyePositions,
-        objectLegend{e} = ['Fixating ' num2str(info.eyePositions(e)) '^{\circ}'];
+    for i=1:numEyePositions,
+        objectLegend{i} = ['Fixating ' num2str(info.eyePositions(i)) '^{\circ}'];
     end
 
     
@@ -273,52 +270,23 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     
         responsePlot = subplot(1,2,1);
         
-        fixationAxes = zeros(1,numEyePositions);
-        
         cellData = data(:, :, row, col); % {region-1}
-        plot(info.targets,cellData');
+        plot(info.targets,cellData','LineWidth',2);
 
-        %{
-        for e = 1:numEyePositions,
-
-            y = squeeze(data(e, :, row, col));
-
-            c = mod(e-1,length(colors)) + 1;
-            
-            % Curve
-            fixationAxes(e) = plot(info.targets, y,'-','Color',colors{c});
-            %plot(y,['-' markerSpecifiers{c}],'Color',colors{c},'MarkerSize',8);
-            
-            hold on;
-            
-            % Mean
-            meanY = mean(y)
-            plot([info.targets(1) info.targets(end)], [meanY meanY], '.--','Color', colors{c});
-            hold on;
-            
-        end
-        %}
-       
         set(gca,'XTick', xTick);
         set(gca,'XTickLabel', xTickLabels);
         axis square;
         xlim([xTick(1) xTick(end)]);
         ylim([-0.05 1.05]);
         
-        hYLabeL = ylabel('Firing Rate');
-        hXLabeL = xlabel('Head-Centered Location (deg)');
-        
-        set(hYLabeL, 'FontSize', 13);
-        set(hXLabeL, 'FontSize', 13);
-        
-        legend(objectLegend); % fixationAxes
+        hYLabel = ylabel('Firing Rate');
+        hXLabel = xlabel('Head-Centered Location (deg)');
+        hLegend = legend(objectLegend);
         legend('boxoff');
-
-        grid
-
-        %hTitle = title(['Cell #' num2str(cellNr)]); % ', R:' num2str(region) % ', \Omega_{' num2str(cellNr) '} = ' num2str(sCell)
         
-
+        %hTitle = title(['Cell #' num2str(cellNr)]); % ', R:' num2str(region) % ', \Omega_{' num2str(cellNr) '} = ' num2str(sCell)
+        set([hYLabel hXLabel hLegend gca], 'FontSize', 16);
+        
         % Population plot        
         scatterPlot = subplot(1,2,2);
         
@@ -339,14 +307,6 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         
         p = [(margin+15) (fDim-85) sDim sDim];
         set(scatterPlot, 'Units','Pixels', 'pos', p);
-        
-        % SAVE
-        %{
-        chap = 'chap-2';
-        fname = [THESIS_FIGURE_PATH chap '/neuron_response_m_' num2str(cellNr) '.eps'];
-        set(gcf,'renderer','painters');
-        print(f,'-depsc2','-painters',fname);
-        %}
         
     end
  

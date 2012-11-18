@@ -43,10 +43,10 @@ function OneD_Stimuli_MovementDynamicsFigure(stimuli)
     end
 
     axis([0 totalTimePerObject -eyePositionFieldSize/2 eyePositionFieldSize/2]);
-    ylabel('Eye Position (deg)');
-    xlabel('Times (s)');
-    grid
-   
+    hYLabel = ylabel('Eye Position (deg)');
+    hXLabel = xlabel('Times (s)');
+    set([hYLabel hXLabel gca], 'FontSize', 16);
+    
     % Save
     fname = [base 'Stimuli/' stimuli '/' stimuli '.eps'];
     set(gcf,'renderer','painters');

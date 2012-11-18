@@ -24,20 +24,21 @@
 	# Input
    	####################################################################
    	
-   	# "1.00","2.00","3.00",
+#our @fixationsequenceArray				= ("1.00","2.00","3.00","4.00","5.00","6.00","7.00","8.00","9.00","10.00","11.00","12.00","13.00","14.00","15.00");
    	
-   	#our @ftCArray				= ("1.00","2.00","3.00","4.00","5.00","6.00","7.00","8.00","9.00","10.00","11.00","12.00","13.00","14.00","15.00","16.00","17.00","18.00","19.00","20.00","21.00","22.00","23.00","24.00","25.00","26.00","27.00","28.00","29.00","30.00");
+#for my $fixationsequence (@fixationsequenceArray) {
    	
-   	#for my $ftC (@ftCArray) {
-   		
-   	my $experiment						= "peakedgain"; #epoch_and_dt_0.02_test,fanin10-reset, baseline-H5-S6
-   	
-   	# final
-   	#my $stim							= "newtest-visualfield=200.00-eyepositionfield=40.00-fixations=450.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=1000.00";
-   	#my $stim							= "dense-visualfield=200.00-eyepositionfield=40.00-fixations=750.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=1000.00";
-   	
-   	# peaked
+   	# prewiredPO, peakedgain
+   	#my $experiment						= "prewiredPO";
+   	#my $experiment						= "peakedgain";
+   	#my $experiment						= "tracetimeconstant";
+   	#my $experiment						= "learningrate";
+   	my $experiment						= "sparseness";
    	my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+   	
+   	# varyingfixationsequencelength
+   	#my $experiment						= "varyingfixationsequencelength_${fixationsequence}";
+   	#my $stim							= "varyingfixationsequencelength-visualfield=200.00-eyepositionfield=60.00-fixations=200.00-targets=1.00-fixduration=0.30-fixationsequence=${fixationsequence}-seed=72.00-samplingrate=1000.00";
    	
 	# 0MOVESTIM
 	#my $nTP 							= ceil((2 * 4 * 10)/$ftC);
@@ -61,7 +62,7 @@
 	my $learningRule					= TRACE; # TRACE, HEBB
 
 	my $nrOfEpochs						= 20; #50; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 1;
+	my $saveNetworkAtEpochMultiple 		= 11;
 	my $outputAtTimeStepMultiple		= 1;
 
 	my $lateralInteraction				= NONE; # NONE, SHORT_INHIBITION_LONG_EXCITATION = VISNET, SHORT_EXCITATION_LONG_INHIBITION = SOM

@@ -11,7 +11,6 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
     declareGlobalVars();
     
     global base;
-    global THESIS_FIGURE_PATH;
     
     % Load data
     [networkDimensions, neuronOffsets] = loadWeightFileHeader(networkFile); % Load weight file header
@@ -107,42 +106,39 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             
             figure('Units','Pixels','position', [1000 1000 300 500]);
             
-            h = imagesc(weightBox1);
-            
+            % Plot
+            imagesc(weightBox1);
             dim = fliplr(size(weightBox1));
             pbaspect([dim 1]);
-            
             colorbar
 
             %hTitle = title(''); %; title(['Afferent synaptic weights of cell #' num2str(cellNr) extraTitle]);
-            xlabel('Eye-position preference (deg)'); % : \beta_{i}
-            ylabel('Retinal preference (deg)'); % : \alpha_{i}
+            hYLabel = ylabel('Retinal preference (deg)'); % : \alpha_{i}
+            hXLabel = xlabel('Eye-position preference (deg)'); % : \beta_{i}
             
-            % Diagnose
             cellNr = (row-1)*topLayerRowDim + col;
             disp(['Cell: ' num2str(cellNr)]);
             disp(['Number of Afferent synapses: ' num2str(nnz(weightBox1 > 0))]);
           
-            % Unbelievable: cannot
-            % find matlab command to turn vector into string
-            % must do it manually
+            % Fix axes ticks
             
-            % Width
             wTicks = 1:width;
-            wTicks = wTicks(1:10:end);
-            wLabels = eyePositionPreferences(1:10:end);
+            wdist = 15;
+            wTicks = wTicks(1:wdist:end);
+            wLabels = eyePositionPreferences(1:wdist:end);
             wCellLabels = cell(1,length(wLabels));
-            for l=1:length(wLabels),
-              wCellLabels{l} = [num2str(wLabels(l)) ];
+            for t=1:length(wLabels),
+              wCellLabels{t} = num2str(wLabels(t));
             end
-
+            
             set(gca,'XTick',wTicks);
             set(gca,'XTickLabel',wCellLabels);
             
             % Height
             hTicks = 1:height;
-            hTicks = hTicks(1:10:end);
-            hLabels = visualPreferences(1:10:end);
+            hdist = 20;
+            hTicks = hTicks(1:hdist:end);
+            hLabels = visualPreferences(1:hdist:end);
             hCellLabels = cell(1,length(hLabels));
             for l=1:length(hLabels),
               hCellLabels{l} = [num2str(hLabels(l)) ];
@@ -151,13 +147,10 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             set(gca,'YTick',hTicks);
             set(gca,'YTickLabel',hCellLabels);
             
-            % SAVE
-            %{
-            chap = 'chap-2';
-            fname = [THESIS_FIGURE_PATH chap '/neuron_weight_' num2str(cellNr) '.eps'];
-            set(gcf,'renderer','painters');
-            print(f,'-depsc2','-painters',fname);
-            %}
+            % Change font size
+            set([hYLabel hXLabel], 'FontSize', 16);
+            set(gca, 'FontSize', 14);
+            
         end
     end
 end

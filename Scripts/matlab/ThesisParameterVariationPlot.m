@@ -14,19 +14,36 @@ function ThesisParameterVariationPlot()
     
     expFolder = [base 'Experiments/' ];
     
-    % Baseline
-    experiments(1).Folder   =   'find_sigmoid_BIGGER-fc0.05/sS=00000001.0_sT=0.60_/TrainedNetwork';
-    experiments(2).Folder   =   'find_sigmoid_BIGGER-fc0.05/sS=00000002.0_sT=0.60_/TrainedNetwork';
-    experiments(3).Folder   =   'find_sigmoid_BIGGER-fc0.05/sS=00000003.0_sT=0.60_/TrainedNetwork';
-    experiments(4).Folder   =   'find_sigmoid_BIGGER-fc0.05/sS=00000004.0_sT=0.60_/TrainedNetwork';
-    experiments(5).Folder   =   'find_sigmoid_BIGGER-fc0.05/sS=00000005.0_sT=0.60_/TrainedNetwork';
     
-    experiments(1).tick     =    1;
-    experiments(2).tick     =    2;
-    experiments(3).tick     =    3;
-    experiments(4).tick     =    4;
-    experiments(5).tick     =    5;
-
+    % Baseline
+    %{
+    experiments(1).Folder   =   'peakedgain/S=0.80_/BlankNetwork';
+    experiments(1).tick     =    0;
+    
+    for i=1:20,
+        experiments(i+1).Folder   = ['peakedgain/S=0.80_/TrainedNetwork_e' num2str(i)];
+        experiments(i+1).tick     = i;
+    end
+    label = 'Epochs';
+    %}
+    
+    % varyingfixationsequencelength
+    %{
+    for i=1:11,
+        experiments(i).Folder   = ['varyingfixationsequencelength_' num2str(i) '.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork_e10'];
+        experiments(i).tick     = i;
+    end
+    label = 'Fixation Sequence Length';
+    %}
+    
+    % sparseness
+    vals = 50:2:98;
+    for i=1:length(vals),
+        experiments(i).Folder   = ['sparseness/S=0.' num2str(vals(i)) '_/TrainedNetwork_e11'];
+        experiments(i).tick     = vals(i);
+    end
+    label = 'Sparseness Percentile (\pi)';
+        
     %{
     experiments(13).Folder =    'movementstatistics_14.00/L=0.05000_S=0.60_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
     experiments(12).Folder =    'movementstatistics_13.00/L=0.05000_S=0.60_sS=1000000000000000000000.0_sT=0.000_gIC=0.0500_eS=0.0_/TrainedNetwork';
@@ -538,8 +555,11 @@ function ThesisParameterVariationPlot()
     [AX,H1,H2] = plotyy(ticks, headCenteredNess, ticks, rfSizes); 
     
     % Cosmetics
-    set(get(AX(1),'Ylabel'),'String', 'Head-Centeredness Rate (\lambda >= 0.8)');
-    set(get(AX(2),'Ylabel'),'String', 'Receptive Field Size (deg)');
+    hYLabel1 = get(AX(1),'Ylabel');
+    hYLabel2 = get(AX(2),'Ylabel');
+    
+    set(hYLabel1,'String', 'Head-Centeredness Rate');
+    set(hYLabel2,'String', 'Receptive Field Size (deg)');
     
     set(AX(1),'XTick',ticks);
     set(AX(1),'XTickLabel',tickLabels);
@@ -547,12 +567,16 @@ function ThesisParameterVariationPlot()
     set(AX(2),'XTick',ticks);
     set(AX(2),'XTickLabel',tickLabels);
     
-    set(H1,'LineStyle','-','Marker','o');
-    set(H2,'LineStyle','--','Marker','o');
+    set(H1,'LineStyle','-','Marker','o','LineWidth',2);
+    set(H2,'LineStyle','--','Marker','o','LineWidth',2);
     
     %title('Varying Sparseness Percentile');
-    xlabel('Fixations - (\kappa)');
+    hXLabel = xlabel(label);
 
+    set([AX hXLabel hYLabel1 hYLabel2], 'FontSize', 14);
+    
+    set(gca,'XGrid','on');
+    
     %% LOGARITHMIC
     %errorbarlogx(0.02);
     %set(gca,'xscale','log'); 

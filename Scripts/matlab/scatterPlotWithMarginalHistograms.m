@@ -14,7 +14,7 @@
 function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = scatterPlotWithMarginalHistograms(X, Y, varargin)
 
     % Process varargs
-    args = vararginProcessing(varargin, {'XTitle', 'YTitle', 'XLim', 'YLim', 'Legends', 'FaceColors', 'EdgeColors', 'NumberOfBins', 'MarkerSize', 'Location', 'YLabelOffset', 'FontSize'}); % 'XPercentiles', 'YPercentiles',
+    args = vararginProcessing(varargin, {'XTitle', 'YTitle', 'XLim', 'YLim', 'Legends', 'FaceColors', 'EdgeColors', 'NumberOfBins', 'MarkerSize', 'Location', 'YLabelOffset', 'LabelFontSize', 'AxisFontSize'}); % 'XPercentiles', 'YPercentiles',
     
     % Get dimensions
     if(length(X) ~= length(Y))
@@ -36,13 +36,14 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     % Light = {[0.4,0.4,0.9]; [0.9,0.4,0.4]}; % , [0.4,0.4,0.4]
     % Dark  = {[0.3,0.3,0.8]; [0.8,0.3,0.3]}; % , [0.3,0.3,0.3] 
     
-    faceColors      = processOptionalArgument('FaceColors', {[1,0,0]; [0,0,1]}); % {[0.3,0.3,0.8]; [0.8,0.3,0.3]}
-    edgeColors      = processOptionalArgument('EdgeColors', faceColors);
+    FaceColors      = processOptionalArgument('FaceColors', {[1,0,0]; [0,0,1]}); % {[0.3,0.3,0.8]; [0.8,0.3,0.3]}
+    EdgeColors      = processOptionalArgument('EdgeColors', FaceColors);
     NumberOfBins    = processOptionalArgument('NumberOfBins', 40);
     MarkerSize      = processOptionalArgument('MarkerSize', 3);
     Location        = processOptionalArgument('Location', 'SouthWest');
     YLabelOffset    = processOptionalArgument('YLabelOffset', 5);
-    FontSize        = processOptionalArgument('FontSize', 12);
+    LabelFontSize   = processOptionalArgument('LabelFontSize', 12);
+    AxisFontSize    = processOptionalArgument('AxisFontSize', 12);
     
     %% Main plot
 
@@ -116,7 +117,7 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
         
         % Add scatter plots
         axes(scatterAxis);
-        plot(xData, yData, 'o','MarkerFaceColor', faceColors{i}, 'MarkerEdgeColor', edgeColors{i}, 'MarkerSize', MarkerSize);
+        plot(xData, yData, 'o','MarkerFaceColor', FaceColors{i}, 'MarkerEdgeColor', EdgeColors{i}, 'MarkerSize', MarkerSize);
         hold on;
         
         %{
@@ -143,19 +144,22 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
         end 
     end
     
+    % Set axis font size
+    set(gca, 'FontSize', AxisFontSize);
+    
     % Add Grid
     grid
     
     % Add x projection
     axes(xProjectionAxis);
     hBar = bar(XHistograms,1.0,'stacked','LineStyle','none'); 
-    set(hBar,{'FaceColor'}, faceColors); %, {'EdgeColor'}, edgeColors
+    set(hBar,{'FaceColor'}, FaceColors); %, {'EdgeColor'}, edgeColors
     
     % Add y projection
     axes(yProjectionAxis);
     hBar = bar(YHistograms,1.0,'stacked','LineStyle','none'); 
     view(-90,90);
-    set(hBar,{'FaceColor'}, faceColors); %, {'EdgeColor'}, edgeColors
+    set(hBar,{'FaceColor'}, FaceColors); %, {'EdgeColor'}, edgeColors
     
     % Positioning: 
     % remember, pos = [left, bottom, width, height]
@@ -170,13 +174,13 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis] = sca
     if isKey(args,'XTitle'),
         
         hLabeL = xlabel(args('XTitle'));
-        set(hLabeL, 'FontSize', FontSize);
+        set(hLabeL, 'FontSize', LabelFontSize);
     end
     
     if isKey(args,'YTitle'),
         
         hLabeL = ylabel(args('YTitle'));
-        set(hLabeL, 'FontSize', FontSize);
+        set(hLabeL, 'FontSize', LabelFontSize);
     end
     
     xlim(XLim);
