@@ -1,14 +1,14 @@
 %
-%  OneD_Stimuli_Testing.m
+%  OneD_Stimuli_MultiTargetTesting.m
 %  SMI
 %
-%  Created by Bedeho Mender on 06/10/12.
+%  Created by Bedeho Mender on 18/11/12.
 %  Copyright 2012 OFTNAI. All rights reserved.
 %
-%  Purpose: Generate testing data
+%  Purpose: Generate testing data with multiple simultanous targets
 %
 
-function OneD_Stimuli_Testing(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets)
+function OneD_Stimuli_MultiTargetTesting(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, numberOfSimultanousTargetsDuringTesting)
 
     % Import global variables
     declareGlobalVars();
@@ -16,30 +16,33 @@ function OneD_Stimuli_Testing(stimuliName, samplingRate, fixationDuration, visua
     global base;
     
     % Make folder
-    stimuliFolder = [base 'Stimuli/' stimuliName '-stdTest'];
+    stimuliFolder = [base 'Stimuli/' stimuliName '-multiTest'];
     
     if ~isdir(stimuliFolder),
         mkdir(stimuliFolder);
     end
+    
+    testingTargets = testingTargets(1:10:end);
         
     % Derived
     timeStep                    = 1/samplingRate;
     samplesPrLocation           = uint32(ceil(fixationDuration/timeStep));
-        
+    allTargetCombinations       = combnk(1:length(testingTargets), numberOfSimultanousTargetsDuringTesting);
+    
     % Open file
     filename = [stimuliFolder '/data.dat'];
     fileID = fopen(filename,'w');
 
     % Make header
     fwrite(fileID, samplingRate, 'ushort');               % Rate of sampling
-    fwrite(fileID, 1, 'ushort');                          % Number of simultanously visible targets, needed to parse data
+    fwrite(fileID, numberOfSimultanousTargetsDuringTesting, 'ushort'); % Number of simultanously visible targets, needed to parse data
     fwrite(fileID, visualFieldSize, 'float');
     fwrite(fileID, eyePositionFieldSize, 'float');
     
     % Make data
     for e = testingEyePositions,
-        for t = testingTargets,
-            outputSample(fileID, e, t, samplesPrLocation);
+        for t = 1:length(allTargetCombinations),
+            outputSample(fileID, e, testingTargets(allTargetCombinations(t,:)), samplesPrLocation);
         end
     end
 
@@ -57,6 +60,8 @@ function OneD_Stimuli_Testing(stimuliName, samplingRate, fixationDuration, visua
     % For post processing
     info.targets = testingTargets;
     info.eyePositions = testingEyePositions;
+    info.allTargetCombinations = allTargetCombinations;
+    info.numberOfSimultanousTargetsDuringTesting = numberOfSimultanousTargetsDuringTesting;
     
     % Save info
     save('info.mat','info');

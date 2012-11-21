@@ -11,11 +11,6 @@ function ThesisExperimentsPlot()
     declareGlobalVars();
 
     global base;
-    %global THESIS_FIGURE_PATH;
-    
-    %save_filename = 'prewiredPO';
-
-    % Save all experiments to include 
     
     %{ 
     %% prewiredPO
@@ -79,16 +74,6 @@ function ThesisExperimentsPlot()
     scatterPlotWithMarginalHistograms(RFLocation, headCenteredNess, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Head-Centeredness', 'Legends', Legends,'YLabelOffset', 3, 'FaceColors', FaceColors);
     scatterPlotWithMarginalHistograms(RFSize, headCenteredNess, 'XTitle', 'Receptive Field Size (deg)', 'YTitle', 'Head-Centeredness', 'Legends', Legends ,'YLabelOffset', 1, 'FaceColors', FaceColors);
     
-    % SAVE
-    %{
-    chap = 'chap-2';
-    fname = [THESIS_FIGURE_PATH chap '/' save_filename '_retinalconfusion.eps'];
-    set(gcf,'renderer','painters');
-    print(f,'-depsc2','-painters',fname);
-    %}
-    
-    %}
-
     function folder = expFolder(name)
         folder = [base 'Experiments/' name];
     end

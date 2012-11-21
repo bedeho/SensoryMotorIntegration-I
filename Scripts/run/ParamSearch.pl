@@ -24,46 +24,42 @@
 	# Input
    	####################################################################
    	
-#our @fixationsequenceArray				= ("1.00","2.00","3.00","4.00","5.00","6.00","7.00","8.00","9.00","10.00","11.00","12.00","13.00","14.00","15.00");
+#our @paramArray				= ("1.00","2.00","3.00","4.00","5.00","6.00","7.00","8.00","9.00","10.00","11.00","12.00","13.00","14.00","15.00");
+
+#our @paramArray				   = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30);
    	
-#for my $fixationsequence (@fixationsequenceArray) {
+#for my $p (@paramArray) {
    	
    	# prewiredPO, peakedgain
    	#my $experiment						= "prewiredPO";
    	#my $experiment						= "peakedgain";
    	#my $experiment						= "tracetimeconstant";
    	#my $experiment						= "learningrate";
-   	my $experiment						= "sparseness";
+   	#my $experiment						= "sparseness";
+   	my $experiment						= "multitargettest_baseline";
    	my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
    	
    	# varyingfixationsequencelength
-   	#my $experiment						= "varyingfixationsequencelength_${fixationsequence}";
-   	#my $stim							= "varyingfixationsequencelength-visualfield=200.00-eyepositionfield=60.00-fixations=200.00-targets=1.00-fixduration=0.30-fixationsequence=${fixationsequence}-seed=72.00-samplingrate=1000.00";
-   	
-	# 0MOVESTIM
-	#my $nTP 							= ceil((2 * 4 * 10)/$ftC);
-	#$nTP								= "${nTP}.00";
-	#my $experiment						= "sparsitycheck-0MOVESTIM_${ftC}";
-	#my $stim							= "0MOVESTIM-Tar=4.00-nTP=${nTP}-ftC=${ftC}-Sim=1.00-fD=0.50-nF=10.00-vpD=1.00-epD=2.00-gS=8.00-sS=0.06-vF=200.00-eF=122.00-sE=44.00";
+   	#my $experiment						= "varyingfixationsequencelength_${p}_TRACERESET";
+   	#my $stim							= "varyingfixationsequencelength-visualfield=200.00-eyepositionfield=60.00-fixations=200.00-targets=1.00-fixduration=0.30-fixationsequence=${p}-seed=72.00-samplingrate=1000.00";
+
+	# varyingheadposition
+	#my $experiment						= "varyingheadpositions_${p}";
+	#my $fixations						= 15 * $p;
+	#my $stim							= "varyingheadposition-visualfield=200.00-eyepositionfield=60.00-fixations=${fixations}.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	
-	# sigm=6, works at 01 fanin
-	# worked
-	#my $stim							= "H3-sigma6-Tar=0.00-nTP=0.00-nOF=90.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
-	#my $stim							= "H4-sigma6-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
-	#my $stim							= "mod-H4-sigma6-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
-	#my $stim							= "mod-H8-sigma6-Tar=0.00-nTP=0.00-nOF=240.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
-	#my $stim							= "mod-H30-sigma6-Tar=0.00-nTP=0.00-nOF=900.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=6.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
+	# multitargettraining
+	#my $experiment						= "multitargettraining";
+	#my $stim							= "multitargettraining-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	
-	# sigma=18, 05 fanIn
-	#my $stim							= "H3-sigma18-Tar=0.00-nTP=0.00-nOF=90.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
-	#my $stim							= "H4-sigma18-Tar=0.00-nTP=0.00-nOF=120.00-Sim=1.00-fD=0.20-fSL=30.00-vpD=1.00-epD=1.00-gS=18.00-sS=0.06-vF=200.00-eF=116.00-sE=70.00-sR=100.00";
+	#my $experiment						= "deep";
 	
 	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $learningRule					= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs						= 20; #50; # 30,100
-	my $saveNetworkAtEpochMultiple 		= 11;
-	my $outputAtTimeStepMultiple		= 1;
+	my $nrOfEpochs						= 1;#10; #50; # 30,100
+	my $saveNetworkAtEpochMultiple 		= 22;
+	my $outputAtTimeStepMultiple		= 10; # Keep this high (10<=) unless  you are recording for looking at dynamics!
 
 	my $lateralInteraction				= NONE; # NONE, SHORT_INHIBITION_LONG_EXCITATION = VISNET, SHORT_EXCITATION_LONG_INHIBITION = SOM
 	my $sparsenessRoutine				= HEAP; # NONE, HEAP, GLOBAL

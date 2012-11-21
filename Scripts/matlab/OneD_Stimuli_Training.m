@@ -17,7 +17,7 @@
 %           linearly interpolated and saved at each point to file.
 %
 
-function OneD_Stimuli_Training(prefix, fixationSequenceLength) 
+function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLength, ) 
 
     % Import global variables
     declareGlobalVars();
@@ -29,11 +29,11 @@ function OneD_Stimuli_Training(prefix, fixationSequenceLength)
     samplingRate                        = 1000; % (Hz)
     
     % Environment
-    numberOfSimultanousTargets          = 1;
+    numberOfSimultanousTargets          = 2;
     q                                   = 0.7; % targetRangeProportionOfVisualField
     visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
     eyePositionFieldSize                = (1-q)*visualFieldSize; % (1-q)*visualFieldSize OR equivalently (visualFieldSize/2 - targetVisualRange/2)
-    targetVisualRange                   = visualFieldSize * q;
+    targetVisualRange                   = 0.9*visualFieldSize * q;
     targetEyePositionRange              = 0.8*eyePositionFieldSize;
     
     % Agent Movement
@@ -41,25 +41,25 @@ function OneD_Stimuli_Training(prefix, fixationSequenceLength)
     fixationDuration                    = 0.3; % (s) - fixation period after each saccade
     
     % Agent in Training
-    headPositions                       = 8;
     
-    if nargin == 2,
-        numberOfFixations               = 200;
-    else
-        fixationSequenceLength          = 15;
-        numberOfFixations               = fixationSequenceLength * headPositions;
-    end
-
+    %% CLASSIC/Varying #head positions
+    
+    headPositions                       = 8; % classic = 8
+    fixationSequenceLength              = 15;
+    numberOfFixations                   = headPositions*fixationSequenceLength;
+    
+    %% Varying fixation sequence length
+    %{
+    headPositions                       = 8;
+    numberOfFixations                   = 200;
+    %}
+    
     % Agent in Testing
     nrOfTestingEyePositions             = 4;
     nrOfRetinalTestingPositions         = 80;
     
-    % Error check 
-    %if mod(numberOfFixations, fixationSequenceLength) ~= 0,
-    %    error('The number of fixations is not divisible by fixation sequences');
-    %else
-        numberOfSequences               = ceil(numberOfFixations / fixationSequenceLength);
-    %end
+    % Deduce number of sequences
+    numberOfSequences                   = ceil(numberOfFixations / fixationSequenceLength);
     
     % Filename
     if nargin < 1,
@@ -106,6 +106,8 @@ function OneD_Stimuli_Training(prefix, fixationSequenceLength)
     maxDev = 0;
     allShownTargets = [];
     
+    disp('Generating Training Data.');
+    
     % Perform fixation sequences
     for i=1:numberOfSequences,
         
@@ -114,8 +116,8 @@ function OneD_Stimuli_Training(prefix, fixationSequenceLength)
         %% UNIFORM
         %targets = targetVisualRange*(rand(1, numberOfSimultanousTargets) - 0.5);
         
-        %{
         %% GAUSSIAN (fixed mean)
+        %{
         targets = (targetVisualRange+1)*ones(1, numberOfSimultanousTargets);
         while any(abs(targets) > targetVisualRange/2),
             targets = normrnd(0, targetVisualRange/6); % Find better way
@@ -127,7 +129,7 @@ function OneD_Stimuli_Training(prefix, fixationSequenceLength)
         dim = size(unsampledPerms);
         sampleId = randi(dim(1));
         showTargets = unsampledPerms(sampleId,:);
-        %unsampledPerms(sampleId,:) = []; % Kill this combination
+        unsampledPerms(sampleId,:) = []; % Kill this combination
         targets = potentialTargets(showTargets); % Output data sequence for each target
         
         % Save targets seen
@@ -147,6 +149,9 @@ function OneD_Stimuli_Training(prefix, fixationSequenceLength)
         
         % Transform flag
         fwrite(fileID, NaN('single'), 'float');
+        
+        % Status
+        disp([num2str(100*(i/numberOfSequences)) '%']);
         
     end
     
@@ -190,24 +195,38 @@ function OneD_Stimuli_Training(prefix, fixationSequenceLength)
     margin = 10;
     
     % Testing Parameters
-    testingRetinalFieldSize = 2*(maxDev + 3*margin); % + buffer
-    testingTargets = fliplr(centerN2(testingRetinalFieldSize, nrOfRetinalTestingPositions));
+    testingRetinalFieldSize = max(2*(maxDev + 3*margin)); % + buffer
+    
+    if testingRetinalFieldSize > nrOfRetinalTestingPositions,
+        testingTargets = fliplr(centerN2(testingRetinalFieldSize, nrOfRetinalTestingPositions));
+    else
+        testingTargets = fliplr(centerN2(nrOfRetinalTestingPositions, nrOfRetinalTestingPositions)); 
+    end
     
     testingEyePositionFieldSize = targetEyePositionRange;
     testingEyePositions = centerN2(testingEyePositionFieldSize, nrOfTestingEyePositions);
     
     % Generate testing data
+    disp('Generating Single Target Testing Data.');
     OneD_Stimuli_Testing(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets);
     
+    % Generate multiple targets testing data
+    %disp('Generating Multiple Target Testing Data.');
+    %OneD_Stimuli_MultiTargetTesting(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2);
+    
     % Make stimuli figures
+    %{
+    disp('Making Spatial Plot.');
     OneD_Stimuli_SpatialFigure([folderName '-training'], [folderName '-stdTest']);
+    
+    disp('Making Temporal Plot.');
     OneD_Stimuli_MovementDynamicsFigure([folderName '-training']);
+    %}
     
     % Generate correlation data
     if samplingRate == 10,
+        %disp('Computing correlation.');
         %OneD_Stimuli_Correlation([folderName '-stdTest']);
-    else
-        disp('No correlation data computed.');
     end
     
     function points = generateCriticalPoints(order)
