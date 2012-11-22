@@ -36,8 +36,7 @@
    	#my $experiment						= "tracetimeconstant";
    	#my $experiment						= "learningrate";
    	#my $experiment						= "sparseness";
-   	my $experiment						= "multitargettest_baseline";
-   	my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+   	#my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
    	
    	# varyingfixationsequencelength
    	#my $experiment						= "varyingfixationsequencelength_${p}_TRACERESET";
@@ -51,6 +50,10 @@
 	# multitargettraining
 	#my $experiment						= "multitargettraining";
 	#my $stim							= "multitargettraining-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+	
+	# multitargettest_baseline
+	# my $stim							= "";
+	# my $experiment					= "multitargettest_baseline";
 	
 	#my $experiment						= "deep";
 	

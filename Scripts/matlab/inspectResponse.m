@@ -276,7 +276,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         set(gca,'XTick', xTick);
         set(gca,'XTickLabel', xTickLabels);
         axis square;
-        xlim([xTick(1) xTick(end)]);
+        xlim([info.targets(end) info.targets(1)]);
         ylim([-0.05 1.05]);
         
         hYLabel = ylabel('Firing Rate');
