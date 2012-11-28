@@ -33,9 +33,10 @@
    	# prewiredPO, peakedgain
    	#my $experiment						= "prewiredPO";
    	#my $experiment						= "peakedgain";
-   	#my $experiment						= "tracetimeconstant";
+   	#my $experiment						= "tracetimeconstant_short";
    	#my $experiment						= "learningrate";
    	#my $experiment						= "sparseness";
+   	#my $experiment						= "hebb";
    	#my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
    	
    	# varyingfixationsequencelength
@@ -48,19 +49,25 @@
 	#my $stim							= "varyingheadposition-visualfield=200.00-eyepositionfield=60.00-fixations=${fixations}.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	
 	# multitargettraining
-	#my $experiment						= "multitargettraining";
-	#my $stim							= "multitargettraining-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+	my $experiment						= "multitargettraining";
+	my $stim							= "multitargettraining-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	
 	# multitargettest_baseline
 	# my $stim							= "";
 	# my $experiment					= "multitargettest_baseline";
 	
-	#my $experiment						= "deep";
+	# decoupling test
+	#my $experiment						= "decouplingtest";
+	#my $stim							= "decouplingtest-visualfield=200.00-eyepositionfield=60.00-fixations=8.00-targets=2.00-fixduration=0.30-fixationsequence=1.00-seed=72.00-samplingrate=1000.00";
+	
+	# tracetest
+	#my $experiment						= "tracetest";
+	#my $stim							= "tracetest-visualfield=200.00-eyepositionfield=60.00-fixations=12.00-targets=2.00-fixduration=0.30-fixationsequence=4.00-seed=72.00-samplingrate=1000.00";
 	
 	my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 	my $learningRule					= TRACE; # TRACE, HEBB
 
-	my $nrOfEpochs						= 1;#10; #50; # 30,100
+	my $nrOfEpochs						= 10;#10; #50; # 30,100
 	my $saveNetworkAtEpochMultiple 		= 22;
 	my $outputAtTimeStepMultiple		= 10; # Keep this high (10<=) unless  you are recording for looking at dynamics!
 

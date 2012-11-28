@@ -18,23 +18,24 @@ function prewiredModel(filename)
     %targetEyePositionRange              = 0.8*eyePositionFieldSize; %eyePositionFieldSize;
     visualPreferenceDistance            = 1;
     eyePositionPrefrerenceDistance      = 1;
-    numTargetPositions                  = 8;
-    inputLayerSigma                     = 6;
+    targetSpacing                       = 17; % (deg)
+    inputLayerSigma                     = 3;
     
     % Setup random number generator
     seed = 3;
     rng(seed, 'twister');
     
     % Init variables
-    visualPreferences                   = centerDistance(visualFieldSize, visualPreferenceDistance);
+    visualPreferences                   = fliplr(centerDistance(visualFieldSize, visualPreferenceDistance));
     eyePositionPreferences              = centerDistance(eyePositionFieldSize, eyePositionPrefrerenceDistance);
     nrOfVisualPreferences               = length(visualPreferences);
     nrOfEyePositionPrefrerence          = length(eyePositionPreferences);
-    targets                             = centerDistance(targetVisualRange, floor(targetVisualRange/numTargetPositions)); %centerN(targetVisualRange, numTargetPositions);
-   
+    targets                             = centerDistance(targetVisualRange, targetSpacing);
+    numTargetPositions                  = length(targets);
+    
     % Output layer
     inputLayerDepth                     = 1; % 1 = PO, 2 = LIP
-    fanInPercentage                     = 0.30; % [0 1)
+    %fanInPercentage                     = 0.30; % [0 1)
     desiredFanIn                        = 367; %fanInPercentage*(nrOfVisualPreferences*nrOfEyePositionPrefrerence*inputLayerDepth);
     
     numRegions                          = 2;
@@ -86,43 +87,6 @@ function prewiredModel(filename)
             % FORGOT TO CLEAR <== damn this bug
             clearvars synapses
             
-            % Connect
-            %{
-            for d=1:inputLayerDepth,
-                for ret=1:nrOfVisualPreferences,
-                    
-                    retPref = visualPreferences(nrOfVisualPreferences - (ret - 1));
-                    
-                    for eye=1:nrOfEyePositionPrefrerence,
-                    
-                        eyePref = eyePositionPreferences(eye);
-                        
-                        [connect, weight] = doConnect(eyePref,retPref,target,d,inputLayerDepth);
-                        
-                        if connect,
-
-                            % Increase number of synapses
-                            numberOfAfferentSynapses = numberOfAfferentSynapses + 1;
-                            
-                            % Save synapse
-                            synapses(:,numberOfAfferentSynapses) = [0 (d-1) (ret-1) (eye-1) weight];
-                            
-                            %{
-                            % FIGURE
-                            if d==1,
-                                mat1(ret,eye) = mat1(ret,eye) + weight;
-                            else
-                                mat2(ret,eye) = mat2(ret,eye) + weight;
-                            end
-                            %}
-                            
-                        end
-                        
-                    end
-                end
-            end
-            %}
-            
             % Connectivity matrix
             isConnected = zeros(inputLayerDepth, nrOfVisualPreferences, nrOfEyePositionPrefrerence);
             
@@ -135,7 +99,7 @@ function prewiredModel(filename)
                 eye = randi(nrOfEyePositionPrefrerence);
                 
                 % Deduce preference
-                retPref = visualPreferences(nrOfVisualPreferences - (ret - 1));
+                retPref = visualPreferences(ret);
                 eyePref = eyePositionPreferences(eye);
                 
                 % Check if it is inside diagonal
@@ -209,50 +173,7 @@ function prewiredModel(filename)
     end
     
     fclose(fileID);
-    
-    %{
-    function [connect,weight] = doConnect(eyePref, retPref, target, d, inputLayerDepth)
-    
-        if inputLayerDepth == 1, % PEAKED
-            
-            connectWindow = 2;
-            cond1 = eyePref+retPref <= target+connectWindow*inputLayerSigma; % isBelowUpperBound
-            cond2 = eyePref+retPref >= target-connectWindow*inputLayerSigma; % isAboveLowerBound
-            
-            % Find distane to head-centeredness diagonal
-            % smallest distance between ax + bx + c = 0 and x0,y0 is:
-            %
-            % abs(ax_0 + b_y0 + c) / norm([a b])
-            %
-            % where
-            % x = e (eye position
-            % y = r (retinal position)
-            % c = -target (head position)
-            x0 = eyePref;
-            y0 = retPref;
-            a = 1;
-            b = 1;
-            c = -target;
-            
-            distance = abs(a*x0 + b*y0 + c) / norm([a b]);
-            
-            weight = exp(-(distance^2)/(2*inputLayerSigma^2)); 
-        elseif inputLayerDepth == 2 % SIGMOID
-            
-            cond1 = (eyePref+retPref <= target && d==1); % isToLeftOfTargets
-            cond2 = (eyePref+retPref >= target && d==2); % isAboveLowerBound
-            weight = rand([1 1]); % Get random weight
-        end
-        
-        % Make final stochastic decision
-        connect = cond1 && cond2 && rand([1 1]) > (1-fanInPercentage);
-        
-        %if rand([1 1]) > 0.9 && ((eyePref+retPref <= target && d==1) || (eyePref+retPref >= target && d==2)), % SIGMOID
-        %rand([1 1]) > 0.9 && ((eyePref+retPref <= target && d==1) && (eyePref+retPref >= target && d==2)), % PEAKED
 
-    end
-    %}
-    
    function [connect,weight] = doConnect2(eyePref, retPref, target, d, inputLayerDepth)
 
         if inputLayerDepth == 1, % PEAKED

@@ -108,6 +108,8 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
     
     disp('Generating Training Data.');
     
+    fixedeyePositions = targetEyePositionRange*(rand(1, fixationSequenceLength) - 0.5);
+    
     % Perform fixation sequences
     for i=1:numberOfSequences,
         
@@ -139,7 +141,11 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
         maxDev = max(maxDev,abs(targets));
         
         % Produce fixation order
-        eyePositions = targetEyePositionRange*(rand(1, fixationSequenceLength) - 0.5);
+        if numberOfSimultanousTargets > 1
+            eyePositions = fixedeyePositions;
+        else
+            eyePositions = targetEyePositionRange*(rand(1, fixationSequenceLength) - 0.5);
+        end
 
         % Generate the cirtical points
         criticalPoints = generateCriticalPoints(eyePositions);
@@ -211,17 +217,22 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
     OneD_Stimuli_Testing(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets);
     
     % Generate multiple targets testing data
+    %{
     disp('Generating Multiple Target Testing Data.');
     OneD_Stimuli_MultiTargetTesting(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2);
+    %}
     
     % Make stimuli figures
-    %{
-    disp('Making Spatial Plot.');
-    OneD_Stimuli_SpatialFigure([folderName '-training'], [folderName '-stdTest']);
-    
-    disp('Making Temporal Plot.');
-    OneD_Stimuli_MovementDynamicsFigure([folderName '-training']);
-    %}
+    if numberOfSimultanousTargets  == 1,
+        
+        disp('Making Spatial Plot.');
+        OneD_Stimuli_SpatialFigure([folderName '-training'], [folderName '-stdTest']);
+
+        disp('Making Temporal Plot.');
+        OneD_Stimuli_MovementDynamicsFigure([folderName '-training']);
+    else
+        disp('Cannot produce figures for multiple object training');
+    end
     
     % Generate correlation data
     if samplingRate == 10,

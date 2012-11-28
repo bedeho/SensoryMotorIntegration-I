@@ -262,6 +262,8 @@ function analysisResults = metrics(filename, info)
             h = NaN;
             residue = NaN;
         end
+        
+        
     end
 
 %{

@@ -12,15 +12,15 @@ function ThesisExperimentsPlot()
 
     global base;
     
-    %{ 
+     
     %% prewiredPO
-    experiment(1).Name = 'Prewired';
-    experiment(1).Folder = expFolder('prewiredPO/X=1_Y=1/TrainedNetwork');
-    experiment(2).Name = 'Random';
-    experiment(2).Folder = expFolder('prewiredPO/X=1_Y=1/BlankNetwork');
+    experiment(1).Name = 'Random';
+    experiment(1).Folder = expFolder('prewiredPO/X=1_Y=1/BlankNetwork');
+    experiment(2).Name = 'Prewired';
+    experiment(2).Folder = expFolder('prewiredPO/X=1_Y=1/TrainedNetwork');
     FaceColors = {[1,0,0]; [0,0,1]};
-    %}
     
+    %{
     %% peakedgain
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('peakedgain/S=0.80_/BlankNetwork');
@@ -29,6 +29,7 @@ function ThesisExperimentsPlot()
     experiment(3).Name = '20 Epochs';
     experiment(3).Folder = expFolder('peakedgain/S=0.80_/TrainedNetwork_e20'); 
     FaceColors = {[1,0,0]; [0.5,0,0.5]; [0,0,1]};
+    %}
     
     %% Dont need to touch anything below here.
     numExperiments = length(experiment);

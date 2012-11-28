@@ -82,7 +82,7 @@ void InputRegion::init(Param & p, const char * dataFile, gsl_rng * rngController
         for(u_short i = 0;i < horVisualDimension;i++)
             for(u_short j = 0;j < horEyeDimension;j++) {
                 
-                float hvisual = horVisualPreferences[(horVisualDimension - 1) - i]; // flip it so that the first row prefers the rightmost visual location
+                float hvisual = horVisualPreferences[(horVisualDimension - 1) - i]; // flip it so that the first row prefers the rightmost (largest +) visual location
                 float heye = horEyePreferences[j];
                 float hslope = (d == 0 ? p.sigmoidSlope : -1 * p.sigmoidSlope);
                 float hsigma = p.gaussianSigma;

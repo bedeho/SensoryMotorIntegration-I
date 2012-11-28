@@ -73,6 +73,7 @@ function ThesisParameterVariationPlot()
     %}
     
     %% varyingheadpositions
+    %{
     for i=1:30,
         
         experiments(i).Folder   = ['varyingheadpositions_' num2str(i) '/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork'];
@@ -81,8 +82,23 @@ function ThesisParameterVariationPlot()
     end
     
     XAxislabel = 'Fixation Sequence Length (?)';
+    %}
     
     %% Trace time constant
+    names  = {'0.010', '0.020', '0.030', '0.040', '0.050', '0.060', '0.070', '0.080', '0.090', ... 
+              '0.100', '0.200', '0.300', '0.400', '0.500', '0.600', '0.700', '0.800', '0.900', ...
+              '1.000', '2.000', '3.000', '4.000', '5.000', '6.000', '7.000', '8.000', '9.000'};
+    vals  = [0.010, 0.020, 0.030, 0.040, 0.050, 0.060, 0.070, 0.080, 0.090, ... 
+             0.100, 0.200, 0.300, 0.400, 0.500, 0.600, 0.700, 0.800, 0.900, ...
+             1.000, 2.000, 3.000, 4.000, 5.000, 6.000, 7.000, 8.000, 9.000];
+    
+    for i=1:length(vals),
+        experiments(i).Folder   = ['hebb/tC=' names{i}  '_/TrainedNetwork']; % tracetimeconstant, tracetimeconstant_short
+        X(i)                    = vals(i);
+    end
+    XAxislabel = 'Trace time constant - \tau_q (s)';
+    
+    
     %{
 
     XAxislabel = 'Trace Time Constant - \tau_{q} (s)';
@@ -118,7 +134,7 @@ function ThesisParameterVariationPlot()
     figure();
     
     % Plot
-    [AX,H1,H2] = plotyy(X, headCenteredNess, X, rfSizes);  %, 'semilogx'
+    [AX,H1,H2] = plotyy(X, headCenteredNess, X, rfSizes,'semilogx');  %
     
     % Appearance
     hXLabel = xlabel(XAxislabel);

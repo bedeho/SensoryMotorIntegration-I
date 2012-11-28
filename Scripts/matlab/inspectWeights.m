@@ -31,7 +31,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
     
     visualPreferenceDistance            = 1;
     eyePositionPrefrerenceDistance      = 1;
-    visualPreferences                   = centerDistance(dimensions.visualFieldSize, visualPreferenceDistance);
+    visualPreferences                   = fliplr(centerDistance(dimensions.visualFieldSize, visualPreferenceDistance));
     eyePositionPreferences              = centerDistance(dimensions.eyePositionFieldSize, eyePositionPrefrerenceDistance);
 
     % Iterate regions to do correlation plot and setup callbacks
@@ -95,9 +95,8 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         cla
         imagesc(weightBox1);
         dim = fliplr(size(weightBox1));
-        daspect([dim 1]);
+        pbaspect([dim 1]);
         colorbar;
-        axis square;
         
         [height,width] = size(weightBox1);
         

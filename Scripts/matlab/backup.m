@@ -1,4 +1,86 @@
-        %{
+            % Connect
+            %{
+            for d=1:inputLayerDepth,
+                for ret=1:nrOfVisualPreferences,
+                    
+                    retPref = visualPreferences(nrOfVisualPreferences - (ret - 1));
+                    
+                    for eye=1:nrOfEyePositionPrefrerence,
+                    
+                        eyePref = eyePositionPreferences(eye);
+                        
+                        [connect, weight] = doConnect(eyePref,retPref,target,d,inputLayerDepth);
+                        
+                        if connect,
+
+                            % Increase number of synapses
+                            numberOfAfferentSynapses = numberOfAfferentSynapses + 1;
+                            
+                            % Save synapse
+                            synapses(:,numberOfAfferentSynapses) = [0 (d-1) (ret-1) (eye-1) weight];
+                            
+                            %{
+                            % FIGURE
+                            if d==1,
+                                mat1(ret,eye) = mat1(ret,eye) + weight;
+                            else
+                                mat2(ret,eye) = mat2(ret,eye) + weight;
+                            end
+                            %}
+                            
+                        end
+                        
+                    end
+                end
+            end
+            %}
+
+
+%{
+    function [connect,weight] = doConnect(eyePref, retPref, target, d, inputLayerDepth)
+    
+        if inputLayerDepth == 1, % PEAKED
+            
+            connectWindow = 2;
+            cond1 = eyePref+retPref <= target+connectWindow*inputLayerSigma; % isBelowUpperBound
+            cond2 = eyePref+retPref >= target-connectWindow*inputLayerSigma; % isAboveLowerBound
+            
+            % Find distane to head-centeredness diagonal
+            % smallest distance between ax + bx + c = 0 and x0,y0 is:
+            %
+            % abs(ax_0 + b_y0 + c) / norm([a b])
+            %
+            % where
+            % x = e (eye position
+            % y = r (retinal position)
+            % c = -target (head position)
+            x0 = eyePref;
+            y0 = retPref;
+            a = 1;
+            b = 1;
+            c = -target;
+            
+            distance = abs(a*x0 + b*y0 + c) / norm([a b]);
+            
+            weight = exp(-(distance^2)/(2*inputLayerSigma^2)); 
+        elseif inputLayerDepth == 2 % SIGMOID
+            
+            cond1 = (eyePref+retPref <= target && d==1); % isToLeftOfTargets
+            cond2 = (eyePref+retPref >= target && d==2); % isAboveLowerBound
+            weight = rand([1 1]); % Get random weight
+        end
+        
+        % Make final stochastic decision
+        connect = cond1 && cond2 && rand([1 1]) > (1-fanInPercentage);
+        
+        %if rand([1 1]) > 0.9 && ((eyePref+retPref <= target && d==1) || (eyePref+retPref >= target && d==2)), % SIGMOID
+        %rand([1 1]) > 0.9 && ((eyePref+retPref <= target && d==1) && (eyePref+retPref >= target && d==2)), % PEAKED
+
+    end
+    %}
+
+
+%{
         fixationAxes = zeros(1,numEyePositions);
         for e = 1:numEyePositions,
 
