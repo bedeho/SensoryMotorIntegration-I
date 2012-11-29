@@ -51,6 +51,9 @@ function prewiredModel(filename)
     coeff = 0.3;
     activeNeurons = coeff*(verticalDimension * horizontalDimension);
     
+    % Info buffer
+    allocatedHeadPositions = zeros(verticalDimension, horizontalDimension);
+    
     % Open file
     fileID = fopen(filename,'w+');
 
@@ -75,6 +78,9 @@ function prewiredModel(filename)
             
             % Setup neuron variables
             numberOfAfferentSynapses = 0;
+            
+            % Save what was picked
+            allocatedHeadPositions(row,col) = target;
             
             % Generated figure
             %{
@@ -172,8 +178,12 @@ function prewiredModel(filename)
         end
     end
     
-    fclose(fileID);
-
+   fclose(fileID);
+   
+   % Save buffer
+   [pathstr, name, ext] = fileparts(filename);
+   save([pathstr '/info.mat'], 'allocatedHeadPositions');
+   
    function [connect,weight] = doConnect2(eyePref, retPref, target, d, inputLayerDepth)
 
         if inputLayerDepth == 1, % PEAKED
