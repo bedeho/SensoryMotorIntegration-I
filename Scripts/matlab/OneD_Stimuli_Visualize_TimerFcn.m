@@ -17,6 +17,8 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
     global lineCounter;             % must be global to be visible across callbacks
     global nrOfObjectsFoundSoFar;
     global fig;
+    global lastEyePosition;
+    global lastRetinalPositions;
     
     % Update time counter
     OneDVisualizeTimer = (lineCounter - nrOfObjectsFoundSoFar)*timeStep;
@@ -44,11 +46,18 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
          
         %disp(['Read: eye =' num2str(eyePosition) ', ret=' num2str(retinalPositions)]);
         
-        % Select figure
-        figure(fig);
+        if lineCounter == 1 || lastEyePosition ~= eyePosition || any(lastRetinalPositions ~= retinalPositions),
+
+            % Select figure
+            figure(fig);
+
+            draw();
         
-        draw();
+        end
         
+        lastEyePosition = eyePosition;
+        lastRetinalPositions = retinalPositions;
+
         lineCounter = lineCounter + 1;
   
     else
@@ -60,6 +69,7 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
     
     % draw LIP sig*gauss neurons and input space
     function draw()
+        
 
         v = OneD_Stimuli_InputLayer([eyePosition retinalPositions], visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
         

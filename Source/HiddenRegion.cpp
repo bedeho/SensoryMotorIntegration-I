@@ -51,6 +51,7 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, unsigned l
     this->globalInhibitoryConstant = p.globalInhibitoryConstant[regionNr-1];
     this->externalStimulation = p.externalStimulation[regionNr-1];
     
+    this->covarianceThreshold = p.covarianceThreshold;
 	this->stepSize = p.stepSize;
 	this->traceTimeConstant = p.traceTimeConstant;
 	this->sparsenessRoutine = p.sparsenessRoutine;
@@ -406,22 +407,23 @@ void HiddenRegion::applyLearningRule() {
 				
                 HiddenNeuron * n = &Neurons[d][i][j];
                 float norm = 0;
-                
-                //float danThreshold = 0.03;
-                
-                // REMEMBER TO FUDGE weight normalization.
-                
-				//n->effectiveTrace = 1 / (1 + exp(100000000 * (0.1 - n->trace))); //sigmoid, slope=10^8, threshold=0.01
 
 				for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
 
-                    // effectiveTrace
-                    // (danThreshold - (*s).weight)
-					//(*s).weight +=  (danThreshold - (*s).weight)*learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->effectiveTrace) * (*s).preSynapticNeuron->firingRate;
-                        
-                    // trace
-                    (*s).weight += learningRate * stepSize * (rule == HEBB_RULE ? n->firingRate : n->trace) * (*s).preSynapticNeuron->firingRate;
-                        
+                    switch (rule) {
+                            
+                        case HEBB_RULE:
+                            (*s).weight += learningRate * stepSize * n->firingRate * (*s).preSynapticNeuron->firingRate;
+                            break;
+                        case TRACE_RULE:
+                            (*s).weight += learningRate * stepSize * n->trace * (*s).preSynapticNeuron->firingRate;
+                            break;
+                        case COVARIANCE_PRESYNAPTIC_TRACE_RULE:
+                            (*s).weight += learningRate * stepSize * n->trace * ((*s).preSynapticNeuron->firingRate - covarianceThreshold);
+                            break;
+                    }
+                    
+                    // Add to cumulative norm value
 					norm += (*s).weight * (*s).weight;
 				}
 					

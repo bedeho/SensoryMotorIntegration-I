@@ -116,6 +116,7 @@ class HiddenRegion : public Region {
 		float learningRate;							    // duplicate of p.learningRates[regionNr-1]
 		float eta;										// duplicate of p.etas[regionNr-1]
 		float timeConstant;								// duplicate of p.timeConstants[regionNr-1]
+        float covarianceThreshold;
 		double stepSize;
 		float traceTimeConstant;
         float globalInhibitoryConstant;

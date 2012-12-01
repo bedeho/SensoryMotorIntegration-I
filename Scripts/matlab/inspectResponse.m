@@ -125,7 +125,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             % ResponseCount historgram
             axisVals(r-1,3) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 3); % Save axis
             
-            hist(hmatTOP,50);
+            hist(hmatTOP,30);
             
             % Scatter
             axisVals(r-1,PLOT_COLS) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + PLOT_COLS); % Save axis

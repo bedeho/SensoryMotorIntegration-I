@@ -17,7 +17,7 @@ using std::vector;
 
 // Read parameter file for full explanation
 enum FEEDBACK				{ NOFEEDBACK = 0,		SYMMETRIC = 1 };
-enum LEARNING_RULE			{ TRACE_RULE = 0,		HEBB_RULE = 1 };
+enum LEARNING_RULE			{ TRACE_RULE = 0,		HEBB_RULE = 1,      COVARIANCE_PRESYNAPTIC_TRACE_RULE = 2 }; 
 enum SPARSENESSROUTINE		{ NOSPARSENESS = 0,		HEAP = 1,           GLOBAL = 2};
 enum WEIGHTNORMALIZATION	{ NONORMALIZATION = 0,	CLASSIC = 1 };
 //enum TRANSFER_FUNCTION    { IDENTITY = 0,         SIGMOID = 1 };
@@ -44,6 +44,7 @@ class Param  {
 		u_short outputAtTimeStepMultiple;
 		u_short saveNetworkAtEpochMultiple;
 		float traceTimeConstant;
+        float covarianceThreshold;
         float playAtPrcntOfOriginalSpeed;
 		bool resetTrace;
 		bool resetActivity;

@@ -113,7 +113,7 @@ function MultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, experim
         
         RF_Preference = analysisResults.wellBehavedNeurons(include, 6); 
         
-    
+    %{
         [r d] = doPattern(1, 7);
         
         for a =1:length(r),
@@ -130,9 +130,10 @@ function MultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, experim
             end
             
         end
+        %}
         
     %doPattern(2,14);
-    %{
+    
     r = [];
     d = [];
     
@@ -146,11 +147,54 @@ function MultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, experim
             
         end
     end
-    %}
     
-    scatterPlotWithMarginalHistograms({abs(d)}, {r} ,'FaceColors', {[1,0,0]});
     
+    scatterPlotWithMarginalHistograms({(d)}, {r} ,'FaceColors', {[1,0,0]}, 'XTitle' , 'Error (deg)' , 'YTitle' , 'Firing Rate');
+    
+    % do probability plot
+    %maxDistance = max(abs(d));
+    
+    %distances = 1:10:maxDistance;
+    %distribution = zeros(1, length(distances) - 1); % F(r') = std of of error distribution for all points with r = r'
+    
+    range = 0:0.1:1;
+    standardDeviations = zeros(1, length(range) - 1);
+    means = zeros(1, length(range) - 1);
+    
+    for i=1:length(standardDeviations),
+        
+        dvalues = d(((range(i) <= r) & (r < range(i+1)))); % pick out right responses
+        standardDeviations(i) = std(dvalues);
+        means(i) = mean(dvalues);
+        
+    end
+    
+    % Plot
+    figure;
+    X = range(1:(end-1));
+    [AX,H1,H2] = plotyy(X, standardDeviations, X, means);  % ,'semilogx'
+    
+    % Appearance
+    hXLabel = xlabel('Firing Rate');
+    
+    hYLabel1 = get(AX(1),'Ylabel');
+    hYLabel2 = get(AX(2),'Ylabel');
+    
+    set(hYLabel1,'String', 'Conditional Standard Deviation (deg)');
+    set(hYLabel2,'String', 'Conditional Mean (deg)');
 
+    set(H1,'LineStyle','-','Marker','o','LineWidth',2);
+    set(H2,'LineStyle','--','Marker','o','LineWidth',2);
+    
+    %set([AX hXLabel hYLabel1 hYLabel2], 'FontSize', 14);
+    
+    set(gca,'XGrid','on');
+
+    
+    %if(exist('XTick')),
+    %    set(AX,'XTick', XTick);
+    %end
+    
     
     
     function [response distance] = doPattern(e, t)

@@ -41,6 +41,7 @@ Param::Param(const char * filename, bool isTraining) {
 		// training
 		cfg.lookupValue("training.rule", tmp);
 		rule = static_cast<LEARNING_RULE>(tmp);
+        cfg.lookupValue("training.covarianceThreshold", covarianceThreshold);
 		cfg.lookupValue("training.resetTrace", resetTrace);
 		cfg.lookupValue("training.saveNetwork", saveNetwork);
 		cfg.lookupValue("training.saveNetworkAtEpochMultiple", tmp);

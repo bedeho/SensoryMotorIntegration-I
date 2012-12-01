@@ -31,21 +31,23 @@ function ThesisParameterVariationPlot()
     %{
     for i=1:11,
         
-        experiments(i).Folder   = ['varyingfixationsequencelength_' num2str(i) '.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork_e10'];
+        experiments(i).Folder   = ['../Experiments_disk/varyingfixationsequencelength_' num2str(i) '.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork_e10'];
         
         %experiments(i).Folder  = ['varyingfixationsequencelength_' num2str(i) '.00_TRACERESET/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork'];
         
         X(i)                    = i;
+        XTick(i)                    = X(i);
     end
-    XAxislabel = 'Fixation Sequence Length (?)';
+    XAxislabel = 'Fixation Sequence Length';
     %}
     
     %% sparseness
     %{
     vals = 50:2:98;
     for i=1:length(vals),
-        experiments(i).Folder   = ['sparseness/S=0.' num2str(vals(i)) '_/TrainedNetwork_e11'];
-        X(i)                    = i;
+        experiments(i).Folder   = ['../Experiments_disk/sparseness/S=0.' num2str(vals(i)) '_/TrainedNetwork_e11'];
+        X(i)                    = vals(i);
+        XTick(i)                = X(i);
     end
     XAxislabel = 'Sparseness Percentile - \pi';
     %}
@@ -76,15 +78,17 @@ function ThesisParameterVariationPlot()
     %{
     for i=1:30,
         
-        experiments(i).Folder   = ['varyingheadpositions_' num2str(i) '/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork'];
+        experiments(i).Folder   = ['../Experiments_disk/varyingheadpositions_' num2str(i) '/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork'];
 
         X(i)                    = i;
+        XTick(i)                    = X(i);
     end
     
-    XAxislabel = 'Fixation Sequence Length (?)';
+    XAxislabel = 'Number of Target Locations';
     %}
     
-    %% Trace time constant
+    %% Time constant
+    %{
     names  = {'0.010', '0.020', '0.030', '0.040', '0.050', '0.060', '0.070', '0.080', '0.090', ... 
               '0.100', '0.200', '0.300', '0.400', '0.500', '0.600', '0.700', '0.800', '0.900', ...
               '1.000', '2.000', '3.000', '4.000', '5.000', '6.000', '7.000', '8.000', '9.000'};
@@ -93,19 +97,15 @@ function ThesisParameterVariationPlot()
              1.000, 2.000, 3.000, 4.000, 5.000, 6.000, 7.000, 8.000, 9.000];
     
     for i=1:length(vals),
-        experiments(i).Folder   = ['hebb/tC=' names{i}  '_/TrainedNetwork']; % tracetimeconstant, tracetimeconstant_short
+        %../Experiments_disk/tracetimeconstant/ttC=
+        % hebb_MANUAL/tC=
+        experiments(i).Folder   = ['../Experiments_disk/tracetimeconstant/ttC=' names{i}  '_/TrainedNetwork'];
         X(i)                    = vals(i);
     end
-    XAxislabel = 'Trace time constant - \tau_q (s)';
     
-    
-    %{
-
     XAxislabel = 'Trace Time Constant - \tau_{q} (s)';
-    XTick = [0.01 0.1 1.0 10.0 100.0 900.0]
+    %XAxislabel = 'Activation Time Constant - \tau_h (s)';
     %}
-    
-
     %% Plotting
     numExperiments = length(experiments);
     
@@ -129,12 +129,14 @@ function ThesisParameterVariationPlot()
         rf = res.RFSize_Linear_Clean(res.headCenteredNess_Linear_Clean >= 0.7);
         rfSizes(e) = mean(rf);
         
+        res.uniformityOfVeryHeadCentered 
+        
     end
     
     figure();
     
     % Plot
-    [AX,H1,H2] = plotyy(X, headCenteredNess, X, rfSizes,'semilogx');  %
+    [AX,H1,H2] = plotyy(X, headCenteredNess, X, rfSizes);  % ,'semilogx'
     
     % Appearance
     hXLabel = xlabel(XAxislabel);
@@ -151,10 +153,17 @@ function ThesisParameterVariationPlot()
     set([AX hXLabel hYLabel1 hYLabel2], 'FontSize', 14);
     
     set(gca,'XGrid','on');
+
     
     if(exist('XTick')),
         set(AX,'XTick', XTick);
     end
     
+    % timeconstant
+    %axis(AX,[0.010 10.000 0 0.4]);
+
+    % sparseness
+    %axis(AX(1),[50 98 0 1]);
+    %axis(AX(2),[50 98 20 60]);
 end
   

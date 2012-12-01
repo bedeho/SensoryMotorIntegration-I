@@ -127,7 +127,7 @@ function analysisResults = metrics(filename, info)
     
     % Uniformity
     vals = RFLocation_Linear_Clean(headCenteredNess_Linear_Clean >= lambdaCutoff);
-    numEntropyBins = 10;
+    numEntropyBins = 40;
     dist = hist(vals,numEntropyBins)./ numel(vals);
     entropy = -dot(dist,log(dist)/log(2)); % -(dist*.log(dist)/log(2));
     maxEntropy = log(numEntropyBins)/log(2);
