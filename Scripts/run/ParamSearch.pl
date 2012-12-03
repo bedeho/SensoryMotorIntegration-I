@@ -40,7 +40,9 @@
 	   	#my $experiment						= "learningrate";
 	   	#my $experiment						= "sparseness";
 	   	#my $experiment						= "hebb_MANUAL"; #_ssf_0.001
-	   	my $experiment						= "varying_sigma_19_covariance";
+	   	#my $experiment						= "varying_sigma_19_th0.99_fc0.2";
+	   	my $experiment						= "varying_sigma_19_sigmoid";
+	   	#my $experiment						= 'learningrate';
 	   	my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	   	
 	   	# varyingfixationsequencelength
@@ -68,8 +70,8 @@
 		#my $experiment						= "tracetest";
 		#my $stim							= "tracetest-visualfield=200.00-eyepositionfield=60.00-fixations=12.00-targets=2.00-fixduration=0.30-fixationsequence=4.00-seed=72.00-samplingrate=1000.00";
 		
-		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
-		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
+		my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
+		my $learningRule					= COVARIANCE_PRESYNAPTIC_TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
 		my $nrOfEpochs						= 10;#10; #50; # 30,100
 		my $saveNetworkAtEpochMultiple 		= 22;
@@ -80,7 +82,7 @@
 	
 		my $resetActivity					= "false"; # "false", Reset activation between objects of training
 		my $resetTrace						= "false"; # "false", Reset trace between objects of training
-		my $covarianceThreshold				= "0.7";
+		my $covarianceThreshold				= "0.8";
 		
 		my $sigmoidModulationPercentage		= "0.0";
 		my $weightVectorLength				= "1.0"; # classic = 1.0
@@ -88,7 +90,7 @@
 		
 		my $visualPreferenceDistance		= "1.0";
 		my $eyePositionPrefrerenceDistance 	= "1.0";
-		my $gaussianSigma					= "19.00"; #$p; # 6
+		my $gaussianSigma					= "19.00"; # 19 # $p # 6
 		
 		my $sigmoidSlope					= "0.0625"; #1/16
 		

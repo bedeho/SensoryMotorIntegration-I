@@ -24,6 +24,7 @@ function ThesisExperimentsPlot()
     
     
     %% peakedgain
+    %{
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('peakedgain/S=0.80_/BlankNetwork');
     experiment(2).Name = '5 Epochs';
@@ -31,7 +32,12 @@ function ThesisExperimentsPlot()
     experiment(3).Name = '20 Epochs';
     experiment(3).Folder = expFolder('peakedgain/S=0.80_/TrainedNetwork_e20'); 
     FaceColors = {[1,0,0]; [0.5,0,0.5]; [0,0,1]};
+    %}
     
+    %% learningrate
+    experiment(1).Name = 'Random';
+    experiment(1).Folder = expFolder('learningrate/L=5.00000_/TrainedNetwork');
+    FaceColors = {[1,0,0]};
     
     %% Dont need to touch anything below here.
     numExperiments = length(experiment);

@@ -53,7 +53,7 @@ function ThesisParameterVariationPlot()
     %}
      
     %% learningrate
-    %{
+    
     names = {%'0.00010', '0.00020', '0.00030', '0.00040', '0.00050', '0.00060', '0.00070', '0.00080', '0.00090', ...
              %'0.00100', '0.00200', '0.00300', '0.00400', '0.00500', '0.00600', '0.00700', '0.00800', '0.00900', ...
              '0.01000', '0.02000', '0.03000', '0.04000', '0.05000', '0.06000', '0.07000', '0.08000', '0.09000', ... 
@@ -67,12 +67,11 @@ function ThesisParameterVariationPlot()
              1.00000, 2.00000, 3.00000, 4.00000, 5.00000, 6.00000, 7.00000, 8.00000, 9.00000]
     
     for i=1:length(vals),
-        experiments(i).Folder   = ['learningrate/L=' names{i} '_/TrainedNetwork'];
+        experiments(i).Folder   = ['learningrate/L=' names{i} '_sS=00000004.50_sT=0.40_/TrainedNetwork'];
         X(i)                    = vals(i);
     end
     XAxislabel = 'Learning Rate - \rho';
-    XTick = [0.01 0.09 0.9 9.0];
-    %}
+    
     
     %% varyingheadpositions
     %{
@@ -136,7 +135,7 @@ function ThesisParameterVariationPlot()
     figure();
     
     % Plot
-    [AX,H1,H2] = plotyy(X, headCenteredNess, X, rfSizes);  % ,'semilogx'
+    [AX,H1,H2] = plotyy(X, headCenteredNess, X, rfSizes,'semilogx');  % 
     
     % Appearance
     hXLabel = xlabel(XAxislabel);
