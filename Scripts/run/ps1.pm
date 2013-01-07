@@ -56,7 +56,7 @@
         								#["00000000.00001"],
     									#["00000000.00002"],
     									#["00000000.00003"],
-    									 ["00000000.00004"],
+    									#["00000000.00004"],
     									#["00000000.00005"]
     									#["00000000.00006"],
     									#["00000000.00007"],
@@ -66,7 +66,7 @@
         								#["00000000.0001"],
     									#["00000000.0002"],
     									#["00000000.0003"],
-    									 ["00000000.0004"],
+    									#["00000000.0004"],
     									#["00000000.0005"]
     									#["00000000.0006"],
     									#["00000000.0007"],
@@ -76,7 +76,7 @@
     									#["00000000.001"],
     									#["00000000.002"],
     									#["00000000.003"],
-    									 ["00000000.004"],
+    									#["00000000.004"],
     									#["00000000.005"]
     									#["00000000.006"],
     									#["00000000.007"],
@@ -86,23 +86,23 @@
     									#["00000000.01"],
     									#["00000000.02"],
     									#["00000000.03"],
-    									 ["00000000.04"],
+    									#["00000000.04"],
     									#["00000000.05"]
     									#["00000000.06"],
     									#["00000000.07"],
     									#["00000000.08"],
     									#["00000000.09"],
     									
-										#["00000000.1"],
-										#["00000000.2"],
-										#["00000000.3"],
-										 ["00000000.4"]
-										#["00000000.5"]
-										#["00000000.6"],
-										#["00000000.7"],
-										#["00000000.8"],
-										#["00000000.9"],
-										#
+									#["00000000.1"],
+									#["00000000.2"],
+									#["00000000.3"],
+									#["00000000.4"],
+									#["00000000.5"]
+									#["00000000.6"],
+									#["00000000.7"],
+									#["00000000.8"],
+									#["00000000.9"],
+									#
 	    								#["00000001.0"],
 	    								#["00000002.0"],
 	    								#["00000003.00"],
@@ -111,25 +111,35 @@
 	    								#["00000003.75"],
 	    								#["00000004.00"]
 	    								#["00000004.25"],
-	    								 #["00000004.50"]
+	    								#["00000004.50"]
 	    								#["00000004.75"],
-	    								#["00000006.00"]
-	    								#["00000010.0"]
-										#["00000100.0"],
-										#["00001000.0"],
-										#["00010000.0"]
-										#["00100000.0"],
-										#["01000000.0"]
+	    								["00000006.00"],
+									#["00000005.0"],
+	    								["00000010.0"],
+									["00000020.0"],
+									["00000050.0"]# sigma = 19,covariance_th = 0.9
+									#["00000100.0"]									
+									#["00000100.0"]
+									#["00000150.0"],
+									#["00000200.0"],
+									#["00000250.0"],
+									#["00000300.0"],
+									#["00000350.0"],								
+									#["00000400.0"]
+									#["00000600.0"]
+									#["00010000.0"]
+									#["00100000.0"],
+									#["01000000.0"]
     									);
     die "Invalid array: sigmoidSlopes" if !validateArray(\@sigmoidSlopes);
     
     our @sigmoidThresholds				= (
-										["0.00"],
+										["0.00"]
 										
 										#["0.01"],
-										#["0.02"],
+										#["0.02"], # sigma = 19,covariance_th = 0.9
 										#["0.03"],
-										#["0.04"],
+										#["0.04"]
 										#["0.05"],
 										#["0.06"],
 										#["0.07"],
@@ -137,8 +147,10 @@
 										#["0.09"],
 										
 										#["0.10"],
-										#["0.20"],
-										#["0.30"],
+										#["0.15"],
+										#["0.20"]
+
+										#["0.30"]
 										#["0.40"]
 										#["0.50"],
 										#["0.60"]
@@ -149,7 +161,7 @@
 										#["1.00"],
 										#["2.00"],
 										#["3.00"],
-										#["4.00"],
+										#["4.00"]
 										#["5.00"],
 										#["6.00"],
 										#["7.00"],
@@ -282,13 +294,13 @@
 										#["0.96"],
 										#["0.94"],
 										#["0.92"],
-										#["0.90"],
+										["0.90"]
 										
-										#["0.88"],
+										#["0.88"]
 										#["0.86"],
 										#["0.84"],
 										#["0.82"],
-										["0.80"]
+										#["0.80"]
 										#["0.78"],
 										#["0.76"],
 										#["0.74"],
@@ -388,34 +400,34 @@
 
     ## 0
     our $pathWayLength					= 1;
-    our @dimension						= (30);
-    our @depth							= (1);
+    our @dimension					= (30);
+    our @depth						= (1);
     our @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     our @fanInRadius 					= (6); # not used
-    our @fanInCountPercentage 			= ("0.1"); # 05 #0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    our @fanInCountPercentage 				= ("0.1"); # 05 #0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
     our @learningrate					= ("0.1"); # < === is permuted below
-    our @eta							= ("0.8");
+    our @eta						= ("0.8");
     our @timeConstant					= ("0.1"); # < === is permuted below
     our @sparsenessLevel				= ("0.1"); # < === is permuted below
     our @sigmoidSlope 					= ("30.0"); # < === is permuted below
     our @sigmoidThreshold				= ("0.0"); # < === is permuted below
-    our @globalInhibitoryConstant		= ("0.0"); # < === is permuted below
-    our @externalStimulation			= ("0.0"); # < === is permuted below
+    our @globalInhibitoryConstant			= ("0.0"); # < === is permuted below
+    our @externalStimulation				= ("0.0"); # < === is permuted below
     
     our @inhibitoryRadius				= ("6.0");
     our @inhibitoryContrast				= ("1.4");
-    our @somExcitatoryRadius			= ("0.6");
-    our @somExcitatoryContrast			= ("120.12");
-    our @somInhibitoryRadius			= ("6.0");
-    our @somInhibitoryContrast			= ("1.4");
+    our @somExcitatoryRadius				= ("0.6");
+    our @somExcitatoryContrast				= ("120.12");
+    our @somInhibitoryRadius				= ("6.0");
+    our @somInhibitoryContrast				= ("1.4");
     our @filterWidth					= (7);
     
-    our @epochs							= (10); # only used in discrete model
+    our @epochs						= (10); # only used in discrete model
 
 	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
 	#our @recordedSingleCells			= ("( (8,20), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) , (6,7))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 	
-	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
+	our @saveHistory				= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
 	our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 
 	# Do some validation

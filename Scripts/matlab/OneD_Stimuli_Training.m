@@ -44,7 +44,7 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
     
     %% CLASSIC/Varying #head positions
     
-    headPositions                       = 8; % classic = 8
+    headPositions                       = 5; % classic = 8
     fixationSequenceLength              = 15;
     numberOfFixations                   = headPositions*fixationSequenceLength;
     
