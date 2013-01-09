@@ -1,6 +1,8 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
+#define DEBUG
+
 #ifndef DEBUG
 #define OMP_ENABLE
 #endif

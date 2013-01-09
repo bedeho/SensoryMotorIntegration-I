@@ -123,7 +123,7 @@ class HiddenNeuron: public Neuron {
 
 //////////////////// DEBUG
 #include <math.h>
-#include <iostream.h>
+#include <iostream>
 
 inline void HiddenNeuron::clearState(bool resetTrace) {
 	

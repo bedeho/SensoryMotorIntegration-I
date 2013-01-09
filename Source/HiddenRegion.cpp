@@ -305,13 +305,11 @@ void HiddenRegion::computeNewActivation() {
 				float stimulation = 0;
 
 				for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
-                    // classic
-                    //stimulation += covarianceThreshold (*s).weight * (*s).preSynapticNeuron->firingRate;
-                    
+
                     switch (rule) {
                             
                         case COVARIANCE_PRESYNAPTIC_TRACE_RULE:
-                            (*s).weight += ((*s).preSynapticNeuron->firingRate > covarianceThreshold) ? (*s).weight * ((*s).preSynapticNeuron->firingRate - covarianceThreshold) : 0;
+                        	stimulation += ((*s).preSynapticNeuron->firingRate > covarianceThreshold) ? (*s).weight * ((*s).preSynapticNeuron->firingRate - covarianceThreshold) : 0;
                             break;
                         default:
                             
