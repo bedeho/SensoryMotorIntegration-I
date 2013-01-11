@@ -1,7 +1,8 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-#define DEBUG
+// Define this macro to disable openmp, e.g. while debugging
+//#define DEBUG
 
 #ifndef DEBUG
 #define OMP_ENABLE

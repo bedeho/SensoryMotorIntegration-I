@@ -35,9 +35,33 @@ function ThesisExperimentsPlot()
     %}
     
     %% learningrate
+    %{
     experiment(1).Name = 'Random';
     experiment(1).Folder = expFolder('learningrate/L=5.00000_/TrainedNetwork');
     FaceColors = {[1,0,0]};
+    %}
+    
+    %% sigma_19_failed
+    %{
+    experiment(1).Name = 'sigma_19_failed';
+    experiment(1).Folder = expFolder('sigma_19_failed/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    FaceColors = {[1,0,0]};
+    %}
+    
+    %% nonlinear_activation_5
+    %{
+    experiment(1).Name = 'Untrained';
+    experiment(1).Folder = expFolder('nonlinear_activation_5/L=0.05000_S=0.90_sS=00000050.0_sT=0.02_gIC=0.0500_eS=0.0_/BlankNetwork');
+    experiment(2).Name = 'Trained';
+    experiment(2).Folder = expFolder('nonlinear_activation_5/L=0.05000_S=0.90_sS=00000050.0_sT=0.02_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    FaceColors = {[1,0,0]; [0,0,1]};
+    %}
+
+    %% decoupled_gainencoding
+    experiment(1).Name = 'decoupled_gainencoding';
+    experiment(1).Folder = expFolder('decoupled_gainencoding/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    FaceColors = {[1,0,0]};
+    
     
     %% Dont need to touch anything below here.
     numExperiments = length(experiment);

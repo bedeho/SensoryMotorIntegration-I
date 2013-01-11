@@ -28,8 +28,22 @@ class InputNeuron : public Neuron {
     
         INPUT_EYE_MODULATION modulationType;    
         
-		void init(Region * region, u_short depth, u_short row, u_short col, float horEyePositionPreference, float horEyePositionSigmoidSlope, float horVisualPreference, float horVisualSigma, INPUT_EYE_MODULATION modulationType);
+		void init(Region * region,
+                  u_short depth,
+                  u_short row,
+                  u_short col,
+                  float horEyePositionPreference,
+                  float horEyePositionSigmoidSlope,
+                  float horVisualPreference,
+                  float horVisualSigma,
+                  INPUT_EYE_MODULATION modulationType,
+                  bool eyeModulation);
+    
         void setFiringRate(const vector<float> & sample);
+    
+    private:
+    
+        bool eyeModulationOnly;
 };
 
 #endif // INPUTNEURON_H

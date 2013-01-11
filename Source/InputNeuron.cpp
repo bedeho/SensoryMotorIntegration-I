@@ -10,7 +10,7 @@
 #include "InputNeuron.h"
 #include <cmath>
 
-void InputNeuron::init(Region * region, u_short depth, u_short row, u_short col, float horEyePositionPreference, float horEyePositionSigmoidSlope, float horVisualPreference, float horVisualSigma, INPUT_EYE_MODULATION modulationType) {
+void InputNeuron::init(Region * region, u_short depth, u_short row, u_short col, float horEyePositionPreference, float horEyePositionSigmoidSlope, float horVisualPreference, float horVisualSigma, INPUT_EYE_MODULATION modulationType, bool eyeModulationOnly) {
 
     Neuron::init(region, depth, row, col),
     
@@ -19,6 +19,9 @@ void InputNeuron::init(Region * region, u_short depth, u_short row, u_short col,
     this->horVisualPreference = horVisualPreference;
     this->horVisualSigma = horVisualSigma;
     this->modulationType = modulationType;
+    
+    // Independent encoding stuff
+    this->eyeModulationOnly = eyeModulationOnly;
 }
 
 #include <iostream>
@@ -49,10 +52,15 @@ void InputNeuron::setFiringRate(const vector<float> & sample) {
         firing += exp(-norm/(2*horVisualSigma*horVisualSigma)); // gaussian
     }
     
+    // cancel the retinal contribution if you want eye modulation only
+    if(eyeModulationOnly)
+        firing = 1;
+    
     if(modulationType == SIGMOID)
-        firing *= 1 / (1 + exp(horEyePositionSigmoidSlope * (sample.front() - horEyePositionPreference))); // sigmoid
+       firing *= 1 / (1 + exp(horEyePositionSigmoidSlope * (sample.front() - horEyePositionPreference))); // sigmoid
     else if(modulationType == GAUSSIAN)
-        firing *= exp(-(sample.front() - horEyePositionPreference)*(sample.front() - horEyePositionPreference)/(2*horVisualSigma*horVisualSigma)); // gaussian
+       firing *= exp(-(sample.front() - horEyePositionPreference)*(sample.front() - horEyePositionPreference)/(2*horVisualSigma*horVisualSigma)); // gaussian
+
     
     // Set variables
     this->firingRate = firing;

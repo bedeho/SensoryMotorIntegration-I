@@ -111,13 +111,13 @@
 	    								#["00000003.75"],
 	    								#["00000004.00"]
 	    								#["00000004.25"],
-	    								#["00000004.50"]
+	    								["00000004.50"] #classic
 	    								#["00000004.75"],
-	    								["00000006.00"],
+	    								#["00000006.00"],
 									#["00000005.0"],
-	    								["00000010.0"],
-									["00000020.0"],
-									["00000050.0"]# sigma = 19,covariance_th = 0.9
+	    								#["00000010.0"],
+									#["00000020.0"],
+									#["00000050.0"]# sigma = 19,covariance_th = 0.9
 									#["00000100.0"]									
 									#["00000100.0"]
 									#["00000150.0"],
@@ -134,7 +134,7 @@
     die "Invalid array: sigmoidSlopes" if !validateArray(\@sigmoidSlopes);
     
     our @sigmoidThresholds				= (
-										["0.00"]
+										["0.00"] # classic
 										
 										#["0.01"],
 										#["0.02"], # sigma = 19,covariance_th = 0.9
@@ -184,7 +184,7 @@
     die "Invalid array: sigmoidThreshold" if !validateArray(\@sigmoidThresholds);
      
     our @globalInhibitoryConstants		= (
-										["0.0500"]
+										["0.0500"] # not in use?
 										);
 	die "Invalid array: globalInhibitoryConstants" if !validateArray(\@globalInhibitoryConstants);
 	
@@ -206,21 +206,21 @@
 										#["0.00080"],
 										#["0.00090"], 
 										# <= not typically used for a classif fanin
-										#["0.00100"],
+										["0.00100"],
 										#["0.00200"],
-										#["0.00300"],
+										["0.00300"],
 										#["0.00400"],
-										#["0.00500"],
+										["0.00500"],
 										#["0.00600"],
-										#["0.00700"],
+										["0.00700"],
 										#["0.00800"],
-										#["0.00900"],
+										["0.00900"],
 										#
-										#["0.01000"],
+										["0.01000"],
 										#["0.02000"],
-										#["0.03000"],
+										["0.03000"],
 										#["0.04000"],
-										["0.05000"]
+										["0.05000"] # classic and everything else
 										#["0.06000"],
 										#["0.07000"],
 										#["0.08000"],
@@ -294,7 +294,7 @@
 										#["0.96"],
 										#["0.94"],
 										#["0.92"],
-										["0.90"]
+										["0.90"] # classic? or is it 0.88?
 										
 										#["0.88"]
 										#["0.86"],
@@ -359,7 +359,7 @@
 									    #"0.100",
 									    #"0.200",
 									    #"0.300",
-									    "0.400"
+									    "0.400" # classic
 									    #"0.500",
 									    #"0.600",
 									    #"0.700",
@@ -400,34 +400,34 @@
 
     ## 0
     our $pathWayLength					= 1;
-    our @dimension					= (30);
-    our @depth						= (1);
+    our @dimension						= (30);
+    our @depth							= (1);
     our @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     our @fanInRadius 					= (6); # not used
-    our @fanInCountPercentage 				= ("0.1"); # 05 #0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    our @fanInCountPercentage 			= ("0.1"); # 05 #0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
     our @learningrate					= ("0.1"); # < === is permuted below
-    our @eta						= ("0.8");
+    our @eta							= ("0.8");
     our @timeConstant					= ("0.1"); # < === is permuted below
     our @sparsenessLevel				= ("0.1"); # < === is permuted below
     our @sigmoidSlope 					= ("30.0"); # < === is permuted below
     our @sigmoidThreshold				= ("0.0"); # < === is permuted below
-    our @globalInhibitoryConstant			= ("0.0"); # < === is permuted below
-    our @externalStimulation				= ("0.0"); # < === is permuted below
+    our @globalInhibitoryConstant		= ("0.0"); # < === is permuted below
+    our @externalStimulation			= ("0.0"); # < === is permuted below
     
     our @inhibitoryRadius				= ("6.0");
     our @inhibitoryContrast				= ("1.4");
-    our @somExcitatoryRadius				= ("0.6");
-    our @somExcitatoryContrast				= ("120.12");
-    our @somInhibitoryRadius				= ("6.0");
-    our @somInhibitoryContrast				= ("1.4");
+    our @somExcitatoryRadius			= ("0.6");
+    our @somExcitatoryContrast			= ("120.12");
+    our @somInhibitoryRadius			= ("6.0");
+    our @somInhibitoryContrast			= ("1.4");
     our @filterWidth					= (7);
     
-    our @epochs						= (10); # only used in discrete model
+    our @epochs							= (10); # only used in discrete model
 
 	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
 	#our @recordedSingleCells			= ("( (8,20), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) , (6,7))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 	
-	our @saveHistory				= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
+	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
 	our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 
 	# Do some validation

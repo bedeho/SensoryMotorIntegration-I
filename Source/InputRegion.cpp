@@ -89,7 +89,14 @@ void InputRegion::init(Param & p, const char * dataFile, gsl_rng * rngController
                 
                 INPUT_EYE_MODULATION modulationType = static_cast<INPUT_EYE_MODULATION>(gsl_ran_bernoulli(rngController, static_cast<double>(p.sigmoidModulationPercentage)));
                 
-                Neurons[d][i][j].init(this, d, i, j, heye, hslope, hvisual, hsigma, modulationType);
+                // gain decoupling
+                //bool eyeModulationOnly = static_cast<bool>(gsl_ran_bernoulli(rngController, 0.5));
+                //cout << " Decoupled gain modulation: " << endl;
+                
+                // normal
+                bool eyeModulationOnly = false;
+                
+                Neurons[d][i][j].init(this, d, i, j, heye, hslope, hvisual, hsigma, modulationType, eyeModulationOnly);
             }
 }
 

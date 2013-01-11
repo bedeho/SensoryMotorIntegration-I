@@ -6,7 +6,7 @@
 %  Copyright 2012 OFTNAI. All rights reserved.
 %
 
-function ThesisParameterVariationPlot()
+%function ThesisParameterVariationPlot()
 
     declareGlobalVars();
 
@@ -53,7 +53,7 @@ function ThesisParameterVariationPlot()
     %}
      
     %% learningrate
-    
+    %{
     names = {%'0.00010', '0.00020', '0.00030', '0.00040', '0.00050', '0.00060', '0.00070', '0.00080', '0.00090', ...
              %'0.00100', '0.00200', '0.00300', '0.00400', '0.00500', '0.00600', '0.00700', '0.00800', '0.00900', ...
              '0.01000', '0.02000', '0.03000', '0.04000', '0.05000', '0.06000', '0.07000', '0.08000', '0.09000', ... 
@@ -71,7 +71,15 @@ function ThesisParameterVariationPlot()
         X(i)                    = vals(i);
     end
     XAxislabel = 'Learning Rate - \rho';
+    %}
     
+    %% numberOfNeurons_
+    vals = [10 20 30 40 50 60 70];
+    for i=1:length(vals),
+        experiments(i).Folder   = ['numberOfNeurons_' num2str(vals(i)) '/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0500_eS=0.0_/TrainedNetwork'];
+        X(i)                    = vals(i);
+    end
+    XAxislabel = 'sqrt(N)';
     
     %% varyingheadpositions
     %{
@@ -135,7 +143,7 @@ function ThesisParameterVariationPlot()
     figure();
     
     % Plot
-    [AX,H1,H2] = plotyy(X, headCenteredNess, X, rfSizes,'semilogx');  % 
+    [AX,H1,H2] = plotyy(X, headCenteredNess, X, rfSizes);  % ,'semilogx'
     
     % Appearance
     hXLabel = xlabel(XAxislabel);
@@ -164,5 +172,5 @@ function ThesisParameterVariationPlot()
     % sparseness
     %axis(AX(1),[50 98 0 1]);
     %axis(AX(2),[50 98 20 60]);
-end
+%end
   

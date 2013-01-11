@@ -42,62 +42,65 @@
 	   	#my $experiment						= "hebb_MANUAL"; #_ssf_0.001
 	   	#my $experiment						= "varying_sigma_19_th0.99_fc0.2";
 	   	#my $experiment						= "nonlinear_activation_5";
-	   	#my $experiment						= 'learningrate';
-	   	#my $stim						= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+	   	#my $experiment						= "learningrate";
+	   	#my $experiment						= "numberOfNeurons_70";
+	   	#my $experiment						= "sigma_19_failed";
+	   	#my $experiment						= "decoupled_gainencoding";
+	   	#my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	   	
 	   	# varyingfixationsequencelength
 	   	#my $experiment						= "varyingfixationsequencelength_${p}_TRACERESET";
-	   	#my $stim						= "varyingfixationsequencelength-visualfield=200.00-eyepositionfield=60.00-fixations=200.00-targets=1.00-fixduration=0.30-fixationsequence=${p}-seed=72.00-samplingrate=1000.00";
+	   	#my $stim							= "varyingfixationsequencelength-visualfield=200.00-eyepositionfield=60.00-fixations=200.00-targets=1.00-fixduration=0.30-fixationsequence=${p}-seed=72.00-samplingrate=1000.00";
 	
 		# varyingheadposition
 		#my $experiment						= "varyingheadpositions_${p}";
 		#my $fixations						= 15 * $p;
-		#my $stim						= "varyingheadposition-visualfield=200.00-eyepositionfield=60.00-fixations=${fixations}.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+		#my $stim							= "varyingheadposition-visualfield=200.00-eyepositionfield=60.00-fixations=${fixations}.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 		
 		# multitargettraining
-		#my $experiment						= "multitargettraining";
-		#my $stim						= "multitargettraining-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+		my $experiment						= "multitargettraining";
+		my $stim							= "multitargettraining-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 		
 		# multiobject
-		my $experiment						= "multiobject";
-		my $stim						= "multiobject-visualfield=200.00-eyepositionfield=60.00-fixations=75.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+		#my $experiment						= "multiobject";
+		#my $stim							= "multiobject-visualfield=200.00-eyepositionfield=60.00-fixations=75.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 		
 		# decoupling test
 		#my $experiment						= "decouplingtest";
-		#my $stim						= "decouplingtest-visualfield=200.00-eyepositionfield=60.00-fixations=8.00-targets=2.00-fixduration=0.30-fixationsequence=1.00-seed=72.00-samplingrate=1000.00";
+		#my $stim							= "decouplingtest-visualfield=200.00-eyepositionfield=60.00-fixations=8.00-targets=2.00-fixduration=0.30-fixationsequence=1.00-seed=72.00-samplingrate=1000.00";
 		
 		# tracetest
 		#my $experiment						= "tracetest";
-		#my $stim						= "tracetest-visualfield=200.00-eyepositionfield=60.00-fixations=12.00-targets=2.00-fixduration=0.30-fixationsequence=4.00-seed=72.00-samplingrate=1000.00";
+		#my $stim							= "tracetest-visualfield=200.00-eyepositionfield=60.00-fixations=12.00-targets=2.00-fixduration=0.30-fixationsequence=4.00-seed=72.00-samplingrate=1000.00";
 		
-		my $xgrid 						= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
-		my $learningRule					= COVARIANCE_PRESYNAPTIC_TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
+		my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
+		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
-		my $nrOfEpochs						= 1;#10; #50; # 30,100
-		my $saveNetworkAtEpochMultiple 				= 4;
-		my $outputAtTimeStepMultiple				= 10; # Keep this high (10<=) unless  you are recording for looking at dynamics!
+		my $nrOfEpochs						= 30;#10; #50; # 30,100
+		my $saveNetworkAtEpochMultiple 		= 11;
+		my $outputAtTimeStepMultiple		= 10; # Keep this high (10<=) unless  you are recording for looking at dynamics!
 	
-		my $lateralInteraction					= NONE; # NONE, SHORT_INHIBITION_LONG_EXCITATION = VISNET, SHORT_EXCITATION_LONG_INHIBITION = SOM
-		my $sparsenessRoutine					= HEAP; # NONE, HEAP, GLOBAL
+		my $lateralInteraction				= NONE; # NONE, SHORT_INHIBITION_LONG_EXCITATION = VISNET, SHORT_EXCITATION_LONG_INHIBITION = SOM
+		my $sparsenessRoutine				= HEAP; # NONE, HEAP, GLOBAL
 	
 		my $resetActivity					= "false"; # "false", Reset activation between objects of training
 		my $resetTrace						= "false"; # "false", Reset trace between objects of training
-		my $covarianceThreshold					= "0.00"; # classic = 0, \sigma=19 ==> 0.9
+		my $covarianceThreshold				= "0.00"; # classic = 0, \sigma=19 ==> 0.9
 		
-		my $sigmoidModulationPercentage				= "0.0";
-		my $weightVectorLength					= "1.0"; # classic = 1.0
-		my $seed						= 55; # 55 is standard
+		my $sigmoidModulationPercentage		= "0.0";
+		my $weightVectorLength				= "1.0"; # classic = 1.0
+		my $seed							= 55; # 55 is standard
 		
-		my $visualPreferenceDistance				= "1.0";
-		my $eyePositionPrefrerenceDistance 			= "1.0";
-		my $gaussianSigma					= "6.00"; # 19 # $p # 6
+		my $visualPreferenceDistance		= "1.0";
+		my $eyePositionPrefrerenceDistance 	= "1.0";
+		my $gaussianSigma					= "6.00"; # 19 # $p # classic = 6
 		
 		my $sigmoidSlope					= "0.0625"; #1/16
 		
-		my $stimuliTraining 					= $stim."-training";
+		my $stimuliTraining 				= $stim."-training";
 		my $stimuliTesting 					= $stim."-stdTest";
 	
-	    	###################################################################
+	    ###################################################################
 		# Preprocessing
 	   	###################################################################
 	    

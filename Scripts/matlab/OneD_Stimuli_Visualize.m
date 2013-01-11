@@ -29,7 +29,7 @@ function OneD_Stimuli_Visualize(stimuliName, visualPreferenceDistance, eyePositi
     cd(startDir);
 
     % LIP Parameters   
-    gaussianSigma                       = 18; % deg
+    gaussianSigma                       = 6; % deg
     sigmoidSlope                        = 1/16; % (1/8)/2 = 0.0625
     
     visualPreferences                   = centerDistance(dimensions.visualFieldSize, visualPreferenceDistance);
