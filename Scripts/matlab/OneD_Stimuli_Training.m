@@ -29,7 +29,7 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
     samplingRate                        = 1000; % (Hz)
     
     % Environment
-    numberOfSimultanousTargets          = 2;
+    numberOfSimultanousTargets          = 2; % classic = 1
     q                                   = 0.7; % targetRangeProportionOfVisualField
     visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
     eyePositionFieldSize                = (1-q)*visualFieldSize; % (1-q)*visualFieldSize OR equivalently (visualFieldSize/2 - targetVisualRange/2)
@@ -44,9 +44,9 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
     
     %% CLASSIC/Varying #head positions
     
-    headPositions                       = 5; % classic = 8
-    fixationSequenceLength              = 15;
-    numberOfFixations                   = headPositions*fixationSequenceLength;
+    headPositions                       = 8; % classic = 8
+    fixationSequenceLength              = 15; % classic = 15
+    numberOfFixations                   = headPositions*fixationSequenceLength; % classic = ;
     
     %% Varying fixation sequence length
     %{
@@ -59,7 +59,7 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
     nrOfRetinalTestingPositions         = 80;
     
     % Deduce number of sequences
-    numberOfSequences                   = ceil(numberOfFixations / fixationSequenceLength);
+    %numberOfSequences                   = ceil(numberOfFixations / fixationSequenceLength);
     
     % Filename
     if nargin < 1,
@@ -111,7 +111,9 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
     fixedeyePositions = targetEyePositionRange*(rand(1, fixationSequenceLength) - 0.5);
     
     % Perform fixation sequences
-    for i=1:numberOfSequences,
+    i = 1;
+    numInitialPerms = length(unsampledPerms);
+    while ~isempty(unsampledPerms),
         
         % Produce targets
          
@@ -157,7 +159,10 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
         fwrite(fileID, NaN('single'), 'float');
         
         % Status
-        disp([num2str(100*(i/numberOfSequences)) '%']);
+        disp([num2str(100*(i/numInitialPerms)) '%']);
+        
+        % Iterator
+        i = i + 1;
         
     end
     
