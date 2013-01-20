@@ -58,8 +58,8 @@
 		#my $stim							= "varyingheadposition-visualfield=200.00-eyepositionfield=60.00-fixations=${fixations}.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 		
 		# multitargettraining
-		my $experiment						= "multitargetcontrol";
-		my $stim							= "multitargetcontrol-visualfield=200.00-eyepositionfield=60.00-fixations=8.00-targets=2.00-fixduration=0.30-fixationsequence=1.00-seed=72.00-samplingrate=1000.00";
+		#my $experiment						= "multitargettraining_retune";
+		#my $stim							= "multitargettraining-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 		
 		# multiobject
 		#my $experiment						= "multiobject";
@@ -74,10 +74,10 @@
 		#my $stim							= "tracetest-visualfield=200.00-eyepositionfield=60.00-fixations=12.00-targets=2.00-fixduration=0.30-fixationsequence=4.00-seed=72.00-samplingrate=1000.00";
 		
 		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
-		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
+		my $learningRule					= COVARIANCE_PRESYNAPTIC_TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
 		my $nrOfEpochs						= 30;#10; #50; # 30,100
-		my $saveNetworkAtEpochMultiple 		= 110;
+		my $saveNetworkAtEpochMultiple 		= 11;
 		my $outputAtTimeStepMultiple		= 10; # Keep this high (10<=) unless  you are recording for looking at dynamics!
 	
 		my $lateralInteraction				= NONE; # NONE, SHORT_INHIBITION_LONG_EXCITATION = VISNET, SHORT_EXCITATION_LONG_INHIBITION = SOM
@@ -85,7 +85,7 @@
 	
 		my $resetActivity					= "false"; # "false", Reset activation between objects of training
 		my $resetTrace						= "false"; # "false", Reset trace between objects of training
-		my $covarianceThreshold				= "0.00"; # classic = 0, \sigma=19 ==> 0.9
+		my $covarianceThreshold				= "0.40"; # classic = 0, \sigma=19 ==> 0.9
 		
 		my $sigmoidModulationPercentage		= "0.0";
 		my $weightVectorLength				= "1.0"; # classic = 1.0

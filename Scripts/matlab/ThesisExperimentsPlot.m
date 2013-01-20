@@ -58,10 +58,18 @@ function ThesisExperimentsPlot()
     %}
 
     %% decoupled_gainencoding
+    %{
     experiment(1).Name = 'decoupled_gainencoding';
     experiment(1).Folder = expFolder('decoupled_gainencoding/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0500_eS=0.0_/TrainedNetwork');
     FaceColors = {[1,0,0]};
+    %}
     
+    %% multitargettraining_retune
+    experiment(1).Name = 'Untrained';
+    experiment(1).Folder = expFolder('multitargettraining_retune/S=0.80_sS=00000015.0_sT=0.15_/BlankNetwork');
+    experiment(2).Name = 'Trained';
+    experiment(2).Folder = expFolder('multitargettraining_retune/S=0.80_sS=00000015.0_sT=0.15_/TrainedNetwork');
+    FaceColors = {[1,0,0]; [0,0,1]};
     
     %% Dont need to touch anything below here.
     numExperiments = length(experiment);

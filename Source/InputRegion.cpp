@@ -91,13 +91,15 @@ void InputRegion::init(Param & p, const char * dataFile, gsl_rng * rngController
                 
                 // gain decoupling
                 //bool eyeModulationOnly = static_cast<bool>(gsl_ran_bernoulli(rngController, 0.5));
-                //cout << " Decoupled gain modulation: " << endl;
+                //cout << i << ":" << j << ":" << eyeModulationOnly << endl;
                 
-                // normal
+                // NOT : gain decoupling
                 bool eyeModulationOnly = false;
                 
                 Neurons[d][i][j].init(this, d, i, j, heye, hslope, hvisual, hsigma, modulationType, eyeModulationOnly);
             }
+    
+    return;
 }
 
 InputRegion::~InputRegion() {

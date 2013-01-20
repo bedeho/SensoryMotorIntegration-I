@@ -74,12 +74,14 @@
     %}
     
     %% numberOfNeurons_
+    %{
     vals = [10 20 30 40 50 60 70];
     for i=1:length(vals),
         experiments(i).Folder   = ['numberOfNeurons_' num2str(vals(i)) '/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0500_eS=0.0_/TrainedNetwork'];
         X(i)                    = vals(i);
     end
     XAxislabel = 'sqrt(N)';
+    %}
     
     %% varyingheadpositions
     %{
