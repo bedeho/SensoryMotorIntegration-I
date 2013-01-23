@@ -35,11 +35,11 @@ function ThesisExperimentsPlot()
     %}
     
     %% learningrate
-    
+    %{
     experiment(1).Name = 'Random';
     experiment(1).Folder = expFolder('learningrate/L=9.00000_/TrainedNetwork');
     FaceColors = {[1,0,0]};
-    
+    %}
     
     %% sigma_19_failed
     %{
