@@ -38,7 +38,7 @@
         X(i)                    = i;
         XTick(i)                    = X(i);
     end
-    XAxislabel = 'Fixation Sequence Length';
+    XAxislabel = 'Fixation Sequence Length - P0';
     %}
     
     %% sparseness
@@ -67,7 +67,8 @@
              1.00000, 2.00000, 3.00000, 4.00000, 5.00000, 6.00000, 7.00000, 8.00000, 9.00000]
     
     for i=1:length(vals),
-        experiments(i).Folder   = ['learningrate/L=' names{i} '_sS=00000004.50_sT=0.40_/TrainedNetwork'];
+        %experiments(i).Folder   = ['learningrate/L=' names{i} '_sS=00000004.50_sT=0.40_/TrainedNetwork'];
+        experiments(i).Folder   = ['learningrate/L=' names{i} '_/TrainedNetwork'];
         X(i)                    = vals(i);
     end
     XAxislabel = 'Learning Rate - \rho';
@@ -80,11 +81,11 @@
         experiments(i).Folder   = ['numberOfNeurons_' num2str(vals(i)) '/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0500_eS=0.0_/TrainedNetwork'];
         X(i)                    = vals(i);
     end
-    XAxislabel = 'sqrt(N)';
+    XAxislabel = '\sqrt(N)';
     %}
     
     %% varyingheadpositions
-    %{
+    
     for i=1:30,
         
         experiments(i).Folder   = ['../Experiments_disk/varyingheadpositions_' num2str(i) '/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork'];
@@ -94,7 +95,7 @@
     end
     
     XAxislabel = 'Number of Target Locations';
-    %}
+    
     
     %% Time constant
     %{
@@ -112,7 +113,7 @@
         X(i)                    = vals(i);
     end
     
-    XAxislabel = 'Trace Time Constant - \tau_{q} (s)';
+    XAxislabel = 'Trace Time Constant - \tau_u (s)';
     %XAxislabel = 'Activation Time Constant - \tau_h (s)';
     %}
     %% Plotting
@@ -138,11 +139,13 @@
         rf = res.RFSize_Linear_Clean(res.headCenteredNess_Linear_Clean >= 0.7);
         rfSizes(e) = mean(rf);
         
-        res.uniformityOfVeryHeadCentered 
+        res.uniformityOfVeryHeadCentered;
         
     end
     
     figure();
+    
+    headCenteredNess
     
     % Plot
     [AX,H1,H2] = plotyy(X, headCenteredNess, X, rfSizes);  % ,'semilogx'

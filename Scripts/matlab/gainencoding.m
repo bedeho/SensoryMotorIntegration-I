@@ -20,13 +20,13 @@ for i=1:numvals,
     eyeModulationOnly(rows(i)+1,cols(i)+1) = vals(i);
 end
 
+fclose(fileID);
+
 eyeModulationOnly = logical(eyeModulationOnly);
 retinalOnly = ~eyeModulationOnly;
 
-%imagesc(eyeModulationOnly);
-
-
-fclose(fileID);
+%figure;imagesc(eyeModulationOnly);title('eyeModulationOnly');
+%figure;imagesc(retinalOnly);title('retinalOnly');
 
 %% Load weights
 
@@ -34,12 +34,16 @@ z = load('/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Pro
 
 z = z.weightBox1
 
+%figure;imagesc(z);title('original');
+
 eyeModulatedSynapses = z;
 eyeModulatedSynapses(retinalOnly) = 0; % clean out the retinal synapses
 eyeCum = sum(eyeModulatedSynapses);
 
+figure;imagesc(eyeModulatedSynapses);title('eyeModulatedSynapses');colorbar;
+
 figure;
-bar(eyeCum);
+hBar = bar(eyeCum);
 axis tight;
 hYLabel = ylabel('Cumulative Weight');
 hXLabel = xlabel('Eye Position Preference - \beta (deg)');
@@ -59,14 +63,17 @@ set(gca, 'FontSize', 14);
             
             set(gca,'XTick',wTicks);
             set(gca,'XTickLabel',wCellLabels);
-
+            set(hBar,'FaceColor', [0,0,0.8]);
+            set(hBar,'EdgeColor', [0,0,0.8]);
 
 retsynapses = z;
 retsynapses(eyeModulationOnly) = 0; % clean out eye position synapses
-retCum = sum(retinalOnly');
+retCum = sum(retsynapses');
+
+figure;imagesc(retsynapses);title('retsynapses');colorbar;
 
 figure;
-bar(retCum);
+hBar = bar(retCum);
 axis tight;
 hYLabel = ylabel('Cumulative Weight');
 hXLabel = xlabel('Retinal Preference - \alpha (deg)');
@@ -87,7 +94,8 @@ set(gca, 'FontSize', 14);
 
             set(gca,'XTick',hTicks);
             set(gca,'XTickLabel',hCellLabels);
-            
+            set(hBar,'FaceColor', [0,0,0.8]);
+            set(hBar,'EdgeColor', [0,0,0.8]);
             % Change font size
 
 

@@ -35,11 +35,11 @@ function ThesisExperimentsPlot()
     %}
     
     %% learningrate
-    %{
+    
     experiment(1).Name = 'Random';
-    experiment(1).Folder = expFolder('learningrate/L=5.00000_/TrainedNetwork');
+    experiment(1).Folder = expFolder('learningrate/L=9.00000_/TrainedNetwork');
     FaceColors = {[1,0,0]};
-    %}
+    
     
     %% sigma_19_failed
     %{
@@ -65,11 +65,13 @@ function ThesisExperimentsPlot()
     %}
     
     %% multitargettraining_retune
+    %{
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('multitargettraining_retune/S=0.80_sS=00000015.0_sT=0.15_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('multitargettraining_retune/S=0.80_sS=00000015.0_sT=0.15_/TrainedNetwork');
     FaceColors = {[1,0,0]; [0,0,1]};
+    %}
     
     %% Dont need to touch anything below here.
     numExperiments = length(experiment);

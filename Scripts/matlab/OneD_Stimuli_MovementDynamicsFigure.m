@@ -37,7 +37,7 @@ function OneD_Stimuli_MovementDynamicsFigure(stimuli)
         % color
         %c = mod(o-1,length(linestyle)) + 1;
 
-        plot(ticks, yvals , '-','LineWidth',1,'Color','b');
+        plot(ticks, yvals , '-','LineWidth',1,'Color','r');
 
         hold on;
     end
