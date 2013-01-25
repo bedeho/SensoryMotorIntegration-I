@@ -73,11 +73,15 @@
 		#my $experiment						= "tracetest";
 		#my $stim							= "tracetest-visualfield=200.00-eyepositionfield=60.00-fixations=12.00-targets=2.00-fixduration=0.30-fixationsequence=4.00-seed=72.00-samplingrate=1000.00";
 		
-		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
-		my $learningRule					= COVARIANCE_PRESYNAPTIC_TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
+		# Retest
+		my $experiment						= "denser";
+	   	my $stim							= "denser-visualfield=200.00-eyepositionfield=60.00-fixations=280.00-targets=1.00-fixduration=0.30-fixationsequence=35.00-seed=72.00-samplingrate=1000.00";
+		
+		my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
+		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
 		my $nrOfEpochs						= 30;#10; #50; # 30,100
-		my $saveNetworkAtEpochMultiple 		= 11;
+		my $saveNetworkAtEpochMultiple 		= 110;
 		my $outputAtTimeStepMultiple		= 10; # Keep this high (10<=) unless  you are recording for looking at dynamics!
 	
 		my $lateralInteraction				= NONE; # NONE, SHORT_INHIBITION_LONG_EXCITATION = VISNET, SHORT_EXCITATION_LONG_INHIBITION = SOM

@@ -29,7 +29,7 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
     samplingRate                        = 1000; % (Hz)
     
     % Environment
-    numberOfSimultanousTargets          = 2; % classic = 1
+    numberOfSimultanousTargets          = 1; % classic = 1
     q                                   = 0.7; % targetRangeProportionOfVisualField
     visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
     eyePositionFieldSize                = (1-q)*visualFieldSize; % (1-q)*visualFieldSize OR equivalently (visualFieldSize/2 - targetVisualRange/2)
@@ -45,7 +45,7 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
     %% CLASSIC/Varying #head positions
     
     headPositions                       = 8; % classic = 8
-    fixationSequenceLength              = 15; % classic = 15
+    fixationSequenceLength              = 35; % classic = 15
     numberOfFixations                   = headPositions*fixationSequenceLength; % classic = ;
     
     %% Varying fixation sequence length
@@ -214,7 +214,7 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
         testingTargets = fliplr(centerN2(nrOfRetinalTestingPositions, nrOfRetinalTestingPositions)); 
     end
     
-    testingEyePositionFieldSize = targetEyePositionRange;
+    testingEyePositionFieldSize = targetEyePositionRange; % *0.8
     testingEyePositions = centerN2(testingEyePositionFieldSize, nrOfTestingEyePositions);
     
     % Generate testing data

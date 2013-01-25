@@ -24,6 +24,7 @@
 %  from 3)
 %{
 
+$$ COMMAND LINE TEST TO RUN!
 ~/Dphil/Projects/SensoryMotorIntegration-I/Source/DerivedData/SensoryMotorIntegration-I/Build/Products/Release/SensoryMotorIntegration-I test 
 
 ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/L\=0.05000_S\=0.80_sS\=00000004.50_sT\=0.40_gIC\=0.0500_eS\=0.0_/Parameters.txt 
@@ -45,7 +46,14 @@ COPY-PASTE:
 %
 % e.g.: OneD_Stimuli_Training('multitargettraining')
 %
-% MultiTargetTestingAnalysis('multitargettesting-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_baseline/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
+% multi object
+% MultiTargetTestingAnalysis('multitargettesting-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-multiTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_baseline/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
+%
+% one object
+% MultiTargetTestingAnalysis('peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-stdTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_baseline/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_baseline/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
+% 
+% one object
+% MultiTargetTestingAnalysis('denser-visualfield=200.00-eyepositionfield=60.00-fixations=280.00-targets=1.00-fixduration=0.30-fixationsequence=35.00-seed=72.00-samplingrate=1000.00-stdTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/denser/L=0.05000_S=0.90_sS=00000004.50_sT=0.02_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/denser/L=0.05000_S=0.90_sS=00000004.50_sT=0.02_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
 
 function MultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, experimentPath, nrOfEyePositionsInTesting)
 
@@ -59,14 +67,22 @@ function MultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, experim
     analysisResults = x.analysisResults;
     
     % Load multi target test info
-    x = load([base 'Stimuli/' stimuliName '-multiTest/info.mat']);
+    x = load([base 'Stimuli/' stimuliName '/info.mat']);
     multiTestInfo = x.info;
-    
     targets = multiTestInfo.targets;
-    allTargetCombinations = multiTestInfo.allTargetCombinations;
-    numCombinations = length(allTargetCombinations);
-    numberOfSimultanousTargetsDuringTesting = multiTestInfo.numberOfSimultanousTargetsDuringTesting;
     
+    %one target
+    numberOfSimultanousTargetsDuringTesting = 1;
+    %two targets
+    %numberOfSimultanousTargetsDuringTesting = multiTestInfo.numberOfSimultanousTargetsDuringTesting;
+    
+    if numberOfSimultanousTargetsDuringTesting == 1,
+        allTargetCombinations = (1:length(targets))';
+    else
+        %allTargetCombinations =  multiTestInfo.allTargetCombinations;
+    end
+    
+    numCombinations = length(allTargetCombinations);
     
     % Load firing response
     disp('Loading data...');
@@ -85,72 +101,51 @@ function MultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, experim
     numRows = d(end-1);
     numCols = d(end);
     
-    
-    %% Normalization step
-    for r=1:numRows,
-        for c=1:numCols,
-            
-            %totalmax = max(max(baseline_data(:,:,r,c)));
-            %totalmax = max(max(data(:,:,r,c)));
-            %data(:,:,r,c) = data(:,:,r,c)/totalmax;
+    include = analysisResults.wellBehavedNeurons(:,3) > 0.7;
 
-            %totalmax = max(max(data(2,:,r,c)));
-            %data(2,:,r,c) = data(2,:,r,c)/totalmax;
-            
-            
-        end
-    end
+    numCells = nnz(include);
+
+    neurons = analysisResults.wellBehavedNeurons(include, [1 2]);
+
+    linearNeurons = sub2ind([numRows numCols], neurons(:,1), neurons(:,2));
+
+    RF_Preference = analysisResults.wellBehavedNeurons(include, 6); 
+        
 
     
-    
-        include = analysisResults.wellBehavedNeurons(:,3) > 0.7;
-        
-        numCells = nnz(include);
-        
-        neurons = analysisResults.wellBehavedNeurons(include, [1 2]);
-        
-        linearNeurons = sub2ind([numRows numCols], neurons(:,1), neurons(:,2));
-        
-        RF_Preference = analysisResults.wellBehavedNeurons(include, 6); 
-        
-    %{
-        [r d] = doPattern(1, 7);
-        
-        for a =1:length(r),
-            
-            if r(a) < 0.1 && abs(d(a)) < 5
-                
-                disp(['Response: ' num2str(r(a))]);
-                disp(['Distance: ' num2str(d(a))]);
-                
-                allincluded = find(include);
-                
-                analysisResults.wellBehavedNeurons(allincluded(a), :)
-                disp('found it');
-            end
-            
-        end
-        %}
-        
-    %doPattern(2,14);
-    
-    r = [];
-    d = [];
+    responses = [];
+    distances = [];
     
     for e=1:nrOfEyePositionsInTesting,
 
-        for t = 1:numCombinations,
+        [r d] = doPatternPerEyePosition(e, linearNeurons);
 
-            [response distance] = doPattern(e, t);
-            r = [r response'];
-            d = [d distance'];
-            
-        end
+        responses = [responses r];
+        distances = [distances d];
+
     end
     
+    % PLOT
+    scatterPlotWithMarginalHistograms({distances}, {responses} ,'FaceColors', {[1,0,0]}, 'XTitle' , 'Error (deg)' , 'YTitle' , 'Firing Rate');
     
-    scatterPlotWithMarginalHistograms({(d)}, {r} ,'FaceColors', {[1,0,0]}, 'XTitle' , 'Error (deg)' , 'YTitle' , 'Firing Rate');
+    %{
+    % SINGLE CELL RESPONSE
+    % for e,t,n - (row,col):1,8,41 - (14,3) <--- explain how we found it!!,
+    % some sort of plot?
     
+    RF_Preference = analysisResults.RFLocation(14,3); 
+    [r1 d1] = doPatternPerEyePosition(1, 41);
+    [r2 d2] = doPatternPerEyePosition(2, 41);
+    [r3 d3] = doPatternPerEyePosition(3, 41);
+    [r4 d4] = doPatternPerEyePosition(4, 41);
+    
+    % PLOT
+    scatterPlotWithMarginalHistograms({d1,d2,d3,d4}, {r1,r2,r3,r4} ,'FaceColors', {[1,0,0];[0,1,0];[0,0,1];[0.5,0,0]}, 'XTitle' , 'Error (deg)' , 'YTitle' , 'Firing Rate','Legends', {num2str(-18),num2str(-8),num2str(8), num2str(18)});
+    %}
+    
+    return;
+    
+    %{
     % do probability plot
     %maxDistance = max(abs(d));
     
@@ -194,41 +189,66 @@ function MultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, experim
     %if(exist('XTick')),
     %    set(AX,'XTick', XTick);
     %end
+    %}
     
-    
-    
-    function [response distance] = doPattern(e, t)
+    function [r d] = doPatternPerEyePosition(e, theseNeurons)
         
+        r=[];
+        d=[];
+        
+        for t = 1:numCombinations,
 
-        response = squeeze(data(e,t,linearNeurons));
+            [a b] = doPattern(e, t, theseNeurons);
+            
+            r = [r a'];
+            d = [d b'];
+            
+        end
+        
+    end
+    
+    function [response_ distance_] = doPattern(e, t, theseNeurons)
+        
+        response_ = squeeze(data(e,t, theseNeurons));
+        
+        nrCells = length(theseNeurons);
 
         % distance metric
-        
-        targetCombinations = targets(allTargetCombinations(t,:))
-        comparisonvector = repmat(targetCombinations, numCells, 1);
-        
+        targetCombinations = targets(allTargetCombinations(t,:));
+        comparisonvector = repmat(targetCombinations, nrCells, 1);
         error = (comparisonvector - repmat(RF_Preference, 1, numberOfSimultanousTargetsDuringTesting));
         
-        [C I] = min(abs(error)');
+        if numberOfSimultanousTargetsDuringTesting == 1,
+            distance_ = error;
+        else
+            [C I] = min(abs(error)');
+            linearIndexes = sub2ind([nrCells 2], (1:nrCells)',  I');
+            distance_ = error(linearIndexes);
+        end
         
-        linearIndexes = sub2ind([numCells 2], (1:numCells)',  I');
-        
-        distance = error(linearIndexes);
-        
-        
-        
+        %% Find false negative neurons
+        for n=1:numCells,
+            
+            [I,J] = ind2sub([numRows numCols], theseNeurons(n));
+            
+            if abs(error(n)) < 0.1 && response_(n) < 0.1 && abs(analysisResults.RFLocation(I,J) - 11) < 5,
+                
+                
+                disp(['for e,t,n - (row,col):' num2str(e) ',' num2str(t) ',' num2str(n) ' - (' num2str(I) ',' num2str(J) ')' ]);
+                
+            end
+        end
+
         
         %min((preferredHeadPosition-targetCombinations).^2);
-        
         %sigma = 5;
         %exp(-min(((comparisonvector - repmat(receptivefields,1,numberOfSimultanousTargetsDuringTesting)).^2)')/(2*sigma^2));
         %leastTargetError = leastTargetError';
 
     end
     
-    
     %{
-doNeuron(27,5)
+    doNeuron(27,5)
     
     function corr = doNeuron(row,col)
         
@@ -269,7 +289,26 @@ doNeuron(27,5)
         
     end
     %}
-    
-    
 
+    %{
+        [r d] = doPattern(1, 7);
+        
+        for a =1:length(r),
+            
+            if r(a) < 0.1 && abs(d(a)) < 5
+                
+                disp(['Response: ' num2str(r(a))]);
+                disp(['Distance: ' num2str(d(a))]);
+                
+                allincluded = find(include);
+                
+                analysisResults.wellBehavedNeurons(allincluded(a), :)
+                disp('found it');
+            end
+            
+        end
+    %}
+        
+    %doPattern(2,14);
+    
 end

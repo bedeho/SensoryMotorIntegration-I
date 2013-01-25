@@ -272,6 +272,11 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         
         cellData = data(:, :, row, col); % {region-1}
         plot(info.targets,cellData','LineWidth',2);
+        
+        % Plot Receptive field
+        hlocation = analysisResults.RFLocation(row,col);
+        hold on;
+        plot([hlocation hlocation],[-0.1 1.1],'--k');
 
         set(gca,'XTick', xTick);
         set(gca,'XTickLabel', xTickLabels);
