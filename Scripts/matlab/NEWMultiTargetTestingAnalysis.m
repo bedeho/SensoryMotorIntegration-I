@@ -1,5 +1,5 @@
 %
-%  MultiTargetTestingAnalysis.m
+%  NEWMultiTargetTestingAnalysis.m
 %  SMI
 %
 %  Created by Bedeho Mender on 19/11/12.
@@ -31,7 +31,7 @@ $$ COMMAND LINE TEST TO RUN!
 
 ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/L\=0.05000_S\=0.80_sS\=00000004.50_sT\=0.40_gIC\=0.0500_eS\=0.0_/BlankNetwork/BlankNetwork.txt
 
-~/Dphil/Projects/SensoryMotorIntegration-I/Stimuli/multitargettesting-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-multiTest/data.dat
+~/Dphil/Projects/SensoryMotorIntegration-I/Stimuli/multitargettest-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-multiTest/data.dat
 
 ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/L\=0.05000_S\=0.80_sS\=00000004.50_sT\=0.40_gIC\=0.0500_eS\=0.0_/TrainedNetwork/TrainedNetwork.txt 
 
@@ -47,120 +47,88 @@ COPY-PASTE:
 % e.g.: OneD_Stimuli_Training('multitargettraining')
 %
 % multi object
-% MultiTargetTestingAnalysis('multitargettesting-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-multiTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_baseline/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
+% NEWMultiTargetTestingAnalysis('multitargettesting-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-multiTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_baseline/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
 %
 % one object
-% MultiTargetTestingAnalysis('peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-stdTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_baseline/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_baseline/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
+% NEWMultiTargetTestingAnalysis('peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-stdTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_baseline/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_baseline/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
 % 
 % one object
-% MultiTargetTestingAnalysis('denser-visualfield=200.00-eyepositionfield=60.00-fixations=280.00-targets=1.00-fixduration=0.30-fixationsequence=35.00-seed=72.00-samplingrate=1000.00-stdTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/denser/L=0.05000_S=0.90_sS=00000004.50_sT=0.02_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/denser/L=0.05000_S=0.90_sS=00000004.50_sT=0.02_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
+% NEWMultiTargetTestingAnalysis('denser-visualfield=200.00-eyepositionfield=60.00-fixations=280.00-targets=1.00-fixduration=0.30-fixationsequence=35.00-seed=72.00-samplingrate=1000.00-stdTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/denser/L=0.05000_S=0.90_sS=00000004.50_sT=0.02_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/denser/L=0.05000_S=0.90_sS=00000004.50_sT=0.02_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
 
-function MultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, experimentPath, nrOfEyePositionsInTesting)
+function NEWMultiTargetTestingAnalysis(stimuliName, experimentPath)
 
     % Import global variables
     declareGlobalVars();
     
     global base;
-
-    % Read out analysis results
-    x = load([experimentPath '/analysisResults.mat']);
-    analysisResults = x.analysisResults;
     
     % Load multi target test info
     x = load([base 'Stimuli/' stimuliName '/info.mat']);
     multiTestInfo = x.info;
     targets = multiTestInfo.targets;
+    eyePositions = multiTestInfo.targets;
     
-    %one target
-    numberOfSimultanousTargetsDuringTesting = 1;
-    %two targets
-    %numberOfSimultanousTargetsDuringTesting = multiTestInfo.numberOfSimultanousTargetsDuringTesting;
-    
-    if numberOfSimultanousTargetsDuringTesting == 1,
-        allTargetCombinations = (1:length(targets))';
-    else
-        %allTargetCombinations =  multiTestInfo.allTargetCombinations;
-    end
-    
-    numCombinations = length(allTargetCombinations);
+    numEyePositions = length(eyePositions);
+    numTarget = length(targets);
+    numberOfSimultanousTargetsDuringTesting = multiTestInfo.numberOfSimultanousTargetsDuringTesting;
     
     % Load firing response
     disp('Loading data...');
-    [data, objectsPrEyePosition] = regionDataPrEyePosition([experimentPath '/firingRate.dat'], nrOfEyePositionsInTesting); % (object, eye_position, row, col, region)
-    
-    [baseline_data, baseline_objectsPrEyePosition] = regionDataPrEyePosition(baselineFiringRateFile, nrOfEyePositionsInTesting);
-    
-    disp('Processing...');
-    
-    % clean out.
+    [data, objectsPrEyePosition] = regionDataPrEyePosition([experimentPath '/firingRate.dat'], numEyePositions); % (object, eye_position, row, col, region)
     data = squeeze(data);
-    baseline_data = squeeze(baseline_data);
-    
     d = size(data);
-    
     numRows = d(end-1);
     numCols = d(end);
     total = numRows*numCols;
     
-    include = analysisResults.wellBehavedNeurons(:,3) > 0.7;
-
-    numCells = nnz(include);
-
-    neurons = analysisResults.wellBehavedNeurons(include, [1 2]);
-
-    linearNeurons = sub2ind([numRows numCols], neurons(:,1), neurons(:,2));
-
-    RF_Preference = analysisResults.wellBehavedNeurons(include, 6); 
-    
-    responses = [];
-    distances = [];
+    %[baseline_data, baseline_objectsPrEyePosition] = regionDataPrEyePosition(baselineFiringRateFile, nrOfEyePositionsInTesting);
+    %baseline_data = squeeze(baseline_data);
+        
+    disp('Processing...');
+    doNeuron(27,5);
     
     %{
-    for e=1:nrOfEyePositionsInTesting,
-
-        [r d] = doPatternPerEyePosition(e, linearNeurons);
-
-        responses = [responses r];
-        distances = [distances d];
-
+    % for each neuro
+    for row=1:numRows,
+        for col=1:numCols,
+            
+            % find lambda
+            
+            % find receptive field location
+            
+        end
     end
     %}
     
     
+    function plotNeuron(row,col)
+        
+        if(numberOfSimultanousTargetsDuringTesting ~= 2),
+            error('Cannot plot with ~=2 sim targets');
+        end
+        
+        %Iterate eye position
+        for e=eyePositions,
+            
+            x = permute(data(:,:,row,col),[2 1]); %tar
+            k = reshape(x, [numTarget^2 numTarget]);
+            surf(k);
+        end
+
+    end
     
+ 
     
-    
+    %{
     
     gg = linearNeurons; % [3 99 1 4 6 22]'
     %[I,J] = ind2sub([numRows numCols],gg)
     RF_Preference = analysisResults.RFLocation(gg); 
     [responses distances] = doPattern(1, 40, gg);
-    
-    
+        
     % PLOT
     scatterPlotWithMarginalHistograms({distances}, {responses} ,'FaceColors', {[1,0,0]}, 'XTitle' , 'Error (deg)' , 'YTitle' , 'Firing Rate');
-    
-    
-    
-    
-    
-    
-    %{
-    % SINGLE CELL RESPONSE
-    % for e,t,n - (row,col):1,8,41 - (14,3) <--- explain how we found it!!,
-    % some sort of plot?
-    
-    RF_Preference = analysisResults.RFLocation(14,3); 
-    [r1 d1] = doPatternPerEyePosition(1, 41);
-    [r2 d2] = doPatternPerEyePosition(2, 41);
-    [r3 d3] = doPatternPerEyePosition(3, 41);
-    [r4 d4] = doPatternPerEyePosition(4, 41);
-    
-    % PLOT
-    scatterPlotWithMarginalHistograms({d1,d2,d3,d4}, {r1,r2,r3,r4} ,'FaceColors', {[1,0,0];[0,1,0];[0,0,1];[0.5,0,0]}, 'XTitle' , 'Error (deg)' , 'YTitle' , 'Firing Rate','Legends', {num2str(-18),num2str(-8),num2str(8), num2str(18)});
     %}
-    
-    return;
     
     %{
     % do probability plot
@@ -208,22 +176,7 @@ function MultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, experim
     %end
     %}
     
-    function [r d] = doPatternPerEyePosition(e, theseNeurons)
-        
-        r=[];
-        d=[];
-        
-        for t = 1:numCombinations,
-
-            [a b] = doPattern(e, t, theseNeurons);
-            
-            r = [r a'];
-            d = [d b'];
-            
-        end
-        
-    end
-    
+    %{
     function [response_ distance_] = doPattern(e, t, theseNeurons)
         
         nrCells = length(theseNeurons);
@@ -281,69 +234,7 @@ function MultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, experim
         %leastTargetError = leastTargetError';
 
     end
-    
-    %{
-    doNeuron(27,5)
-    
-    function corr = doNeuron(row,col)
-        
-        leastTargetErrors = zeros(1, numCombinations);
-        responses = zeros(1, numCombinations);
-       
-        preferredHeadPosition = analysisResults.RFLocation(row,col);
-        
-        sigma = 5;
-        
-        figure;
-        imagesc(data(:,:,row,col));
-        colorbar
-        
-        figure;
-        for e=1:nrOfEyePositionsInTesting,
-            
-            for t = 1:numCombinations,
-
-                targetCombinations = targets(allTargetCombinations(t,:));
-
-                leastTargetError(t) = exp(-min((preferredHeadPosition-targetCombinations).^2)/(2*sigma^2)); %min((preferredHeadPosition-targetCombinations).^2);
-
-                response = data(e, t, row, col);
-
-                plot(response, leastTargetError(t), 'o');
-                hold on
-            end
-        end
-        
-        xlim([0 1]);
-        
-        
-        %plot(leastTargetErrors, responses);
-        
-        %
-        %coeff(leastTargetErrors,responses);
-        
-    end
     %}
 
-    %{
-        [r d] = doPattern(1, 7);
-        
-        for a =1:length(r),
-            
-            if r(a) < 0.1 && abs(d(a)) < 5
-                
-                disp(['Response: ' num2str(r(a))]);
-                disp(['Distance: ' num2str(d(a))]);
-                
-                allincluded = find(include);
-                
-                analysisResults.wellBehavedNeurons(allincluded(a), :)
-                disp('found it');
-            end
-            
-        end
-    %}
-        
-    %doPattern(2,14);
     
 end

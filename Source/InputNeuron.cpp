@@ -49,7 +49,13 @@ void InputNeuron::setFiringRate(const vector<float> & sample) {
     for(unsigned i = 1;i < sample.size();i++) {
         
         float norm = (horVisualPreference - sample[i])*(horVisualPreference - sample[i]); // (a - b)^2
-        firing += exp(-norm/(2*horVisualSigma*horVisualSigma)); // gaussian
+        float gauss = exp(-norm/(2*horVisualSigma*horVisualSigma)); // gaussian
+        
+        // MAX routine
+        firing = (gauss > firing ? gauss : firing);
+        
+        // CLASSIC
+        //firing += exp(-norm/(2*horVisualSigma*horVisualSigma)); // gaussian
     }
     
     // cancel the retinal contribution if you want eye modulation only
@@ -60,7 +66,6 @@ void InputNeuron::setFiringRate(const vector<float> & sample) {
        firing *= 1 / (1 + exp(horEyePositionSigmoidSlope * (sample.front() - horEyePositionPreference))); // sigmoid
     else if(modulationType == GAUSSIAN)
        firing *= exp(-(sample.front() - horEyePositionPreference)*(sample.front() - horEyePositionPreference)/(2*horVisualSigma*horVisualSigma)); // gaussian
-
     
     // Set variables
     this->firingRate = firing;

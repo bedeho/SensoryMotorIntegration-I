@@ -169,7 +169,7 @@ function analysisResults = metrics(filename, info)
         corr = 0;
         combinations = 0;
         
-        peakResponse = ratio*max(max(dataPrEyePosition(:,:,row,col)));
+        %peakResponse = ratio*max(max(dataPrEyePosition(:,:,row,col)));
 
         % Iterate all combinations of eye positions
         for ep_1 = 1:(nrOfEyePositionsInTesting - 1),
