@@ -1,5 +1,5 @@
 %
-%  OneD_Stimuli_MultiTargetTesting.m
+%  OneD_Stimuli_CLASSICMultiTargetTesting.m
 %  SMI
 %
 %  Created by Bedeho Mender on 18/11/12.
@@ -8,7 +8,7 @@
 %  Purpose: Generate testing data with multiple simultanous targets
 %
 
-function OneD_Stimuli_MultiTargetTesting(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, numberOfSimultanousTargetsDuringTesting)
+function OneD_Stimuli_CLASSICMultiTargetTesting(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, numberOfSimultanousTargetsDuringTesting, dist)
 
     % Import global variables
     declareGlobalVars();
@@ -16,13 +16,13 @@ function OneD_Stimuli_MultiTargetTesting(stimuliName, samplingRate, fixationDura
     global base;
     
     % Make folder
-    stimuliFolder = [base 'Stimuli/' stimuliName '-multiTest'];
+    stimuliFolder = [base 'Stimuli/dist_' num2str(dist) '_' stimuliName '-CLASSICmultiTest'];
     
     if ~isdir(stimuliFolder),
         mkdir(stimuliFolder);
     end
     
-    testingTargets = testingTargets(1:10:end);
+    testingTargets = testingTargets(1:dist:end);
         
     % Derived
     timeStep                    = 1/samplingRate;

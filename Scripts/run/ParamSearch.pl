@@ -75,9 +75,9 @@
 		
 		# Retest
 		my $experiment						= "multitargettest_baseline";
-	   	my $stim							= "denser-visualfield=200.00-eyepositionfield=60.00-fixations=280.00-targets=1.00-fixduration=0.30-fixationsequence=35.00-seed=72.00-samplingrate=1000.00";
+	   	my $stim							= "multitargettest_baseline-visualfield=200.00-eyepositionfield=60.00-fixations=320.00-targets=1.00-fixduration=0.30-fixationsequence=40.00-seed=72.00-samplingrate=100.00";
 		
-		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
+		my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
 		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
 		my $nrOfEpochs						= 30;#10; #50; # 30,100

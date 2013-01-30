@@ -1,5 +1,5 @@
 %
-%  MultiTargetTestingAnalysis.m
+%  CLASSICMultiTargetTestingAnalysis.m
 %  SMI
 %
 %  Created by Bedeho Mender on 19/11/12.
@@ -55,7 +55,7 @@ COPY-PASTE:
 % one object
 % MultiTargetTestingAnalysis('denser-visualfield=200.00-eyepositionfield=60.00-fixations=280.00-targets=1.00-fixduration=0.30-fixationsequence=35.00-seed=72.00-samplingrate=1000.00-stdTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/denser/L=0.05000_S=0.90_sS=00000004.50_sT=0.02_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/denser/L=0.05000_S=0.90_sS=00000004.50_sT=0.02_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
 
-function MultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, experimentPath, nrOfEyePositionsInTesting)
+function CLASSICMultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, experimentPath, nrOfEyePositionsInTesting)
 
     % Import global variables
     declareGlobalVars();

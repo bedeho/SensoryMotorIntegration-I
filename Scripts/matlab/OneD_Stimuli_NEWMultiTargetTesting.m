@@ -8,21 +8,21 @@
 %  Purpose: Generate testing data with multiple simultanous targets
 %
 
-function OneD_Stimuli_NEWMultiTargetTesting(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, numberOfSimultanousTargetsDuringTesting)
+function OneD_Stimuli_NEWMultiTargetTesting(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, numberOfSimultanousTargetsDuringTesting, dist)
 
     % Import global variables
     declareGlobalVars();
     
     global base;
-    
+
     % Make folder
-    stimuliFolder = [base 'Stimuli/' stimuliName '-multiTest'];
+    stimuliFolder = [base 'Stimuli/dist_' num2str(dist) '_'  stimuliName '-multiTest'];
     
     if ~isdir(stimuliFolder),
         mkdir(stimuliFolder);
     end
     
-    %testingTargets = testingTargets(1:10:end);
+    testingTargets = testingTargets(1:dist:end);
     numTargets = length(testingTargets);
         
     % Derived
@@ -61,7 +61,7 @@ function OneD_Stimuli_NEWMultiTargetTesting(stimuliName, samplingRate, fixationD
     info.targets = testingTargets;
     info.eyePositions = testingEyePositions;
     info.numberOfSimultanousTargetsDuringTesting = numberOfSimultanousTargetsDuringTesting;
-    
+
     % Save info
     save('info.mat','info');
 
@@ -76,7 +76,7 @@ function OneD_Stimuli_NEWMultiTargetTesting(stimuliName, samplingRate, fixationD
             % Move target
             for j=1:numTargets,
                 
-                targetLocations(targetPos) = testingTargets(targetPos);
+                targetLocations(targetPos) = testingTargets(j);
                 
                 % Next step!!
                 doRecursion(targetPos+1);

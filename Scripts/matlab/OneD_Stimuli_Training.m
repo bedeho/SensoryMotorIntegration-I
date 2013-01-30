@@ -17,7 +17,7 @@
 %           linearly interpolated and saved at each point to file.
 %
 
-function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLength, ) 
+function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequenceLength, ) 
 
     % Import global variables
     declareGlobalVars();
@@ -26,7 +26,7 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
     
     % Technical
     seed                                = 72; % classic = 72
-    samplingRate                        = 1000; % (Hz)
+    samplingRate                        = 100; % (Hz)
     
     % Environment
     numberOfSimultanousTargets          = 1; % classic = 1
@@ -45,7 +45,7 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
     %% CLASSIC/Varying #head positions
     
     headPositions                       = 8; % classic = 8
-    fixationSequenceLength              = 15; % classic = 15
+    fixationSequenceLength              = 40; % classic = 15
     numberOfFixations                   = headPositions*fixationSequenceLength; % classic = ;
     
     %% Varying fixation sequence length
@@ -79,6 +79,9 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
                          '-samplingrate='       num2str(samplingRate,'%.2f')];
     
     tSPath = [base 'Stimuli/' folderName '-training'];
+    %testPath = [base 'Stimuli/' folderName '-stdTest'];
+    %testPath = = [base 'Stimuli/' folderName '-training'];
+    
     
     % Make folder
     if ~isdir(tSPath),
@@ -214,7 +217,8 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
         testingTargets = fliplr(centerN2(nrOfRetinalTestingPositions, nrOfRetinalTestingPositions)); 
     end
     
-    testingEyePositionFieldSize = targetEyePositionRange; % *0.8
+    testingEyePositionFieldSize = targetEyePositionRange*0.6; % *0.8
+    disp('TIGHT TESTING>>>>>>>>>>>>>>>>> REMOVE!!!');
     testingEyePositions = centerN2(testingEyePositionFieldSize, nrOfTestingEyePositions);
     
     % Generate testing data
@@ -222,11 +226,11 @@ function OneD_Stimuli_Training(prefix)%), headPositions) % fixationSequenceLengt
     OneD_Stimuli_Testing(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets);
     
     % Generate multiple targets testing data
-    %{
-    disp('Generating Multiple Target Testing Data.');
-    %OneD_Stimuli_MultiTargetTesting(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2);
-    OneD_Stimuli_NEWMultiTargetTesting(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2);
-    %}
+    if nargin > 1,
+        disp('Generating Multiple Target Testing Data.');
+        OneD_Stimuli_MultiTargetTesting(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, dist);
+        OneD_Stimuli_NEWMultiTargetTesting(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, dist);
+    end
     
     % Make stimuli figures
     if numberOfSimultanousTargets  == 1,

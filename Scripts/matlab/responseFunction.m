@@ -34,6 +34,8 @@ function responseFunction()
     xlabel('Retinal Position (deg)');
     
     axis tight;
+    axis off
+    shading interp
     
     %{
     set(gca, ...
