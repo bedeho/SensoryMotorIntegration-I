@@ -26,13 +26,7 @@
 %~/Dphil/Projects/SensoryMotorIntegration-I/Source/DerivedData/SensoryMotorIntegration-I/Build/Products/Release/SensoryMotorIntegration-I test ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/Parameters.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/TrainedNetwork.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Stimuli/multitargettest-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-multiTest/data.dat ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/
 
 
-% NEWMultiTargetTestingAnalysis('multitargettest-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-multiTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/')
-
 function NEWMultiTargetTestingAnalysis(stimuliName, experimentPath)
-
-stimuliName = 'multitargettest_5-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-multiTest';
-
-experimentPath = '/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_sparsity/';
 
     % Import global variables
     declareGlobalVars();
@@ -54,10 +48,10 @@ experimentPath = '/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/D
     % Load firing response
     disp('Loading data...');
     
-    %[data, objectsPrEyePosition] = regionDataPrEyePosition([experimentPath '/firingRate.dat'], numEyePositions); % (object, eye_position, row, col, region)
+    [data, objectsPrEyePosition] = regionDataPrEyePosition([experimentPath '/firingRate.dat'], numEyePositions); % (object, eye_position, row, col, region)
 
-    q = load('data_sparsity.mat');
-    data = q.data;
+    %q = load('data_sparsity.mat');
+    %data = q.data;
     
     %q = load('data.mat');
     %data = q.data;
@@ -73,9 +67,9 @@ experimentPath = '/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/D
         
     disp('Processing...');
     
-    dispNeuron(27,15);
+    %dispNeuron(27,15);
     
-    %{
+    
     headCenteredness = zeros(numRows,numCols);
     receptivefieldlocations = zeros(numRows,numCols);
     receptivefieldsizes = zeros(numRows,numCols);
@@ -84,12 +78,14 @@ experimentPath = '/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/D
     for row=1:numRows,
         for col=1:numCols,
             
+            %data(:,:,row,col)
+            
             headCenteredness(row,col) = computeLambda(row,col);
             receptivefieldlocations(row,col) = computeRFLocation(row,col);
             receptivefieldsizes(row,col) = computeRFSize(row,col);
             
             
-            if headCenteredness(row,col) > 0.7,
+            if nnz(data(:,:,row,col)) > 5,
                 dispNeuron(row,col);
             end
         end
@@ -97,7 +93,7 @@ experimentPath = '/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/D
     
     figure;
     hist(headCenteredness(:));
-    %}
+    
     
     function dispNeuron(row,col)
         

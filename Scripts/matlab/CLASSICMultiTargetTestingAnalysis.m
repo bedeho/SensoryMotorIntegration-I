@@ -35,27 +35,13 @@ $$ COMMAND LINE TEST TO RUN!
 
 ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/L\=0.05000_S\=0.80_sS\=00000004.50_sT\=0.40_gIC\=0.0500_eS\=0.0_/TrainedNetwork/TrainedNetwork.txt 
 
-COPY-PASTE:
-~/Dphil/Projects/SensoryMotorIntegration-I/Source/DerivedData/SensoryMotorIntegration-I/Build/Products/Release/SensoryMotorIntegration-I test ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/L\=0.05000_S\=0.80_sS\=00000004.50_sT\=0.40_gIC\=0.0500_eS\=0.0_/Parameters.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/L\=0.05000_S\=0.80_sS\=00000004.50_sT\=0.40_gIC\=0.0500_eS\=0.0_/TrainedNetwork/TrainedNetwork.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Stimuli/multitargettesting-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-multiTest/data.dat ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/L\=0.05000_S\=0.80_sS\=00000004.50_sT\=0.40_gIC\=0.0500_eS\=0.0_/TrainedNetwork/ 
-
 %}
 %  5) Run this script where
 %  stimuliName = name of test/train/multitest stimuli is used
 %  experimentPath = path to manually created folder in 2)
-%  nrOfEyePositionsInTesting = same as before
 %
-% e.g.: OneD_Stimuli_Training('multitargettraining')
-%
-% multi object
-% MultiTargetTestingAnalysis('multitargettesting-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-multiTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_baseline/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
-%
-% one object
-% MultiTargetTestingAnalysis('peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-stdTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_baseline/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettest_baseline/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
-% 
-% one object
-% MultiTargetTestingAnalysis('denser-visualfield=200.00-eyepositionfield=60.00-fixations=280.00-targets=1.00-fixduration=0.30-fixationsequence=35.00-seed=72.00-samplingrate=1000.00-stdTest','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/denser/L=0.05000_S=0.90_sS=00000004.50_sT=0.02_gIC=0.0500_eS=0.0_/TrainedNetwork/firingRate.dat','/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/denser/L=0.05000_S=0.90_sS=00000004.50_sT=0.02_gIC=0.0500_eS=0.0_/TrainedNetwork',4)
 
-function CLASSICMultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, experimentPath, nrOfEyePositionsInTesting)
+function CLASSICMultiTargetTestingAnalysis(stimuliName, experimentPath)
 
     % Import global variables
     declareGlobalVars();
@@ -70,17 +56,20 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, 
     x = load([base 'Stimuli/' stimuliName '/info.mat']);
     multiTestInfo = x.info;
     targets = multiTestInfo.targets;
+    nrOfEyePositionsInTesting = length(multiTestInfo.eyePositions);
     
     %one target
-    numberOfSimultanousTargetsDuringTesting = 1;
+    %numberOfSimultanousTargetsDuringTesting = 1;
     %two targets
-    %numberOfSimultanousTargetsDuringTesting = multiTestInfo.numberOfSimultanousTargetsDuringTesting;
+    numberOfSimultanousTargetsDuringTesting = multiTestInfo.numberOfSimultanousTargetsDuringTesting;
     
     if numberOfSimultanousTargetsDuringTesting == 1,
         allTargetCombinations = (1:length(targets))';
     else
-        %allTargetCombinations =  multiTestInfo.allTargetCombinations;
+        allTargetCombinations =  multiTestInfo.allTargetCombinations;
     end
+    
+    disp(['Number of targets: ' num2str(numberOfSimultanousTargetsDuringTesting)]);
     
     numCombinations = length(allTargetCombinations);
     
@@ -88,13 +77,14 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, 
     disp('Loading data...');
     [data, objectsPrEyePosition] = regionDataPrEyePosition([experimentPath '/firingRate.dat'], nrOfEyePositionsInTesting); % (object, eye_position, row, col, region)
     
-    [baseline_data, baseline_objectsPrEyePosition] = regionDataPrEyePosition(baselineFiringRateFile, nrOfEyePositionsInTesting);
+    %[baseline_data, baseline_objectsPrEyePosition] = regionDataPrEyePosition(baselineFiringRateFile, nrOfEyePositionsInTesting);
+    %baseline_data = squeeze(baseline_data);
     
     disp('Processing...');
     
     % clean out.
     data = squeeze(data);
-    baseline_data = squeeze(baseline_data);
+    
     
     d = size(data);
     
@@ -110,11 +100,14 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, 
 
     linearNeurons = sub2ind([numRows numCols], neurons(:,1), neurons(:,2));
 
-    RF_Preference = analysisResults.wellBehavedNeurons(include, 6); 
+    RF_Preference = analysisResults.RFLocation(linearNeurons); 
     
     responses = [];
     distances = [];
     
+    gg = linearNeurons;
+    
+    % Some neurons
     %{
     for e=1:nrOfEyePositionsInTesting,
 
@@ -127,23 +120,65 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, 
     %}
     
     
-    
-    
-    
-    
-    gg = linearNeurons; % [3 99 1 4 6 22]'
+    % handpicked neurons
+
+    %linearNeurons; % [3 99 1 4 6 22]'
     %[I,J] = ind2sub([numRows numCols],gg)
+    %{
     RF_Preference = analysisResults.RFLocation(gg); 
-    [responses distances] = doPattern(1, 40, gg);
+    
+    
+    
+
+    
+                r=[];
+                d=[];
+
+                for w = 1:numCombinations,
+
+                    [a b] = doPattern(3, w, gg);
+                    
+                    %scatterPlotWithMarginalHistograms({b'}, {a'} ,'FaceColors', {[1,0,0]}, 'XTitle' , 'Error (deg)' , 'YTitle' , 'Firing Rate');
+
+                    r = [r a'];
+                    d = [d b'];
+                    
+                    %title(['w:' num2str(w) ', comb: ' num2str(allTargetCombinations(w,:)) ', targets:' num2str(targets(allTargetCombinations(w,:)))]);
+
+                end
+                
+                distances = d;
+                responses = r;
+    %}
+    
+    responses = [];
+    distances = [];
+    
+    for z=gg',
+
+
+        RF_Preference = analysisResults.RFLocation(z);% analysisResults.wellBehavedNeurons(z, 6); 
+
+        [r d] = doPatternPerEyePosition(3, z);
+        
+        responses = [responses r];
+        distances = [distances d];
+
+        %scatterPlotWithMarginalHistograms({d'}, {r'} ,'FaceColors', {[1,0,0]}, 'XTitle' , 'Error (deg)' , 'YTitle' , 'Firing Rate');
+
+        %title(['Neuron: ' num2str(z)]);
+
+    end
+    
+    
+    % A spesific neuron and stimuli
+    % targets: target combination 4, which shows targets 1 5 or, which are located 59 and -1
+    % eye pos 3.
+    %[responses distances] = doPattern(3, 25, gg);
     
     
     % PLOT
     scatterPlotWithMarginalHistograms({distances}, {responses} ,'FaceColors', {[1,0,0]}, 'XTitle' , 'Error (deg)' , 'YTitle' , 'Firing Rate');
-    
-    
-    
-    
-    
     
     %{
     % SINGLE CELL RESPONSE
@@ -228,8 +263,11 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, 
         
         nrCells = length(theseNeurons);
         
-        %response_ = squeeze(data(e,t, theseNeurons));
+        % Classic
+        response_ = squeeze(data(e,t, theseNeurons));
         
+        %{
+        %Percentile
         response_ = squeeze(data(e,t, :));
         
         [B,IX] = sort(response_, 'ascend');
@@ -237,7 +275,8 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, 
         v = find(ismember(IX, theseNeurons)); % v is the position in IX where theseNeurns are found, which match the posionts in B where their firingr rates are.
         
         response_ = v/total; % normalize
-
+        %}
+        
         % distance metric
         targetCombinations = targets(allTargetCombinations(t,:));
         comparisonvector = repmat(targetCombinations, nrCells, 1);
@@ -256,14 +295,19 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, 
         for n=1:length(theseNeurons),
             
             [I,J] = ind2sub([numRows numCols], theseNeurons(n));
-            %{
-            if abs(error(n)) < 0.1 && response_(n) < 0.01 % && abs(analysisResults.RFLocation(I,J) - 11) < 5,
+            
+            if abs(error(n)) < 5 && response_(n) < 0.1 % && abs(analysisResults.RFLocation(I,J) - 11) < 5,
                 
-                
-                disp(['for e,t,n - (row,col):' num2str(e) ',' num2str(t) ',' num2str(n) ' - (' num2str(I) ',' num2str(J) ')' ]);
+                % 'e,t: (row,col)'
+                disp(['eye=' num2str(e) ',targets=' num2str(targets(allTargetCombinations(t,:))) ': (' num2str(I) ',' num2str(J) ')']); % num2str(n)
+                disp(['firing:' num2str(response_(n)) ]);
+                disp(['error:' num2str(error(n)) ]);
+                disp(' ');
                 
             end
-            %}
+            
+            
+            %{
             
            if abs(error(n)) > 30 && response_(n) > 0.8, % && abs(analysisResults.RFLocation(I,J) - 11) < 5,
                 
@@ -271,6 +315,7 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, baselineFiringRateFile, 
                 disp(['for e,t,n - (row,col):' num2str(e) ',' num2str(t) ',' num2str(n) ' - (' num2str(I) ',' num2str(J) ')' ]);
                 
            end
+            %}
             
         end
         

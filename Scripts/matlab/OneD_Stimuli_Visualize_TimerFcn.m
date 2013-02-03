@@ -7,7 +7,7 @@
 %
 %  Draws graphics - TimerFcn callback 
 
-function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope, dimensions, timeStep)
+function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope, visualFieldSize, eyePositionFieldSize, timeStep)
 
     % Exporting
     global OneD_Stimuli_VisualizeTimeObject; % to expose it to make it stoppable in console
@@ -44,7 +44,7 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
 
         retinalPositions = buffer(lineCounter, 2:(numberOfSimultanousTargets + 1)); 
          
-        %disp(['Read: eye =' num2str(eyePosition) ', ret=' num2str(retinalPositions)]);
+        disp(['eye =' num2str(eyePosition) ', ret=' num2str(retinalPositions)]);
         
         if lineCounter == 1 || lastEyePosition ~= eyePosition || any(lastRetinalPositions ~= retinalPositions),
 
@@ -86,7 +86,7 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
         % + sigmoid
         subplot(4,1,1);
         im = imagesc(sigmoidPositive);%/fullNorm
-        daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
+        daspect([eyePositionFieldSize visualFieldSize 1]);
         
         tickTitle = [sprintf('%02d', fullMin) ':' sprintf('%02d', fullSec) ':' sprintf('%03d',fullMs)];
         title(tickTitle);
@@ -96,7 +96,7 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
         % - sigmoid
         subplot(4,1,2);
         imagesc(sigmoidNegative); % /fullNorm
-        daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
+        daspect([eyePositionFieldSize visualFieldSize 1]);
         
         
         %% input space
@@ -104,8 +104,8 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
         
         plot(eyePosition*ones(numberOfSimultanousTargets), retinalPositions , 'o');
         
-        daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
-        axis([-dimensions.eyePositionFieldSize/2 dimensions.eyePositionFieldSize/2 -dimensions.visualFieldSize/2 dimensions.visualFieldSize/2]);
+        daspect([eyePositionFieldSize visualFieldSize 1]);
+        axis([-eyePositionFieldSize/2 eyePositionFieldSize/2 -visualFieldSize/2 visualFieldSize/2]);
         title('Present input');
         
         set(gca, 'ButtonDownFcn', @responseCallBack); % Setup callback
@@ -126,8 +126,8 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
             
             hold on;
         end
-        daspect([dimensions.eyePositionFieldSize dimensions.visualFieldSize 1]);
-        axis([-dimensions.eyePositionFieldSize/2 dimensions.eyePositionFieldSize/2 -dimensions.visualFieldSize/2 dimensions.visualFieldSize/2]);
+        daspect([eyePositionFieldSize visualFieldSize 1]);
+        axis([-eyePositionFieldSize/2 eyePositionFieldSize/2 -visualFieldSize/2 visualFieldSize/2]);
         title('History input');
     end
 

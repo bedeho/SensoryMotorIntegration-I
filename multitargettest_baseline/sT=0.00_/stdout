@@ -1,0 +1,318 @@
+***Files in sandbox***
+total 36520
+drwx------  18 nobody  _xgridagent       612 Jan 30 15:19 .
+drwx------   3 nobody  _xgridagent       102 Jan 30 15:19 ..
+-rw-------   1 nobody  _xgridagent  13242614 Jan 30 15:19 BlankNetwork.txt
+-rwx------   1 nobody  _xgridagent     24662 Jan 30 15:19 ParametersCopy.pl
+-rwx------   1 nobody  _xgridagent    341632 Jan 30 15:19 SensoryMotorIntegration-I
+-rw-------   1 nobody  _xgridagent     13029 Jan 30 15:19 ps1.pm
+-rw-------   1 nobody  _xgridagent      3851 Jan 30 15:19 sT=0.00_.txt
+-rw-------   1 nobody  _xgridagent      3851 Jan 30 15:19 sT=0.04_.txt
+-rw-------   1 nobody  _xgridagent      3851 Jan 30 15:19 sT=0.10_.txt
+-rw-------   1 nobody  _xgridagent      3851 Jan 30 15:19 sT=0.60_.txt
+-rw-------   1 nobody  _xgridagent      3851 Jan 30 15:19 sT=1.00_.txt
+-rw-------   1 nobody  _xgridagent      3851 Jan 30 15:19 sT=2.00_.txt
+-rw-------   1 nobody  _xgridagent      3851 Jan 30 15:19 sT=3.00_.txt
+-rw-------   1 nobody  _xgridagent        91 Jan 30 15:19 simulations.txt
+-rw-------   1 nobody  _xgridagent   5002426 Jan 30 15:19 source.tbz
+-rwx------   1 nobody  _xgridagent      1057 Jan 30 15:19 xGridDiagnosticWorker.pl
+-rw-------   1 nobody  _xgridagent      1118 Jan 30 15:19 xgrid.txt
+-rw-------   1 nobody  _xgridagent     15428 Jan 30 15:19 xgridPayload.tbz
+***Arguments***
+arg #1: SensoryMotorIntegration-I 
+arg #2: --xgrid 
+arg #3: train 
+arg #4: sT=0.00_.txt 
+arg #5: BlankNetwork.txt 
+***Starting***
+COMMAND: ./SensoryMotorIntegration-I --xgrid train sT=0.00_.txt BlankNetwork.txt
+Loading network...
+Loaded object 0
+Loaded object 1
+Loaded object 2
+Loaded object 3
+Loaded object 4
+Loaded object 5
+Loaded object 6
+Loaded object 7
+Objects loaded: 8
+Layer 1 desiredFanIn: 1226 << AS READ FROM PARAMTER FILE, MAY NOT HOLD!!!
+Training network...
+Number of threads: 18
+*** EPOCH DURATION = 107.92s
+*** STEP SIZE = 0.01s
+>> epoch #0
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #1
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #2
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #3
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #4
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #5
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #6
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #7
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #8
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #9
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #10
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #11
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #12
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #13
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #14
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #15
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #16
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #17
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #18
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #19
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #20
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #21
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #22
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #23
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #24
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #25
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #26
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #27
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #28
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+>> epoch #29
+>Completed Periode nr.1
+>Completed Periode nr.2
+>Completed Periode nr.3
+>Completed Periode nr.4
+>Completed Periode nr.5
+>Completed Periode nr.6
+>Completed Periode nr.7
+>Completed Periode nr.8
+Saving history...
+Total run time = 32 minutes: 26 seconds
+Run time for one epoch = 64.8936 seconds
+Saving network...
+Finished.

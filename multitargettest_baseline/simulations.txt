@@ -1,0 +1,7 @@
+sT=0.00_.txt
+sT=0.04_.txt
+sT=0.10_.txt
+sT=0.60_.txt
+sT=1.00_.txt
+sT=2.00_.txt
+sT=3.00_.txt

@@ -45,7 +45,7 @@ function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequen
     %% CLASSIC/Varying #head positions
     
     headPositions                       = 8; % classic = 8
-    fixationSequenceLength              = 40; % classic = 15
+    fixationSequenceLength              = 30; % classic = 15
     numberOfFixations                   = headPositions*fixationSequenceLength; % classic = ;
     
     %% Varying fixation sequence length
@@ -228,7 +228,7 @@ function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequen
     % Generate multiple targets testing data
     if nargin > 1,
         disp('Generating Multiple Target Testing Data.');
-        OneD_Stimuli_MultiTargetTesting(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, dist);
+        OneD_Stimuli_CLASSICMultiTargetTesting(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, dist);
         OneD_Stimuli_NEWMultiTargetTesting(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, dist);
     end
     

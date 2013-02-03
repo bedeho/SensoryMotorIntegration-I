@@ -22,22 +22,22 @@ function OneD_Stimuli_Visualize(stimuliName, visualPreferenceDistance, eyePositi
     global fig;
     
     % Load supplementary stimuli dimensions
-    path = [base 'Stimuli/' stimuliName];
-    startDir = pwd;
-    cd(path);
-    dimensions = load('dimensions.mat');
-    cd(startDir);
+    %path = [base 'Stimuli/' stimuliName];
+    %startDir = pwd;
+    %cd(path);
+    %dimensions = load('dimensions.mat');
+    %cd(startDir);
+    
+    % Load data
+    [samplingRate, numberOfSimultanousTargets, visualFieldSize, eyePositionFieldSize, buffer] = OneD_Stimuli_Load(stimuliName);
 
     % LIP Parameters   
     gaussianSigma                       = 6; % deg
     sigmoidSlope                        = 1/16; % (1/8)/2 = 0.0625
     
-    visualPreferences                   = centerDistance(dimensions.visualFieldSize, visualPreferenceDistance);
-    eyePositionPreferences              = centerDistance(dimensions.eyePositionFieldSize, eyePositionPrefrerenceDistance);
+    visualPreferences                   = centerDistance(visualFieldSize, visualPreferenceDistance);
+    eyePositionPreferences              = centerDistance(eyePositionFieldSize, eyePositionPrefrerenceDistance);
 
-    % Load data
-    [samplingRate, numberOfSimultanousTargets, visualFieldSize, eyePositionFieldSize, buffer] = OneD_Stimuli_Load(stimuliName);
-    
     % Init
     lineCounter = 1;
     nrOfObjectsFoundSoFar = 0;
@@ -49,7 +49,7 @@ function OneD_Stimuli_Visualize(stimuliName, visualPreferenceDistance, eyePositi
     % Setup timer
     % Good video on timers: http://blogs.mathworks.com/pick/2008/05/05/advanced-matlab-timer-objects/
     OneD_Stimuli_VisualizeTimeObject = timer('Period', period, 'ExecutionMode', 'fixedSpacing');
-    set(OneD_Stimuli_VisualizeTimeObject, 'TimerFcn', {@OneD_Stimuli_Visualize_TimerFcn, numberOfSimultanousTargets, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope, dimensions, timeStep});
+    set(OneD_Stimuli_VisualizeTimeObject, 'TimerFcn', {@OneD_Stimuli_Visualize_TimerFcn, numberOfSimultanousTargets, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope, visualFieldSize, eyePositionFieldSize, timeStep});
     set(OneD_Stimuli_VisualizeTimeObject, 'StopFcn', {@OneD_Stimuli_Visualize_StopFcn});
 
     % Start timer

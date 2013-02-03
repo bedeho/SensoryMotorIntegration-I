@@ -71,7 +71,7 @@ function OneD_Stimuli_NEWMultiTargetTesting(stimuliName, samplingRate, fixationD
         
         % If we are at end of 
         if targetPos > numberOfSimultanousTargetsDuringTesting,
-            outputSample(fileID, e, targetLocations - e, samplesPrLocation);
+            outputSample(fileID, e, targetLocations, samplesPrLocation);
         else
             % Move target
             for j=1:numTargets,

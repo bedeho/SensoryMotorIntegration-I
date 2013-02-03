@@ -74,10 +74,10 @@
 		#my $stim							= "tracetest-visualfield=200.00-eyepositionfield=60.00-fixations=12.00-targets=2.00-fixduration=0.30-fixationsequence=4.00-seed=72.00-samplingrate=1000.00";
 		
 		# Retest
-		my $experiment						= "multitargettest_baseline";
+		my $experiment						= "multitargettest_baseline_slope_tight";
 	   	my $stim							= "multitargettest_baseline-visualfield=200.00-eyepositionfield=60.00-fixations=320.00-targets=1.00-fixduration=0.30-fixationsequence=40.00-seed=72.00-samplingrate=100.00";
 		
-		my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
+		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
 		my $nrOfEpochs						= 30;#10; #50; # 30,100
