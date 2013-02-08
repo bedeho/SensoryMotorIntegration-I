@@ -92,7 +92,7 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, experimentPath)
     numCols = d(end);
     total = numRows*numCols;
     
-    include = analysisResults.wellBehavedNeurons(:,3) > 0.7;
+    include = analysisResults.wellBehavedNeurons(:,3) > 0.70;
 
     numCells = nnz(include);
 
@@ -151,6 +151,7 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, experimentPath)
                 responses = r;
     %}
     
+    %{
     responses = [];
     distances = [];
     
@@ -169,6 +170,7 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, experimentPath)
         %title(['Neuron: ' num2str(z)]);
 
     end
+    %}
     
     
     % A spesific neuron and stimuli
@@ -178,7 +180,23 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, experimentPath)
     
     
     % PLOT
+    %RF_Preference = analysisResults.RFLocation(gg);% analysisResults.wellBehavedNeurons(z, 6); 
+    %[distances distances] = doPatternPerEyePosition(3, gg);
+    %scatterPlotWithMarginalHistograms({distances}, {responses} ,'FaceColors', {[1,0,0]}, 'XTitle' , 'Error (deg)' , 'YTitle' , 'Firing Rate');
+    
+    yes = noFalseNegatives(5, 0.02, gg)
+    goodones = gg(find(yes));
+    
+    RF_Preference = analysisResults.RFLocation(goodones);
+    [responses1 distances1] = doPatternPerEyePosition(3, goodones);
+    %[responses2 distances2] = doPatternPerEyePosition(2, goodones);
+    %[responses3 distances3] = doPatternPerEyePosition(3, goodones);
+    %[responses4 distances4] = doPatternPerEyePosition(4, goodones);
+    %scatterPlotWithMarginalHistograms({distances}, {responses} ,'FaceColors', {[1,0,0]}, 'XTitle' , 'Error (deg)' , 'YTitle' , 'Firing Rate');
+    %scatterPlotWithMarginalHistograms({distances1,distances2,distances3,distances4}, {responses1,responses2,responses3,responses4} ,'FaceColors', {[1,0,0]}, 'XTitle' , 'Error (deg)' , 'YTitle' , 'Firing Rate');
     scatterPlotWithMarginalHistograms({distances}, {responses} ,'FaceColors', {[1,0,0]}, 'XTitle' , 'Error (deg)' , 'YTitle' , 'Firing Rate');
+    
+    % print h value distibution
     
     %{
     % SINGLE CELL RESPONSE
@@ -252,14 +270,55 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, experimentPath)
 
             [a b] = doPattern(e, t, theseNeurons);
             
+            
             r = [r a'];
             d = [d b'];
             
         end
         
     end
+
+    %% Find false negative neurons
+    function yes = noFalseNegatives(errorMargin, responseMargin, theseNeurons)
+        
+        hasFalseNegatives = zeros(1, length(theseNeurons));
+        
+        % Old school for loop crap
+        for i=1:length(theseNeurons), % neurons
+            
+            neuronID = theseNeurons(i);
+            pref = analysisResults.RFLocation(neuronID);
+            
+            for t=1:numCombinations, % targets
+                for e=1:nrOfEyePositionsInTesting,
+                    
+                    targetCombinations = targets(allTargetCombinations(t,:));
+                    error = min(abs(targetCombinations - pref))';
+                    response = squeeze(data(e,t, neuronID));
+
+                    if error < errorMargin && response < responseMargin,
+
+                        [I,J] = ind2sub([numRows numCols], neuronID);
+
+                        % 'e,t: (row,col)'
+                        disp(['eye=' num2str(e) ',targets=' num2str(targetCombinations) ': (' num2str(I) ',' num2str(J) ')']); % num2str(n)
+                        disp(['firing:' num2str(response) ]);
+                        disp(['error:' num2str(error) ]);
+                        disp(' ');
+
+                        % ban
+                        hasFalseNegatives(i) = 1;
+
+                    end
+                end
+            end  
+        end
+        
+        yes = ~hasFalseNegatives;
+        
+    end
     
-    function [response_ distance_] = doPattern(e, t, theseNeurons)
+    function [response_ distance_ ] = doPattern(e, t, theseNeurons)
         
         nrCells = length(theseNeurons);
         
@@ -282,6 +341,7 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, experimentPath)
         comparisonvector = repmat(targetCombinations, nrCells, 1);
         error = (comparisonvector - repmat(RF_Preference, 1, numberOfSimultanousTargetsDuringTesting));
         
+
         if numberOfSimultanousTargetsDuringTesting == 1,
             distance_ = error;
         else
@@ -290,13 +350,17 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, experimentPath)
             distance_ = error(linearIndexes);
         end
         
+        %{
         
         %% Find false negative neurons
         for n=1:length(theseNeurons),
             
             [I,J] = ind2sub([numRows numCols], theseNeurons(n));
             
-            if abs(error(n)) < 5 && response_(n) < 0.1 % && abs(analysisResults.RFLocation(I,J) - 11) < 5,
+            
+            if abs(error(n)) < 5 && response_(n) < 0.2,
+                
+                % && abs(analysisResults.RFLocation(I,J) - 11) < 5,
                 
                 % 'e,t: (row,col)'
                 disp(['eye=' num2str(e) ',targets=' num2str(targets(allTargetCombinations(t,:))) ': (' num2str(I) ',' num2str(J) ')']); % num2str(n)
@@ -304,21 +368,23 @@ function CLASSICMultiTargetTestingAnalysis(stimuliName, experimentPath)
                 disp(['error:' num2str(error(n)) ]);
                 disp(' ');
                 
+                exclude_ = [exclude_ n];
+                
             end
             
             
-            %{
-            
+           %{
            if abs(error(n)) > 30 && response_(n) > 0.8, % && abs(analysisResults.RFLocation(I,J) - 11) < 5,
                 
                 
                 disp(['for e,t,n - (row,col):' num2str(e) ',' num2str(t) ',' num2str(n) ' - (' num2str(I) ',' num2str(J) ')' ]);
                 
            end
-            %}
+           %}
             
         end
         
+        %}
         
         %min((preferredHeadPosition-targetCombinations).^2);
         %sigma = 5;

@@ -45,16 +45,19 @@ function NEWMultiTargetTestingAnalysis(stimuliName, experimentPath)
     
     delta = abs(targets(2) - targets(1));
     
+    %% Load Data
     % Load firing response
     disp('Loading data...');
     
-    [data, objectsPrEyePosition] = regionDataPrEyePosition([experimentPath '/firingRate.dat'], numEyePositions); % (object, eye_position, row, col, region)
+    %[data, objectsPrEyePosition] = regionDataPrEyePosition([experimentPath '/firingRate.dat'], numEyePositions); % (object, eye_position, row, col, region)
 
-    %q = load('data_sparsity.mat');
+    % MT_untrained
+    %q = load('MT_untrained.mat');
     %data = q.data;
     
-    %q = load('data.mat');
-    %data = q.data;
+    % MT_singeltargettrained
+    q = load('MT_singeltargettrained.mat');
+    data = q.data;
     
     data = squeeze(data);
     d = size(data);
@@ -64,16 +67,14 @@ function NEWMultiTargetTestingAnalysis(stimuliName, experimentPath)
     
     %[baseline_data, baseline_objectsPrEyePosition] = regionDataPrEyePosition(baselineFiringRateFile, nrOfEyePositionsInTesting);
     %baseline_data = squeeze(baseline_data);
-        
+
+    %% Processing
     disp('Processing...');
-    
-    %dispNeuron(27,15);
-    
-    
     headCenteredness = zeros(numRows,numCols);
     receptivefieldlocations = zeros(numRows,numCols);
     receptivefieldsizes = zeros(numRows,numCols);
    
+    
     % for each neuro
     for row=1:numRows,
         for col=1:numCols,
@@ -84,28 +85,40 @@ function NEWMultiTargetTestingAnalysis(stimuliName, experimentPath)
             receptivefieldlocations(row,col) = computeRFLocation(row,col);
             receptivefieldsizes(row,col) = computeRFSize(row,col);
             
-            
-            if nnz(data(:,:,row,col)) > 5,
-                dispNeuron(row,col);
-            end
         end
     end
     
+    %% Overview
+    
     figure;
-    hist(headCenteredness(:));
+    imagesc(headCenteredness);
+    title('headCenteredness');
+    colorbar;
+    
+    figure;
+    imagesc(receptivefieldlocations);
+    title('computeRFLocation');
+    colorbar;
+        
+    figure;
+    imagesc(receptivefieldsizes);
+    title('computeRFSize');
+    colorbar;
     
     
-    function dispNeuron(row,col)
-        
-        plotNeuron(row,col)
-        computeLambda(row,col)
-        computeRFLocation(row,col)
-        computeRFSize(row,col)
-        
-    end
+    %% Invidivudal neurons
+    plotNeuron(19,15)
+    
+    %% Population plots
+    %FaceColors = {[1,0,0]};
+    %scatterPlotWithMarginalHistograms({receptivefieldlocations(:)}, {headCenteredness(:)}, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Head-Centeredness', 'Legends', 'X','YLabelOffset', 3, 'FaceColors', FaceColors);
     
     function plotNeuron(row,col)
        
+        disp(['Lambda = ' num2str(computeLambda(row,col))]);
+        disp(['h-value = ' num2str(computeRFLocation(row,col))]);
+        disp(['psi = ' num2str(computeRFSize(row,col))]);
+        
         if(numberOfSimultanousTargetsDuringTesting ~= 2),
             error('Cannot plot with ~=2 sim targets');
         end
@@ -114,11 +127,12 @@ function NEWMultiTargetTestingAnalysis(stimuliName, experimentPath)
         
         %Iterate eye position
         for e=1:numEyePositions,
-            
+
             k = reshape(data(e,:,row,col), [numTarget numTarget]); % frontground target,backgrond target
-            subplot(1,numEyePositions,e);
-            imagesc(k); %contourf(k,5); % imagesc
+            subplot(1,numEyePositions,e);; 
+            contourf(k); % imagesc
             colorbar
+            
         end
 
     end
@@ -156,7 +170,7 @@ function NEWMultiTargetTestingAnalysis(stimuliName, experimentPath)
         %Iterate eye position
         for e=1:numEyePositions,
             
-            responseCurve = reshape(squeeze(data(e,:,row,col)), [numTarget numTarget]); % frontground target,backgrond target
+            responseCurve = reshape(squeeze(data(e,:,row,col)), numTarget, numTarget); % frontground target,backgrond target
             
             responseSums = (sum(responseCurve))';
             

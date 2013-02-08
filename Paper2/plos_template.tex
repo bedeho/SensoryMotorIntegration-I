@@ -1,0 +1,145 @@
+% Template for PLoS
+% Version 1.0 January 2009
+%
+% To compile to pdf, run:
+% latex plos.template
+% bibtex plos.template
+% latex plos.template
+% latex plos.template
+% dvipdf plos.template
+
+\documentclass[10pt]{article}
+
+% amsmath package, useful for mathematical formulas
+\usepackage{amsmath}
+% amssymb package, useful for mathematical symbols
+\usepackage{amssymb}
+
+% graphicx package, useful for including eps and pdf graphics
+% include graphics with the command \includegraphics
+\usepackage{graphicx}
+
+% cite package, to clean up citations in the main text. Do not remove.
+\usepackage{cite}
+
+\usepackage{color} 
+
+% Use doublespacing - comment out for single spacing
+%\usepackage{setspace} 
+%\doublespacing
+
+
+% Text layout
+\topmargin 0.0cm
+\oddsidemargin 0.5cm
+\evensidemargin 0.5cm
+\textwidth 16cm 
+\textheight 21cm
+
+% Bold the 'Figure #' in the caption and separate it with a period
+% Captions will be left justified
+\usepackage[labelfont=bf,labelsep=period,justification=raggedright]{caption}
+
+% Use the PLoS provided bibtex style
+\bibliographystyle{plos2009}
+
+% Remove brackets from numbering in List of References
+\makeatletter
+\renewcommand{\@biblabel}[1]{\quad#1.}
+\makeatother
+
+
+% Leave date blank
+\date{}
+
+\pagestyle{myheadings}
+%% ** EDIT HERE **
+
+
+%% ** EDIT HERE **
+%% PLEASE INCLUDE ALL MACROS BELOW
+
+%% END MACROS SECTION
+
+\begin{document}
+
+% Title must be 150 characters or less
+\begin{flushleft}
+{\Large
+\textbf{Gain Fields in Sensorimotor Integration: A Negative Result}
+}
+% Insert Author names, affiliations and corresponding author email.
+\\
+Bedeho Mender$^{1}$, 
+Simon Stringer$^{1}$
+\\
+\bf{1} Department of Experimental Psychology, University of Oxford, UK
+\\
+$\ast$ E-mail: bedeho.mender@psy.ox.ac.uk
+\end{flushleft}
+
+% Please keep the abstract between 250 and 300 words
+\section*{Abstract}
+We investigate how head-centered visual responses in parietal areas V6 (parietal occipital area) and LIP (lateral intraparietal area)  may self-organize through a bioligally plausible learning mechanism depending on temporal coherence of eye in head movement dynamics and local synaptic learning rules. We find that V6 head-centered neural responses do successfully self-organize, however head-centered responses in LIP fail to develope and this failure is found to be attributable to the classical planar eye position modulation neurons found in LIP and througout parietal areas. Planar and Sigmoidal gain fields are found to cause persistent difficulty in developing proper head-centered responses due to their their substantial spatial overlap in the eye position domain, which causes continous overgeneralization in the learning process. This sheds new light on how head-centered neural responses may self-organize and be computed, and contradicts the widely held assumption due to previous classical models like Zipser \& Andersen that . We discuss in detail the short comings of previous investigations in this regard, and find that the critical short ocming is that past work has not taken self-organization seriously and hence ...
+
+% Please keep the Author Summary between 150 and 200 words
+% Use first person. PLoS ONE authors please skip this step. 
+% Author Summary not valid for PLoS ONE submissions.   
+\section*{Author Summary}
+
+\section*{Introduction}
+
+The most familiar representation of visual space is the eye-centered visual represenatation, abundant in many primate brain areas, encode visual space in the the retinal reference frame. However, visuospatial behaviour such as saccading or reaching, requires transforming these representations into reference frames where they are compatible with the behaviour in question. Take reaching for example, this may require representing visual targets and motor commands in the same refernce frame, so that motor error vector may be computed for the appropriate action (cite anderson papers). Alternatively consider having to perform two consecutive saccades to two extinguished visual targets, requires the ability to make the appriroite ...
+
+A potential substrate for such a
+
+% Results and Discussion can be combined.
+\section*{Results}
+
+\subsection*{Subsection 1}
+
+\subsection*{Subsection 2}
+
+\section*{Discussion}
+
+% You may title this section "Methods" or "Models". 
+% "Models" is not a valid title for PLoS ONE authors. However, PLoS ONE
+% authors may use "Analysis" 
+\section*{Materials and Methods}
+
+% Do NOT remove this, even if you are not including acknowledgments
+\section*{Acknowledgments}
+
+
+%\section*{References}
+% The bibtex filename
+\bibliography{template}
+
+\section*{Figure Legends}
+%\begin{figure}[!ht]
+%\begin{center}
+%%\includegraphics[width=4in]{figure_name.2.eps}
+%\end{center}
+%\caption{
+%{\bf Bold the first sentence.}  Rest of figure 2  caption.  Caption 
+%should be left justified, as specified by the options to the caption 
+%package.
+%}
+%\label{Figure_label}
+%\end{figure}
+
+
+\section*{Tables}
+%\begin{table}[!ht]
+%\caption{
+%\bf{Table title}}
+%\begin{tabular}{|c|c|c|}
+%table information
+%\end{tabular}
+%\begin{flushleft}Table caption
+%\end{flushleft}
+%\label{tab:label}
+% \end{table}
+
+\end{document}
+

@@ -9,8 +9,8 @@
 	#
 
 	use strict;
-    	use warnings;
-    	use POSIX;
+    use warnings;
+    use POSIX;
 	use File::Copy "cp";
 	use Data::Dumper;
 	use Cwd 'abs_path';
@@ -73,14 +73,18 @@
 		#my $experiment						= "tracetest";
 		#my $stim							= "tracetest-visualfield=200.00-eyepositionfield=60.00-fixations=12.00-targets=2.00-fixduration=0.30-fixationsequence=4.00-seed=72.00-samplingrate=1000.00";
 		
-		# Retest
-		my $experiment						= "multitargettest_baseline_slope_tight";
-	   	my $stim							= "multitargettest_baseline-visualfield=200.00-eyepositionfield=60.00-fixations=320.00-targets=1.00-fixduration=0.30-fixationsequence=40.00-seed=72.00-samplingrate=100.00";
+		# MT_baseline_multitargettrained
+		#my $experiment						= "MT_baseline_multitargettrained_LONGER_DENSER";
+		#my $stim							= "multitargettraining-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=2.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00";
 		
-		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
+		# MT_baseline_singeltargettrained
+		my $experiment						= "MT_baseline_singeltargettrained_DENSER";
+		my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+
+		my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
 		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
-		my $nrOfEpochs						= 30;#10; #50; # 30,100
+		my $nrOfEpochs						= 20;#10; #50; # 30,100
 		my $saveNetworkAtEpochMultiple 		= 110;
 		my $outputAtTimeStepMultiple		= 10; # Keep this high (10<=) unless  you are recording for looking at dynamics!
 	
@@ -89,7 +93,7 @@
 	
 		my $resetActivity					= "false"; # "false", Reset activation between objects of training
 		my $resetTrace						= "false"; # "false", Reset trace between objects of training
-		my $covarianceThreshold				= "0.40"; # classic = 0, \sigma=19 ==> 0.9
+		my $covarianceThreshold				= "0.40"; # classic = 0, multitarget=0.4, \sigma=19 = 0.9
 		
 		my $sigmoidModulationPercentage		= "0.0";
 		my $weightVectorLength				= "1.0"; # classic = 1.0

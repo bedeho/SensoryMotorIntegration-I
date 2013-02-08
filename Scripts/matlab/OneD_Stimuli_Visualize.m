@@ -6,7 +6,7 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function OneD_Stimuli_Visualize(stimuliName, visualPreferenceDistance, eyePositionPrefrerenceDistance)
+function OneD_Stimuli_Visualize(stimuliName)
 
     % Import global variables
     declareGlobalVars();
@@ -27,6 +27,11 @@ function OneD_Stimuli_Visualize(stimuliName, visualPreferenceDistance, eyePositi
     %cd(path);
     %dimensions = load('dimensions.mat');
     %cd(startDir);
+    
+
+        visualPreferenceDistance = 1;
+        eyePositionPrefrerenceDistance = 1;
+
     
     % Load data
     [samplingRate, numberOfSimultanousTargets, visualFieldSize, eyePositionFieldSize, buffer] = OneD_Stimuli_Load(stimuliName);

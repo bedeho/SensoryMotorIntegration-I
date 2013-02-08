@@ -17,7 +17,7 @@
 %           linearly interpolated and saved at each point to file.
 %
 
-function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequenceLength, ) 
+function OneD_Stimuli_Training(prefix)%, dist) %), headPositions) % fixationSequenceLength, ) 
 
     % Import global variables
     declareGlobalVars();
@@ -43,10 +43,11 @@ function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequen
     % Agent in Training
     
     %% CLASSIC/Varying #head positions
-    
     headPositions                       = 8; % classic = 8
     fixationSequenceLength              = 30; % classic = 15
     numberOfFixations                   = headPositions*fixationSequenceLength; % classic = ;
+    
+    numberOfNonSpesificFixations        = 5;
     
     %% Varying fixation sequence length
     %{
@@ -111,6 +112,7 @@ function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequen
     
     disp('Generating Training Data.');
     
+    % For multiple target case
     fixedeyePositions = targetEyePositionRange*(rand(1, fixationSequenceLength) - 0.5);
     
     % Perform fixation sequences
@@ -141,7 +143,7 @@ function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequen
         
         % Save targets seen
         allShownTargets = [allShownTargets; targets];
-        
+
         % Update extremes
         maxDev = max(maxDev,abs(targets));
         
@@ -151,15 +153,21 @@ function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequen
         else
             eyePositions = targetEyePositionRange*(rand(1, fixationSequenceLength) - 0.5);
         end
-
-        % Generate the cirtical points
-        criticalPoints = generateCriticalPoints(eyePositions);
-
-        % Step through at given frequency and dump to file
-        stepThroughAndOutput(criticalPoints);
         
-        % Transform flag
-        fwrite(fileID, NaN('single'), 'float');
+        % CLASSIC: Used target is stationary in head-centered space
+        SAMEtargetsPerEyePosition = repmat(targets, fixationSequenceLength, 1);
+        
+        % Generate and output dynamics
+        generateDynamicsAndSave(SAMEtargetsPerEyePosition, eyePositions);
+        
+        %% Non-classic distrations: numberOfNonSpesificFixations
+        if numberOfNonSpesificFixations > 0,
+            
+            eyePositions            = targetEyePositionRange*(rand(1, numberOfNonSpesificFixations) - 0.5);
+            targetsPerEyePosition   = targetVisualRange*(rand(numberOfNonSpesificFixations, numberOfSimultanousTargets) - 0.5);
+            
+            generateDynamicsAndSave(targetsPerEyePosition, eyePositions);
+        end
         
         % Status
         disp([num2str(100*(i/numInitialPerms)) '%']);
@@ -209,7 +217,7 @@ function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequen
     margin = 10;
     
     % Testing Parameters
-    testingRetinalFieldSize = max(2*(maxDev + 3*margin)); % + buffer
+    testingRetinalFieldSize = max(2*(maxDev + 3*margin)); % *buffer
     
     if testingRetinalFieldSize > nrOfRetinalTestingPositions,
         testingTargets = fliplr(centerN2(testingRetinalFieldSize, nrOfRetinalTestingPositions));
@@ -217,8 +225,8 @@ function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequen
         testingTargets = fliplr(centerN2(nrOfRetinalTestingPositions, nrOfRetinalTestingPositions)); 
     end
     
-    testingEyePositionFieldSize = targetEyePositionRange*0.6; % *0.8
-    disp('TIGHT TESTING>>>>>>>>>>>>>>>>> REMOVE!!!');
+    testingEyePositionFieldSize = targetEyePositionRange; % *0.8
+    %disp('TIGHT TESTING>>>>>>>>>>>>>>>>> REMOVE!!!');
     testingEyePositions = centerN2(testingEyePositionFieldSize, nrOfTestingEyePositions);
     
     % Generate testing data
@@ -250,12 +258,33 @@ function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequen
         %OneD_Stimuli_Correlation([folderName '-stdTest']);
     end
     
-    function points = generateCriticalPoints(order)
+    function generateDynamicsAndSave(targetsPerEyePosition, eyePositions)
+                            
+        % Generate the cirtical points
+        criticalPoints = generateCriticalPoints(targetsPerEyePosition, eyePositions);
+
+        % Step through at given frequency and dump to file
+        stepThroughAndOutput(criticalPoints);
+
+        % Transform flag
+        fwrite(fileID, NaN('single'), 'float');
         
-        %points = (time,eye_position,ret_1,...,ret_n)
+    end
+
+    function points = generateCriticalPoints(targetsPerEyePosition, eyePositions)
+        
+        %
+        % eyePositions = vector of M eye positions for fixation
+        % 
+        % targetsPerEyePosition = MxN matrix of target locations, where the
+        % location of the N targets at fixation nr i is
+        % targetsPerEyePosition(i,:)
+        %
+        
+        % points = (time,eye_position,ret_1, ... ,ret_n)
         
         % Allocate space
-        numberOfDataPoints = 2 * length(order); % start and end of each fixation
+        numberOfDataPoints = 2 * length(eyePositions); % start and end of each fixation
         dimensionOfDataPoints = 1 + 1 + numberOfSimultanousTargets; % time + eye_position + ret_1,...,ret_n
         points = zeros(dimensionOfDataPoints, numberOfDataPoints);
         
@@ -266,10 +295,10 @@ function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequen
         %targets = dimensions.targets(randperm(n, r));
         
         % invariant: time is of next point in time
-        for dataPoint = 1:length(order),
+        for dataPoint = 1:length(eyePositions),
             
             % Eye position
-            ep = order(dataPoint);
+            ep = eyePositions(dataPoint);
             
             % When a sufficient number of fixations have been performed,
             % targets are updated
@@ -280,7 +309,7 @@ function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequen
             %end
             
             % Retinal target locations
-            retinalTargets = targets - ep;
+            retinalTargets = targetsPerEyePosition(dataPoint,:) - ep;
             
             % Update and save state of fixation START
             state = [time ep retinalTargets];
@@ -295,9 +324,9 @@ function OneD_Stimuli_Training(prefix, dist) %), headPositions) % fixationSequen
                         
             % Add saccade time if there is a subsequent saccade,
             % which is the case for all but the last iteration
-            if dataPoint < length(order),
+            if dataPoint < length(eyePositions),
                 % later realized: we dont need to test this!
-                distance = abs(order(dataPoint+1) - ep); % distance between the old and new fixation points
+                distance = abs(eyePositions(dataPoint+1) - ep); % distance between the old and new fixation points
                 time = time + distance/saccadeVelocity ; % the time it takes to saccade
             end
         end
