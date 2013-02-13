@@ -108,7 +108,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             % Plot
             imagesc(weightBox1);
             weightBox1 % dump
-            save('/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/decoupled_gainencoding/weightBox1.mat', 'weightBox1')
+            %save('/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/decoupled_gainencoding/weightBox1.mat', 'weightBox1')
             dim = fliplr(size(weightBox1));
             pbaspect([dim 1]);
             colorbar

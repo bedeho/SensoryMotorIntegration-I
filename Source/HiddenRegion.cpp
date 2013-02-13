@@ -241,16 +241,34 @@ void HiddenRegion::computeNewFiringRate() {
         if(sparsenessRoutine != NOSPARSENESS)
             threshold = findThreshold();
         
+        /*
+        ///****************************************************************
+        
+        // ADJUST threshold
+        float activationScaler = 0.256315005; // 0.556315005 <== do rough. 0.456315005 some neurons fired, 0.356315005 still not enough.
+        float averageActivation = 0;
+        
+        for(int d = 0;d < depth;d++)
+            for(int i = 0;i < verDimension; i++)
+                for(int j = 0;j < horDimension; j++)
+                    averageActivation += Neurons[d][i][j].newInhibitedActivation;
+        
+        averageActivation /= verDimension*horDimension*depth;
+        
+        threshold /= (averageActivation/activationScaler);
+        
+        //cout << "averageActivation: " << averageActivation << endl;
+        
+        ///****************************************************************
+        */
+        
         // Compute firing rate using contrast enhancement
         for(int d = 0;d < depth;d++)
         {
             #pragma omp for nowait
             for(int i = 0;i < verDimension; i++)
-                for(int j = 0;j < horDimension; j++){
+                for(int j = 0;j < horDimension; j++)
                     Neurons[d][i][j].newFiringRate = 1/(1+exp(-2*sigmoidSlope*(Neurons[d][i][j].newInhibitedActivation-threshold - sigmoidThreshold)));
-                    
-                    //cout << "newInhibitedActivation: " << Neurons[d][i][j].newActivation << endl;
-                }
         }
     }
     else if(sparsenessRoutine == GLOBAL) {
@@ -423,6 +441,8 @@ void HiddenRegion::applyLearningRule() {
                 float norm = 0;
 
 				for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
+                    
+                    // 
 
                     switch (rule) {
                             
@@ -430,14 +450,14 @@ void HiddenRegion::applyLearningRule() {
                             (*s).weight += learningRate * stepSize * n->firingRate * (*s).preSynapticNeuron->firingRate;
                             break;
                         case TRACE_RULE:
-                            (*s).weight += learningRate * stepSize * n->trace * (*s).preSynapticNeuron->firingRate;
+                            //(*s).weight += learningRate * stepSize * n->trace * (*s).preSynapticNeuron->firingRate;
                             break;
                         case COVARIANCE_PRESYNAPTIC_TRACE_RULE:
                             
-                            // classic
+                            // CLASSIC COVARIANCE
                             //(*s).weight += (*s).preSynapticNeuron->firingRate * (*s).weight * learningRate * stepSize * n->trace * ((*s).preSynapticNeuron->firingRate - covarianceThreshold);
                             
-                            // conditional LTP : controlled version, completely fake
+                            // conditional LTP : controlled version
                             if((*s).preSynapticNeuron->firingRate > covarianceThreshold)
                                (*s).weight += learningRate * stepSize * n->trace; // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
                             

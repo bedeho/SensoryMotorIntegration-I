@@ -107,20 +107,23 @@
 	    								#["00000002.0"],
 	    								#["00000003.00"],
 	    								#["00000003.25"],
-	    								["00000003.50"],
+	    								#["00000003.50"],
 	    								#["00000003.75"],
 	    								#["00000004.00"]
 	    								#["00000004.25"],
-	    								["00000004.50"] #classic
+	    								["00000004.50"] #classic , seems important, larger values infact destroy performance with single target simulations, they dont clean up!!!!
 	    								#["00000004.75"],
 	    								#["00000005.0"],
-	    								#["00000006.0"],
+	    								#["00000006.0"] # varyingfixation_
 										#["00000007.0"]
 										#["00000008.0"],
 										#["00000009.0"]
-										
-	    								#["00000010.0"], 
-	    								#["00000015.0"], # multitargettraining
+	    								#["00000010.0"],
+	    								#["00000011.0"],
+	    								#["00000012.0"]
+	    								
+	    								
+	    								#["00000015.0"] # multitargettraining
 										#["00000020.0"],
 										
 										#["00000030.0"],
@@ -146,24 +149,24 @@
     our @sigmoidThresholds				= (
 										#["0.00"], # classic
 										
-										["0.01"],
+										#["0.01"],
 										#["0.02"], # sigma = 19,covariance_th = 0.9
 										#["0.03"],
 										#["0.04"],
-										["0.05"],
+										#["0.05"],
 										#["0.06"],
 										#["0.07"],
 										#["0.08"],
 										#["0.09"],
 										
-										["0.10"] # multitargettraining
+										#["0.10"],# multitargettraining
 										#["0.15"] # multitargettraining
-										#["0.20"] # multitargettraining
-										#["0.30"],
+										["0.20"]  # classic
+										#["0.30"] # nonspesific
 										#["0.40"],
 										#["0.50"],
-										#["0.60"], # classic, 30 epoch?
-										#["0.70"],
+										#["0.60"] 
+										#["0.70"]
 										#["0.80"],
 										#["0.90"]
 										
@@ -302,18 +305,18 @@
 										#["0.96"],
 										#["0.94"],
 										#["0.92"],
-										["0.90"], # classic? or is it 0.88?
+										["0.90"] # classic? or is it 0.88?
 										
 										#["0.88"]
 										#["0.86"],
 										#["0.84"],
 										#["0.82"],
-										["0.80"]
+										#["0.80"],
 										#["0.78"],
 										#["0.76"],
 										#["0.74"],
 										#["0.72"],
-										#["0.70"]
+										#["0.70"],
 										
 										#["0.68"],
 										#["0.66"],
@@ -412,7 +415,7 @@
     our @depth							= (1);
     our @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     our @fanInRadius 					= (6); # not used
-    our @fanInCountPercentage 			= ("0.3"); # classic=0.1,05 #0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    our @fanInCountPercentage 			= ("0.1"); # classic=0.1,05 #0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
     our @learningrate					= ("0.1"); # < === is permuted below
     our @eta							= ("0.8");
     our @timeConstant					= ("0.1"); # < === is permuted below

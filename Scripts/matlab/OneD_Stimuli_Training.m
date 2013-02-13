@@ -17,7 +17,7 @@
 %           linearly interpolated and saved at each point to file.
 %
 
-function OneD_Stimuli_Training(prefix)%, dist) %), headPositions) % fixationSequenceLength, ) 
+function OneD_Stimuli_Training(prefix, fixationSigma)%, numberOfNonSpesificFixations)%, dist) %), headPositions) % fixationSequenceLength, ) 
 
     % Import global variables
     declareGlobalVars();
@@ -44,10 +44,12 @@ function OneD_Stimuli_Training(prefix)%, dist) %), headPositions) % fixationSequ
     
     %% CLASSIC/Varying #head positions
     headPositions                       = 8; % classic = 8
-    fixationSequenceLength              = 30; % classic = 15
+    fixationSequenceLength              = 15; % classic = 15
     numberOfFixations                   = headPositions*fixationSequenceLength; % classic = ;
     
-    numberOfNonSpesificFixations        = 5;
+    % Variations
+    numberOfNonSpesificFixations        = 0;
+    %fixationSigma                       = 0.100; % (s)
     
     %% Varying fixation sequence length
     %{
@@ -77,7 +79,9 @@ function OneD_Stimuli_Training(prefix)%, dist) %), headPositions) % fixationSequ
                          '-fixduration='        num2str(fixationDuration,'%.2f') ...
                          '-fixationsequence='   num2str(fixationSequenceLength,'%.2f') ...
                          '-seed='               num2str(seed,'%.2f') ...
-                         '-samplingrate='       num2str(samplingRate,'%.2f')];
+                         '-samplingrate='       num2str(samplingRate,'%.2f') ...
+                         '-numNonSpesFix='      num2str(numberOfNonSpesificFixations, '%.2f') ...
+                         '-fixationSigma='      num2str(fixationSigma, '%.2f')];
     
     tSPath = [base 'Stimuli/' folderName '-training'];
     %testPath = [base 'Stimuli/' folderName '-stdTest'];
@@ -225,20 +229,22 @@ function OneD_Stimuli_Training(prefix)%, dist) %), headPositions) % fixationSequ
         testingTargets = fliplr(centerN2(nrOfRetinalTestingPositions, nrOfRetinalTestingPositions)); 
     end
     
-    testingEyePositionFieldSize = targetEyePositionRange; % *0.8
-    %disp('TIGHT TESTING>>>>>>>>>>>>>>>>> REMOVE!!!');
+    testingEyePositionFieldSize = targetEyePositionRange*0.8
+    disp('TIGHT TESTING>>>>>>>>>>>>>>>>> REMOVE!!!');
     testingEyePositions = centerN2(testingEyePositionFieldSize, nrOfTestingEyePositions);
     
     % Generate testing data
     disp('Generating Single Target Testing Data.');
     OneD_Stimuli_Testing(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets);
     
+    %{
     % Generate multiple targets testing data
     if nargin > 1,
         disp('Generating Multiple Target Testing Data.');
         OneD_Stimuli_CLASSICMultiTargetTesting(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, dist);
         OneD_Stimuli_NEWMultiTargetTesting(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, dist);
     end
+    %}
     
     % Make stimuli figures
     if numberOfSimultanousTargets  == 1,
@@ -316,7 +322,12 @@ function OneD_Stimuli_Training(prefix)%, dist) %), headPositions) % fixationSequ
             points(:,dataPoint*2-1) = state;
             
             % Add some time for end of fixation point
-            time = time + fixationDuration;
+            fixTime = 0;
+            while fixTime <= 0,
+                fixTime = normrnd(fixationDuration, fixationSigma, 1);
+            end
+            
+            time = time + fixTime;
             
             % Update and save state of fixation END
             state = [time ep retinalTargets];

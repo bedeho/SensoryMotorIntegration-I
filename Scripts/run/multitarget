@@ -1,0 +1,68 @@
+
+
+NEW================================================
+
+
+MT_baseline_singeltargettrained_exp:
+
+~/Dphil/Projects/SensoryMotorIntegration-I/Source/DerivedData/SensoryMotorIntegration-I/Build/Products/Release/SensoryMotorIntegration-I test ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_baseline_singeltargettrained_exp/Parameters.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_baseline_singeltargettrained_exp/TrainedNetwork.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Stimuli/dist_2_mulitargettest_2-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-multiTest/data.dat ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_baseline_singeltargettrained_exp/
+
+NEWMultiTargetTestingAnalysis('dist_2_mulitargettest_2-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-multiTest','~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_baseline_singeltargettrained_exp')
+
+
+
+
+
+
+
+**MT_singeltargettrained:
+
+~/Dphil/Projects/SensoryMotorIntegration-I/Source/DerivedData/SensoryMotorIntegration-I/Build/Products/Release/SensoryMotorIntegration-I test ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_singeltargettrained/Parameters.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_singeltargettrained/TrainedNetwork.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Stimuli/dist_2_mulitargettest_2-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-multiTest/data.dat ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_singeltargettrained/
+
+NEWMultiTargetTestingAnalysis('dist_2_mulitargettest_2-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-multiTest','~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_singeltargettrained')
+
+
+
+**MT_baseline_multitargettrained:
+
+~/Dphil/Projects/SensoryMotorIntegration-I/Source/DerivedData/SensoryMotorIntegration-I/Build/Products/Release/SensoryMotorIntegration-I test ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_baseline_multitargettrained/Parameters.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_baseline_multitargettrained/TrainedNetwork.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Stimuli/dist_2_mulitargettest_2-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-multiTest/data.dat ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_baseline_multitargettrained/
+
+NEWMultiTargetTestingAnalysis('dist_2_mulitargettest_2-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-multiTest','~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_baseline_multitargettrained')
+
+
+
+**MT_untrained:
+
+~/Dphil/Projects/SensoryMotorIntegration-I/Source/DerivedData/SensoryMotorIntegration-I/Build/Products/Release/SensoryMotorIntegration-I test ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_untrained/Parameters.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_untrained/BlankNetwork.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Stimuli/dist_2_mulitargettest_2-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-multiTest/data.dat ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_untrained/
+
+NEWMultiTargetTestingAnalysis('dist_2_mulitargettest_2-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-multiTest','~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MT_untrained')
+
+
+CLASSIC============================================
+
+multitargettestCLASSIC:
+
+~/Dphil/Projects/SensoryMotorIntegration-I/Source/DerivedData/SensoryMotorIntegration-I/Build/Products/Release/SensoryMotorIntegration-I test ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC/Parameters.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC/TrainedNetwork.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Stimuli/dist_10_multitargettest_10-visualfield=200.00-eyepositionfield=60.00-fixations=320.00-targets=1.00-fixduration=0.30-fixationsequence=40.00-seed=72.00-samplingrate=100.00-CLASSICmultiTest/data.dat ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC/
+
+
+
+multitargettestCLASSIC_slope:
+
+~/Dphil/Projects/SensoryMotorIntegration-I/Source/DerivedData/SensoryMotorIntegration-I/Build/Products/Release/SensoryMotorIntegration-I test ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC_slope/Parameters.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC_slope/TrainedNetwork.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Stimuli/dist_10_multitargettest_10-visualfield=200.00-eyepositionfield=60.00-fixations=320.00-targets=1.00-fixduration=0.30-fixationsequence=40.00-seed=72.00-samplingrate=100.00-CLASSICmultiTest/data.dat ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC_slope/
+
+CLASSICMultiTargetTestingAnalysis('dist_10_multitargettest_10-visualfield=200.00-eyepositionfield=60.00-fixations=320.00-targets=1.00-fixduration=0.30-fixationsequence=40.00-seed=72.00-samplingrate=100.00-CLASSICmultiTest','~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC_slope')
+
+
+
+Multi target TRAINED:
+multitargettestCLASSIC_multitargettrained
+
+~/Dphil/Projects/SensoryMotorIntegration-I/Source/DerivedData/SensoryMotorIntegration-I/Build/Products/Release/SensoryMotorIntegration-I test ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC_multitargettrained/Parameters.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC_multitargettrained/TrainedNetwork.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Stimuli/dist_10_mulitargettest_10-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-CLASSICmultiTest/data.dat ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC_multitargettrained/
+
+CLASSICMultiTargetTestingAnalysis('dist_10_mulitargettest_10-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-CLASSICmultiTest','~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC_multitargettrained')
+
+SiNGLE TARGET (superbaseline):
+multitargettestCLASSIC_singletarget:
+~/Dphil/Projects/SensoryMotorIntegration-I/Source/DerivedData/SensoryMotorIntegration-I/Build/Products/Release/SensoryMotorIntegration-I test ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC_singletarget/Parameters.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC_singletarget/TrainedNetwork.txt ~/Dphil/Projects/SensoryMotorIntegration-I/Stimuli/multitargettest_baseline-visualfield=200.00-eyepositionfield=60.00-fixations=320.00-targets=1.00-fixduration=0.30-fixationsequence=40.00-seed=72.00-samplingrate=100.00-stdTest/data.dat ~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC_singletarget/
+
+CLASSICMultiTargetTestingAnalysis('multitargettest_baseline-visualfield=200.00-eyepositionfield=60.00-fixations=320.00-targets=1.00-fixduration=0.30-fixationsequence=40.00-seed=72.00-samplingrate=100.00-stdTest','~/Dphil/Projects/SensoryMotorIntegration-I/Experiments/multitargettestCLASSIC_singletarget')

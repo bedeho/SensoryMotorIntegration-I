@@ -56,7 +56,12 @@ function NEWMultiTargetTestingAnalysis(stimuliName, experimentPath)
     %data = q.data;
     
     % MT_singeltargettrained
-    q = load('MT_singeltargettrained.mat');
+    %q = load('MT_singeltargettrained.mat');
+    %data = q.data;
+    
+    % MT_singeltargettrained
+    q = load('MT_multitargettrained.mat');
+    
     data = q.data;
     
     data = squeeze(data);

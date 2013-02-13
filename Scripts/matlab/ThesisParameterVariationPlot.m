@@ -6,7 +6,7 @@
 %  Copyright 2012 OFTNAI. All rights reserved.
 %
 
-%function ThesisParameterVariationPlot()
+function ThesisParameterVariationPlot()
 
     declareGlobalVars();
 
@@ -85,7 +85,7 @@
     %}
     
     %% varyingheadpositions
-    
+    %{
     for i=1:30,
         
         experiments(i).Folder   = ['../Experiments_disk/varyingheadpositions_' num2str(i) '/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork'];
@@ -95,7 +95,7 @@
     end
     
     XAxislabel = 'Number of Target Locations';
-    
+    %}
     
     %% Time constant
     %{
@@ -116,6 +116,18 @@
     XAxislabel = 'Trace Time Constant - \tau_u (s)';
     %XAxislabel = 'Activation Time Constant - \tau_h (s)';
     %}
+    
+    %% Spatiotemporal Stimulus Dynamics
+    vals = 0:5:50;%;5:100;
+    for i=1:length(vals),
+        
+        experiments(i).Folder   = ['search_nonspesific_' num2str(vals(i)) '.00/L=0.05000_S=0.90_sS=00000006.0_sT=0.30_gIC=0.0500_eS=0.0_/TrainedNetwork'];
+        X(i)                    = vals(i);
+        
+    end
+    
+    XAxislabel = 'Non-Spesific Periode Length - K';
+    
     %% Plotting
     numExperiments = length(experiments);
     
@@ -127,6 +139,7 @@
     % Iterate experiments and plot
     for e = 1:numExperiments,
         
+        %[expFolder experiments(e).Folder '/analysisResults.mat']
 
         % Load analysis file for experiments
         collation = load([expFolder experiments(e).Folder '/analysisResults.mat']);
@@ -177,5 +190,5 @@
     % sparseness
     %axis(AX(1),[50 98 0 1]);
     %axis(AX(2),[50 98 20 60]);
-%end
+end
   
