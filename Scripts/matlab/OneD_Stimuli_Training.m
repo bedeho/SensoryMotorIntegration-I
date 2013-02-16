@@ -17,7 +17,7 @@
 %           linearly interpolated and saved at each point to file.
 %
 
-function OneD_Stimuli_Training(prefix, fixationSigma)%, numberOfNonSpesificFixations)%, dist) %), headPositions) % fixationSequenceLength, ) 
+function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFixations)%, dist) %), headPositions) % fixationSequenceLength, ) 
 
     % Import global variables
     declareGlobalVars();
@@ -38,18 +38,18 @@ function OneD_Stimuli_Training(prefix, fixationSigma)%, numberOfNonSpesificFixat
     
     % Agent Movement
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    fixationDuration                    = 0.3; % (s) - fixation period after each saccade
+    fixationDuration                    = 1000;%0.3; % (s) - fixation period after each saccade
     
     % Agent in Training
     
     %% CLASSIC/Varying #head positions
-    headPositions                       = 8; % classic = 8
-    fixationSequenceLength              = 15; % classic = 15
+    headPositions                       = 4; % classic = 8
+    fixationSequenceLength              = 10; % classic = 15
     numberOfFixations                   = headPositions*fixationSequenceLength; % classic = ;
     
     % Variations
     numberOfNonSpesificFixations        = 0;
-    %fixationSigma                       = 0.100; % (s)
+    fixationSigma                       = 0;%0.100; % (s)
     
     %% Varying fixation sequence length
     %{
@@ -86,7 +86,7 @@ function OneD_Stimuli_Training(prefix, fixationSigma)%, numberOfNonSpesificFixat
     tSPath = [base 'Stimuli/' folderName '-training'];
     %testPath = [base 'Stimuli/' folderName '-stdTest'];
     %testPath = = [base 'Stimuli/' folderName '-training'];
-    
+      
     
     % Make folder
     if ~isdir(tSPath),

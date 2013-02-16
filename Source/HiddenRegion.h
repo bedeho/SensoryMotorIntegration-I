@@ -122,6 +122,10 @@ class HiddenRegion : public Region {
         float globalInhibitoryConstant;
         float externalStimulation;
     
+        float blockageLeakTime;
+        float blockageRiseTime;
+        float blockageTimeWindow;
+    
         //TRANSFER_FUNCTION transferFunction;
 		SPARSENESSROUTINE sparsenessRoutine;
 		LEARNING_RULE rule;

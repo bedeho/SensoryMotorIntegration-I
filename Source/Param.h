@@ -81,7 +81,15 @@ class Param  {
         vector<float> globalInhibitoryConstant;
         vector<float> externalStimulation;
     
-        vector<u_short> depths;					
+        //vector<float> blockageLeakTime;
+        //vector<float> blockageRiseTime;
+        //vector<float> blockageTimeWindow;
+    
+        float blockageLeakTime;
+        float blockageRiseTime;
+        float blockageTimeWindow;
+    
+        vector<u_short> depths;
         vector<u_short> dimensions;
 		vector<u_short> epochs;
         vector<u_short> filterWidth;

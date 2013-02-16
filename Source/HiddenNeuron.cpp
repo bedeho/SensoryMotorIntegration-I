@@ -35,7 +35,8 @@ void HiddenNeuron::init(HiddenRegion * region,
                         bool saveNeuronHistory, 
                         bool saveSynapseHistory, 
                         u_short desiredFanIn,
-                        float weightVectorLength) {
+                        float weightVectorLength,
+                        int fixedBufferWeightHistorySize) {
 
     
 	// Call base constructor
@@ -56,6 +57,8 @@ void HiddenNeuron::init(HiddenRegion * region,
     this->traceHistory = traceHistory;
     this->effectiveTraceHistory = effectiveTraceHistory;
     this->stimulationHistory = stimulationHistory;
+    
+    this->fixedBufferWeightHistorySize = fixedBufferWeightHistorySize;
     
     // Reserve, so only capacity changes, not size
     this->afferentSynapses.reserve(desiredFanIn);
@@ -93,7 +96,7 @@ void HiddenNeuron::addAfferentSynapse(const Neuron * preSynapticNeuron, float we
         buffer = NULL;  
     
     // Add synapse to synapse lisr
-    afferentSynapses.push_back(Synapse(weight, preSynapticNeuron, this, buffer)); // historyLength
+    afferentSynapses.push_back(Synapse(weight, preSynapticNeuron, this, buffer));//, fixedBufferWeightHistorySize)); // historyLength
 }
 
 void HiddenNeuron::setupAfferentSynapses(Region & preSynapticRegion, CONNECTIVITY connectivity, INITIALWEIGHT initialWeight, gsl_rng * rngController) {

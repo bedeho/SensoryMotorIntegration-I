@@ -66,6 +66,14 @@ Param::Param(const char * filename, bool isTraining) {
 		
 		cfg.lookupValue("lateralInteraction", tmp);
 		lateralInteraction = static_cast<LATERAL>(tmp);
+        
+        cfg.lookupValue("blockageLeakTime", blockageLeakTime);
+        cfg.lookupValue("blockageRiseTime", blockageRiseTime);
+        cfg.lookupValue("blockageTimeWindow", blockageTimeWindow);
+        
+        //this->blockageLeakTime = 0.01;
+        //this->blockageRiseTime = 80.1; //1000 to big, 100 to big also, 10 was to small, 50 was to small?
+        //this->blockageTimeWindow = 0.5;
 
         //cfg.lookupValue("playAtPrcntOfOriginalSpeed", playAtPrcntOfOriginalSpeed);
         
@@ -124,6 +132,10 @@ Param::Param(const char * filename, bool isTraining) {
 			somInhibitoryRadius.push_back(extrastriate[i]["somInhibitoryRadius"]);
 			somInhibitoryContrast.push_back(extrastriate[i]["somInhibitoryContrast"]);
 			filterWidth.push_back(static_cast<u_short>(static_cast<int>(extrastriate[i]["filterWidth"])));
+            
+            //blockageLeakTime.push_back(extrastriate[i]["blockageLeakTime"]);
+			//blockageRiseTime.push_back(extrastriate[i]["blockageRiseTime"]);
+			//blockageTimeWindow.push_back(extrastriate[i]["somInhibitoryContrast"]);
             
             tmp = extrastriate[i]["saveHistory"];
             saveHistory.push_back(static_cast<SAVEHISTORY>(tmp));

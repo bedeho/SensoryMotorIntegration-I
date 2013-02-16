@@ -62,6 +62,18 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, unsigned l
     this->percentileSize = static_cast<u_short>(depth*verDimension*horDimension*(1-sparsenessLevel));
     this->recordedSingleCells = p.recordedSingleCells[regionNr-1];
     this->saveHistory = p.saveHistory[regionNr-1];
+    
+    this->blockageLeakTime = p.blockageLeakTime;
+    this->blockageRiseTime = p.blockageRiseTime;
+    this->blockageTimeWindow = p.blockageTimeWindow;
+    
+    //this->blockageLeakTime = p.blockageLeakTime[regionNr-1];
+    //this->blockageRiseTime = p.blockageRiseTime[regionNr-1];
+    //this->blockageTimeWindow = p.blockageTimeWindow[regionNr-1];
+    
+    int fixedBufferWeightHistorySize = static_cast<int>(ceil(this->blockageTimeWindow/this->stepSize));
+    
+    cout << "fixedBufferWeightHistorySize: " << fixedBufferWeightHistorySize << endl;
 
     if(percentileSize < 1 && p.sparsenessRoutine != NOSPARSENESS) {
         cerr << "Sparseness is to low : " << percentileSize << endl;
@@ -163,7 +175,7 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, unsigned l
                 }
                 
                 // Init cell
-                Neurons[d][i][j].init(this, d, i, j, activation, inibitedActivation, firingRate, trace, stimulation, effectiveTrace, saveNeuronHistory, saveSynapseHistory, desiredFanIn, p.weightVectorLength);
+                Neurons[d][i][j].init(this, d, i, j, activation, inibitedActivation, firingRate, trace, stimulation, effectiveTrace, saveNeuronHistory, saveSynapseHistory, desiredFanIn, p.weightVectorLength, fixedBufferWeightHistorySize);
             }
                
 	
@@ -438,36 +450,69 @@ void HiddenRegion::applyLearningRule() {
             for(int j = 0; j < horDimension;j++) {
 				
                 HiddenNeuron * n = &Neurons[d][i][j];
-                float norm = 0;
+                float norm = 0, dw;
 
 				for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
                     
-                    // 
+                    // Keep values previous time step
+                    float oldBlockage = (*s).blockage;
+                    float oldWeight = (*s).weight;
+                    
+                    // OLD: Update synapse blockage
+                    ///if(1)
+                    //    (*s).blockage += stepSize * (-blockageLeakTime*oldBlockage + blockageRiseTime*fabs(oldWeight - (*s).getLast()));
+                    
+                    // NEW Update synapse blockage
+                    if(1)
+                        (*s).blockage += stepSize * (blockageLeakTime*(1-oldBlockage) - blockageRiseTime*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
+                    
+                    
+                    // Add to cumulative norm value
+					norm += oldWeight * oldWeight;
 
                     switch (rule) {
                             
                         case HEBB_RULE:
-                            (*s).weight += learningRate * stepSize * n->firingRate * (*s).preSynapticNeuron->firingRate;
+                            
+                            (*s).weight += stepSize * (learningRate * n->firingRate * (*s).preSynapticNeuron->firingRate);
+                            
                             break;
+                            
                         case TRACE_RULE:
-                            //(*s).weight += learningRate * stepSize * n->trace * (*s).preSynapticNeuron->firingRate;
+                            
+                            // CLASSIC
+                            //(*s).weight += stepSize * (learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
+                            
+                            // SATURATION RULE 1
+                            //dw = stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate - oldBlockage));
+                            //(*s).weight += dw > 0 ? dw : 0;
+                            
+                            // SATURATION RULE 2
+                            (*s).weight += stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
+                            
+                            // INDIVIDUAL WEIGHT SATURATION
+                            //(*s).weight += stepSize * (1 - (*s).weight)*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
+                            
                             break;
+                            
                         case COVARIANCE_PRESYNAPTIC_TRACE_RULE:
                             
                             // CLASSIC COVARIANCE
-                            //(*s).weight += (*s).preSynapticNeuron->firingRate * (*s).weight * learningRate * stepSize * n->trace * ((*s).preSynapticNeuron->firingRate - covarianceThreshold);
+                            //(*s).weight += stepSize * ((*s).preSynapticNeuron->firingRate * (*s).weight * learningRate * n->trace * ((*s).preSynapticNeuron->firingRate - covarianceThreshold));
                             
-                            // conditional LTP : controlled version
+                            // Conditional LTP : controlled version
                             if((*s).preSynapticNeuron->firingRate > covarianceThreshold)
-                               (*s).weight += learningRate * stepSize * n->trace; // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
+                               (*s).weight += stepSize * (learningRate * n->trace); // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
                             
                             break;
                     }
                     
-                    // Add to cumulative norm value
-					norm += (*s).weight * (*s).weight;
+                    // Save weight to buffer
+                    //if(1)
+                    //    (*s).savePresent();
 				}
-					
+                
+                // Update trace for this neuron
 				n->newTrace = (1 - stepSize/traceTimeConstant)*n->trace + (stepSize/traceTimeConstant)*n->firingRate;
 
 				// Normalization

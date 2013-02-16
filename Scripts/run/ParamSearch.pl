@@ -37,10 +37,10 @@
 	#our @paramArray				   = ("10.00","15.00","20.00","25.00","30.00","35.00","40.00","45.00","50.00","55.00","60.00","65.00","70.00","75.00","80.00","85.00","90.00","95.00","100.00");
 	
 	# varyingfixationduration: 0:0.05:2
-	our @paramArray				   		= ("0.00","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00","1.10","1.20","1.30","1.40","1.50","1.60","1.70","1.80","1.90","2.00");
+	#our @paramArray				   		= ("0.00","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00","1.10","1.20","1.30","1.40","1.50","1.60","1.70","1.80","1.90","2.00");
 	
 	# iterate param values   	
-	for my $p (@paramArray) {
+	#for my $p (@paramArray) {
 	   	
 	   	# prewiredPO, peakedgain
 	   	#my $experiment						= "prewiredPO";
@@ -55,6 +55,7 @@
 	   	#my $experiment						= "numberOfNeurons_70";
 	   	#my $experiment						= "sigma_19_failed";
 	   	#my $experiment						= "decoupled_gainencoding";
+	   	#my $experiment						= "baseline";
 	   	#my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	   	
 	   	#**********************************
@@ -130,8 +131,18 @@
 		#**********************************
 		
 		# varyingfixationduration
-		my $experiment						= "varyingfixationdurationvariability_${p}";
-		my $stim							= "varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=${p}";
+		#my $experiment						= "varyingfixationdurationvariability_${p}";
+		#my $stim							= "varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=${p}";
+		
+		my $experiment						= "baseline_varyingfixationdurationvariability15";
+		my $stim							= "varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=2.00"; # 0.40
+		
+		#turn on weight normailzation again
+		#turn on weight normailzation again#turn on weight normailzation again#turn on weight normailzation again#turn on weight normailzation again
+		
+		
+		#my $experiment						= "longfixtest300";
+		#my $stim							= "longfixtest300-visualfield=200.00-eyepositionfield=60.00-fixations=20.00-targets=1.00-fixduration=0.30-fixationsequence=10.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=0.00";
 		
 		# ./xGridCleanup.pl varyingfixationdurationvariability_2.00 varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=2.00-stdTest
 		
@@ -140,8 +151,8 @@
 		my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
 		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
-		my $nrOfEpochs						= 20; # 20;#10; #50; # 30,100
-		my $saveNetworkAtEpochMultiple 		= 110;
+		my $nrOfEpochs						= 30; # 20;#10; #50; # 30,100
+		my $saveNetworkAtEpochMultiple 		= 21;
 		my $outputAtTimeStepMultiple		= 10; # Keep this high (10<=) unless  you are recording for looking at dynamics!
 	
 		my $lateralInteraction				= NONE; # NONE, SHORT_INHIBITION_LONG_EXCITATION = VISNET, SHORT_EXCITATION_LONG_INHIBITION = SOM
@@ -185,7 +196,7 @@
 	
 	     	my %region   	= ('dimension'       	=>      $dimension[$r],
 	                         'depth'             	=>      $depth[$r],
-	                         'connectivity'		=>		$connectivity[$r],
+	                         'connectivity'			=>		$connectivity[$r],
 	                         'fanInRadius'       	=>      $fanInRadius[$r],
 	                         'fanInCountPercentage' =>      $fanInCountPercentage[$r],
 	                         'learningrate'      	=>      $learningrate[$r],
@@ -202,10 +213,15 @@
 	                         'somExcitatoryContrast'=>      $somExcitatoryContrast[$r],
 	                         'somInhibitoryRadius'  =>      $somInhibitoryRadius[$r],
 	                         'somInhibitoryContrast'=>      $somInhibitoryContrast[$r],
-	                         'filterWidth'   	=>      $filterWidth[$r],
-	                         'epochs'   		=>      $epochs[$r],
-	                         #'outputHistory'  	=>      $outputHistory[$r],
-	                         'saveHistory'  	=>      $saveHistory[$r],
+	                             
+    					     'blockageLeakTime'		=>		$blockageLeakTime[$r],
+    					     'blockageRiseTime'		=> 		$blockageRiseTime[$r],
+    						 'blockageTimeWindow'	=>		$blockageTimeWindow[$r],
+    
+	                         'filterWidth'   		=>      $filterWidth[$r],
+	                         'epochs'   			=>      $epochs[$r],
+	                         #'outputHistory'  		=>      $outputHistory[$r],
+	                         'saveHistory'  		=>      $saveHistory[$r],
 	                         'recordedSingleCells'	=>      $recordedSingleCells[$r]
 	                         );
 	                         
@@ -257,7 +273,8 @@
 		
 		# Make temporary parameter file
 		my $tmpParameterFile = $experimentFolder."Parameters.txt";
-		my $paramResult = makeParameterFile(\@esRegionSettings, "0.1", "0.1",$sigmoidModulationPercentage, $gaussianSigma);
+		print "OPPDATER forste kall til makeParameterFile om du har endret signaturen!";
+		my $paramResult = makeParameterFile(\@esRegionSettings, "0.1", "0.1",$sigmoidModulationPercentage, $gaussianSigma, "0.0", "0.0", "0.0");
 		open (PARAMETER_FILE, '>'.$tmpParameterFile) or die "Could not open file '$tmpParameterFile'. $!\n";
 		print PARAMETER_FILE $paramResult;
 		close (PARAMETER_FILE);
@@ -302,6 +319,10 @@
 	
 	
 	    #for my $sMP (@sigmoidModulationPercentage) {
+	    for my $bLT (@blockageLeakTime) {
+	    for my $bRT (@blockageRiseTime) {
+	   	for my $bTW (@blockageTimeWindow) {
+
 	    for my $sS (@sigmoidSlopes) {
 	    for my $sT (@sigmoidThresholds) {
 	    for my $gIC (@globalInhibitoryConstants) {
@@ -321,6 +342,10 @@
 							my @learningRateArray 			= @{ $l };
 							my @sparsityArray 				= @{ $s };
 							
+							#my @blockageLeakTimeArray 			= @{ $bLT };
+							#my @blockageRiseTimeArray 			= @{ $bRT };
+							#my @blockageTimeWindowArray			= @{ $bTW };
+							
 							print "Uneven parameter length found while permuting." if
 								$pathWayLength != scalar(@sigmoidSlopeArray) ||
 								$pathWayLength != scalar(@sigmoidThresholdArray) ||
@@ -329,6 +354,10 @@
 								$pathWayLength != scalar(@timeConstantArray) ||
 	   							$pathWayLength != scalar(@learningRateArray) || 
 	   							$pathWayLength != scalar(@sparsityArray);
+	   							
+	   							#$pathWayLength != scalar(@blockageLeakTimeArray) ||
+	   							#$pathWayLength != scalar(@blockageRiseTimeArray) || 
+	   							#$pathWayLength != scalar(@blockageTimeWindowArray);
 							
 							# Smallest eta value, it is used with ssF
 							my $layerCounter = 0;
@@ -343,6 +372,10 @@
 								$region->{'timeConstant'} 			= $timeConstantArray[$layerCounter];
 								$region->{'learningrate'} 			= $learningRateArray[$layerCounter];
 								$region->{'sparsenessLevel'} 		= $sparsityArray[$layerCounter];
+								
+								#$region->{'blockageLeakTime'} 			= $blockageLeakTimeArray[$layerCounter];
+								#$region->{'blockageRiseTime'} 			= $blockageRiseTimeArray[$layerCounter];
+								#$region->{'blockageTimeWindow'} 		= $blockageTimeWindowArray[$layerCounter];
 								
 								# Find the smallest eta, it is the what sSF is calculated out of
 								$minTc = $region->{'timeConstant'} if $minTc > $region->{'timeConstant'};
@@ -370,6 +403,16 @@
 							
 							my $Sstr = "@sparsityArray";
 							$Sstr =~ s/\s/-/g;
+							
+							
+							#my $bLTstr = "@blockageLeakTimeArray";
+							#$bLTstr =~ s/\s/-/g;
+							#
+							#my $bRTstr = "@blockageRiseTimeArray";
+							#$bRTstr =~ s/\s/-/g;
+							#
+							#my $bTWstr = "@blockageTimeWindowArray";
+							#$bTWstr =~ s/\s/-/g;
 	
 							# Build name so that only varying parameters are included.
 							my $simulationCode = "";
@@ -382,6 +425,11 @@
 							$simulationCode .= "sT=${sTstr}_" if scalar(@sigmoidThresholds) > 1;
 							$simulationCode .= "gIC=${gICstr}_" if scalar(@globalInhibitoryConstants) > 1;
 							$simulationCode .= "eS=${eSstr}_" if scalar(@externalStimulations) > 1;
+							
+							$simulationCode .= "bLT=${bLT}_" if scalar(@blockageLeakTime) > 1;
+							$simulationCode .= "bRT=${bRT}_" if scalar(@blockageRiseTime) > 1;
+							$simulationCode .= "bTW=${bTW}_" if scalar(@blockageTimeWindow) > 1;
+							
 							#$simulationCode .= "sMPs=${sMP}_" if scalar(@sigmoidModulationPercentage) > 1;
 							
 							# If there is only a single parameter combination being explored, then just give a long precise name,
@@ -398,7 +446,7 @@
 								# Make parameter file
 								print "\tWriting new parameter file: ". $simulationCode . " \n"; # . $timeStepStr . 
 								
-								my $result = makeParameterFile(\@esRegionSettings, $sSF, $ttC, $sigmoidModulationPercentage, $gaussianSigma);
+								my $result = makeParameterFile(\@esRegionSettings, $sSF, $ttC, $sigmoidModulationPercentage, $gaussianSigma, $bLT, $bRT, $bTW);
 								
 								open (PARAMETER_FILE, '>'.$parameterFile) or die "Could not open file '$parameterFile'. $!\n";
 								print PARAMETER_FILE $result;
@@ -432,7 +480,7 @@
 									# Make parameter file and write to simulation folder
 									print "Writing new parameter file: ". $simulationCode . " \n"; # . $timeStepStr .
 									
-									my $result = makeParameterFile(\@esRegionSettings, $sSF, $ttC, $sigmoidModulationPercentage, $gaussianSigma);
+									my $result = makeParameterFile(\@esRegionSettings, $sSF, $ttC, $sigmoidModulationPercentage, $gaussianSigma, $bLT, $bRT, $bTW);
 									
 									open (PARAMETER_FILE, '>'.$parameterFile) or die "Could not open file '$parameterFile'. $!\n";
 									print PARAMETER_FILE $result;
@@ -463,6 +511,11 @@
 	    }
 	    }
 	    }
+	    
+	   	}
+	    }
+	    }
+	    
 	    #}
 	    
 		# If we just setup xgrid parameter search
@@ -486,8 +539,8 @@
 		}
 		
 		sub makeParameterFile {
-			
-			my ($a, $stepSizeFraction, $traceTimeConstant, $sigmoidModulationPercentage, $gaussSig) = @_;
+
+			my ($a, $stepSizeFraction, $traceTimeConstant, $sigmoidModulationPercentage, $gaussSig, $blockageLeakTime, $blockageRiseTime, $blockageTimeWindow) = @_;
 
 			@esRegionSettings = @{$a}; # <== 2h of debuging to find, I have to frkn learn PERL...
 			
@@ -616,6 +669,27 @@ lateralInteraction = $lateralInteraction;
 */
 seed = $seed;
 
+/*
+*
+*
+*
+*/
+blockageLeakTime = $blockageLeakTime;
+
+/*
+*
+*
+*
+*/
+blockageRiseTime = $blockageRiseTime;
+
+/*
+*
+*
+*
+*/
+blockageTimeWindow = $blockageTimeWindow;
+
 area7a: {
 	/*
 	* The distance between consecutive neuron preferences in visual space
@@ -677,14 +751,18 @@ TEMPLATE
 						$str .= "\tinhibitoryRadius  				= ". $tmp{"inhibitoryRadius"} .";\n";
 						$str .= "\tinhibitoryContrast				= ". $tmp{"inhibitoryContrast"} .";\n";
 						$str .= "\tsomExcitatoryRadius				= ". $tmp{"somExcitatoryRadius"} .";\n";
-			            		$str .= "\tsomExcitatoryContrast			= ". $tmp{"somExcitatoryContrast"} .";\n";
+			            $str .= "\tsomExcitatoryContrast			= ". $tmp{"somExcitatoryContrast"} .";\n";
 						$str .= "\tsomInhibitoryRadius				= ". $tmp{"somInhibitoryRadius"} .";\n";
-			            		$str .= "\tsomInhibitoryContrast			= ". $tmp{"somInhibitoryContrast"} .";\n";
-			            		$str .= "\tfilterWidth   					= ". $tmp{"filterWidth"} .";\n";
-			            		$str .= "\tepochs							= ". $tmp{"epochs"} .";\n";
-			            		# $str .= "\toutputHistory					= ". $tmp{"outputHistory"} .";\n";
-			            		$str .= "\tsaveHistory						= ". $tmp{"saveHistory"} .";\n";
-			            		$str .= "\trecordedSingleCells				= ". $tmp{"recordedSingleCells"} .";\n";
+			            $str .= "\tsomInhibitoryContrast			= ". $tmp{"somInhibitoryContrast"} .";\n";
+			            $str .= "\tfilterWidth   					= ". $tmp{"filterWidth"} .";\n";
+			            $str .= "\tepochs							= ". $tmp{"epochs"} .";\n";
+			            # $str .= "\toutputHistory					= ". $tmp{"outputHistory"} .";\n";
+			            $str .= "\tsaveHistory						= ". $tmp{"saveHistory"} .";\n";
+			            $str .= "\trecordedSingleCells				= ". $tmp{"recordedSingleCells"} .";\n";
+			            
+			            #$str .= "\tblockageLeakTime					= ". $tmp{"blockageLeakTime"} .";\n";
+			            #$str .= "\tblockageRiseTime					= ". $tmp{"blockageRiseTime"} .";\n";
+						#$str .= "\tblockageTimeWindow				= ". $tmp{"blockageTimeWindow"} .";\n";
 			                        
 						$str .= "},";
 					}
@@ -693,4 +771,4 @@ TEMPLATE
 			        return $str." );";
 				}
 	
-	}
+	#}

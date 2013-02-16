@@ -39,6 +39,8 @@ class HiddenNeuron: public Neuron {
         unsigned long neuronHistoryCounter;
         unsigned long synapseHistoryCounter;
 		bool saveNeuronHistory;
+    
+        int fixedBufferWeightHistorySize;
 		
         // History buffers
         float * activationHistory;
@@ -87,7 +89,8 @@ class HiddenNeuron: public Neuron {
                   bool saveNeuronHistory, 
                   bool saveSynapseHistory,
                   u_short desiredFanIn,
-                  float weightVectorLength);
+                  float weightVectorLength,
+                  int fixedBufferWeightHistorySize);
         
         // Destructor
         ~HiddenNeuron();
@@ -134,7 +137,12 @@ inline void HiddenNeuron::clearState(bool resetTrace) {
 	inhibitedActivation = 0;
     newInhibitedActivation = 0;
     stimulation = 0;
+    
+    
+    for(u_short s = 0;s < afferentSynapses.size();s++)
+		afferentSynapses[s].resetBlockage();
 	
+    
 	if(resetTrace) {
 		trace = 0; 
 		newTrace = 0;
