@@ -239,8 +239,15 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
         output(file, traceHistory);
         output(file, stimulationHistory);
         output(file, effectiveTraceHistory);
+        
+        // Dump synapse descriptins afferent synapses
+        for(std::vector<Synapse>::iterator s = afferentSynapses.begin(); s != afferentSynapses.end();s++) {
+            
+            const Neuron * n = (*s).preSynapticNeuron;
+        	file << n->region->regionNr << n->depth << n->row << n->col; // region, depth, row, col
+        }
 
-        // Iterate afferent synapses
+        // Dump afferent synapses histories
         for(std::vector<Synapse>::iterator s = afferentSynapses.begin(); s != afferentSynapses.end();s++)  {
             
             // Output weight history for this synapse

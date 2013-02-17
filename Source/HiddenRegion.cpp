@@ -481,14 +481,14 @@ void HiddenRegion::applyLearningRule() {
                         case TRACE_RULE:
                             
                             // CLASSIC
-                            //(*s).weight += stepSize * (learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
+                            (*s).weight += stepSize * (learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
                             
                             // SATURATION RULE 1
                             //dw = stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate - oldBlockage));
                             //(*s).weight += dw > 0 ? dw : 0;
                             
                             // SATURATION RULE 2
-                            (*s).weight += stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
+                            //(*s).weight += stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
                             
                             // INDIVIDUAL WEIGHT SATURATION
                             //(*s).weight += stepSize * (1 - (*s).weight)*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate);

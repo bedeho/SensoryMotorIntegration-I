@@ -247,8 +247,8 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         [row, col] = imagescClick(pos(1, 2), pos(1, 1), networkDimensions(region).y_dimension, networkDimensions(region).x_dimension);
 
         if singleUnits{region}(row, col, 1).isPresent,
-            responseClick(row,col,region);
-            plotSingleUnit(singleUnits{region}(row, col, 1), historyDimensions);
+            viewNeuron(row,col,region);
+            trainingDynamics(singleUnits{region}(row, col, 1), historyDimensions, networkDimensions, true);
             
         else
             disp('Not recorded.');

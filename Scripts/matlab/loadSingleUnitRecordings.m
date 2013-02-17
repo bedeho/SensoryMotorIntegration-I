@@ -168,14 +168,18 @@ function [singleUnits, historyDimensions, nrOfPresentLayers] = loadSingleUnitRec
         singleUnits{regionNr}(row, col, depth).stimulation          = stimulation; %reshape(stimulation, dimensionStructure); % stimulation
 
         effectiveTrace = fread(fileID, historyDimensions.streamSize, SOURCE_PLATFORM_FLOAT);
-        singleUnits{regionNr}(row, col, depth).effectiveTrace          = effectiveTrace; %reshape(effectiveTrace, dimensionStructure); % stimulation        
+        singleUnits{regionNr}(row, col, depth).effectiveTrace          = effectiveTrace; %reshape(effectiveTrace, dimensionStructure); % stimulation   
         
+        % Load synapse sources
+        singleUnits{regionNr}(row, col, depth).presynapticSynapseSource = ones(4,fanIn) + fread(fileID, [4 fanIn], SOURCE_PLATFORM_USHORT); % region, depth, row, col
+
         % Synapse history - history of all in one read
         % file << afferentSynapses[s].weightHistory[t];
         weightHistory = fread(fileID, fanIn * historyDimensions.streamSize, SOURCE_PLATFORM_FLOAT);
         
         % Structure into array
         singleUnits{regionNr}(row, col, depth).synapses = reshape(weightHistory, [historyDimensions.streamSize fanIn]); %reshape(weightHistory, [dimensionStructure fanIn]); % (timestep, transform, object, epoch, synapseNr)
+        
         
     end
     
