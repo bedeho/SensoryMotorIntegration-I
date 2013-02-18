@@ -315,18 +315,18 @@
 										#["0.96"],
 										#["0.94"],
 										#["0.92"],
-										["0.90"] # classic? or is it 0.88?
+										["0.90"], # classic? or is it 0.88?
 										
 										#["0.88"]
 										#["0.86"],
 										#["0.84"],
 										#["0.82"],
-										#["0.80"]
+										["0.80"],
 										#["0.78"]
 										#["0.76"],
 										#["0.74"],
 										#["0.72"],
-										#["0.70"],
+										["0.70"]
 										
 										#["0.68"],
 										#["0.66"],
@@ -419,10 +419,10 @@
 									    );  # classic: "0.400"
 	die "Invalid array: traceTimeConstant" if !validateArray(\@traceTimeConstant);
 	
-	our @blockageLeakTime				= ("0.1"); #"0.0","0.1",
+	our @blockageLeakTime				= ("10.1","0.001"); #"0.0","0.1",
     die "Invalid array: blockageLeakTime" if !validateArray(\@blockageLeakTime);
 
-	our @blockageRiseTime				= ("1000.0"); # ,"1000.0" #"500.0","400.0","300.0","200.0"
+	our @blockageRiseTime				= ("10.0","50.0","100.0","200.0","400.0","600.0","800.0","1000.0"); # ,"1000.0" #"500.0","400.0","300.0","200.0"
 	
 	# for 0.5 window, none work: "130.0","125.0","120.0","115.0","110.0","105.0","100.0","95.0","90.0","85.0","80.0","75.0","70.0","65.0","60.0","55.0"
 	
@@ -457,11 +457,11 @@
     
     our @epochs							= (10); # only used in discrete model
 
-	our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-	our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) , (6,7))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+	#our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) , (6,7))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 	
-	#our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
-	#our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
+	our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 
 	# Do some validation
 	print "Uneven parameter length." if 

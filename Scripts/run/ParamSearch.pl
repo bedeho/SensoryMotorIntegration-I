@@ -56,7 +56,7 @@
 	   	#my $experiment						= "sigma_19_failed";
 	   	#my $experiment						= "decoupled_gainencoding";
 	   	#my $experiment						= "baseline";
-	   	my $experiment						= "monitorPeaked";
+	   	my $experiment						= "monitorPeaked2";
 	   	my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	   	
 	   	#**********************************
@@ -135,8 +135,8 @@
 		#my $experiment						= "varyingfixationdurationvariability_${p}";
 		#my $stim							= "varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=${p}";
 		
-		#my $experiment						= "baseline_varyingfixationdurationvariability16";
-		#my $stim							= "varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=2.00"; # 0.40
+		#my $experiment						= "baseline_varyingfixationdurationvariability17";
+		#my $stim							= "varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=1.00"; # 0.40
 		
 		#turn on weight normailzation again
 		#turn on weight normailzation again#turn on weight normailzation again#turn on weight normailzation again#turn on weight normailzation again
@@ -149,13 +149,15 @@
 		
 		#**********************************
 		
-		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
+		my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
 		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
-		my $nrOfEpochs						= 6; # 20;#10; #50; # 30,100
-		my $saveNetworkAtEpochMultiple 		= 1;
-		my $outputAtTimeStepMultiple		= 10; # Keep this high (10<=) unless  you are recording for looking at dynamics!
-	
+		my $nrOfEpochs						= 50; # 20;#10; #50; # 30,100
+		my $saveNetworkAtEpochMultiple 		= 100;
+		my $outputAtTimeStepMultiple		= 10; # Keep this high (10>=) unless  you are recording for looking at dynamics!
+		
+		print "WARNING: low output multiple\n";
+		
 		my $lateralInteraction				= NONE; # NONE, SHORT_INHIBITION_LONG_EXCITATION = VISNET, SHORT_EXCITATION_LONG_INHIBITION = SOM
 		my $sparsenessRoutine				= HEAP; # NONE, HEAP, GLOBAL
 	

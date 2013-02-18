@@ -237,7 +237,9 @@ void Param::validate(bool isTraining) {
 		}
 		
 		stepSize = smallestTimeConstant * stepSizeFraction;
-        
+    
+        cout << "dt = " << stepSize << endl;
+    
         if(nrOfEpochs < 1) {
             cerr << "No training epochs, nrOfEpochs = 0." << endl;
             cerr.flush();

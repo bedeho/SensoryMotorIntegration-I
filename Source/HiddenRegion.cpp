@@ -351,8 +351,9 @@ void HiddenRegion::computeNewActivation() {
                     
                 }
                 
-                n->newActivation = (1 - stepSize/timeConstant) * n->activation + (stepSize/timeConstant) * stimulation;
-					
+                //old obsucated: n->newActivation = (1 - stepSize/timeConstant) * n->activation + (stepSize/timeConstant) * stimulation;
+                n->newActivation = n->activation + (stepSize/timeConstant) * (-n->activation + stimulation);
+                
                 n->stimulation = stimulation;
 				
     			// Is copied forward in case do not have inhibition routine
@@ -463,9 +464,7 @@ void HiddenRegion::applyLearningRule() {
                     //    (*s).blockage += stepSize * (-blockageLeakTime*oldBlockage + blockageRiseTime*fabs(oldWeight - (*s).getLast()));
                     
                     // NEW Update synapse blockage
-                    if(1)
-                        (*s).blockage += stepSize * (blockageLeakTime*(1-oldBlockage) - blockageRiseTime*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
-                    
+                    (*s).blockage += stepSize * (blockageLeakTime*(1-oldBlockage) - blockageRiseTime*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
                     
                     // Add to cumulative norm value
 					norm += oldWeight * oldWeight;
@@ -481,14 +480,14 @@ void HiddenRegion::applyLearningRule() {
                         case TRACE_RULE:
                             
                             // CLASSIC
-                            (*s).weight += stepSize * (learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
+                            //(*s).weight += stepSize * (learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
                             
                             // SATURATION RULE 1
                             //dw = stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate - oldBlockage));
                             //(*s).weight += dw > 0 ? dw : 0;
                             
                             // SATURATION RULE 2
-                            //(*s).weight += stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
+                            (*s).weight += stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
                             
                             // INDIVIDUAL WEIGHT SATURATION
                             //(*s).weight += stepSize * (1 - (*s).weight)*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
@@ -513,8 +512,9 @@ void HiddenRegion::applyLearningRule() {
 				}
                 
                 // Update trace for this neuron
-				n->newTrace = (1 - stepSize/traceTimeConstant)*n->trace + (stepSize/traceTimeConstant)*n->firingRate;
-
+				//obfuscated form: n->newTrace = (1 - stepSize/traceTimeConstant)*n->trace + (stepSize/traceTimeConstant)*n->firingRate;
+                n->newTrace = n->trace + (stepSize/traceTimeConstant)*(-n->trace + n->firingRate);
+                
 				// Normalization
 				if(weightNormalization == CLASSIC)
 					n->normalize(norm);

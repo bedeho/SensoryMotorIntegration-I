@@ -86,7 +86,7 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
         % + sigmoid
         subplot(4,1,1);
         im = imagesc(sigmoidPositive);%/fullNorm
-        daspect([eyePositionFieldSize visualFieldSize 1]);
+        pbaspect([eyePositionFieldSize visualFieldSize 1]);
         
         tickTitle = [sprintf('%02d', fullMin) ':' sprintf('%02d', fullSec) ':' sprintf('%03d',fullMs)];
         title(tickTitle);
@@ -96,7 +96,7 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
         % - sigmoid
         subplot(4,1,2);
         imagesc(sigmoidNegative); % /fullNorm
-        daspect([eyePositionFieldSize visualFieldSize 1]);
+        pbaspect([eyePositionFieldSize visualFieldSize 1]);
         
         
         %% input space
@@ -104,7 +104,7 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
         
         plot(eyePosition*ones(numberOfSimultanousTargets), retinalPositions , 'o');
         
-        daspect([eyePositionFieldSize visualFieldSize 1]);
+        pbaspect([eyePositionFieldSize visualFieldSize 1]);
         axis([-eyePositionFieldSize/2 eyePositionFieldSize/2 -visualFieldSize/2 visualFieldSize/2]);
         title('Present input');
         
@@ -126,7 +126,7 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
             
             hold on;
         end
-        daspect([eyePositionFieldSize visualFieldSize 1]);
+        pbaspect([eyePositionFieldSize visualFieldSize 1]);
         axis([-eyePositionFieldSize/2 eyePositionFieldSize/2 -visualFieldSize/2 visualFieldSize/2]);
         title('History input');
     end

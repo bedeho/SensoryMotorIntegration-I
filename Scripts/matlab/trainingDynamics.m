@@ -15,19 +15,19 @@
 %  Output========
 %  Plots line plot of activity for spesific neuron
 
-function trainingDynamics(unit, historyDimensions, networkDimensions, includeSynapses, maxEpoch)
+function trainingDynamics(unit, historyDimensions, networkDimensions, includeSynapses, stimuliName)
 
 
     % Import global variables
-    declareGlobalVars();
+    %declareGlobalVars();
     
-    if nargin < 7,
-        maxEpoch = historyDimensions.numEpochs; % pick all epochs
-        
-        if nargin < 6,
-            includeSynapses = true;
-        end
-    end
+    %UGLY!!!
+    stimuliName = strrep(stimuliName,'stdTest','training');
+
+    % Output frequency
+    timestep = 0.01
+    outputAtTimeStepMultiple = 2
+    tickSize = timestep*outputAtTimeStepMultiple;
     
     %% Load buffers
     
@@ -69,6 +69,10 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
     
     end
     
+    % Load stimuli data
+    [samplingRate, numberOfSimultanousTargets, visualFieldSize, eyePositionFieldSize, buffer] = OneD_Stimuli_Load(stimuliName);
+    totalStimuliDuration = length(buffer)*(1/samplingRate);
+    
     % Start figure and setup mouse click callback
     h = figure();
     set(h, 'ButtonDownFcn', {@clickCallback}); % Setup callback
@@ -77,16 +81,9 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
     % Setup and start timer
     % Good video on timers: http://blogs.mathworks.com/pick/2008/05/05/advanced-matlab-timer-objects/
     t = 1;
-    timerObject = timer('Period', 0.5, 'ExecutionMode', 'fixedSpacing');
+    timerObject = timer('Period', 0.1, 'ExecutionMode', 'fixedSpacing');
     set(timerObject, 'TimerFcn', {@trainingDynamics_Draw});
-    
-    
-    %{
-    global t, streamSize, timerObject, plotBuffer, traceBuffer,
-    ticksInBuffer, matrixes, includeSynapses, stimulationBuffer, numRegions,
-    activationBuffer, firingBuffer, synapses;
-    %}
-    
+
     function trainingDynamics_Draw(obj, event)
         
         if t > streamSize,
@@ -106,7 +103,7 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
         plotBuffer(:,end) = [tr; a; f; s];
 
         % Plot buffer
-        subplot(numRegions+1, 1,1);
+        subplot(numRegions+1+1, 1,1);
         plot(plotBuffer');
         axis([1 ticksInBuffer -0.1 1.1]); 
         title(['tick = ' num2str(t) '/' num2str(streamSize)]);
@@ -136,19 +133,49 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
             % Show matrices
             for r=1:numRegions,
 
-                subplot(numRegions+1,1,r+1);
+                subplot(numRegions+1+1,1,r+1);
 
                 regionNr = sourceRegion(r);
                 depthNr = sourceDepth(r);
 
                 imagesc(matrixes{regionNr,depthNr});
-                colobar
+                pbaspect([networkDimensions(regionNr).x_dimension networkDimensions(regionNr).y_dimension 1]);
+                %colobar
 
             end
 
         end
         
-        t = t + 2;
+        % Stimuli plot - IT IS FUDGEDD, not 10.00% correct
+        simulationTime = (t-1)*tickSize;
+        timeIntoEpoch = mod(simulationTime, totalStimuliDuration);
+        lineCounter = floor(timeIntoEpoch/(1/samplingRate))+1;
+        if lineCounter > length(buffer)
+            lineCounter = length(buffer)-1;
+            disp('is done');
+        end
+        
+        eyePosition = buffer(lineCounter, 1);
+        retinalPositions = buffer(lineCounter, 2:(numberOfSimultanousTargets + 1));
+        
+        if ~isnan(eyePosition),
+            
+            subplot(numRegions+1+1, 1, numRegions+1+1);
+            plot(eyePosition*ones(numberOfSimultanousTargets), retinalPositions , 'o');
+            pbaspect([eyePositionFieldSize visualFieldSize 1]);
+            axis([-eyePositionFieldSize/2 eyePositionFieldSize/2 -visualFieldSize/2 visualFieldSize/2]);
+        else
+            disp('isnan!!!');
+        end
+
+        % Update where we are
+        if tr > 0.2 || f > 0.2,
+            dt = 2;
+        else
+            dt = 20;
+        end
+        
+        t = t + dt;
         
     end
 

@@ -248,7 +248,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
 
         if singleUnits{region}(row, col, 1).isPresent,
             viewNeuron(row,col,region);
-            trainingDynamics(singleUnits{region}(row, col, 1), historyDimensions, networkDimensions, true);
+            trainingDynamics(singleUnits{region}(row, col, 1), historyDimensions, networkDimensions, true, stimuliName);
             
         else
             disp('Not recorded.');
