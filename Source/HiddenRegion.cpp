@@ -480,17 +480,17 @@ void HiddenRegion::applyLearningRule() {
                         case TRACE_RULE:
                             
                             // CLASSIC
-                            //(*s).weight += stepSize * (learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
+                            (*s).weight += stepSize * (learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
                             
-                            // SATURATION RULE 1
+                            // SATURATION RULE 1: b_ij =0 -> LTP is possible
                             //dw = stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate - oldBlockage));
                             //(*s).weight += dw > 0 ? dw : 0;
                             
                             // SATURATION RULE 2
-                            (*s).weight += stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
+                            //(*s).weight += stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
                             
                             // INDIVIDUAL WEIGHT SATURATION
-                            //(*s).weight += stepSize * (1 - (*s).weight)*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
+                            //(*s).weight += stepSize * (0.1 - (*s).weight)*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
                             
                             break;
                             
@@ -500,8 +500,12 @@ void HiddenRegion::applyLearningRule() {
                             //(*s).weight += stepSize * ((*s).preSynapticNeuron->firingRate * (*s).weight * learningRate * n->trace * ((*s).preSynapticNeuron->firingRate - covarianceThreshold));
                             
                             // Conditional LTP : controlled version
+                            //if((*s).preSynapticNeuron->firingRate > covarianceThreshold)
+                            //0   (*s).weight += stepSize * (learningRate * n->trace); // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
+                            
+                            // Conditional LTP 2 : controlled version
                             if((*s).preSynapticNeuron->firingRate > covarianceThreshold)
-                               (*s).weight += stepSize * (learningRate * n->trace); // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
+                                (*s).weight += stepSize * (0.1 - (*s).weight)* (learningRate * n->trace); // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
                             
                             break;
                     }

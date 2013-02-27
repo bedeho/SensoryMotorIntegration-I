@@ -115,19 +115,19 @@
 	    								#["00000003.75"],
 	    								#["00000004.00"]
 	    								#["00000004.25"],
-	    								["00000004.50"] #classic , seems important, larger values infact destroy performance with single target simulations, they dont clean up!!!!
+	    								#["00000004.50"] #classic , seems important, larger values infact destroy performance with single target simulations, they dont clean up!!!!
 	    								#["00000004.75"],
 	    								#["00000005.0"],
-	    								#["00000006.0"], # varyingfixation_
+	    								#["00000006.0"] # varyingfixation_, # use with (0.15 -w)
 										#["00000007.0"]
-										#["00000008.0"]
+										#["00000008.0"],
 										#["00000009.0"]
 	    								#["00000010.0"],
 	    								#["00000011.0"],
 	    								#["00000012.0"]
 	    								
 	    								
-	    								#["00000015.0"] # multitargettraining
+	    								["00000015.0"] # multitargettraining
 										#["00000020.0"],
 										
 										#["00000030.0"],
@@ -135,7 +135,6 @@
 										
 										 
 										#["00000050.0"]  # sigma = 19,covariance_th = 0.9
-										#["00000100.0"]									
 										#["00000100.0"]
 										#["00000150.0"],
 										#["00000200.0"],
@@ -157,17 +156,17 @@
 										#["0.02"], # sigma = 19,covariance_th = 0.9
 										#["0.03"],
 										#["0.04"],
-										#["0.05"]
+										#["0.05"],
 										#["0.06"],
 										#["0.07"],
 										#["0.08"],
 										#["0.09"],
 										
-										#["0.10"],# multitargettraining
+										["0.10"] # multitargettraining, variable duration, fixedduration
 										#["0.15"] # multitargettraining
-										["0.20"]  # classic
+										#["0.20"]  # classic
 										#["0.30"] # nonspesific
-										#["0.40"],
+										#["0.40"] # # use with (0.1 -w)
 										#["0.50"],
 										#["0.60"] 
 										#["0.70"]
@@ -235,7 +234,7 @@
 										#["0.02000"],
 										#["0.03000"],
 										#["0.04000"],
-										["0.05000"] # classic and everything else
+										#["0.05000"] # classic and everything else
 										#["0.06000"],
 										#["0.07000"],
 										#["0.08000"],
@@ -244,18 +243,18 @@
 										#["0.10000"],
 										#["0.20000"],
 										#["0.30000"],
-										#["0.40000"],
-										#["0.50000"],
+										#["0.40000"]
+										#["0.50000"] 
 										#["0.60000"],
 										#["0.70000"],
 										#["0.80000"],
-										#["0.90000"],
+										["0.90000"] # use with (0.1 -w)
 										#
 										#["1.00000"],
 										#["2.00000"],
 										#["3.00000"],
 										#["4.00000"],
-										#["5.00000"],
+										#["5.00000"]
 										#["6.00000"],
 										#["7.00000"],
 										#["8.00000"],
@@ -263,7 +262,7 @@
 										
 										#["10.0000"],
 										
-										#["50.0000"],
+										#["50.0000"]
 										
 										#["100.000"]
 										);								
@@ -315,24 +314,24 @@
 										#["0.96"],
 										#["0.94"],
 										#["0.92"],
-										["0.90"], # classic? or is it 0.88?
+										["0.90"]#, # classic? or is it 0.88?
 										
 										#["0.88"]
 										#["0.86"],
 										#["0.84"],
 										#["0.82"],
-										["0.80"],
+										#["0.80"],
 										#["0.78"]
 										#["0.76"],
 										#["0.74"],
 										#["0.72"],
-										["0.70"]
+										#["0.70"]
 										
 										#["0.68"],
 										#["0.66"],
 										#["0.64"],
 										#["0.62"],
-										#["0.60"],
+										#["0.60"]
 										
 										#["0.58"],
 										#["0.56"],
@@ -380,7 +379,7 @@
 									    #"0.100",
 									    #"0.200",
 									    #"0.300",
-									    "0.400" # classic
+									    "0.400", # classic
 									    #"0.500",
 									    #"0.600",
 									    #"0.700",
@@ -392,7 +391,7 @@
 									    #"3.000",
 									    #"4.000",
 									    #"5.000",
-									    #"6.000",
+									    #"6.000"
 									    #"7.000",
 									    #"8.000",
 									    #"9.000",
@@ -419,10 +418,10 @@
 									    );  # classic: "0.400"
 	die "Invalid array: traceTimeConstant" if !validateArray(\@traceTimeConstant);
 	
-	our @blockageLeakTime				= ("10.1","0.001"); #"0.0","0.1",
+	our @blockageLeakTime				= ("0.0"); #"10.1","10.1", "10.0","1.0","0.1"
     die "Invalid array: blockageLeakTime" if !validateArray(\@blockageLeakTime);
-
-	our @blockageRiseTime				= ("10.0","50.0","100.0","200.0","400.0","600.0","800.0","1000.0"); # ,"1000.0" #"500.0","400.0","300.0","200.0"
+ 
+	our @blockageRiseTime				= ("0.0"); # ,"300.0","600.0","1000.0 #"600.0", ,"1000.0" #"500.0","400.0","300.0","200.0", "1.0","50.0","200.0",
 	
 	# for 0.5 window, none work: "130.0","125.0","120.0","115.0","110.0","105.0","100.0","95.0","90.0","85.0","80.0","75.0","70.0","65.0","60.0","55.0"
 	
@@ -459,6 +458,10 @@
 
 	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
 	#our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) , (6,7))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+
+	# fewer
+	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+	#our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 	
 	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
 	our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 

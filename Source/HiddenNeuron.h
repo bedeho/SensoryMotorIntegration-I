@@ -138,7 +138,6 @@ inline void HiddenNeuron::clearState(bool resetTrace) {
     newInhibitedActivation = 0;
     stimulation = 0;
     
-    
     for(u_short s = 0;s < afferentSynapses.size();s++)
 		afferentSynapses[s].resetBlockage();
 	

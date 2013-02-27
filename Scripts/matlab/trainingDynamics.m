@@ -81,8 +81,10 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
     % Setup and start timer
     % Good video on timers: http://blogs.mathworks.com/pick/2008/05/05/advanced-matlab-timer-objects/
     t = 1;
-    timerObject = timer('Period', 0.1, 'ExecutionMode', 'fixedSpacing');
+    timerObject = timer('Period', 0.05, 'ExecutionMode', 'fixedSpacing');
     set(timerObject, 'TimerFcn', {@trainingDynamics_Draw});
+    
+    goSlow = false;
 
     function trainingDynamics_Draw(obj, event)
         
@@ -139,6 +141,7 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
                 depthNr = sourceDepth(r);
 
                 imagesc(matrixes{regionNr,depthNr});
+                colorbar
                 pbaspect([networkDimensions(regionNr).x_dimension networkDimensions(regionNr).y_dimension 1]);
                 %colobar
 
@@ -169,10 +172,10 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
         end
 
         % Update where we are
-        if tr > 0.2 || f > 0.2,
+        if goSlow || tr > 0.2 || f > 0.2,
             dt = 2;
         else
-            dt = 20;
+            dt = 50;
         end
         
         t = t + dt;
@@ -181,12 +184,22 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
 
     function clickCallback(varargin)
         
-        if running,
-            stop(timerObject);
-        else
-            start(timerObject);
-        end
+        clickType = get(gcf,'SelectionType');
         
-        running = ~running;
+        % Left click
+        if strcmp(clickType,'normal'),
+            
+            if running,
+                stop(timerObject);
+            else
+                start(timerObject);
+            end
+
+            running = ~running;
+        else
+            
+            %Right click
+            goSlow = ~goSlow
+        end
     end
 end

@@ -38,18 +38,19 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     
     % Agent Movement
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    fixationDuration                    = 1000;%0.3; % (s) - fixation period after each saccade
+    trainingFixationDuration            = 0.3;%0.3; % (s) - fixation period after each saccade
+    testingFixationDuration             = 0.3; % dont change
     
     % Agent in Training
     
     %% CLASSIC/Varying #head positions
-    headPositions                       = 4; % classic = 8
-    fixationSequenceLength              = 10; % classic = 15
+    headPositions                       = 3; % classic = 8
+    fixationSequenceLength              = 14; % classic = 15
     numberOfFixations                   = headPositions*fixationSequenceLength; % classic = ;
     
     % Variations
     numberOfNonSpesificFixations        = 0;
-    fixationSigma                       = 0;%0.100; % (s)
+    fixationSigma                       = 1.0;%0.100; % (s)
     
     %% Varying fixation sequence length
     %{
@@ -76,7 +77,7 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
                          '-eyepositionfield='   num2str(eyePositionFieldSize,'%.2f') ...
                          '-fixations='          num2str(numberOfFixations,'%.2f') ...
                          '-targets='            num2str(numberOfSimultanousTargets,'%.2f') ...
-                         '-fixduration='        num2str(fixationDuration,'%.2f') ...
+                         '-fixduration='        num2str(trainingFixationDuration,'%.2f') ...
                          '-fixationsequence='   num2str(fixationSequenceLength,'%.2f') ...
                          '-seed='               num2str(seed,'%.2f') ...
                          '-samplingrate='       num2str(samplingRate,'%.2f') ...
@@ -113,6 +114,8 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     % Helpful variables
     maxDev = 0;
     allShownTargets = [];
+    
+    fixations = []; % duration, eye, ret_1, ..., ret_n
     
     disp('Generating Training Data.');
     
@@ -202,10 +205,11 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
          'seed', ...
          'saccadeVelocity', ...
          'samplingRate', ...
-         'fixationDuration', ...
+         'trainingFixationDuration', ...
          'fixationSequenceLength', ...
          'numberOfFixations', ...
-         'allShownTargets');
+         'allShownTargets', ...
+         'fixations');
                       
     cd(startDir);
     
@@ -235,14 +239,14 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     
     % Generate testing data
     disp('Generating Single Target Testing Data.');
-    OneD_Stimuli_Testing(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets);
+    OneD_Stimuli_Testing(folderName, samplingRate, testingFixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets);
     
     %{
     % Generate multiple targets testing data
     if nargin > 1,
         disp('Generating Multiple Target Testing Data.');
-        OneD_Stimuli_CLASSICMultiTargetTesting(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, dist);
-        OneD_Stimuli_NEWMultiTargetTesting(folderName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, dist);
+        OneD_Stimuli_CLASSICMultiTargetTesting(folderName, samplingRate, testingFixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, dist);
+        OneD_Stimuli_NEWMultiTargetTesting(folderName, samplingRate, testingFixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, dist);
     end
     %}
     
@@ -324,10 +328,13 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
             % Add some time for end of fixation point
             fixTime = 0;
             while fixTime <= 0,
-                fixTime = normrnd(fixationDuration, fixationSigma, 1);
+                fixTime = normrnd(trainingFixationDuration, fixationSigma, 1);
             end
             
             time = time + fixTime;
+            
+            % Save fixation
+            fixations = [fixations; fixTime ep retinalTargets]; % duration, eye, ret_1, ..., ret_n
             
             % Update and save state of fixation END
             state = [time ep retinalTargets];

@@ -37,10 +37,10 @@
 	#our @paramArray				   = ("10.00","15.00","20.00","25.00","30.00","35.00","40.00","45.00","50.00","55.00","60.00","65.00","70.00","75.00","80.00","85.00","90.00","95.00","100.00");
 	
 	# varyingfixationduration: 0:0.05:2
-	#our @paramArray				   		= ("0.00","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00","1.10","1.20","1.30","1.40","1.50","1.60","1.70","1.80","1.90","2.00");
+	our @paramArray				   		= ("0.00","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00","1.10","1.20","1.30","1.40","1.50","1.60","1.70","1.80","1.90","2.00");
 	
 	# iterate param values   	
-	#for my $p (@paramArray) {
+	for my $p (@paramArray) {
 	   	
 	   	# prewiredPO, peakedgain
 	   	#my $experiment						= "prewiredPO";
@@ -56,8 +56,8 @@
 	   	#my $experiment						= "sigma_19_failed";
 	   	#my $experiment						= "decoupled_gainencoding";
 	   	#my $experiment						= "baseline";
-	   	my $experiment						= "monitorPeaked2";
-	   	my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+	   	#my $experiment						= "peakedgain-RECORDING";
+	   	#my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	   	
 	   	#**********************************
 	   	
@@ -132,31 +132,37 @@
 		#**********************************
 		
 		# varyingfixationduration
-		#my $experiment						= "varyingfixationdurationvariability_${p}";
-		#my $stim							= "varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=${p}";
-		
-		#my $experiment						= "baseline_varyingfixationdurationvariability17";
+		my $experiment						= "varyingfixationdurationvariability_cov_${p}";
+		my $stim							= "varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=${p}";
 		#my $stim							= "varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=1.00"; # 0.40
-		
-		#turn on weight normailzation again
-		#turn on weight normailzation again#turn on weight normailzation again#turn on weight normailzation again#turn on weight normailzation again
-		
-		
-		#my $experiment						= "longfixtest300";
-		#my $stim							= "longfixtest300-visualfield=200.00-eyepositionfield=60.00-fixations=20.00-targets=1.00-fixduration=0.30-fixationsequence=10.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=0.00";
-		
-		# ./xGridCleanup.pl varyingfixationdurationvariability_2.00 varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=2.00-stdTest
 		
 		#**********************************
 		
-		my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
-		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
-	
-		my $nrOfEpochs						= 50; # 20;#10; #50; # 30,100
-		my $saveNetworkAtEpochMultiple 		= 100;
-		my $outputAtTimeStepMultiple		= 10; # Keep this high (10>=) unless  you are recording for looking at dynamics!
+		#my $experiment						= "3H_14E_SIGMA300ms-RECORDING";
+		#my $stim							= "3H_10E_FIX300ms-visualfield=200.00-eyepositionfield=60.00-fixations=30.00-targets=1.00-fixduration=0.30-fixationsequence=10.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=0.00";
 		
-		print "WARNING: low output multiple\n";
+		#**********************************
+		
+		#my $experiment						= "varyingfixationdurationvariability_baseline";
+		#my $stim							= "varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=1.00";
+		
+		#**********************************
+		
+		#my $experiment						= "8H_13E_FIX1200ms-w-0.1-covariance-TUNE-REALDEAL-RECORD";
+		#my $stim							= "8H_13E_FIX1200ms-visualfield=200.00-eyepositionfield=60.00-fixations=104.00-targets=1.00-fixduration=1.20-fixationsequence=13.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=0.00";
+		
+		#**********************************	
+		
+		#**********************************
+		
+		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
+		my $learningRule					= COVARIANCE_PRESYNAPTIC_TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
+	
+		my $nrOfEpochs						= 20; # 20;#10; #50; # 30,100
+		my $saveNetworkAtEpochMultiple 		= 100;
+		my $outputAtTimeStepMultiple		= 2; # Keep this high (10>=) unless  you are recording for looking at dynamics!
+		
+		#print "WARNING: low output multiple\n";
 		
 		my $lateralInteraction				= NONE; # NONE, SHORT_INHIBITION_LONG_EXCITATION = VISNET, SHORT_EXCITATION_LONG_INHIBITION = SOM
 		my $sparsenessRoutine				= HEAP; # NONE, HEAP, GLOBAL
@@ -774,4 +780,4 @@ TEMPLATE
 			        return $str." );";
 				}
 	
-	#}
+	}
