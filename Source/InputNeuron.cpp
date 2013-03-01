@@ -8,20 +8,72 @@
  */
 
 #include "InputNeuron.h"
+#include "InputRegion.h"
 #include <cmath>
 
-void InputNeuron::init(Region * region, u_short depth, u_short row, u_short col, float horEyePositionPreference, float horEyePositionSigmoidSlope, float horVisualPreference, float horVisualSigma, INPUT_EYE_MODULATION modulationType, bool eyeModulationOnly) {
+void InputNeuron::init(Region * region, 
+                       u_short depth, 
+                       u_short row, 
+                       u_short col,  
+                       gsl_rng * rngController,
+                       Param & p) {
 
-    Neuron::init(region, depth, row, col),
+    Neuron::init(region, depth, row, col);
     
-	this->horEyePositionPreference = horEyePositionPreference;
-	this->horEyePositionSigmoidSlope = horEyePositionSigmoidSlope;
-    this->horVisualPreference = horVisualPreference;
-    this->horVisualSigma = horVisualSigma;
-    this->modulationType = modulationType;
+    // type casted parent region
+    InputRegion * r = static_cast<InputRegion *>(region);
     
-    // Independent encoding stuff
-    this->eyeModulationOnly = eyeModulationOnly;
+    // dimensions
+    u_short horVisualDimension = r->horVisualDimension;
+    u_short horEyeDimension = r->horEyeDimension;
+    
+    // preferences
+    vector<float> horVisualPreferences = r->horVisualPreferences;
+    vector<float> horEyePreferences = r->horEyePreferences;
+    
+    this->horVisualPreference = horVisualPreferences[(horVisualDimension - 1) - row]; // flip it so that the first row prefers the rightmost (largest +) visual location
+    this->horEyePositionPreference = horEyePreferences[col];
+
+    // params
+    this->horEyePositionSigmoidSlope = (depth == 0 ? p.sigmoidSlope : -1 * p.sigmoidSlope);
+    this->horVisualSigma = p.gaussianSigma;
+    
+    // input encoding
+    switch (p.inputEncoding) {
+            
+        case MIXED:
+            
+            if(gsl_ran_bernoulli(rngController, static_cast<double>(p.sigmoidModulationPercentage)))
+                responseFunction = MULTIMODAL_SIGMOID_MODULATION;
+            else
+                responseFunction = MULTIMODAL_GAUSS_MODULATION;
+            
+            break;
+            
+        case DOUBLEPEAK_GAUSSIAN:
+            
+            responseFunction = MULTIMODAL_DOUBLEGAUSS_MODULATION;
+            
+            this->horEyePositionPreference2 = horEyePreferences[gsl_rng_uniform_int(rngController, horEyeDimension)];
+            
+            this->peak1Magnitude = gsl_rng_uniform(rngController);
+            this->peak2Magnitude = gsl_rng_uniform(rngController);
+            
+            break;
+            
+        case DECOUPLED:
+            
+            if(gsl_ran_bernoulli(rngController, 0.5))
+                responseFunction = PURE_VISUAL;
+            else
+                responseFunction = PURE_PROPRIOCEPTIVE;
+            
+            break;
+            
+        default:
+            break;
+    }
+
 }
 
 #include <iostream>
@@ -40,11 +92,38 @@ void InputNeuron::setFiringRate(const vector<float> & sample) {
      * sigmoidPositive(j,i) = sigmoidPositive(j,i) * 1/(1 + exp(sigmoidSlope * (eyePosition - e))); % positive slope
      * sigmoidNegative(j,i) = sigmoidNegative(j,i) * 1/(1 + exp(-1 * sigmoidSlope * (eyePosition - e))); % negative slope
      */
-        
-    // NEW WORKING VERSION!
-    // iterate all visual stimuli and compute gaussian of all
-    // firing = sigmoid(gauss_1 + ... + gauss_n)
-    float firing = 0;
+    
+    float retinalComponent = computeRetinalComponent(sample);
+    float eyePositionComponent = computeEyePositionCompononent(sample.front());
+    
+    switch (responseFunction) {
+            
+        case PURE_VISUAL:
+            
+            this->firingRate = retinalComponent;
+            break;
+            
+        case PURE_PROPRIOCEPTIVE:
+            this->firingRate = eyePositionComponent;
+            break;
+            
+        case MULTIMODAL_GAUSS_MODULATION:
+        case MULTIMODAL_DOUBLEGAUSS_MODULATION:
+        case MULTIMODAL_SIGMOID_MODULATION:
+            this->firingRate = retinalComponent*eyePositionComponent;
+            
+            break;
+            
+        default:
+            break;
+    }
+    
+    this->newFiringRate = this->firingRate;
+}
+
+float InputNeuron::computeRetinalComponent(const vector<float> & sample) {
+    
+    float component = 0;
     
     for(unsigned i = 1;i < sample.size();i++) {
         
@@ -52,22 +131,46 @@ void InputNeuron::setFiringRate(const vector<float> & sample) {
         float gauss = exp(-norm/(2*horVisualSigma*horVisualSigma)); // gaussian
         
         // MAX routine
-        firing = (gauss > firing ? gauss : firing);
+        component = (gauss > component ? gauss : component);
         
         // CLASSIC
-        //firing += exp(-norm/(2*horVisualSigma*horVisualSigma)); // gaussian
+        //component += exp(-norm/(2*horVisualSigma*horVisualSigma)); // gaussian
     }
     
-    // cancel the retinal contribution if you want eye modulation only
-    if(eyeModulationOnly)
-        firing = 1;
+    return component;
+}
+
+float InputNeuron::computeEyePositionCompononent(float eyePosition) {
     
-    if(modulationType == SIGMOID)
-       firing *= 1 / (1 + exp(horEyePositionSigmoidSlope * (sample.front() - horEyePositionPreference))); // sigmoid
-    else if(modulationType == GAUSSIAN)
-       firing *= exp(-(sample.front() - horEyePositionPreference)*(sample.front() - horEyePositionPreference)/(2*horVisualSigma*horVisualSigma)); // gaussian
+    float component;
     
-    // Set variables
-    this->firingRate = firing;
-    this->newFiringRate = firing;
+    switch (responseFunction) {
+            
+        case PURE_VISUAL:
+            
+            component = 0;
+            break;
+            
+        case PURE_PROPRIOCEPTIVE:
+        case MULTIMODAL_GAUSS_MODULATION:
+            
+            component = exp(-(eyePosition - horEyePositionPreference)*(eyePosition - horEyePositionPreference)/(2*horVisualSigma*horVisualSigma)); // peak1Magnitude
+            break;
+            
+        case MULTIMODAL_DOUBLEGAUSS_MODULATION:
+            
+            component = peak1Magnitude*exp(-(eyePosition - horEyePositionPreference)*(eyePosition - horEyePositionPreference)/(2*horVisualSigma*horVisualSigma));
+            component += peak2Magnitude*exp(-(eyePosition - horEyePositionPreference2)*(eyePosition - horEyePositionPreference)/(2*horVisualSigma*horVisualSigma));
+            break;
+            
+        case MULTIMODAL_SIGMOID_MODULATION:
+            
+            component = 1/(1 + exp(horEyePositionSigmoidSlope * (eyePosition - horEyePositionPreference))); // peak1Magnitude
+            break;
+            
+        default:
+            break;
+    }
+    
+    return component;
 }

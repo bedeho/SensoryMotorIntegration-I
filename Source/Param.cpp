@@ -88,9 +88,8 @@ Param::Param(const char * filename, bool isTraining) {
         cfg.lookupValue("area7a.gaussianSigma", gaussianSigma);
         cfg.lookupValue("area7a.sigmoidSlope", sigmoidSlope);
         cfg.lookupValue("area7a.sigmoidModulationPercentage", sigmoidModulationPercentage);
-        
-        //cfg.lookupValue("area7a.modulationType", tmp);
-		//modulationType = static_cast<INPUT_EYE_MODULATION>(tmp);
+        cfg.lookupValue("area7a.inputEncoding", tmp);
+		inputEncoding = static_cast<INPUT_ENCODING>(tmp);
         
 		// extrastriate
 		Setting & extrastriate = cfg.lookup("extrastriate");

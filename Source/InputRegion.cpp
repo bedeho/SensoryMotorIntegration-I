@@ -77,29 +77,11 @@ void InputRegion::init(Param & p, const char * dataFile, gsl_rng * rngController
 	vector<vector<vector<InputNeuron> > > tmp1(depth, vector<vector<InputNeuron> >(horVisualDimension, vector<InputNeuron>(horEyeDimension)));
 	Neurons = tmp1;
     
-	// Initialize neurons
+	// Initialize input neurons
 	for(u_short d = 0;d < depth;d++)
         for(u_short i = 0;i < horVisualDimension;i++)
-            for(u_short j = 0;j < horEyeDimension;j++) {
-                
-                float hvisual = horVisualPreferences[(horVisualDimension - 1) - i]; // flip it so that the first row prefers the rightmost (largest +) visual location
-                float heye = horEyePreferences[j];
-                float hslope = (d == 0 ? p.sigmoidSlope : -1 * p.sigmoidSlope);
-                float hsigma = p.gaussianSigma;
-                
-                INPUT_EYE_MODULATION modulationType = static_cast<INPUT_EYE_MODULATION>(gsl_ran_bernoulli(rngController, static_cast<double>(p.sigmoidModulationPercentage)));
-                
-                // gain decoupling
-                //bool eyeModulationOnly = static_cast<bool>(gsl_ran_bernoulli(rngController, 0.5));
-                //cout << i << ":" << j << ":" << eyeModulationOnly << endl;
-                
-                // NOT : gain decoupling
-                bool eyeModulationOnly = false;
-                
-                Neurons[d][i][j].init(this, d, i, j, heye, hslope, hvisual, hsigma, modulationType, eyeModulationOnly);
-            }
-    
-    return;
+            for(u_short j = 0;j < horEyeDimension;j++)
+                Neurons[d][i][j].init(this, d, i, j, rngController, p);
 }
 
 InputRegion::~InputRegion() {

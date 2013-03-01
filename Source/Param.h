@@ -16,22 +16,67 @@
 using std::vector;
 
 // Read parameter file for full explanation
-enum FEEDBACK				{ NOFEEDBACK = 0,		SYMMETRIC = 1 };
-enum LEARNING_RULE			{ TRACE_RULE = 0,		HEBB_RULE = 1,      COVARIANCE_PRESYNAPTIC_TRACE_RULE = 2};
-enum SPARSENESSROUTINE		{ NOSPARSENESS = 0,		HEAP = 1,           GLOBAL = 2};
-enum WEIGHTNORMALIZATION	{ NONORMALIZATION = 0,	CLASSIC = 1 };
-//enum TRANSFER_FUNCTION    { IDENTITY = 0,         SIGMOID = 1 };
-enum INITIALWEIGHT          { ZERO = 0,				RANDOMEQUAL = 1,	RANDOMINDEPENDENT = 2 };
-enum LATERAL				{ NONE = 0,				SHORT_INHIBITION_LONG_EXCITATION = 1,       SHORT_EXCITATION_LONG_INHIBITION = 2 };
-enum CONNECTIVITY			{ FULL = 0,				SPARSE = 1,         SPARSE_BIASED = 2 };
-enum SAVEHISTORY            { 
-                              SH_NONE = 0,          
-                              SH_ALL_NEURONS_AND_SYNAPSES_IN_REGION = 1,
-                              SH_ALL_NEURONS_IN_REGION = 2,
-                              SH_SINGLE_CELLS = 3
-                            };
-enum INPUT_EYE_MODULATION   { GAUSSIAN = 0, SIGMOID = 1 };
+enum FEEDBACK {   
+    
+    NOFEEDBACK = 0,           
+    SYMMETRIC = 1
+};
 
+enum LEARNING_RULE { 
+    
+    TRACE_RULE = 0,
+    HEBB_RULE = 1,
+    COVARIANCE_PRESYNAPTIC_TRACE_RULE = 2
+};
+
+enum SPARSENESSROUTINE   {  
+    
+    NOSPARSENESS = 0,
+    HEAP = 1,
+    GLOBAL = 2 
+};
+
+enum WEIGHTNORMALIZATION {  
+    
+    NONORMALIZATION = 0,
+    CLASSIC = 1 
+};
+
+enum INPUT_ENCODING {
+    
+    MIXED = 1,
+    DOUBLEPEAK_GAUSSIAN = 2,
+    DECOUPLED = 3 
+};
+
+enum INITIALWEIGHT {
+    
+    ZERO = 0,                 
+    RANDOMEQUAL = 1,                        
+    RANDOMINDEPENDENT = 2 
+};
+
+enum LATERAL {
+    
+    NONE = 0,
+    SHORT_INHIBITION_LONG_EXCITATION = 1,
+    SHORT_EXCITATION_LONG_INHIBITION = 2
+};
+
+enum CONNECTIVITY {
+    
+    FULL = 0,                 
+    SPARSE = 1,                             
+    SPARSE_BIASED = 2
+};
+
+enum SAVEHISTORY {
+    
+    SH_NONE = 0,          
+    SH_ALL_NEURONS_AND_SYNAPSES_IN_REGION = 1,
+    SH_ALL_NEURONS_IN_REGION = 2,
+    SH_SINGLE_CELLS = 3
+};
 
 // In the future, make HiddenRegion/striate param internal classes
 // that keep projects of these vectors, and thenmake param_layer class
@@ -53,6 +98,7 @@ class Param  {
         float weightVectorLength;
 
         // Only 7a
+        INPUT_ENCODING inputEncoding;
         float visualPreferenceDistance;         
         float eyePositionPrefrerenceDistance;   
         float gaussianSigma;                    
@@ -60,7 +106,6 @@ class Param  {
         float horVisualFieldSize;
         float horEyePositionFieldSize;
         float sigmoidModulationPercentage;
-        //INPUT_EYE_MODULATION modulationType;
         
         // Not for 7a		
 		vector<float> fanInCountPercentage;    
@@ -100,7 +145,6 @@ class Param  {
         
         vector<vector<vector<short> > > recordedSingleCells; // Should be bool, but STL is fucked up!
         
-        //TRANSFER_FUNCTION transferFunction;
 		WEIGHTNORMALIZATION weightNormalization;
 		SPARSENESSROUTINE sparsenessRoutine;
 		FEEDBACK feedback;

@@ -118,6 +118,7 @@ function ThesisParameterVariationPlot()
     %}
     
     %% Spatiotemporal Stimulus Dynamics
+    %{
     vals = 0:5:50;%;5:100;
     for i=1:length(vals),
         
@@ -127,7 +128,21 @@ function ThesisParameterVariationPlot()
     end
     
     XAxislabel = 'Non-Spesific Periode Length - K';
+    %}
+
+    %% varyingfixationdurationvariability_cov_X
     
+    vals = 0:0.1:2;
+    for i=1:length(vals),
+        
+        experiments(i).Folder   = ['varyingfixationdurationvariability_cov_' num2str(vals(i),'%.2f') '/L=0.90000_S=0.90_sS=00000015.0_sT=0.10_gIC=0.0500_eS=0.0_/TrainedNetwork'];
+        X(i)                    = vals(i);
+        
+    end
+    
+    XAxislabel = 'Fixation Duration Standard Deviation (s)';
+    
+   
     %% Plotting
     numExperiments = length(experiments);
     

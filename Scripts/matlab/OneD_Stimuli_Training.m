@@ -38,19 +38,21 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     
     % Agent Movement
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    trainingFixationDuration            = 0.3;%0.3; % (s) - fixation period after each saccade
+    trainingFixationDuration            = 1.2; % 0.3; % (s) - fixation period after each saccade
+    
+    % dont change
     testingFixationDuration             = 0.3; % dont change
     
     % Agent in Training
     
     %% CLASSIC/Varying #head positions
-    headPositions                       = 3; % classic = 8
-    fixationSequenceLength              = 14; % classic = 15
+    headPositions                       = 8; % classic = 8
+    fixationSequenceLength              = 13; % classic = 15
     numberOfFixations                   = headPositions*fixationSequenceLength; % classic = ;
     
     % Variations
     numberOfNonSpesificFixations        = 0;
-    fixationSigma                       = 1.0;%0.100; % (s)
+    fixationSigma                       = 0;%1.0, 0.100; % (s)
     
     %% Varying fixation sequence length
     %{

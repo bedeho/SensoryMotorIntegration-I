@@ -31,10 +31,6 @@ class InputRegion : public Region {
 		vector<vector<vector<float> > > data; // data[object][sample][0 1 .... numberOfSimultanousObjects]
     
         vector<float> sample;
-    
-        vector<float> horVisualPreferences;
-        vector<float> horEyePreferences;
-    
         vector<u_short> stimuliSamplesInObject;
         vector<double> objectDuration;
         
@@ -51,6 +47,10 @@ class InputRegion : public Region {
     
         ~InputRegion();
     
+        // moved so input neurons can see, could have made into friend class, but wasnt bothtered
+        vector<float> horVisualPreferences;
+        vector<float> horEyePreferences;
+    
         // Read from data file
         u_short nrOfObjects;
         
@@ -58,7 +58,6 @@ class InputRegion : public Region {
         u_short numberOfSimultanousObjects;
         float horVisualFieldSize;
         float horEyePositionFieldSize;
-        INPUT_EYE_MODULATION modulationType;
     
         // Derived from data read from file
         u_short horVisualDimension;
