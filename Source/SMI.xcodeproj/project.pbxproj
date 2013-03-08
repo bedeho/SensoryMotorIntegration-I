@@ -1,0 +1,292 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5B73F81D16E0E2940050A303 /* BinaryRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B73F80616E0E2940050A303 /* BinaryRead.cpp */; };
+		5B73F81E16E0E2940050A303 /* BinaryWrite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B73F80816E0E2940050A303 /* BinaryWrite.cpp */; };
+		5B73F81F16E0E2940050A303 /* HiddenNeuron.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B73F80A16E0E2940050A303 /* HiddenNeuron.cpp */; };
+		5B73F82016E0E2940050A303 /* HiddenRegion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B73F80C16E0E2940050A303 /* HiddenRegion.cpp */; };
+		5B73F82116E0E2940050A303 /* InputNeuron.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B73F80E16E0E2940050A303 /* InputNeuron.cpp */; };
+		5B73F82216E0E2940050A303 /* InputRegion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B73F81016E0E2940050A303 /* InputRegion.cpp */; };
+		5B73F82316E0E2940050A303 /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B73F81216E0E2940050A303 /* Network.cpp */; };
+		5B73F82416E0E2940050A303 /* Neuron.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B73F81416E0E2940050A303 /* Neuron.cpp */; };
+		5B73F82516E0E2940050A303 /* Param.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B73F81616E0E2940050A303 /* Param.cpp */; };
+		5B73F82716E0E2940050A303 /* Synapse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B73F81A16E0E2940050A303 /* Synapse.cpp */; };
+		5B73F82916E0E2DC0050A303 /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B73F82816E0E2DC0050A303 /* Region.cpp */; };
+		5B73F82B16E0E2F60050A303 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B73F82A16E0E2F60050A303 /* main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5B6EB9EE16E0DFB600DDDAA0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5B73F80616E0E2940050A303 /* BinaryRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BinaryRead.cpp; sourceTree = "<group>"; };
+		5B73F80716E0E2940050A303 /* BinaryRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinaryRead.h; sourceTree = "<group>"; };
+		5B73F80816E0E2940050A303 /* BinaryWrite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BinaryWrite.cpp; sourceTree = "<group>"; };
+		5B73F80916E0E2940050A303 /* BinaryWrite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinaryWrite.h; sourceTree = "<group>"; };
+		5B73F80A16E0E2940050A303 /* HiddenNeuron.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HiddenNeuron.cpp; sourceTree = "<group>"; };
+		5B73F80B16E0E2940050A303 /* HiddenNeuron.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HiddenNeuron.h; sourceTree = "<group>"; };
+		5B73F80C16E0E2940050A303 /* HiddenRegion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HiddenRegion.cpp; sourceTree = "<group>"; };
+		5B73F80D16E0E2940050A303 /* HiddenRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HiddenRegion.h; sourceTree = "<group>"; };
+		5B73F80E16E0E2940050A303 /* InputNeuron.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputNeuron.cpp; sourceTree = "<group>"; };
+		5B73F80F16E0E2940050A303 /* InputNeuron.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputNeuron.h; sourceTree = "<group>"; };
+		5B73F81016E0E2940050A303 /* InputRegion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputRegion.cpp; sourceTree = "<group>"; };
+		5B73F81116E0E2940050A303 /* InputRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputRegion.h; sourceTree = "<group>"; };
+		5B73F81216E0E2940050A303 /* Network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
+		5B73F81316E0E2940050A303 /* Network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Network.h; sourceTree = "<group>"; };
+		5B73F81416E0E2940050A303 /* Neuron.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Neuron.cpp; sourceTree = "<group>"; };
+		5B73F81516E0E2940050A303 /* Neuron.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Neuron.h; sourceTree = "<group>"; };
+		5B73F81616E0E2940050A303 /* Param.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Param.cpp; sourceTree = "<group>"; };
+		5B73F81716E0E2940050A303 /* Param.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Param.h; sourceTree = "<group>"; };
+		5B73F81916E0E2940050A303 /* Region.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Region.h; sourceTree = "<group>"; };
+		5B73F81A16E0E2940050A303 /* Synapse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Synapse.cpp; sourceTree = "<group>"; };
+		5B73F81B16E0E2940050A303 /* Synapse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Synapse.h; sourceTree = "<group>"; };
+		5B73F81C16E0E2940050A303 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
+		5B73F82816E0E2DC0050A303 /* Region.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Region.cpp; sourceTree = "<group>"; };
+		5B73F82A16E0E2F60050A303 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		5B73F82C16E0E3560050A303 /* SMI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SMI; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5B6EB9ED16E0DFB600DDDAA0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5B6EB9E516E0DFB600DDDAA0 = {
+			isa = PBXGroup;
+			children = (
+				5B73F82A16E0E2F60050A303 /* main.cpp */,
+				5B73F82816E0E2DC0050A303 /* Region.cpp */,
+				5B73F80616E0E2940050A303 /* BinaryRead.cpp */,
+				5B73F80716E0E2940050A303 /* BinaryRead.h */,
+				5B73F80816E0E2940050A303 /* BinaryWrite.cpp */,
+				5B73F80916E0E2940050A303 /* BinaryWrite.h */,
+				5B73F80A16E0E2940050A303 /* HiddenNeuron.cpp */,
+				5B73F80B16E0E2940050A303 /* HiddenNeuron.h */,
+				5B73F80C16E0E2940050A303 /* HiddenRegion.cpp */,
+				5B73F80D16E0E2940050A303 /* HiddenRegion.h */,
+				5B73F80E16E0E2940050A303 /* InputNeuron.cpp */,
+				5B73F80F16E0E2940050A303 /* InputNeuron.h */,
+				5B73F81016E0E2940050A303 /* InputRegion.cpp */,
+				5B73F81116E0E2940050A303 /* InputRegion.h */,
+				5B73F81216E0E2940050A303 /* Network.cpp */,
+				5B73F81316E0E2940050A303 /* Network.h */,
+				5B73F81416E0E2940050A303 /* Neuron.cpp */,
+				5B73F81516E0E2940050A303 /* Neuron.h */,
+				5B73F81616E0E2940050A303 /* Param.cpp */,
+				5B73F81716E0E2940050A303 /* Param.h */,
+				5B73F81916E0E2940050A303 /* Region.h */,
+				5B73F81A16E0E2940050A303 /* Synapse.cpp */,
+				5B73F81B16E0E2940050A303 /* Synapse.h */,
+				5B73F81C16E0E2940050A303 /* Utilities.h */,
+				5B73F82C16E0E3560050A303 /* SMI */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5B6EB9EF16E0DFB600DDDAA0 /* SMI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B6EB9FA16E0DFB600DDDAA0 /* Build configuration list for PBXNativeTarget "SMI" */;
+			buildPhases = (
+				5B6EB9EC16E0DFB600DDDAA0 /* Sources */,
+				5B6EB9ED16E0DFB600DDDAA0 /* Frameworks */,
+				5B6EB9EE16E0DFB600DDDAA0 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SMI;
+			productName = SMI;
+			productReference = 5B73F82C16E0E3560050A303 /* SMI */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5B6EB9E716E0DFB600DDDAA0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Bedeho Mender";
+			};
+			buildConfigurationList = 5B6EB9EA16E0DFB600DDDAA0 /* Build configuration list for PBXProject "SMI" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5B6EB9E516E0DFB600DDDAA0;
+			productRefGroup = 5B6EB9E516E0DFB600DDDAA0;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5B6EB9EF16E0DFB600DDDAA0 /* SMI */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5B6EB9EC16E0DFB600DDDAA0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B73F81D16E0E2940050A303 /* BinaryRead.cpp in Sources */,
+				5B73F81E16E0E2940050A303 /* BinaryWrite.cpp in Sources */,
+				5B73F81F16E0E2940050A303 /* HiddenNeuron.cpp in Sources */,
+				5B73F82016E0E2940050A303 /* HiddenRegion.cpp in Sources */,
+				5B73F82116E0E2940050A303 /* InputNeuron.cpp in Sources */,
+				5B73F82216E0E2940050A303 /* InputRegion.cpp in Sources */,
+				5B73F82316E0E2940050A303 /* Network.cpp in Sources */,
+				5B73F82416E0E2940050A303 /* Neuron.cpp in Sources */,
+				5B73F82516E0E2940050A303 /* Param.cpp in Sources */,
+				5B73F82716E0E2940050A303 /* Synapse.cpp in Sources */,
+				5B73F82916E0E2DC0050A303 /* Region.cpp in Sources */,
+				5B73F82B16E0E2F60050A303 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5B6EB9F816E0DFB600DDDAA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_OPENMP_SUPPORT = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5B6EB9F916E0DFB600DDDAA0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_OPENMP_SUPPORT = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		5B6EB9FB16E0DFB600DDDAA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include,
+					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/lib,
+					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/lib,
+				);
+				OTHER_LDFLAGS = (
+					"-lconfig++",
+					"-lgsl",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5B6EB9FC16E0DFB600DDDAA0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include,
+					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/lib,
+					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/lib,
+				);
+				OTHER_LDFLAGS = (
+					"-lconfig++",
+					"-lgsl",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5B6EB9EA16E0DFB600DDDAA0 /* Build configuration list for PBXProject "SMI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B6EB9F816E0DFB600DDDAA0 /* Debug */,
+				5B6EB9F916E0DFB600DDDAA0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5B6EB9FA16E0DFB600DDDAA0 /* Build configuration list for PBXNativeTarget "SMI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B6EB9FB16E0DFB600DDDAA0 /* Debug */,
+				5B6EB9FC16E0DFB600DDDAA0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5B6EB9E716E0DFB600DDDAA0 /* Project object */;
+}

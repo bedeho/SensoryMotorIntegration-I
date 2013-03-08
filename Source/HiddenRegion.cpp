@@ -284,41 +284,49 @@ void HiddenRegion::computeNewFiringRate() {
         }
     }
     else if(sparsenessRoutine == GLOBAL) {
-        /*
+        
         float cumulativeFiringRate = 0;
         
         for(int i = 0;i < verDimension; i++)
             for(int j = 0;j < horDimension; j++)
                 cumulativeFiringRate += Neurons[0][i][j].firingRate;
         
-        #pragma omp for
-        for(int i = 0;i < verDimension; i++)
-            for(int j = 0;j < horDimension; j++) {
+         #pragma omp for
+         for(int i = 0;i < verDimension; i++)
+         for(int j = 0;j < horDimension; j++) {
+         
+             // Presynaptic Stimulation
+             HiddenNeuron * n = &Neurons[0][i][j];
+             float stimulation = 0;
+         
+             for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++)
+                stimulation += (*s).weight * (*s).preSynapticNeuron->firingRate;
+             
+             // Save stimulation variable
+             n->stimulation = stimulation;
+             
+             // Scale global inhibition
+             n->newInhibitedActivation = globalInhibitoryConstant * cumulativeFiringRate;
+                          
+             // CLASSIC: fast membrane dynamics approach, slow firing rate
+             //
+             /*
+             n->newActivation = stimulation - n->newInhibitedActivation;// + externalStimulation;
+         
+             // Pass stimulation+inhibition through neural response function
+             float transferFunctionStimulation = 20 * (1 / (1 + exp(-2*sigmoidSlope*(n->newActivation - sigmoidThreshold))));
             
-                // Presynaptic Stimulation
-                HiddenNeuron * n = &Neurons[0][i][j];
-                float stimulation = 0;
-                
-                for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++)
-                    stimulation += (*s).weight * (*s).preSynapticNeuron->firingRate;
-                
-                // Save stimulation variable
-                n->stimulation = stimulation;
-                
-                // Lateral inhibition
-                //n->inhibition = globalInhibitoryConstant * cumulativeFiringRate;
-                //stimulation -= n->inhibition;
-                
-                n->newInhibitedActivation = globalInhibitoryConstant * cumulativeFiringRate;
-
-                n->newActivation = stimulation - n->newInhibitedActivation + externalStimulation;
-                
-                // Pass stimulation through transfer function
-                float transferFunctionStimulation = 1 / (1 + exp(-2*sigmoidSlope*(n->newActivation - sigmoidThreshold)));
-                
-                // Compute firing rate
-                n->newFiringRate = (1 - stepSize/timeConstant) * n->firingRate + (stepSize/timeConstant) * transferFunctionStimulation;			
-            }*/
+             // Compute firing rate
+             n->newFiringRate = n->firingRate + (stepSize/timeConstant)*(-n->firingRate + transferFunctionStimulation);
+             */
+             
+             // NEW (daniel): fast firing rate, slow membrane dynamics
+             //
+             n->newActivation = n->activation + (stepSize/timeConstant) * (-n->activation + stimulation - n->newInhibitedActivation);
+             n->newFiringRate = 1/(1+exp(-2*sigmoidSlope*(n->newActivation - sigmoidThreshold)));
+             
+         }
+         
     }
 }
 
@@ -487,7 +495,7 @@ void HiddenRegion::applyLearningRule() {
                             //(*s).weight += dw > 0 ? dw : 0;
                             
                             // BLOCKING
-                            (*s).weight += stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
+                            //(*s).weight += stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
                             
                             // INDIVIDUAL WEIGHT SATURATION
                             //(*s).weight += stepSize * (0.1 - (*s).weight)*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
@@ -501,11 +509,15 @@ void HiddenRegion::applyLearningRule() {
                             
                             // Conditional LTP : controlled version
                             //if((*s).preSynapticNeuron->firingRate > covarianceThreshold)
-                            //0   (*s).weight += stepSize * (learningRate * n->trace); // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
+                            //   (*s).weight += stepSize * (learningRate * n->trace); // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
                             
                             // Conditional LTP 2 : controlled version
                             if((*s).preSynapticNeuron->firingRate > covarianceThreshold)
                                 (*s).weight += stepSize * (0.1 - (*s).weight)* (learningRate * n->trace); // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
+                            
+                            // REAL Conditional LTP : controlled version
+                            //if((*s).preSynapticNeuron->firingRate > covarianceThreshold)
+                            //   (*s).weight += stepSize * (learningRate * n->trace) * (*s).preSynapticNeuron->firingRates; // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
                             
                             break;
                     }

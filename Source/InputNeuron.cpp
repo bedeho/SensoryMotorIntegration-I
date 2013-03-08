@@ -11,6 +11,11 @@
 #include "InputRegion.h"
 #include <cmath>
 
+//for debug purposes
+#include <iostream>
+using std::endl;
+using std::cout;
+
 void InputNeuron::init(Region * region, 
                        u_short depth, 
                        u_short row, 
@@ -38,6 +43,9 @@ void InputNeuron::init(Region * region,
     this->horEyePositionSigmoidSlope = (depth == 0 ? p.sigmoidSlope : -1 * p.sigmoidSlope);
     this->horVisualSigma = p.gaussianSigma;
     
+    this->peak1Magnitude = gsl_rng_uniform(rngController);
+    this->peak2Magnitude = gsl_rng_uniform(rngController);
+    
     // input encoding
     switch (p.inputEncoding) {
             
@@ -52,12 +60,15 @@ void InputNeuron::init(Region * region,
             
         case DOUBLEPEAK_GAUSSIAN:
             
-            responseFunction = MULTIMODAL_DOUBLEGAUSS_MODULATION;
+            // Only X % allowed to actually be double
+            if(gsl_ran_bernoulli(rngController, 0.2)) {
             
-            this->horEyePositionPreference2 = horEyePreferences[gsl_rng_uniform_int(rngController, horEyeDimension)];
+                responseFunction = MULTIMODAL_DOUBLEGAUSS_MODULATION;
             
-            this->peak1Magnitude = gsl_rng_uniform(rngController);
-            this->peak2Magnitude = gsl_rng_uniform(rngController);
+                this->horEyePositionPreference2 = horEyePreferences[gsl_rng_uniform_int(rngController, horEyeDimension)];
+                
+            } else
+                responseFunction = MULTIMODAL_GAUSS_MODULATION;
             
             break;
             
@@ -75,10 +86,6 @@ void InputNeuron::init(Region * region,
     }
 
 }
-
-#include <iostream>
-using std::endl;
-using std::cout;
 
 void InputNeuron::setFiringRate(const vector<float> & sample) {
     
@@ -125,6 +132,7 @@ float InputNeuron::computeRetinalComponent(const vector<float> & sample) {
     
     float component = 0;
     
+    // Iterate retinal locations of targets, do MAX routine
     for(unsigned i = 1;i < sample.size();i++) {
         
         float norm = (horVisualPreference - sample[i])*(horVisualPreference - sample[i]); // (a - b)^2
@@ -137,7 +145,7 @@ float InputNeuron::computeRetinalComponent(const vector<float> & sample) {
         //component += exp(-norm/(2*horVisualSigma*horVisualSigma)); // gaussian
     }
     
-    return component;
+    return component; //peak1Magnitude
 }
 
 float InputNeuron::computeEyePositionCompononent(float eyePosition) {
@@ -159,8 +167,8 @@ float InputNeuron::computeEyePositionCompononent(float eyePosition) {
             
         case MULTIMODAL_DOUBLEGAUSS_MODULATION:
             
-            component = peak1Magnitude*exp(-(eyePosition - horEyePositionPreference)*(eyePosition - horEyePositionPreference)/(2*horVisualSigma*horVisualSigma));
-            component += peak2Magnitude*exp(-(eyePosition - horEyePositionPreference2)*(eyePosition - horEyePositionPreference)/(2*horVisualSigma*horVisualSigma));
+            component = exp(-(eyePosition - horEyePositionPreference)*(eyePosition - horEyePositionPreference)/(2*horVisualSigma*horVisualSigma)); // peak1Magnitude
+            component += peak2Magnitude*exp(-(eyePosition - horEyePositionPreference2)*(eyePosition - horEyePositionPreference2)/(2*horVisualSigma*horVisualSigma));
             break;
             
         case MULTIMODAL_SIGMOID_MODULATION:

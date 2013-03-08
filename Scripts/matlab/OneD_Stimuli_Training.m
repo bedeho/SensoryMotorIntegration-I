@@ -29,7 +29,7 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     samplingRate                        = 100; % (Hz)
     
     % Environment
-    numberOfSimultanousTargets          = 1; % classic = 1
+    numberOfSimultanousTargets          = 2; % classic = 1
     q                                   = 0.7; % targetRangeProportionOfVisualField
     visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
     eyePositionFieldSize                = (1-q)*visualFieldSize; % (1-q)*visualFieldSize OR equivalently (visualFieldSize/2 - targetVisualRange/2)
@@ -38,7 +38,7 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     
     % Agent Movement
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    trainingFixationDuration            = 1.2; % 0.3; % (s) - fixation period after each saccade
+    trainingFixationDuration            = 0.3; % 0.3, is used as mean if fixationSigma >0, (s) - fixation period after each saccade
     
     % dont change
     testingFixationDuration             = 0.3; % dont change
@@ -46,13 +46,13 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     % Agent in Training
     
     %% CLASSIC/Varying #head positions
-    headPositions                       = 8; % classic = 8
-    fixationSequenceLength              = 13; % classic = 15
+    headPositions                       = 10; % classic = 8
+    fixationSequenceLength              = 30; % classic = 15
     numberOfFixations                   = headPositions*fixationSequenceLength; % classic = ;
     
     % Variations
-    numberOfNonSpesificFixations        = 0;
-    fixationSigma                       = 0;%1.0, 0.100; % (s)
+    numberOfNonSpesificFixations        = 40;
+    fixationSigma                       = 1.0;%1.0, 0.100; % (s)
     
     %% Varying fixation sequence length
     %{
@@ -235,7 +235,7 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
         testingTargets = fliplr(centerN2(nrOfRetinalTestingPositions, nrOfRetinalTestingPositions)); 
     end
     
-    testingEyePositionFieldSize = targetEyePositionRange*0.8
+    testingEyePositionFieldSize = targetEyePositionRange; %*0.8
     disp('TIGHT TESTING>>>>>>>>>>>>>>>>> REMOVE!!!');
     testingEyePositions = centerN2(testingEyePositionFieldSize, nrOfTestingEyePositions);
     

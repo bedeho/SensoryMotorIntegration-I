@@ -33,7 +33,7 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
     
     % Neuronal variables
     ticksInBuffer = 20;
-    plotBuffer = zeros(4,ticksInBuffer);
+    plotBuffer = zeros(5,ticksInBuffer);
     
     traceBuffer = unit.trace; %getActivity('trace.dat');
     activationBuffer = unit.activation; %getActivity('activation.dat');
@@ -42,7 +42,7 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
     presynapticSynapseSource = unit.presynapticSynapseSource;
     
     %effectiveTraceBuffer = getActivity('effectiveTrace.dat');
-    %InhibitedActivationBuffer = getActivity('inhibitedActivation.dat');
+    inhibitedActivationBuffer = unit.inhibitedActivation; %getActivity('inhibitedActivation.dat');
     
     % Synapses
     if includeSynapses,
@@ -101,15 +101,20 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
         a = activationBuffer(t);
         f = firingBuffer(t);
         s = stimulationBuffer(t);
+        ia = inhibitedActivationBuffer(t);
+        
 
-        plotBuffer(:,end) = [tr; a; f; s];
-
+        plotBuffer(:,end) = [tr; a; f; s; ia];
+        
+        maxVal = max(1.1,1.1*max(max(plotBuffer))); % 1.1
+        minVal = min(-0.1,min(min(plotBuffer)));
+        
         % Plot buffer
         subplot(numRegions+1+1, 1,1);
         plot(plotBuffer');
-        axis([1 ticksInBuffer -0.1 1.1]); 
+        axis([1 ticksInBuffer minVal maxVal]); 
         title(['tick = ' num2str(t) '/' num2str(streamSize)]);
-        legend('Trace','Activation','Firing','Stimulation'); % ,'Inhibition'
+        legend('Trace','Activation','Firing','Stimulation','Inhibition'); % 
         
         % Plot synapses
         if includeSynapses,

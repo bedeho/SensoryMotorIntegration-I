@@ -57,26 +57,17 @@
 
  	# RANGE PARAMS - permutable
     our @sigmoidSlopes					= (
+     
+     									#["00000000.0000000001"],
+     									#["00000000.000000001"],
+     									#["00000000.00000001"],
+            							#["00000000.0000001"],
+            							#["00000000.000001"],
         								#["00000000.00001"],
-    									#["00000000.00002"],
-    									#["00000000.00003"],
-    									#["00000000.00004"],
-    									#["00000000.00005"]
-    									#["00000000.00006"],
-    									#["00000000.00007"],
-    									#["00000000.00008"],
-    									#["00000000.00009"],
-    
         								#["00000000.0001"],
-    									#["00000000.0002"],
-    									#["00000000.0003"],
-    									#["00000000.0004"],
-    									#["00000000.0005"]
-    									#["00000000.0006"],
-    									#["00000000.0007"],
-    									#["00000000.0008"],
-    									#["00000000.0009"],
-    									
+        								#["00000000.001"],
+        								#["00000000.01"],
+        								
     									#["00000000.001"],
     									#["00000000.002"],
     									#["00000000.003"],
@@ -91,13 +82,13 @@
     									#["00000000.02"],
     									#["00000000.03"],
     									#["00000000.04"],
-    									#["00000000.05"]
+    									#["00000000.05"],
     									#["00000000.06"],
     									#["00000000.07"],
     									#["00000000.08"],
     									#["00000000.09"],
     									
-										#["00000000.1"]
+										#["00000000.1"],
 										#["00000000.2"],
 										#["00000000.3"],
 										#["00000000.4"],
@@ -107,27 +98,27 @@
 										#["00000000.8"],
 										#["00000000.9"],
 										#
-	    								#["00000001.0"]
+	    								#["00000001.0"],
 	    								#["00000002.0"],
-	    								#["00000003.00"],
+	    								#["00000003.0"],
 	    								#["00000003.25"],
 	    								#["00000003.50"],
 	    								#["00000003.75"],
-	    								#["00000004.00"]
+	    								#["00000004.0"],
 	    								#["00000004.25"],
-	    								["00000004.50"], #classic , seems important, larger values infact destroy performance with single target simulations, they dont clean up!!!!
+	    								#["00000004.50"]0 #classic , seems important, larger values infact destroy performance with single target simulations, they dont clean up!!!!
 	    								#["00000004.75"],
 	    								#["00000005.0"],
 	    								#["00000006.0"], # varyingfixation_, # use with (0.15 -w)
-										#["00000007.0"]
+										#["00000007.0"],
 										#["00000008.0"],
-										#["00000009.0"]
+										#["00000009.0"],
 	    								#["00000010.0"],
 	    								#["00000011.0"],
-	    								#["00000012.0"]
-	    								
-	    								
-	    								#["00000015.0"] # multitargettraining
+	    								#["00000012.0"],
+	    								#["00000013.0"],
+	    								#["00000014.0"],
+	    								["00000015.0"] # multitargettraining, varyingfixationduration
 										#["00000020.0"],
 										
 										#["00000030.0"],
@@ -156,25 +147,26 @@
 										#["0.02"], # sigma = 19,covariance_th = 0.9
 										#["0.03"],
 										#["0.04"],
-										#["0.05"],
+										##["0.05"]
 										#["0.06"],
 										#["0.07"],
 										#["0.08"],
 										#["0.09"],
 										
-										["0.10"] # multitargettraining, variable duration, fixedduration
-										#["0.15"] # multitargettraining
-										#["0.20"]  # classic
-										#["0.30"] # nonspesific
+										["0.10"],  # multitargettraining, variable duration, fixedduration
+										#["0.15"]  # multitargettraining
+										["0.20"]   # classic
+										#["0.30"], # nonspesific
 										#["0.40"], # # use with (0.1 -w)
 										#["0.50"],
-										#["0.60"], 
+										#["0.60"],
 										#["0.70"]
 										#["0.80"],
-										#["0.90"],
+										#["0.90"]
 										
-										#["1.00"]
-										#["2.00"],
+										#["1.00"],
+										#["1.10"],
+										#["1.20"]
 										#["3.00"],
 										#["4.00"]
 										#["5.00"],
@@ -198,7 +190,29 @@
     die "Invalid array: sigmoidThreshold" if !validateArray(\@sigmoidThresholds);
      
     our @globalInhibitoryConstants		= (
-										["0.0500"] # not in use?
+    									["0.0000"]
+    									##["0.0010"],
+    									##["0.0020"],
+    									##["0.0030"],
+    									##["0.0040"],
+    									##["0.0045"],
+    									##["0.0050"],
+    									##["0.0055"],
+    									##["0.0060"],
+    									##["0.0065"],
+    									##["0.0070"]
+    									#["0.0075"]
+    									#["0.0080"]
+    									#["0.0085"],
+    									#["0.0090"],
+    									#["0.0095"],
+    									#["0.0100"],
+    									#["0.0105"],
+    									#["0.0110"],
+    									#["0.0115"],
+    									#["0.0120"]
+
+										#["0.5000"] # not in use?
 										);
 	die "Invalid array: globalInhibitoryConstants" if !validateArray(\@globalInhibitoryConstants);
 	
@@ -230,11 +244,11 @@
 										#["0.00800"],
 										#["0.00900"],
 										#
-										#["0.01000"],
+										######["0.01000"]
 										#["0.02000"],
 										#["0.03000"],
 										#["0.04000"],
-										["0.05000"] # classic and everything else
+										##["0.05000"] # classic and everything else
 										#["0.06000"],
 										#["0.07000"],
 										#["0.08000"],
@@ -244,13 +258,14 @@
 										#["0.20000"],
 										#["0.30000"],
 										#["0.40000"]
-										#["0.50000"] 
+										#["0.50000"], 
 										#["0.60000"],
 										#["0.70000"],
 										#["0.80000"],
-										#["0.90000"] # use with (0.1 -w)
+										["0.90000"], # use with (0.1 -w)
 										#
 										#["1.00000"],
+										["1.50000"]
 										#["2.00000"],
 										#["3.00000"],
 										#["4.00000"],
@@ -314,13 +329,13 @@
 										#["0.96"],
 										#["0.94"],
 										#["0.92"],
-										["0.90"]#, # classic? or is it 0.88?
+										["0.90"],#, # classic? or is it 0.88?
 										
 										#["0.88"]
 										#["0.86"],
 										#["0.84"]
 										#["0.82"],
-										#["0.80"],
+										["0.80"]
 										#["0.78"]
 										#["0.76"],
 										#["0.74"],
@@ -439,7 +454,7 @@
     our @depth							= (1);
     our @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     our @fanInRadius 					= (6); # not used
-    our @fanInCountPercentage 			= ("0.1"); # classic=0.1,05 #0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    our @fanInCountPercentage 			= ("0.1"); #0.1, classic=0.1,05 #0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
     our @learningrate					= ("0.1"); # < === is permuted below
     our @eta							= ("0.8");
     our @timeConstant					= ("0.1"); # < === is permuted below
@@ -460,13 +475,12 @@
     our @epochs							= (10); # only used in discrete model
 
 	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-	#our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) , (6,7))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
-
-	# fewer
-	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-	#our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1))"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS   
 	
-	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS    
+	# 1-based indexing, as in inspector/MATLAB, not 0-based as
+	#our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) , (6,7))");  
+	#our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1))");
+	#our @recordedSingleCells			= ("( (11,5), (11,20), (23,7), (27,8), (28,2))");	
 	our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 
 	# Do some validation

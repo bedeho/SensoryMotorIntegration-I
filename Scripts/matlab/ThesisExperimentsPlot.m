@@ -92,13 +92,32 @@ function ThesisExperimentsPlot()
     %}
     
     %% 8H_13E_FIX1200ms-w-0.1-covariance-TUNE
-    
+    %{
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('8H_13E_FIX1200ms-w-0.1-covariance-TUNE/S=0.90_sT=0.10_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('8H_13E_FIX1200ms-w-0.1-covariance-TUNE/S=0.90_sT=0.10_/TrainedNetwork');
     FaceColors = {[1,0,0]; [0,0,1]};
-        
+    %}
+    
+    %% singlerandomepeak/sS=00000007.0_sT=0.05_
+    %{
+    experiment(1).Name = 'Untrained';
+    experiment(1).Folder = expFolder('singlerandomepeak/sS=00000007.0_sT=0.05_/BlankNetwork');
+    experiment(2).Name = 'Trained';
+    experiment(2).Folder = expFolder('singlerandomepeak/sS=00000007.0_sT=0.05_/TrainedNetwork');
+    FaceColors = {[1,0,0]; [0,0,1]};
+    %}
+    
+    %% doublepeak_0.30/L=0.05000_S=0.90_sS=00000004.50_sT=0.10_gIC=0.0500_eS=0.0_
+    %{
+    experiment(1).Name = 'Untrained';
+    experiment(1).Folder = expFolder('doublepeak_0.30/L=0.05000_S=0.90_sS=00000004.50_sT=0.10_gIC=0.0500_eS=0.0_/BlankNetwork');
+    experiment(2).Name = 'Trained';
+    experiment(2).Folder = expFolder('doublepeak_0.30/L=0.05000_S=0.90_sS=00000004.50_sT=0.10_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    FaceColors = {[1,0,0]; [0,0,1]};
+    %}
+    
     
     %% Dont need to touch anything below here.
     numExperiments = length(experiment);
