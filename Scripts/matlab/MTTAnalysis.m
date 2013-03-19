@@ -1,5 +1,5 @@
 %
-%  NEWMultiTargetTestingAnalysis.m
+%  MTTAnalysis.m
 %  SMI
 %
 %  Created by Bedeho Mender on 19/11/12.
@@ -7,8 +7,12 @@
 %
 %  Purpose: tests and produces plots for multiple target test
 % 
+function MTTAnalysis(stimuliName, experimentPath)
 
-function NEWMultiTargetTestingAnalysis(stimuliName, experimentPath)
+    stimuliName = 'dist_2_mulitargettest_2-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-multiTest';
+    
+    experimentPath = '/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Experiments/MTT_global';
+
 
     % Import global variables
     declareGlobalVars();
@@ -27,23 +31,9 @@ function NEWMultiTargetTestingAnalysis(stimuliName, experimentPath)
     
     delta = abs(targets(2) - targets(1));
     
-    %% Load Data
-    % Load firing response
+    % Load Data
+    data = regionDataPrEyePositionFASTLOADER(experimentPath);
     
-    matFile = [experimentPath '/regionDataPrEyePosition.mat'];
-    if(exist(matFile, 'file')),
-        
-        disp('FAST: Loading .MAT file');
-        q = load(matFile, 'data');
-        data = q.data;
-    else
-        
-        disp('SLOW: Loading firing rate file, and making .MAT file');
-        [data, objectsPrEyePosition] = regionDataPrEyePosition([experimentPath '/firingRate.dat'], numEyePositions);
-        save(matFile, 'data');
-    end
-    
-    data = squeeze(data);
     d = size(data);
     numRows = d(end-1);
     numCols = d(end);
@@ -88,7 +78,12 @@ function NEWMultiTargetTestingAnalysis(stimuliName, experimentPath)
     
     
     %% Invidivudal neurons
-    plotNeuron(5,11)
+    
+    % global
+    plotNeuron(1,9)
+    
+    % soft competition
+    %plotNeuron(29,6)
     
     %% Population plots
     %FaceColors = {[1,0,0]};
@@ -104,20 +99,51 @@ function NEWMultiTargetTestingAnalysis(stimuliName, experimentPath)
             error('Cannot plot with ~=2 sim targets');
         end
         
-        figure;
+        
+        
+            wTicks = 1:4:length(targets);
+            
+            numTargets = length(wTicks);
+            
+            tars = fliplr(targets);
+
+            wCellLabels = cell(1, numTargets);
+            
+            for t=1:numTargets,
+              wCellLabels{t} = num2str(tars(wTicks(t)));
+            end
+        
+            
         
         %Iterate eye position
         for e=1:numEyePositions,
-
+            
+            figure;
+            
+            
             k = reshape(data(e,:,row,col), [numTarget numTarget]); % frontground target,backgrond target
-            subplot(1,numEyePositions,e);
-            contourf(k); % imagesc
+            %subplot(1,numEyePositions,e);
+            contourf(k,5); % imagesc
+            hXLabel = xlabel('First Target Location (deg)');
+            hYLabel = ylabel('Second Target Location (deg)');
             %imagesc(k)
             axis square
             colorbar
             
+            set(gca,'XTick', wTicks);
+            set(gca,'XTickLabel', wCellLabels);
+            
+            set(gca,'YTick', wTicks);
+            set(gca,'YTickLabel', wCellLabels);
+            
+            set([hYLabel hXLabel], 'FontSize', 16);
+            set(gca, 'FontSize', 14);
+            
+            %title(['e = ' num2str(e)]);
+            
+            
         end
-
+        
     end
 
     function lambda = computeLambda(row,col)

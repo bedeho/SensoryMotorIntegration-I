@@ -1,5 +1,5 @@
 %
-%  OneD_Stimuli_MultiTargetTesting.m
+%  OneD_Stimuli_MTT.m
 %  SMI
 %
 %  Created by Bedeho Mender on 18/11/12.
@@ -8,7 +8,7 @@
 %  Purpose: Generate testing data with multiple simultanous targets
 %
 
-function OneD_Stimuli_NEWMultiTargetTesting(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, numberOfSimultanousTargetsDuringTesting, dist)
+function OneD_Stimuli_MTT(stimuliName, samplingRate, fixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, numberOfSimultanousTargetsDuringTesting, dist)
 
     % Import global variables
     declareGlobalVars();
@@ -61,6 +61,7 @@ function OneD_Stimuli_NEWMultiTargetTesting(stimuliName, samplingRate, fixationD
     info.targets = testingTargets;
     info.eyePositions = testingEyePositions;
     info.numberOfSimultanousTargetsDuringTesting = numberOfSimultanousTargetsDuringTesting;
+    %info.allTargetCombinations = allTargetCombinations;
 
     % Save info
     save('info.mat','info');

@@ -67,9 +67,10 @@ Param::Param(const char * filename, bool isTraining) {
 		cfg.lookupValue("lateralInteraction", tmp);
 		lateralInteraction = static_cast<LATERAL>(tmp);
         
-        cfg.lookupValue("blockageLeakTime", blockageLeakTime);
-        cfg.lookupValue("blockageRiseTime", blockageRiseTime);
-        cfg.lookupValue("blockageTimeWindow", blockageTimeWindow);
+        // For some reason, no exception is generated when these are not in param file!!
+        //cfg.lookupValue("blockageLeakTime", blockageLeakTime);
+        //cfg.lookupValue("blockageRiseTime", blockageRiseTime);
+        //cfg.lookupValue("blockageTimeWindow", blockageTimeWindow);
         
         //this->blockageLeakTime = 0.01;
         //this->blockageRiseTime = 80.1; //1000 to big, 100 to big also, 10 was to small, 50 was to small?

@@ -163,6 +163,7 @@ float InputNeuron::computeEyePositionCompononent(float eyePosition) {
         case MULTIMODAL_GAUSS_MODULATION:
             
             component = exp(-(eyePosition - horEyePositionPreference)*(eyePosition - horEyePositionPreference)/(2*horVisualSigma*horVisualSigma)); // peak1Magnitude
+            
             break;
             
         case MULTIMODAL_DOUBLEGAUSS_MODULATION:

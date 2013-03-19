@@ -98,27 +98,27 @@
 										#["00000000.8"],
 										#["00000000.9"],
 										#
-	    								#["00000001.0"],
+	    								["00000001.0"],
 	    								#["00000002.0"],
-	    								#["00000003.0"],
+	    								["00000003.0"],
 	    								#["00000003.25"],
 	    								#["00000003.50"],
 	    								#["00000003.75"],
-	    								#["00000004.0"],
+	    								["00000004.0"],
 	    								#["00000004.25"],
-	    								#["00000004.50"]0 #classic , seems important, larger values infact destroy performance with single target simulations, they dont clean up!!!!
+	    								#["00000004.50"] #classic , seems important, larger values infact destroy performance with single target simulations, they dont clean up!!!!
 	    								#["00000004.75"],
-	    								#["00000005.0"],
+	    								["00000005.0"],
 	    								#["00000006.0"], # varyingfixation_, # use with (0.15 -w)
-										#["00000007.0"],
+										["00000007.0"]
 										#["00000008.0"],
-										#["00000009.0"],
+										#["00000009.0"]
 	    								#["00000010.0"],
 	    								#["00000011.0"],
 	    								#["00000012.0"],
 	    								#["00000013.0"],
 	    								#["00000014.0"],
-	    								["00000015.0"] # multitargettraining, varyingfixationduration
+	    								#["00000015.0"] # multitargettraining, varyingfixationduration 1.0
 										#["00000020.0"],
 										
 										#["00000030.0"],
@@ -141,8 +141,8 @@
     die "Invalid array: sigmoidSlopes" if !validateArray(\@sigmoidSlopes);
     
     our @sigmoidThresholds				= (
-										#["0.00"], # classic
-										
+										#["0.00"]# classic
+									
 										#["0.01"],
 										#["0.02"], # sigma = 19,covariance_th = 0.9
 										#["0.03"],
@@ -153,14 +153,14 @@
 										#["0.08"],
 										#["0.09"],
 										
-										["0.10"],  # multitargettraining, variable duration, fixedduration
+										#["0.10"]  # multitargettraining, variable duration 1.0, fixedduration
 										#["0.15"]  # multitargettraining
-										["0.20"]   # classic
+										#["0.20"]   # classic
 										#["0.30"], # nonspesific
 										#["0.40"], # # use with (0.1 -w)
-										#["0.50"],
+										["0.50"],
 										#["0.60"],
-										#["0.70"]
+										["0.70"]
 										#["0.80"],
 										#["0.90"]
 										
@@ -190,17 +190,17 @@
     die "Invalid array: sigmoidThreshold" if !validateArray(\@sigmoidThresholds);
      
     our @globalInhibitoryConstants		= (
-    									["0.0000"]
+    									#["0.0000"]
     									##["0.0010"],
     									##["0.0020"],
     									##["0.0030"],
     									##["0.0040"],
     									##["0.0045"],
-    									##["0.0050"],
+    									["0.0050"],
     									##["0.0055"],
-    									##["0.0060"],
+    									["0.0060"],
     									##["0.0065"],
-    									##["0.0070"]
+    									["0.0070"]
     									#["0.0075"]
     									#["0.0080"]
     									#["0.0085"],
@@ -248,7 +248,7 @@
 										#["0.02000"],
 										#["0.03000"],
 										#["0.04000"],
-										##["0.05000"] # classic and everything else
+										["0.05000"] # classic and everything else
 										#["0.06000"],
 										#["0.07000"],
 										#["0.08000"],
@@ -262,10 +262,10 @@
 										#["0.60000"],
 										#["0.70000"],
 										#["0.80000"],
-										["0.90000"], # use with (0.1 -w)
+										#["0.90000"] # use with (0.1 -w) fixation duration
 										#
 										#["1.00000"],
-										["1.50000"]
+										#["1.50000"]
 										#["2.00000"],
 										#["3.00000"],
 										#["4.00000"],
@@ -329,13 +329,13 @@
 										#["0.96"],
 										#["0.94"],
 										#["0.92"],
-										["0.90"],#, # classic? or is it 0.88?
+										["0.90"]#, # classic? or is it 0.88?
 										
 										#["0.88"]
 										#["0.86"],
 										#["0.84"]
 										#["0.82"],
-										["0.80"]
+										#["0.80"]
 										#["0.78"]
 										#["0.76"],
 										#["0.74"],

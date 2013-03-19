@@ -63,18 +63,26 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, unsigned l
     this->recordedSingleCells = p.recordedSingleCells[regionNr-1];
     this->saveHistory = p.saveHistory[regionNr-1];
     
-    this->blockageLeakTime = p.blockageLeakTime;
-    this->blockageRiseTime = p.blockageRiseTime;
-    this->blockageTimeWindow = p.blockageTimeWindow;
+    //this->blockageLeakTime = p.blockageLeakTime;
+    //this->blockageRiseTime = p.blockageRiseTime;
+    //this->blockageTimeWindow = p.blockageTimeWindow;
     
     //this->blockageLeakTime = p.blockageLeakTime[regionNr-1];
     //this->blockageRiseTime = p.blockageRiseTime[regionNr-1];
     //this->blockageTimeWindow = p.blockageTimeWindow[regionNr-1];
-    
+    /*
     int fixedBufferWeightHistorySize = static_cast<int>(ceil(this->blockageTimeWindow/this->stepSize));
     
+    if(fixedBufferWeightHistorySize < 0) {
+        
+        cout << "wtf: " << p.blockageTimeWindow << " , " << this->stepSize << endl;
+        exit(EXIT_FAILURE);
+    }
+    
     cout << "fixedBufferWeightHistorySize: " << fixedBufferWeightHistorySize << endl;
-
+*/
+    int fixedBufferWeightHistorySize = 0;
+    
     if(percentileSize < 1 && p.sparsenessRoutine != NOSPARSENESS) {
         cerr << "Sparseness is to low : " << percentileSize << endl;
         cerr.flush();
@@ -280,7 +288,7 @@ void HiddenRegion::computeNewFiringRate() {
             #pragma omp for nowait
             for(int i = 0;i < verDimension; i++)
                 for(int j = 0;j < horDimension; j++)
-                    Neurons[d][i][j].newFiringRate = 1/(1+exp(-2*sigmoidSlope*(Neurons[d][i][j].newInhibitedActivation-threshold - sigmoidThreshold)));
+                    Neurons[d][i][j].newFiringRate = 1/(1+exp(-2*sigmoidSlope*(Neurons[d][i][j].newInhibitedActivation - threshold - sigmoidThreshold)));
         }
     }
     else if(sparsenessRoutine == GLOBAL) {
@@ -291,7 +299,7 @@ void HiddenRegion::computeNewFiringRate() {
             for(int j = 0;j < horDimension; j++)
                 cumulativeFiringRate += Neurons[0][i][j].firingRate;
         
-         #pragma omp for
+         #pragma omp for nowait
          for(int i = 0;i < verDimension; i++)
          for(int j = 0;j < horDimension; j++) {
          
@@ -472,7 +480,7 @@ void HiddenRegion::applyLearningRule() {
                     //    (*s).blockage += stepSize * (-blockageLeakTime*oldBlockage + blockageRiseTime*fabs(oldWeight - (*s).getLast()));
                     
                     // NEW Update synapse blockage
-                    (*s).blockage += stepSize * (blockageLeakTime*(1-oldBlockage) - blockageRiseTime*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
+                    //(*s).blockage += stepSize * (blockageLeakTime*(1-oldBlockage) - blockageRiseTime*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
                     
                     // Add to cumulative norm value
 					norm += oldWeight * oldWeight;
@@ -488,8 +496,9 @@ void HiddenRegion::applyLearningRule() {
                         case TRACE_RULE:
                             
                             // CLASSIC
-                            //(*s).weight += stepSize * (learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
+                            (*s).weight += stepSize * (learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
                             
+                            /* not used
                             // SATURATION RULE 1: b_ij =0 -> LTP is possible
                             //dw = stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate - oldBlockage));
                             //(*s).weight += dw > 0 ? dw : 0;
@@ -499,6 +508,7 @@ void HiddenRegion::applyLearningRule() {
                             
                             // INDIVIDUAL WEIGHT SATURATION
                             //(*s).weight += stepSize * (0.1 - (*s).weight)*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
+                            */
                             
                             break;
                             

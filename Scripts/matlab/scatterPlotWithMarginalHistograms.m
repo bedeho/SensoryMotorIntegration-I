@@ -40,7 +40,7 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
     EdgeColors      = processOptionalArgument('EdgeColors', FaceColors);
     NumberOfBins    = processOptionalArgument('NumberOfBins', 40);
     MarkerSize      = processOptionalArgument('MarkerSize', 3);
-    Location        = processOptionalArgument('Location', 'SouthWest');
+    Location        = processOptionalArgument('Location', 'NorthEast'); % SouthWest
     YLabelOffset    = processOptionalArgument('YLabelOffset', 5);
     LabelFontSize   = processOptionalArgument('LabelFontSize', 12);
     AxisFontSize    = processOptionalArgument('AxisFontSize', 12);
@@ -153,13 +153,20 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
     % Add x projection
     axes(xProjectionAxis);
     hBar = bar(XHistograms,1.0,'stacked','LineStyle','none'); 
-    set(hBar,{'FaceColor'}, FaceColors); %, {'EdgeColor'}, edgeColors
+    %set(hBar,{'FaceColor'}, FaceColors); %, {'EdgeColor'}, edgeColors
+    for i=1:length(hBar),
+        set(hBar(i),'FaceColor', FaceColors{i}); %, {'EdgeColor'}, edgeColors
+    end
+    
     
     % Add y projection
     axes(yProjectionAxis);
     hBar = bar(YHistograms,1.0,'stacked','LineStyle','none'); 
     view(-90,90);
-    set(hBar,{'FaceColor'}, FaceColors); %, {'EdgeColor'}, edgeColors
+    %set(hBar,{'FaceColor'}, FaceColors); %, {'EdgeColor'}, edgeColors
+    for i=1:length(hBar),
+        set(hBar(i),'FaceColor', FaceColors{i}); %, {'EdgeColor'}, edgeColors
+    end
     
     % Positioning: 
     % remember, pos = [left, bottom, width, height]

@@ -118,6 +118,14 @@ function ThesisExperimentsPlot()
     FaceColors = {[1,0,0]; [0,0,1]};
     %}
     
+    %% global_slopetuning/sS=00000003.0_
+    
+    experiment(1).Name = 'Untrained';
+    experiment(1).Folder = expFolder('global_slopetuning/sS=00000003.0_/BlankNetwork');
+    experiment(2).Name = 'Trained';
+    experiment(2).Folder = expFolder('global_slopetuning/sS=00000003.0_/TrainedNetwork');
+    FaceColors = {[1,0,0]; [0,0,1]};
+    
     
     %% Dont need to touch anything below here.
     numExperiments = length(experiment);

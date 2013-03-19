@@ -46,13 +46,13 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     % Agent in Training
     
     %% CLASSIC/Varying #head positions
-    headPositions                       = 10; % classic = 8
+    headPositions                       = 8; % classic = 8
     fixationSequenceLength              = 30; % classic = 15
     numberOfFixations                   = headPositions*fixationSequenceLength; % classic = ;
     
     % Variations
-    numberOfNonSpesificFixations        = 40;
-    fixationSigma                       = 1.0;%1.0, 0.100; % (s)
+    numberOfNonSpesificFixations        = 0;
+    fixationSigma                       = 0.0; %1.0, 0.100; % (s)
     
     %% Varying fixation sequence length
     %{
@@ -63,9 +63,6 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     % Agent in Testing
     nrOfTestingEyePositions             = 4;
     nrOfRetinalTestingPositions         = 80;
-    
-    % Deduce number of sequences
-    %numberOfSequences                   = ceil(numberOfFixations / fixationSequenceLength);
     
     % Filename
     if nargin < 1,
@@ -236,21 +233,17 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     end
     
     testingEyePositionFieldSize = targetEyePositionRange; %*0.8
-    disp('TIGHT TESTING>>>>>>>>>>>>>>>>> REMOVE!!!');
     testingEyePositions = centerN2(testingEyePositionFieldSize, nrOfTestingEyePositions);
     
     % Generate testing data
     disp('Generating Single Target Testing Data.');
     OneD_Stimuli_Testing(folderName, samplingRate, testingFixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets);
     
-    %{
     % Generate multiple targets testing data
-    if nargin > 1,
+    if 1,
         disp('Generating Multiple Target Testing Data.');
-        OneD_Stimuli_CLASSICMultiTargetTesting(folderName, samplingRate, testingFixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, dist);
-        OneD_Stimuli_NEWMultiTargetTesting(folderName, samplingRate, testingFixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, dist);
+        OneD_Stimuli_MTT(folderName, samplingRate, testingFixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, 2);
     end
-    %}
     
     % Make stimuli figures
     if numberOfSimultanousTargets  == 1,
