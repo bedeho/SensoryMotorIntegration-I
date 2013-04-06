@@ -13,6 +13,9 @@
 
 //for debug purposes
 #include <iostream>
+#include <stdlib.h>
+#include <math.h>
+
 using std::endl;
 using std::cout;
 
@@ -82,6 +85,8 @@ void InputNeuron::init(Region * region,
             break;
             
         default:
+            std::cerr << "Unknown input encoding spesified." << std::endl;
+            exit(EXIT_FAILURE);
             break;
     }
 
@@ -175,6 +180,7 @@ float InputNeuron::computeEyePositionCompononent(float eyePosition) {
         case MULTIMODAL_SIGMOID_MODULATION:
             
             component = 1/(1 + exp(horEyePositionSigmoidSlope * (eyePosition - horEyePositionPreference))); // peak1Magnitude
+            
             break;
             
         default:

@@ -193,12 +193,14 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-fopenmp";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -218,11 +220,13 @@
 				ENABLE_OPENMP_SUPPORT = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_CFLAGS = "-fopenmp";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -230,6 +234,7 @@
 		5B6EB9FB16E0DFB600DDDAA0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include,
 					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include,
@@ -238,6 +243,8 @@
 					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/lib,
 					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/lib,
 				);
+				OTHER_CFLAGS = "-fopenmp";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = (
 					"-lconfig++",
 					"-lgsl",
@@ -249,6 +256,7 @@
 		5B6EB9FC16E0DFB600DDDAA0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include,
 					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include,
@@ -257,6 +265,8 @@
 					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/lib,
 					/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/lib,
 				);
+				OTHER_CFLAGS = "-fopenmp";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = (
 					"-lconfig++",
 					"-lgsl",

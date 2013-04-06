@@ -7,8 +7,6 @@
  *
  */
 
-
-
 #include "Network.h"
 #include <iostream>
 #include <cstring>
@@ -17,7 +15,7 @@
 #include "Utilities.h"
 
 #ifdef OMP_ENABLE
-	#include <omp.h>
+    #include <omp.h>
 #endif
 
 using std::cout;

@@ -30,13 +30,13 @@ function prewiredModel(filename)
     eyePositionPreferences              = centerDistance(eyePositionFieldSize, eyePositionPrefrerenceDistance);
     nrOfVisualPreferences               = length(visualPreferences);
     nrOfEyePositionPrefrerence          = length(eyePositionPreferences);
-    targets                             = centerDistance(targetVisualRange, targetSpacing);
+    targets                             = centerDistance(targetVisualRange, targetSpacing); centerN(targetVisualRange, 5); 
     numTargetPositions                  = length(targets);
     
     % Output layer
-    inputLayerDepth                     = 1; % 1 = PO, 2 = LIP
+    inputLayerDepth                     = 2; % 1 = PO, 2 = LIP
     %fanInPercentage                     = 0.30; % [0 1)
-    desiredFanIn                        = 367; %fanInPercentage*(nrOfVisualPreferences*nrOfEyePositionPrefrerence*inputLayerDepth);
+    desiredFanIn                        = 1000; %367fanInPercentage*(nrOfVisualPreferences*nrOfEyePositionPrefrerence*inputLayerDepth);
     
     numRegions                          = 2;
     dim                                 = 30;
@@ -86,8 +86,8 @@ function prewiredModel(filename)
             %{
             figure();
             title(['Row,Col =' num2str(row) ',' num2str(col)])
-            mat1 = zeros(dimensions.nrOfVisualPreferences,dimensions.nrOfEyePositionPrefrerence);
-            mat2 = zeros(dimensions.nrOfVisualPreferences,dimensions.nrOfEyePositionPrefrerence);
+            mat1 = zeros(nrOfVisualPreferences,nrOfEyePositionPrefrerence);
+            mat2 = zeros(nrOfVisualPreferences,nrOfEyePositionPrefrerence);
             %}
             
             % FORGOT TO CLEAR <== damn this bug
@@ -122,6 +122,15 @@ function prewiredModel(filename)
                     
                     % Mark as connected
                     isConnected(d,ret,eye) = 1;
+                    
+                    % set off markers
+                    %{
+                    if(d==1),
+                        mat1(ret,eye) = weight;
+                    else
+                        mat2(ret,eye) = weight;
+                    end
+                    %}
                     
                 end
                 
@@ -211,15 +220,41 @@ function prewiredModel(filename)
 
             weight = exp(-(distance^2)/(2*inputLayerSigma^2)); 
             
+            % Make final stochastic decision
+            connect = cond1 && cond2;
+            
         elseif inputLayerDepth == 2 % SIGMOID
 
-            cond1 = (eyePref+retPref <= target && d==1); % isToLeftOfTargets
-            cond2 = (eyePref+retPref >= target && d==2); % isAboveLowerBound
+            %Classic
+            
+            %{
+            
+            rmax = target + eyePositionFieldSize/2;
+            rmin = target - eyePositionFieldSize/2;
+            
+            withinret = true; %retPref >= rmin && retPref <= rmax;
+
+            cond1 = (eyePref+retPref <= target && d==2);
+            cond2 = (eyePref+retPref >= target && d==1);
+            
+            weight = 0.5; %rand([1 1]); % Get random weight
+            
+             % Make final stochastic decision
+            connect = withinret && (cond1 || cond2);
+            
+            %}
+            
+            if d == 1,
+                connect = (target - eyePref <= retPref) && (retPref <= target + eyePositionFieldSize + eyePref);  
+            else
+                connect = (target - eyePositionFieldSize + eyePref <= retPref) && (retPref <= target - eyePref); 
+            end
+            
             weight = rand([1 1]); % Get random weight
+            
         end
         
-        % Make final stochastic decision
-        connect = cond1 && cond2;
+        
 
     end
 
