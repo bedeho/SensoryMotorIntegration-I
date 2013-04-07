@@ -119,13 +119,29 @@ function ThesisExperimentsPlot()
     %}
     
     %% global_slopetuning/sS=00000003.0_
-    
+    %{
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('global_slopetuning/sS=00000003.0_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('global_slopetuning/sS=00000003.0_/TrainedNetwork');
     FaceColors = {[1,0,0]; [0,0,1]};
+    %}
     
+    %% planargain/L=0.05000_S=0.90_sS=00000008.0_sT=0.00_gIC=0.0000_eS=0.0_
+    %{
+    experiment(1).Name = 'Untrained';
+    experiment(1).Folder = expFolder('planargain/L=0.05000_S=0.90_sS=00000008.0_sT=0.00_gIC=0.0000_eS=0.0_/BlankNetwork');
+    experiment(2).Name = 'Trained';
+    experiment(2).Folder = expFolder('planargain/L=0.05000_S=0.90_sS=00000008.0_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork');
+    FaceColors = {[1,0,0]; [0,0,1]};
+    %}
+    
+    %% prewiredLIP/X=1_Y=1
+    experiment(1).Name = 'Untrained';
+    experiment(1).Folder = expFolder('prewiredLIP/X=1_Y=1/BlankNetwork');
+    experiment(2).Name = 'Trained';
+    experiment(2).Folder = expFolder('prewiredLIP/X=1_Y=1/TrainedNetwork');
+    FaceColors = {[1,0,0]; [0,0,1]};
     
     %% Dont need to touch anything below here.
     numExperiments = length(experiment);

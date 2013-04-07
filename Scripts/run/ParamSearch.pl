@@ -63,8 +63,8 @@
 	   	#my $experiment 					= "peakedgain_recording";
 	   	#my $experiment						= "global_slope_w_tuning";
 	   	#my $experiment						= "simple";	
-	   	#my $experiment						= "planar_recording_sharpersigmoid";
-	   	my $experiment						= "3000000_epoch_labwarming_experiment";
+	   	my $experiment						= "planargain";
+	   	#my $experiment						= "planargain_recording";
 	   	my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	   	
 	   	#**********************************
@@ -177,8 +177,8 @@
 		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
-		my $nrOfEpochs						= 3; # 20;#10; #50; # 30,100
-		my $saveNetworkAtEpochMultiple 		= 100;
+		my $nrOfEpochs						= 30; # 20;#10; #50; # 30,100
+		my $saveNetworkAtEpochMultiple 		= 10;
 		my $outputAtTimeStepMultiple		= 2; # Keep this high (10>=) unless  you are recording for looking at dynamics!
 		
 		#print "WARNING: low output multiple\n";

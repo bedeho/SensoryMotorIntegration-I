@@ -81,12 +81,13 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         drawWeights(region, row, col, 1, rightClicked);
         
         if region == 2 && networkDimensions(1).depth > 1,
+            figure(fig);
             drawWeights(region, row, col, 2, rightClicked);
         end
         
     end
 
-    function drawWeights(region, row, col, sourceDepth,rightClicked)
+    function drawWeights(region, row, col, sourceDepth, rightClicked)
         
         % Plot the two input layers
         subplot(numRegions-1, 3, 3*(region-2) + 1 + sourceDepth);
