@@ -136,12 +136,23 @@ function ThesisExperimentsPlot()
     FaceColors = {[1,0,0]; [0,0,1]};
     %}
     
-    %% prewiredLIP/X=1_Y=1
+    %% prewiredLIPnew/X=1_Y=1
+    
     experiment(1).Name = 'Untrained';
-    experiment(1).Folder = expFolder('prewiredLIP/X=1_Y=1/BlankNetwork');
+    experiment(1).Folder = expFolder('prewiredLIPnew/X=1_Y=1/BlankNetwork');
     experiment(2).Name = 'Trained';
-    experiment(2).Folder = expFolder('prewiredLIP/X=1_Y=1/TrainedNetwork');
+    experiment(2).Folder = expFolder('prewiredLIPnew/X=1_Y=1/TrainedNetwork');
     FaceColors = {[1,0,0]; [0,0,1]};
+    
+    
+    %% prewiredLIPold/X=1_Y=1
+    %{
+    experiment(1).Name = 'Untrained';
+    experiment(1).Folder = expFolder('prewiredLIPold/X=1_Y=1/BlankNetwork');
+    experiment(2).Name = 'Trained';
+    experiment(2).Folder = expFolder('prewiredLIPold/X=1_Y=1/TrainedNetwork');
+    FaceColors = {[1,0,0]; [0,0,1]};
+    %}
     
     %% Dont need to touch anything below here.
     numExperiments = length(experiment);
@@ -176,6 +187,7 @@ function ThesisExperimentsPlot()
         disp(['Mean RF-Location: ' num2str(mean(RFLocation{e}))]);
         disp(['Mean Head-centeredness: ' num2str(mean(headCenteredNess{e}))]);
         disp(['Mean RFSize: ' num2str(mean(RFSize{e}))]);
+        disp(['Fraction >=0.7: ' num2str(nnz(headCenteredNess{e} >= 0.7)/numel(headCenteredNess{e}))]);
         
         disp(['Fraction discarded due to DISCONTINOUS: ' num2str(data.analysisResults.fractionDiscarded)]);
         disp(['Fraction discarded due to EDGE: ' num2str(data.analysisResults.fractionDiscarded_Edge)]);

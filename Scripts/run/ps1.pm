@@ -106,12 +106,12 @@
 	    								#["00000003.75"],
 	    								#["00000004.0"],
 	    								#["00000004.25"],
-	    								#["00000004.50"] #classic , seems important, larger values infact destroy performance with single target simulations, they dont clean up!!!!
+	    								["00000004.50"] #classic , seems important, larger values infact destroy performance with single target simulations, they dont clean up!!!!
 	    								#["00000004.75"],
 	    								#["00000006.0"],
 	    								#["00000006.0"], # varyingfixation_, # use with (0.15 -w)
 										#["00000007.0"],
-										["00000008.0"]
+										########### planar ? ["00000008.0"]
 										#["00000009.0"],
 	    								#["00000010.0"],
 	    								#["00000011.0"],

@@ -34,9 +34,10 @@ function prewiredModel(filename)
     numTargetPositions                  = length(targets);
     
     % Output layer
-    inputLayerDepth                     = 2; % 1 = PO, 2 = LIP
-    %fanInPercentage                     = 0.30; % [0 1)
-    desiredFanIn                        = 1000; %367fanInPercentage*(nrOfVisualPreferences*nrOfEyePositionPrefrerence*inputLayerDepth);
+    inputLayerDepth                     = 1; % 1 = PO, 2 = LIP
+    trainedNetwork                      = true;
+    %fanInPercentage                    = 0.30; % [0 1)
+    desiredFanIn                        = 5000; %367fanInPercentage*(nrOfVisualPreferences*nrOfEyePositionPrefrerence*inputLayerDepth);
     
     numRegions                          = 2;
     dim                                 = 30;
@@ -93,7 +94,7 @@ function prewiredModel(filename)
             % FORGOT TO CLEAR <== damn this bug
             clearvars synapses
             
-            % Connectivity matrix
+            % Connectivity matrix for this neuron
             isConnected = zeros(inputLayerDepth, nrOfVisualPreferences, nrOfEyePositionPrefrerence);
             
             % Connect to presynaptic sources
@@ -108,11 +109,10 @@ function prewiredModel(filename)
                 retPref = visualPreferences(ret);
                 eyePref = eyePositionPreferences(eye);
                 
-                % Check if it is inside diagonal
-                [connect, weight] = doConnect2(eyePref, retPref, target, d, inputLayerDepth);
-                
                 % Check that we are not already connected to it
-                if(~isConnected(d,ret,eye) && connect),
+                if(~isConnected(d,ret,eye))
+                    
+                    weight = doConnect2(eyePref, retPref, target, d, inputLayerDepth);
                     
                     % Increase number of synapses
                     numberOfAfferentSynapses = numberOfAfferentSynapses + 1;
@@ -147,7 +147,7 @@ function prewiredModel(filename)
             %}
             
             % Normalize weight vector
-            %synapses(5,:) = synapses(5,:)/norm(synapses(5,:));
+            synapses(5,:) = synapses(5,:)/norm(synapses(5,:));
             
             % Save synapses
             synapseBuffer{row,col} = synapses;
@@ -193,70 +193,71 @@ function prewiredModel(filename)
    [pathstr, name, ext] = fileparts(filename);
    save([pathstr '/info.mat'], 'allocatedHeadPositions');
    
-   function [connect,weight] = doConnect2(eyePref, retPref, target, d, inputLayerDepth)
+   function weight = doConnect2(eyePref, retPref, target, d, inputLayerDepth)
+       
+       if trainedNetwork,
 
-        if inputLayerDepth == 1, % PEAKED
+            if inputLayerDepth == 1, % PEAKED
 
-            connectWindow = 2;
-            cond1 = eyePref+retPref <= target+connectWindow*inputLayerSigma; % isBelowUpperBound
-            cond2 = eyePref+retPref >= target-connectWindow*inputLayerSigma; % isAboveLowerBound
+                %connectWindow = 4;
+                %cond1 = eyePref+retPref <= target+connectWindow*inputLayerSigma; % isBelowUpperBound
+                %cond2 = eyePref+retPref >= target-connectWindow*inputLayerSigma; % isAboveLowerBound
 
-            % Find distane to head-centeredness diagonal
-            % smallest distance between ax + bx + c = 0 and x0,y0 is:
-            %
-            % abs(ax_0 + b_y0 + c) / norm([a b])
-            %
-            % where
-            % x = e (eye position
-            % y = r (retinal position)
-            % c = -target (head position)
-            x0 = eyePref;
-            y0 = retPref;
-            a = 1;
-            b = 1;
-            c = -target;
+                % Find distane to head-centeredness diagonal
+                % smallest distance between ax + bx + c = 0 and x0,y0 is:
+                %
+                % abs(ax_0 + b_y0 + c) / norm([a b])
+                %
+                % where
+                % x = e (eye position
+                % y = r (retinal position)
+                % c = -target (head position)
 
-            distance = abs(a*x0 + b*y0 + c) / norm([a b]);
+                x0 = eyePref;
+                y0 = retPref;
+                a = 1;
+                b = 1;
+                c = -target;
 
-            weight = exp(-(distance^2)/(2*inputLayerSigma^2)); 
-            
-            % Make final stochastic decision
-            connect = cond1 && cond2;
-            
-        elseif inputLayerDepth == 2 % SIGMOID
+                distance = abs(a*x0 + b*y0 + c) / norm([a b]);
 
-            %Classic
-            
-            %{
-            
-            rmax = target + eyePositionFieldSize/2;
-            rmin = target - eyePositionFieldSize/2;
-            
-            withinret = true; %retPref >= rmin && retPref <= rmax;
+                weight = exp(-(distance^2)/(2*inputLayerSigma^2)); 
 
-            cond1 = (eyePref+retPref <= target && d==2);
-            cond2 = (eyePref+retPref >= target && d==1);
-            
-            weight = 0.5; %rand([1 1]); % Get random weight
-            
-             % Make final stochastic decision
-            connect = withinret && (cond1 || cond2);
-            
-            %}
-            
-            if d == 1,
-                connect = (target - eyePref <= retPref) && (retPref <= target + eyePositionFieldSize + eyePref);  
-            else
-                connect = (target - eyePositionFieldSize + eyePref <= retPref) && (retPref <= target - eyePref); 
+            elseif inputLayerDepth == 2 % SIGMOID
+
+                % Classic - LIPprewiredold
+                %{
+                rmax = target + eyePositionFieldSize/2;
+                rmin = target - eyePositionFieldSize/2;
+
+                withinret = retPref >= rmin && retPref <= rmax;
+
+                cond1 = (eyePref+retPref <= target && d==2);
+                cond2 = (eyePref+retPref >= target && d==1);
+
+                % Make final stochastic decision
+                makeSynapseStrong = withinret && (cond1 || cond2);
+                %}
+                
+                % NEW STYLE - LIPprewired
+                
+                if d == 1,
+                    makeSynapseStrong = (target - eyePref <= retPref) && (retPref <= target + eyePositionFieldSize + eyePref);  
+                else
+                    makeSynapseStrong = (target - eyePositionFieldSize + eyePref <= retPref) && (retPref <= target - eyePref); 
+                end
+                
+
+                if makeSynapseStrong,
+                    weight = 10;
+                else
+                    weight = 1;
+                end
             end
-            
-            weight = rand([1 1]); % Get random weight
-            
-        end
-        
-        
-
-    end
+       else
+           weight = rand([1 1]);
+       end
+   end
 
 end
 

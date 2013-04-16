@@ -41,6 +41,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     disp(['fractionDiscarded_Discontinous: ' num2str(analysisResults.fractionDiscarded_Discontinous)]);
     disp(['fractionDiscarded_Edge: ' num2str(analysisResults.fractionDiscarded_Edge)]);
     disp(['fractionDiscarded_MultiPeak: ' num2str(analysisResults.fractionDiscarded_MultiPeak)]);
+    %disp(['Fraction >=0.7: ' num2str(nnz(headCenteredNess{e} >= 0.7)/numel(headCenteredNess{e}))]);
     %disp(['uniformityOfVeryHeadCentered: ' num2str(analysisResults.uniformityOfVeryHeadCentered)]);
     %disp(['maxEntropy: ' num2str(analysisResults.maxEntropy)]);
     disp(['coverage: ' num2str(analysisResults.uniformityOfVeryHeadCentered/analysisResults.maxEntropy)]);

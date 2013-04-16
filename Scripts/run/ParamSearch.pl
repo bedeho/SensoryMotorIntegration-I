@@ -63,8 +63,9 @@
 	   	#my $experiment 					= "peakedgain_recording";
 	   	#my $experiment						= "global_slope_w_tuning";
 	   	#my $experiment						= "simple";	
-	   	my $experiment						= "planargain";
+	   	#my $experiment						= "planargain";
 	   	#my $experiment						= "planargain_recording";
+	   	my $experiment						= "decodeTESTbaseline";
 	   	my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	   	
 	   	#**********************************
@@ -177,8 +178,8 @@
 		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
-		my $nrOfEpochs						= 30; # 20;#10; #50; # 30,100
-		my $saveNetworkAtEpochMultiple 		= 10;
+		my $nrOfEpochs						= 10; # 20;#10; #50; # 30,100
+		my $saveNetworkAtEpochMultiple 		= 11;
 		my $outputAtTimeStepMultiple		= 2; # Keep this high (10>=) unless  you are recording for looking at dynamics!
 		
 		#print "WARNING: low output multiple\n";
@@ -190,7 +191,7 @@
 		my $resetTrace						= "false"; # "false", Reset trace between objects of training
 		my $covarianceThreshold				= "0.40"; # classic = 0, multitarget=0.4, \sigma=19 = 0.9
 		
-		my $sigmoidModulationPercentage		= "1.0";
+		my $sigmoidModulationPercentage		= "0.0";
 		my $inputEncoding					= MIXED; # MIXED, DOUBLEPEAK_GAUSSIAN,DECOUPLED
 		my $weightVectorLength				= "1.0"; # classic = 1.0
 		my $seed							= 55; # 55 is standard

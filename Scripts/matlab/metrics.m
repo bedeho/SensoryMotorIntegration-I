@@ -241,12 +241,14 @@ function analysisResults = metrics(filename, info)
         
         if(length(usedEyePositions) > 1)
         
+            %{
+            old shit:
             p = polyfit(usedEyePositions,centersOfMass,1);
             a = p(1);
             b = p(2);
 
             %3) Deduce best fitting x+h for ax+b
-            h = b - (1-a)/numUsedEyePositions*sum(usedEyePositions);
+            h = b + (a+1)/numUsedEyePositions*sum(usedEyePositions);
             
             %4) Fitness
             
@@ -258,6 +260,11 @@ function analysisResults = metrics(filename, info)
             sst = sum((centersOfMass - meanCenterOfMass).^2);
 
             residue = sse/sst; % 1-sse/sst;
+            %}
+            
+            h = mean(centersOfMass);
+            residue = 0;
+            
         else
             h = NaN;
             residue = NaN;
