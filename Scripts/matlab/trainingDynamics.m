@@ -53,7 +53,7 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
         
         % What to show
         sourceRegion = [1];
-        sourceDepth = [1];
+        sourceDepth = [2];
         numRegions = length(sourceRegion);
         
         for r=1:numRegions,
@@ -81,7 +81,7 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
     % Setup and start timer
     % Good video on timers: http://blogs.mathworks.com/pick/2008/05/05/advanced-matlab-timer-objects/
     t = 1;
-    timerObject = timer('Period', 0.05, 'ExecutionMode', 'fixedSpacing');
+    timerObject = timer('Period', 0.08, 'ExecutionMode', 'fixedSpacing');
     set(timerObject, 'TimerFcn', {@trainingDynamics_Draw});
     
     goSlow = false;
@@ -107,15 +107,33 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
         plotBuffer(:,end) = [tr; f; s]; % [tr; a; f; s; ia];
         
         maxVal = max(1.1,1.1*max(max(plotBuffer))); % 1.1
+        maxVal = 1.1;
         minVal = min(-0.1,min(min(plotBuffer)));
+        minVal = -0.1;
         
         % Plot buffer
-        subplot(numRegions+1+1, 1,1);
+        subplot(numRegions+1, 1,1);%% subplot(numRegions+1+1, 1,1)
         plot(plotBuffer');
         axis([1 ticksInBuffer minVal maxVal]); 
         title(['tick = ' num2str(t) '/' num2str(streamSize)]);
         %legend('Trace','Activation','Firing','Stimulation','Inhibition'); % 
         legend('Trace','Firing','Stimulation'); % 
+        
+        % GET stimulus locations - IT IS FUDGEDD, not 100.00% correct
+        simulationTime = (t-1)*tickSize;
+        timeIntoEpoch = mod(simulationTime, totalStimuliDuration);
+        lineCounter = floor(timeIntoEpoch/(1/samplingRate))+1;
+        if lineCounter > length(buffer)
+            lineCounter = length(buffer)-1;
+            disp('is done');
+        end
+        
+        eyePosition = buffer(lineCounter, 1);
+        retinalPositions = buffer(lineCounter, 2:(numberOfSimultanousTargets + 1));
+        
+        eyePosition_MatrixCord = eyePosition+30;
+        retinalPositions_MatrixCord = 100-retinalPositions;
+        
         
         % Plot synapses
         if includeSynapses,
@@ -141,7 +159,7 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
             % Show matrices
             for r=1:numRegions,
 
-                subplot(numRegions+1+1,1,r+1);
+                subplot(numRegions+1,1,r+1); %% subplot(numRegions+1+1, 1,1)
 
                 regionNr = sourceRegion(r);
                 depthNr = sourceDepth(r);
@@ -150,23 +168,17 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
                 colorbar
                 pbaspect([networkDimensions(regionNr).x_dimension networkDimensions(regionNr).y_dimension 1]);
                 %colobar
+                
+                hold on
+                plot(eyePosition_MatrixCord*ones(numberOfSimultanousTargets), retinalPositions_MatrixCord , 'xw', 'MarkerSize',10,'LineWidth',10);
 
             end
 
         end
         
-        % Stimuli plot - IT IS FUDGEDD, not 10.00% correct
-        simulationTime = (t-1)*tickSize;
-        timeIntoEpoch = mod(simulationTime, totalStimuliDuration);
-        lineCounter = floor(timeIntoEpoch/(1/samplingRate))+1;
-        if lineCounter > length(buffer)
-            lineCounter = length(buffer)-1;
-            disp('is done');
-        end
+
         
-        eyePosition = buffer(lineCounter, 1);
-        retinalPositions = buffer(lineCounter, 2:(numberOfSimultanousTargets + 1));
-        
+        %{
         if ~isnan(eyePosition),
             
             subplot(numRegions+1+1, 1, numRegions+1+1);
@@ -176,6 +188,7 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
         else
             disp('isnan!!!');
         end
+        %}
 
         % Update where we are
         if goSlow || tr > 0.2 || f > 0.2,

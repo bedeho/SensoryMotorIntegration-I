@@ -505,10 +505,11 @@ void HiddenRegion::applyLearningRule() {
                             
                             // BLOCKING
                             //(*s).weight += stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
+                            */
                             
                             // INDIVIDUAL WEIGHT SATURATION
                             //(*s).weight += stepSize * (0.1 - (*s).weight)*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
-                            */
+                            
                             
                             break;
                             

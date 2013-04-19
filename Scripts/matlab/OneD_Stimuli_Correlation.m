@@ -6,55 +6,105 @@
 %  Copyright 2012 OFTNAI. All rights reserved.
 %
 
-function OneD_Stimuli_Correlation(stimuliName)
+function OneD_Stimuli_Correlation(folderName, dimensions)
 
     % Import global variables
     declareGlobalVars();
     
     global base;
     
-    % Generate correlation data
-    dimensions = OneD_DG_Dimensions();
+    % Setup space and variables
+    allShownTargets       = dimensions.allShownTargets;
+    eyePositionsRecord    = dimensions.eyePositionsRecord;
     
-    % Allocate space, is reused
-    tempspacetemp = zeros(2, dimensions.nrOfVisualPreferences, dimensions.nrOfEyePositionPrefrerence);
-
-    [samplingRate, numberOfSimultanousObjects, visualFieldSize, eyePositionFieldSize, bufferTesting] = OneD_Stimuli_Load(stimuliName);
-    [objects, minSequenceLength, objectsFound] = OneD_Parse(bufferTesting);
+    nrOfTargets         = length(allShownTargets);
+    nrOfEyePositions    = length(eyePositionsRecord);
+    dotproducts         = zeros(nrOfTargets, nrOfEyePositions, nrOfTargets, nrOfEyePositions);
+    samplesPrLocation   = uint32(ceil(0.300/0.01));
     
-    dotproduct = zeros(objectsFound, objectsFound);
+    visualPreferences       = -100:1:100;
+    eyePositionPreferences  = -30:1:30;
+    gaussianSigma           = 6.0;
+    sigmoidSlope            = 0.0625;
     
-    for o1 = 1:objectsFound,
+    % Setup figure
+    figure;
+    hold on;
+    
+    % Do computation, and dump to stimuli file
+    % t1
+    for t1=1:nrOfTargets,
         
-        o1
-        for o2 = 1:objectsFound,
-            
-            tmp1 = objects{o1};
-            tmp2 = objects{o2};
-            
-            % We just pick first row, as all rows should be identical!!
-            pattern1 = tmp1(1,:);
-            pattern2 = tmp2(1,:);
-            
-            v1 = OneD_Stimuli_InputLayer(dimensions, pattern1);
-            v2 = OneD_Stimuli_InputLayer(dimensions, pattern2);
-            
-            % Normalized dot product
-            dotproduct(o1,o2) = dot(v1(:),v2(:)) / (norm(v1(:)) * norm(v2(:)));
+        disp(['Progress: ' num2str(100*(t1/nrOfTargets)) '%']);
+        
+        for e1=1:nrOfEyePositions,
+        
+            % t2
+            for t2=1:nrOfTargets,
+                for e2=1:nrOfEyePositions,
+                    
+                    target1 = dimensions.allShownTargets(t1);
+                    target2 = dimensions.allShownTargets(t2);
+                    
+                    eye_pos1 = dimensions.eyePositionsRecord(t1,e1);
+                    eye_pos2 = dimensions.eyePositionsRecord(t2,e2);
+                    
+                    s1_activity = OneD_Stimuli_InputLayer([eye_pos1,target1-eye_pos1], visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
+                    s2_activity = OneD_Stimuli_InputLayer([eye_pos2,target2-eye_pos2], visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
 
+                    % Normalized dot product
+                    overlap = dot(s1_activity(:),s2_activity(:)) / (norm(s1_activity(:)) * norm(s2_activity(:)));
+                    dotproducts(t1,e1,t2,e2) = overlap;
+                    
+                    % Add plot to figure
+                    plot(abs(eye_pos1 - eye_pos2), overlap, 'o'); 
+                    
+                end
+            end
+            
         end
     end
     
-    fig = figure();
-    imagesc(dotproduct);
+    %% Save as stimuli file: needed for later!
     
-    % Save correlation
+    % Open file
+    filename = [base 'Stimuli/' folderName '-correlation/data.dat'];
+    fileID = fopen(filename,'w');
+
+    % Make header
+    fwrite(fileID, dimensions.samplingRate, 'ushort');               % Rate of sampling
+    fwrite(fileID, dimensions.numberOfSimultanousTargets, 'ushort'); % Number of simultanously visible targets, needed to parse data
+    fwrite(fileID, dimensions.visualFieldSize, 'float');
+    fwrite(fileID, dimensions.eyePositionFieldSize, 'float');
+    
+    % Dump to file
+    for t1=1:nrOfTargets,
+        for e1=1:nrOfEyePositions,
+                                
+            target1 = dimensions.allShownTargets(t1);
+            eye_pos1 = dimensions.eyePositionsRecord(t1,e1);
+                    
+            outputSample(fileID, eye_pos1, target1, samplesPrLocation);
+        end
+    end
+    
+    % Close stimuli file
+    fclose(fileID);
+    
+    %% Save correlation
     startDir = pwd;
-    cd([base 'Stimuli/' stimuliName]);
-    save dotproduct; 
+    cd([base 'Stimuli/' folderName '-correlation']);
+
+    save('dotproduct.mat', ...
+            'dotproducts', ...
+            'allShownTargets', ...
+            'eyePositionsRecord');
     cd(startDir);
     
-     % Save figure
-    saveas(fig,[base 'Stimuli/' stimuliName '/correlation.png'],'png');
+    % Make figure pretty
+    
+    
+    % Save figure
+    %saveas(fig,[base 'Stimuli/' folderName '-correlation/dotproducts.eps'],'eps');
     
 end

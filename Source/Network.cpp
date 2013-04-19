@@ -337,9 +337,25 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
                     for(unsigned k = 0;k < ESPathway.size();k++)
                         ESPathway[k].clearState(true); // does not matter if trace is reset here
                 }
+                
+                
+                // Save network after PERIOD
+                if(isTraining && p.saveNetwork && (e+1) % p.saveNetworkAtEpochMultiple == 0) {
+                    
+                    #pragma omp single
+                    {
+                        cout << "Saving: TrainedNetwork_e" << e+1 << "p_" << o+1 << ".txt" << endl;
+                        
+                        stringstream ss;
+                        ss << outputDirectory << "TrainedNetwork_e" << e+1 << "p_" << o+1 << ".txt";
+                        string name = ss.str();
+                        outputFinalNetwork(name.c_str());
+                    }
+                }
+                
 			}
 			
-			// Do intermediate network saves
+			// Save network after EPOCHS
 			if(isTraining && p.saveNetwork && (e+1) % p.saveNetworkAtEpochMultiple == 0) {
 				
 				#pragma omp single

@@ -106,12 +106,13 @@
 	    								#["00000003.75"],
 	    								#["00000004.0"],
 	    								#["00000004.25"],
-	    								["00000004.50"] #classic , seems important, larger values infact destroy performance with single target simulations, they dont clean up!!!!
+	    								["00000004.50"], #classic , seems important, larger values infact destroy performance with single target simulations, they dont clean up!!!!
 	    								#["00000004.75"],
-	    								#["00000006.0"],
+	    								#["00000006.0"]
 	    								#["00000006.0"], # varyingfixation_, # use with (0.15 -w)
 										#["00000007.0"],
-										########### planar ? ["00000008.0"]
+										########### planar ? 
+										#["00000008.0"]
 										#["00000009.0"],
 	    								#["00000010.0"],
 	    								#["00000011.0"],
@@ -254,8 +255,8 @@
 										#["0.08000"],
 										#["0.09000"],
 										#
-										#["0.10000"],
-										#["0.20000"],
+										#["0.10000"] # using with sigmoi to test!!
+										#["0.20000"], # using with sigmoi to test!!
 										#["0.30000"],
 										#["0.40000"]
 										#["0.50000"], 
@@ -264,7 +265,7 @@
 										#["0.80000"],
 										#["0.90000"] # use with (0.1 -w) fixation duration
 										#
-										#["1.00000"],
+										#["1.00000"]
 										#["1.50000"]
 										#["2.00000"],
 										#["3.00000"],

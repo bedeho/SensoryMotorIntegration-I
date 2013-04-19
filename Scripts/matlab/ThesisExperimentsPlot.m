@@ -137,13 +137,13 @@ function ThesisExperimentsPlot()
     %}
     
     %% prewiredLIPnew/X=1_Y=1
-    
+    %{
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('prewiredLIPnew/X=1_Y=1/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('prewiredLIPnew/X=1_Y=1/TrainedNetwork');
     FaceColors = {[1,0,0]; [0,0,1]};
-    
+    %}
     
     %% prewiredLIPold/X=1_Y=1
     %{
@@ -151,6 +151,24 @@ function ThesisExperimentsPlot()
     experiment(1).Folder = expFolder('prewiredLIPold/X=1_Y=1/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('prewiredLIPold/X=1_Y=1/TrainedNetwork');
+    FaceColors = {[1,0,0]; [0,0,1]};
+    %}
+    
+    %% prewiredLIPnew_selforganization/X=1_Y=1
+    %{
+    experiment(1).Name = 'Hardwired';
+    experiment(1).Folder = expFolder('prewiredLIPnew_selforganization/X=1_Y=1/TrainedNetwork_e0');
+    experiment(2).Name = '10 Epochs';
+    experiment(2).Folder = expFolder('prewiredLIPnew_selforganization/X=1_Y=1/TrainedNetwork_e10');
+    FaceColors = {[1,0,0]; [0,0,1]};
+    %}
+    
+    %% prewiredLIPnew_selforganization/X=1_Y=1
+    %{
+    experiment(1).Name = 'Hardwired';
+    experiment(1).Folder = expFolder('prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e0');
+    experiment(2).Name = '10 Epochs';
+    experiment(2).Folder = expFolder('prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e10');
     FaceColors = {[1,0,0]; [0,0,1]};
     %}
     

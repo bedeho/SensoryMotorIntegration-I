@@ -26,10 +26,10 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     
     % Technical
     seed                                = 72; % classic = 72
-    samplingRate                        = 100; % (Hz)
+    samplingRate                        = 10; % (Hz)
     
     % Environment
-    numberOfSimultanousTargets          = 2; % classic = 1
+    numberOfSimultanousTargets          = 1; % classic = 1
     q                                   = 0.7; % targetRangeProportionOfVisualField
     visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
     eyePositionFieldSize                = (1-q)*visualFieldSize; % (1-q)*visualFieldSize OR equivalently (visualFieldSize/2 - targetVisualRange/2)
@@ -47,8 +47,8 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     
     %% CLASSIC/Varying #head positions
     headPositions                       = 8; % classic = 8
-    fixationSequenceLength              = 30; % classic = 15
-    numberOfFixations                   = headPositions*fixationSequenceLength; % classic = ;
+    fixationSequenceLength              = 15; % classic = 15
+    numberOfFixations                   = headPositions*fixationSequenceLength; % classic = headPositions*fixationSequenceLength;
     
     % Variations
     numberOfNonSpesificFixations        = 0;
@@ -121,6 +121,8 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     % For multiple target case
     fixedeyePositions = targetEyePositionRange*(rand(1, fixationSequenceLength) - 0.5);
     
+    eyePositionsRecord = [];
+    
     % Perform fixation sequences
     i = 1;
     numInitialPerms = length(unsampledPerms);
@@ -159,6 +161,8 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
         else
             eyePositions = targetEyePositionRange*(rand(1, fixationSequenceLength) - 0.5);
         end
+        
+        eyePositionsRecord = [eyePositionsRecord; eyePositions];
         
         % CLASSIC: Used target is stationary in head-centered space
         SAMEtargetsPerEyePosition = repmat(targets, fixationSequenceLength, 1);
@@ -208,7 +212,11 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
          'fixationSequenceLength', ...
          'numberOfFixations', ...
          'allShownTargets', ...
-         'fixations');
+         'fixations', ...
+         'eyePositionsRecord');
+     
+     % keep it around, may be of use
+     dimensions = load('dimensions.mat');
                       
     cd(startDir);
     
@@ -253,14 +261,15 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
 
         disp('Making Temporal Plot.');
         OneD_Stimuli_MovementDynamicsFigure([folderName '-training']);
+        
+        % Generate correlation data
+        if samplingRate == 10,
+            disp('Computing correlation.');
+            OneD_Stimuli_Correlation(folderName, dimensions);
+        end
+    
     else
         disp('Cannot produce figures for multiple object training');
-    end
-    
-    % Generate correlation data
-    if samplingRate == 10,
-        %disp('Computing correlation.');
-        %OneD_Stimuli_Correlation([folderName '-stdTest']);
     end
     
     function generateDynamicsAndSave(targetsPerEyePosition, eyePositions)
