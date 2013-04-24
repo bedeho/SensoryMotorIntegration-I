@@ -184,11 +184,13 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
         set(hLabeL, 'FontSize', LabelFontSize);
     end
     
+    %{
     if isKey(args,'YTitle'),
         
         hLabeL = ylabel(args('YTitle'));
         set(hLabeL, 'FontSize', LabelFontSize);
     end
+    %}
     
     xlim(XLim);
     ylim(YLim);
@@ -216,10 +218,18 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
     set(gca,'xtick',[]);
     set(gca,'ytick',[]);
     
-    % Move label closer, some sort of issue here
-    axes(scatterAxis);
-    xlabh = get(gca,'YLabel');
-    set(xlabh,'Position', get(xlabh,'Position') + [YLabelOffset 0 0])
+    % TESTING TESTING TESTING
+    %% Move label closer, some sort of issue here
+    %axes(scatterAxis);
+    %xlabh = get(gca,'YLabel');
+    %set(xlabh,'Position', get(xlabh,'Position') + [YLabelOffset 0 0])
+    
+    if isKey(args,'YTitle'),
+        
+        axes(scatterAxis);
+        hLabeL = ylabel(args('YTitle'));
+        set(hLabeL, 'FontSize', LabelFontSize);
+    end
 
     %% Mini plot
     miniPlot = 0; %figure;

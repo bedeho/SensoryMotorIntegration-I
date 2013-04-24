@@ -19,7 +19,8 @@ function OneD_Stimuli_Correlation(folderName, dimensions)
     
     nrOfTargets         = length(allShownTargets);
     nrOfEyePositions    = length(eyePositionsRecord);
-    dotproducts         = zeros(nrOfTargets, nrOfEyePositions, nrOfTargets, nrOfEyePositions);
+    dotproducts_sigmoid = zeros(nrOfTargets, nrOfEyePositions, nrOfTargets, nrOfEyePositions);
+    dotproducts_gauss   = zeros(nrOfTargets, nrOfEyePositions, nrOfTargets, nrOfEyePositions);
     samplesPrLocation   = uint32(ceil(0.300/0.01));
     
     visualPreferences       = -100:1:100;
@@ -28,7 +29,7 @@ function OneD_Stimuli_Correlation(folderName, dimensions)
     sigmoidSlope            = 0.0625;
     
     % Setup figure
-    figure;
+    fig = figure;
     hold on;
     
     % Do computation, and dump to stimuli file
@@ -39,8 +40,15 @@ function OneD_Stimuli_Correlation(folderName, dimensions)
         
         for e1=1:nrOfEyePositions,
         
+            
             % t2
             for t2=1:nrOfTargets,
+                
+                if(t1==t2),
+                    continue;
+                end
+                
+                
                 for e2=1:nrOfEyePositions,
                     
                     target1 = dimensions.allShownTargets(t1);
@@ -49,16 +57,23 @@ function OneD_Stimuli_Correlation(folderName, dimensions)
                     eye_pos1 = dimensions.eyePositionsRecord(t1,e1);
                     eye_pos2 = dimensions.eyePositionsRecord(t2,e2);
                     
-                    s1_activity = OneD_Stimuli_InputLayer([eye_pos1,target1-eye_pos1], visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
-                    s2_activity = OneD_Stimuli_InputLayer([eye_pos2,target2-eye_pos2], visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
-
-                    % Normalized dot product
+                    ret_1 = target1-eye_pos1;
+                    ret_2 = target2-eye_pos2;
+                    
+                    % SIGMOID
+                    s1_activity = OneD_Stimuli_InputLayer([eye_pos1,ret_1], true, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
+                    s2_activity = OneD_Stimuli_InputLayer([eye_pos2,ret_2], true, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
                     overlap = dot(s1_activity(:),s2_activity(:)) / (norm(s1_activity(:)) * norm(s2_activity(:)));
-                    dotproducts(t1,e1,t2,e2) = overlap;
+                    dotproducts_sigmoid(t1,e1,t2,e2) = overlap;
+                    plot(abs(ret_1 - ret_2), overlap, 'ob'); % Add plot to figure
                     
-                    % Add plot to figure
-                    plot(abs(eye_pos1 - eye_pos2), overlap, 'o'); 
-                    
+                    % GAUSS
+                    s1_activity = OneD_Stimuli_InputLayer([eye_pos1,ret_1], false, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
+                    s2_activity = OneD_Stimuli_InputLayer([eye_pos2,ret_2], false, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
+                    overlap = dot(s1_activity(:),s2_activity(:)) / (norm(s1_activity(:)) * norm(s2_activity(:)));
+                    dotproducts_gauss(t1,e1,t2,e2) = overlap;
+                    plot(abs(ret_1 - ret_2), overlap, 'or'); % Add plot to figure
+
                 end
             end
             
@@ -67,8 +82,14 @@ function OneD_Stimuli_Correlation(folderName, dimensions)
     
     %% Save as stimuli file: needed for later!
     
+    % Make folder
+    tSPath = [base 'Stimuli/' folderName '-correlation'];
+    if ~isdir(tSPath),
+        mkdir(tSPath);
+    end
+    
     % Open file
-    filename = [base 'Stimuli/' folderName '-correlation/data.dat'];
+    filename = [tSPath '/data.dat'];
     fileID = fopen(filename,'w');
 
     % Make header
@@ -91,20 +112,27 @@ function OneD_Stimuli_Correlation(folderName, dimensions)
     % Close stimuli file
     fclose(fileID);
     
-    %% Save correlation
+    % Save correlation
     startDir = pwd;
     cd([base 'Stimuli/' folderName '-correlation']);
 
     save('dotproduct.mat', ...
-            'dotproducts', ...
+            'dotproducts_sigmoid', ...
+            'dotproducts_gauss', ...
             'allShownTargets', ...
             'eyePositionsRecord');
     cd(startDir);
     
     % Make figure pretty
-    
+    hYLabel = xlabel('Retinal error (deg)');
+    hXLabel = ylabel('Input pattern similarity');
+    set([hYLabel hXLabel], 'FontSize', 16);
+    set(gca, 'FontSize', 14);
+    axis tight 
+    box on
+    legend('Planar','Peaked');
     
     % Save figure
-    %saveas(fig,[base 'Stimuli/' folderName '-correlation/dotproducts.eps'],'eps');
+    saveas(fig,[base 'Stimuli/' folderName '-correlation/dotproducts.eps'],'eps');
     
 end

@@ -25,6 +25,7 @@ function analysisResults = metrics(filename, info)
     numNeurons = x_dimension*y_dimension;
 
     headCenteredNess = zeros(y_dimension, x_dimension);
+    eyeCenteredNess = zeros(y_dimension, x_dimension);
     RFSize = zeros(y_dimension, x_dimension);
     RFSize_Confidence = zeros(y_dimension, x_dimension);
     RFLocation = zeros(y_dimension, x_dimension);
@@ -33,9 +34,10 @@ function analysisResults = metrics(filename, info)
     
     targets = info.targets;
     eyePositions = info.eyePositions;
+    nrOfEyePositions = length(eyePositions);
     
-    %offset = targets(1);
     delta = abs(targets(2) - targets(1));
+    targetShiftPerConsecutiveEyeShift = abs(eyePositions(2) - eyePositions(1))/delta;
 
     % Compute metrics
     wellBehavedNeurons = [];
@@ -47,6 +49,9 @@ function analysisResults = metrics(filename, info)
                 
                 % Head-centeredness
                 headCenteredNess(row, col) = computeHeadCenteredNess(row,col);
+                
+                % Eye-centeredness
+                eyeCenteredNess(row, col) = computeEyeCenteredNess(row,col);
                 
                 % Receptive Field Size
                 [psi rfSTDEV maxNumIntervals] = computeRFSize(row,col);
@@ -62,7 +67,7 @@ function analysisResults = metrics(filename, info)
                 DiscardStatus(row,col) = discardStatus(row,col,maxNumIntervals);
                 
                 if(DiscardStatus(row,col) == 0),
-                    v = [row col headCenteredNess(row, col) RFSize(row, col) RFSize_Confidence(row, col) RFLocation(row, col) RFLocation_Confidence(row,col)];
+                    v = [row col headCenteredNess(row, col) eyeCenteredNess(row, col) RFSize(row, col) RFSize_Confidence(row, col) RFLocation(row, col) RFLocation_Confidence(row,col)];
                     wellBehavedNeurons = [wellBehavedNeurons; v];
                 end
 
@@ -74,6 +79,7 @@ function analysisResults = metrics(filename, info)
     
     % Data
     headCenteredNess_Linear             = headCenteredNess(:);
+    eyeCenteredNess_Linear              = eyeCenteredNess(:);
     RFSize_Linear                       = RFSize(:);
     RFSize_Confidence_Linear            = RFSize_Confidence(:);
     RFLocation_Linear                   = RFLocation(:);
@@ -82,13 +88,14 @@ function analysisResults = metrics(filename, info)
     
     % Discard neurons
     headCenteredNess_Linear_Clean       = headCenteredNess_Linear;
+    eyeCenteredNess_Linear_Clean        = eyeCenteredNess_Linear;
     RFSize_Linear_Clean                 = RFSize_Linear;
     RFLocation_Linear_Clean             = RFLocation_Linear;
-    
     RFSize_Confidence_Linear_Clean      = RFSize_Confidence_Linear;
     RFLocation_Confidence_Linear_Clean  = RFLocation_Confidence_Linear;
     
     headCenteredNess_Linear_Clean(DiscardStatus_Linear > 0)         = [];
+    eyeCenteredNess_Linear_Clean(DiscardStatus_Linear > 0)          = [];
     RFSize_Linear_Clean(DiscardStatus_Linear > 0)                   = [];
     RFLocation_Linear_Clean(DiscardStatus_Linear > 0)               = [];
     RFSize_Confidence_Linear_Clean(DiscardStatus_Linear > 0)        = [];
@@ -96,17 +103,20 @@ function analysisResults = metrics(filename, info)
     
     % analysis results
     analysisResults.headCenteredNess = headCenteredNess;
+    analysisResults.eyeCenteredNess = eyeCenteredNess;
     analysisResults.RFSize = RFSize;
     analysisResults.RFLocation = RFLocation;
     analysisResults.RFSize_Confidence = RFSize_Confidence;
     analysisResults.RFLocation_Confidence = RFLocation_Confidence;
     
     analysisResults.headCenteredNess_Linear = headCenteredNess_Linear;
+    analysisResults.eyeCenteredNess_Linear = eyeCenteredNess_Linear;
     analysisResults.RFSize_Linear = RFSize_Linear;
     analysisResults.RFLocation_Linear = RFLocation_Linear;
     analysisResults.DiscardStatus_Linear = DiscardStatus_Linear;
     
     analysisResults.headCenteredNess_Linear_Clean = headCenteredNess_Linear_Clean;
+    analysisResults.eyeCenteredNess_Linear_Clean = eyeCenteredNess_Linear_Clean;
     analysisResults.RFSize_Linear_Clean = RFSize_Linear_Clean;
     analysisResults.RFLocation_Linear_Clean = RFLocation_Linear_Clean;
     analysisResults.RFSize_Confidence_Linear_Clean = RFSize_Confidence_Linear_Clean;
@@ -193,6 +203,37 @@ function analysisResults = metrics(filename, info)
         lambda = corr / combinations;
     end
 
+    function lambdaEye = computeEyeCenteredNess(row,col)
+
+        corr = 0;
+        combinations = 0;
+
+        % Iterate all combinations of eye positions
+        for ep_1 = 1:(nrOfEyePositionsInTesting - 1),
+            for ep_2 = (ep_1+1):nrOfEyePositionsInTesting,
+                
+                % Align
+                t1 = dataPrEyePosition(ep_1,:,row,col)';
+                t2 = dataPrEyePosition(ep_2,:,row,col)';
+
+                t1 = t1((1+targetShiftPerConsecutiveEyeShift*(nrOfEyePositions - 1 - (ep_1 - 1))):(end - targetShiftPerConsecutiveEyeShift*(ep_1-1)));
+                t2 = t2((1+targetShiftPerConsecutiveEyeShift*(nrOfEyePositions - 1 - (ep_2 - 1))):(end - targetShiftPerConsecutiveEyeShift*(ep_2-1)));
+                
+                %Classic
+                observationMatrix = [t1 t2];
+                correlationMatrix = corrcoef(observationMatrix);
+                c = correlationMatrix(1,2); % pick one of the two identical non-diagonal element :)
+                
+                corr = corr + c;
+                combinations = combinations + 1;
+
+            end
+        end
+        
+        lambdaEye = corr / combinations;
+    end
+
+
     function [psi rfSTDEV maxNumIntervals] = computeRFSize(row,col)
         
         maxNumIntervals = 0;
@@ -270,95 +311,7 @@ function analysisResults = metrics(filename, info)
             residue = NaN;
         end
         
-        
     end
-
-%{
-    function psi = computePsi(row,col)
-
-        f = zeros(1,nrOfEyePositionsInTesting);
-
-        % Iterate all combinations of eye positions
-        for k = 1:nrOfEyePositionsInTesting,
-
-            v = dataPrEyePosition(k,:,row,col);
-            f(k) = nnz(v > mean(v));
-
-        end
-
-        psi = max(f);
-    end   
-%}
-
-%{
-    function [match,chi] = computeChi(row,col)
-        
-        % Find mean center off mas across fixations
-        meanCenterOffMass = 0;
-        changedCenterOfMass = false;
-        
-        for e=1:nrOfEyePositionsInTesting,
-            
-            responses = dataPrEyePosition(e, :,row,col);
-            centerOfMass = dot(responses,targets) / sum(responses);
-            
-            % dont include fixation if there was NO response, i.e. sum() =
-            % 0, i.e centerOfMass is NaN
-            if ~isnan(centerOfMass)
-                meanCenterOffMass = meanCenterOffMass + centerOfMass;
-                changedCenterOfMass = true;
-            end
-        end
-        
-        meanCenterOffMass = meanCenterOffMass / nrOfEyePositionsInTesting;
-        
-        % return errors
-        chi = (targets - meanCenterOffMass).^2;
-        [C I] = min(chi);
-        match = I;
-        
-        % If tehre are NaN entries, it means this is 
-        % a non-responsive neuron for atleast one eye position,
-        % and hence we mark it so it will not be par tof analysis
-        if ~changedCenterOfMass,
-            match = -1;
-            chi = -1 * ones(1,length(targets));
-        end
-    end
-%}
-
-%{
-    function theta = computeTheta(row,col)
-        
-        sigma = 2; % 2 worked well
-        theta = 0;
-        responses = dataPrEyePosition(:,:,row,col);
-        
-        counter = 0;
-        
-        for target_i=1:length(targets),
-            for eye_j=1:length(eyePositions),
-                
-                notAllTargets = 1:length(targets);
-                notAllTargets(target_i) = []; % Remove
-                
-                for target_k=notAllTargets,
-                    for eye_l=1:length(eyePositions),
-                        c = responses(eye_j,target_i)*responses(eye_l,target_k)*exp(-((targets(target_i)-eyePositions(eye_j)) - (targets(target_k) - eyePositions(eye_l)))^2/(2*sigma^2));
-                        
-                        
-                        theta = theta + c;
-                        
-                        counter = counter + 1;
-                    end
-                end
-            end
-        end
-        
-        theta = theta/counter;
-    end
-
-%}
 
 end
     

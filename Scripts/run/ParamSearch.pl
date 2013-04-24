@@ -55,7 +55,7 @@
 	   	#my $experiment						= "nonlinear_activation_5";
 	   	#my $experiment						= "learningrate";
 	   	#my $experiment						= "numberOfNeurons_70";
-	   	#my $experiment						= "sigma_19_failed";
+	   	my $experiment						= "sigma_19_failed_deeplook";
 	   	#my $experiment						= "decoupled_gainencoding";
 	   	#my $experiment						= "baseline";
 	   	#my $experiment						= "singlerandomepeak";
@@ -66,7 +66,7 @@
 	   	#my $experiment						= "planargain";
 	   	#my $experiment						= "planargain_recording";
 	   	#my $experiment						= "decodeTESTbaseline";
-	   	my $experiment						= "planargain_insideepochlook";
+	   	#my $experiment						= "planargain_insideepochlook";
 	   	my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	   	
 	   	#**********************************
@@ -191,14 +191,14 @@
 		my $resetTrace						= "false"; # "false", Reset trace between objects of training
 		my $covarianceThreshold				= "0.40"; # classic = 0, multitarget=0.4, \sigma=19 = 0.9
 		
-		my $sigmoidModulationPercentage		= "1.0";
+		my $sigmoidModulationPercentage		= "0.0";
 		my $inputEncoding					= MIXED; # MIXED, DOUBLEPEAK_GAUSSIAN,DECOUPLED
 		my $weightVectorLength				= "1.0"; # classic = 1.0
 		my $seed							= 55; # 55 is standard
 		
 		my $visualPreferenceDistance		= "1.0";
 		my $eyePositionPrefrerenceDistance 	= "1.0";
-		my $gaussianSigma					= "6.00"; # 19 # $p # classic = 6
+		my $gaussianSigma					= "19.00"; # 19 # $p # classic = 6
 		
 		my $sigmoidSlope					= "0.0625"; #1/16
 		

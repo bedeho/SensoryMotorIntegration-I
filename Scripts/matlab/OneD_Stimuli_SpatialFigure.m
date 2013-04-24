@@ -34,6 +34,8 @@ function OneD_Stimuli_SpatialFigure(trainingStimuliName, testingStimuliName)
     set(gcf,'renderer','painters');
     print(maxPlot,'-depsc2','-painters',fname);
     
+    %pbaspect([201 61 1]);
+    
     % Converts object stream to x,y scatter format, flattening out any
     % multiple object structure
     function [X Y visualFieldSize eyePositionFieldSize] = convertToXYScatter(stimuli)

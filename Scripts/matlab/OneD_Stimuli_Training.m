@@ -26,7 +26,7 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     
     % Technical
     seed                                = 72; % classic = 72
-    samplingRate                        = 10; % (Hz)
+    samplingRate                        = 1000; % (Hz)
     
     % Environment
     numberOfSimultanousTargets          = 1; % classic = 1
@@ -263,7 +263,7 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
         OneD_Stimuli_MovementDynamicsFigure([folderName '-training']);
         
         % Generate correlation data
-        if samplingRate == 10,
+        if true
             disp('Computing correlation.');
             OneD_Stimuli_Correlation(folderName, dimensions);
         end

@@ -142,10 +142,10 @@
     die "Invalid array: sigmoidSlopes" if !validateArray(\@sigmoidSlopes);
     
     our @sigmoidThresholds				= (
-										["0.00"]# classic
+										#["0.00"]# classic
 									
 										#["0.01"],
-										#["0.02"], # sigma = 19,covariance_th = 0.9
+										["0.02"] # sigma = 19,covariance_th = 0.9
 										#["0.03"],
 										#["0.04"],
 										##["0.05"]

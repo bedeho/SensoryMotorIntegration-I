@@ -1018,3 +1018,90 @@ OneD_Stimuli_SpatialFigure.m
   %}
   
 %}
+    
+%{
+    function psi = computePsi(row,col)
+
+        f = zeros(1,nrOfEyePositionsInTesting);
+
+        % Iterate all combinations of eye positions
+        for k = 1:nrOfEyePositionsInTesting,
+
+            v = dataPrEyePosition(k,:,row,col);
+            f(k) = nnz(v > mean(v));
+
+        end
+
+        psi = max(f);
+    end   
+%}
+
+%{
+    function [match,chi] = computeChi(row,col)
+        
+        % Find mean center off mas across fixations
+        meanCenterOffMass = 0;
+        changedCenterOfMass = false;
+        
+        for e=1:nrOfEyePositionsInTesting,
+            
+            responses = dataPrEyePosition(e, :,row,col);
+            centerOfMass = dot(responses,targets) / sum(responses);
+            
+            % dont include fixation if there was NO response, i.e. sum() =
+            % 0, i.e centerOfMass is NaN
+            if ~isnan(centerOfMass)
+                meanCenterOffMass = meanCenterOffMass + centerOfMass;
+                changedCenterOfMass = true;
+            end
+        end
+        
+        meanCenterOffMass = meanCenterOffMass / nrOfEyePositionsInTesting;
+        
+        % return errors
+        chi = (targets - meanCenterOffMass).^2;
+        [C I] = min(chi);
+        match = I;
+        
+        % If tehre are NaN entries, it means this is 
+        % a non-responsive neuron for atleast one eye position,
+        % and hence we mark it so it will not be par tof analysis
+        if ~changedCenterOfMass,
+            match = -1;
+            chi = -1 * ones(1,length(targets));
+        end
+    end
+%}
+
+%{
+    function theta = computeTheta(row,col)
+        
+        sigma = 2; % 2 worked well
+        theta = 0;
+        responses = dataPrEyePosition(:,:,row,col);
+        
+        counter = 0;
+        
+        for target_i=1:length(targets),
+            for eye_j=1:length(eyePositions),
+                
+                notAllTargets = 1:length(targets);
+                notAllTargets(target_i) = []; % Remove
+                
+                for target_k=notAllTargets,
+                    for eye_l=1:length(eyePositions),
+                        c = responses(eye_j,target_i)*responses(eye_l,target_k)*exp(-((targets(target_i)-eyePositions(eye_j)) - (targets(target_k) - eyePositions(eye_l)))^2/(2*sigma^2));
+                        
+                        
+                        theta = theta + c;
+                        
+                        counter = counter + 1;
+                    end
+                end
+            end
+        end
+        
+        theta = theta/counter;
+    end
+
+%}

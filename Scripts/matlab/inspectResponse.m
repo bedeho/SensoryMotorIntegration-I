@@ -196,6 +196,11 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         disp(['Row,Col: ' num2str(row) ',' num2str(col)]);
         disp(['lambda: ' num2str(analysisResults.headCenteredNess(row,col))]);
         disp(['h-value: ' num2str(analysisResults.RFLocation(row,col))]);
+        
+        if(isfield(analysisResults,'eyeCenteredNess')),
+            disp(['e-value: ' num2str(analysisResults.eyeCenteredNess(row,col))]);
+        end
+        
         disp(['psi: ' num2str(analysisResults.RFSize(row,col))]);
         disp(['Discard:' num2str(analysisResults.DiscardStatus(row,col))]);
         disp(['cellNr:' num2str(cellNr)]);

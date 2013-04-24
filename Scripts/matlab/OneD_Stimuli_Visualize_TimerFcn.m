@@ -71,7 +71,7 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
     function draw()
         
 
-        v = OneD_Stimuli_InputLayer([eyePosition retinalPositions], visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
+        v = OneD_Stimuli_InputLayer([eyePosition retinalPositions], true, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
         
         % Clean up so that it is not hidden from us that stimuli is off
         % retina
