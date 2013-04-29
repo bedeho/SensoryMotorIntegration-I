@@ -197,7 +197,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         hold on;
         plot([width/2 width/2],[height 1],'--w','LineWidth',1);
         
-        if true,
+        if false,
 
             % Add head-centered bar
             target = dimensions.allShownTargets(targetNr);

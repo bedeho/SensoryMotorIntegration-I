@@ -55,7 +55,7 @@
 	   	#my $experiment						= "nonlinear_activation_5";
 	   	#my $experiment						= "learningrate";
 	   	#my $experiment						= "numberOfNeurons_70";
-	   	my $experiment						= "sigma_19_failed_deeplook";
+	   	my $experiment						= "sigma_19_failed_deeplook-normlization";
 	   	#my $experiment						= "decoupled_gainencoding";
 	   	#my $experiment						= "baseline";
 	   	#my $experiment						= "singlerandomepeak";
@@ -179,7 +179,7 @@
 		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
-		my $nrOfEpochs						= 2; # 20;#10; #50; # 30,100
+		my $nrOfEpochs						= 1; # 20;#10; #50; # 30,100
 		my $saveNetworkAtEpochMultiple 		= 1;
 		my $saveNetwork						= "true"; # "true","false"
 		my $outputAtTimeStepMultiple		= 2; # Keep this high (10>=) unless  you are recording for looking at dynamics!
@@ -194,6 +194,8 @@
 		my $sigmoidModulationPercentage		= "0.0";
 		my $inputEncoding					= MIXED; # MIXED, DOUBLEPEAK_GAUSSIAN,DECOUPLED
 		my $weightVectorLength				= "1.0"; # classic = 1.0
+		my $weightNormalization 			= "1"; # NONE = 0, CLASSIC = 1	
+		
 		my $seed							= 55; # 55 is standard
 		
 		my $visualPreferenceDistance		= "1.0";
@@ -669,7 +671,7 @@ initialWeight = 1;
 * 0 = NONE
 * 1 = CLASSIC
 */
-weightNormalization = 1;
+weightNormalization = $weightNormalization;
 
 /*
 * Euclidean length of weight vector of each synapse,

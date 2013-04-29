@@ -19,7 +19,7 @@ function prewiredModel(filename)
     visualPreferenceDistance            = 1;
     eyePositionPrefrerenceDistance      = 1;
     targetSpacing                       = 17; % (deg)
-    inputLayerSigma                     = 3;
+    inputLayerSigma                     = 19;
     
     % Setup random number generator
     seed = 3;
@@ -37,7 +37,7 @@ function prewiredModel(filename)
     inputLayerDepth                     = 1; % 1 = PO, 2 = LIP
     trainedNetwork                      = true;
     %fanInPercentage                    = 0.30; % [0 1)
-    desiredFanIn                        = 5000; %367fanInPercentage*(nrOfVisualPreferences*nrOfEyePositionPrefrerence*inputLayerDepth);
+    desiredFanIn                        = 1000; % 5000 %367fanInPercentage*(nrOfVisualPreferences*nrOfEyePositionPrefrerence*inputLayerDepth);
     
     numRegions                          = 2;
     dim                                 = 30;
@@ -191,7 +191,7 @@ function prewiredModel(filename)
    
    % Save buffer
    [pathstr, name, ext] = fileparts(filename);
-   save([pathstr '/info.mat'], 'allocatedHeadPositions');
+   save([pathstr '/info.mat'], 'allocatedHeadPositions','inputLayerSigma','visualFieldSize','eyePositionFieldSize');
    
    function weight = doConnect2(eyePref, retPref, target, d, inputLayerDepth)
        

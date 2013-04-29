@@ -49,7 +49,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     
     % For scatter
     wellBehavedNeurons  = analysisResults.wellBehavedNeurons;
-    scatterSpace = [wellBehavedNeurons(:,6) wellBehavedNeurons(:,3)]; %[analysisResults.RFLocation_Linear , analysisResults.headCenteredNess_Linear ];%  % 
+    scatterSpace = [wellBehavedNeurons(:,7) wellBehavedNeurons(:,3)]; %[analysisResults.RFLocation_Linear , analysisResults.headCenteredNess_Linear ];%  % 
     numInScatter = length(scatterSpace);
     
     % For distribution

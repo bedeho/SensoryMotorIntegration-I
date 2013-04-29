@@ -510,7 +510,6 @@ void HiddenRegion::applyLearningRule() {
                             // INDIVIDUAL WEIGHT SATURATION
                             //(*s).weight += stepSize * (0.1 - (*s).weight)*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
                             
-                            
                             break;
                             
                         case COVARIANCE_PRESYNAPTIC_TRACE_RULE:

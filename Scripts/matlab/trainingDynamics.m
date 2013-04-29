@@ -53,7 +53,7 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
         
         % What to show
         sourceRegion = [1];
-        sourceDepth = [2];
+        sourceDepth = [1]; % planar = 2;
         numRegions = length(sourceRegion);
         
         for r=1:numRegions,
