@@ -77,60 +77,53 @@ function analysisResults = metrics(filename, info)
         error('Last layer is not present!');
     end
     
-    % Data
-    headCenteredNess_Linear             = headCenteredNess(:);
-    eyeCenteredNess_Linear              = eyeCenteredNess(:);
-    RFSize_Linear                       = RFSize(:);
-    RFSize_Confidence_Linear            = RFSize_Confidence(:);
-    RFLocation_Linear                   = RFLocation(:);
-    RFLocation_Confidence_Linear        = RFLocation_Confidence(:);
-    DiscardStatus_Linear                = DiscardStatus(:);
+    Index = (headCenteredNess-eyeCenteredNess)./(headCenteredNess+eyeCenteredNess);
     
-    % Discard neurons
-    headCenteredNess_Linear_Clean       = headCenteredNess_Linear;
-    eyeCenteredNess_Linear_Clean        = eyeCenteredNess_Linear;
-    RFSize_Linear_Clean                 = RFSize_Linear;
-    RFLocation_Linear_Clean             = RFLocation_Linear;
-    RFSize_Confidence_Linear_Clean      = RFSize_Confidence_Linear;
-    RFLocation_Confidence_Linear_Clean  = RFLocation_Confidence_Linear;
+    %% Save data in .mat file
     
-    headCenteredNess_Linear_Clean(DiscardStatus_Linear > 0)         = [];
-    eyeCenteredNess_Linear_Clean(DiscardStatus_Linear > 0)          = [];
-    RFSize_Linear_Clean(DiscardStatus_Linear > 0)                   = [];
-    RFLocation_Linear_Clean(DiscardStatus_Linear > 0)               = [];
-    RFSize_Confidence_Linear_Clean(DiscardStatus_Linear > 0)        = [];
-    RFLocation_Confidence_Linear_Clean(DiscardStatus_Linear > 0)    = [];
+    % Well behaved
+    analysisResults.wellBehavedNeurons      = wellBehavedNeurons;
     
-    % analysis results
-    analysisResults.headCenteredNess = headCenteredNess;
-    analysisResults.eyeCenteredNess = eyeCenteredNess;
-    analysisResults.RFSize = RFSize;
-    analysisResults.RFLocation = RFLocation;
-    analysisResults.RFSize_Confidence = RFSize_Confidence;
-    analysisResults.RFLocation_Confidence = RFLocation_Confidence;
+    % Matrix form
+    analysisResults.headCenteredNess        = headCenteredNess;
+    analysisResults.eyeCenteredNess         = eyeCenteredNess;
+    analysisResults.Index                   = Index;
+    analysisResults.RFSize                  = RFSize;
+    analysisResults.RFLocation              = RFLocation;
+    analysisResults.RFSize_Confidence       = RFSize_Confidence;
+    analysisResults.RFLocation_Confidence   = RFLocation_Confidence;
+    analysisResults.DiscardStatus           = DiscardStatus;
     
-    analysisResults.headCenteredNess_Linear = headCenteredNess_Linear;
-    analysisResults.eyeCenteredNess_Linear = eyeCenteredNess_Linear;
-    analysisResults.RFSize_Linear = RFSize_Linear;
-    analysisResults.RFLocation_Linear = RFLocation_Linear;
-    analysisResults.DiscardStatus_Linear = DiscardStatus_Linear;
+    % Linearize
+    analysisResults.headCenteredNess_Linear         = analysisResults.headCenteredNess(:);
+    analysisResults.eyeCenteredNess_Linear          = analysisResults.eyeCenteredNess(:);
+    analysisResults.Index_Linear                    = analysisResults.Index(:);
+    analysisResults.RFSize_Linear                   = analysisResults.RFSize(:);
+    analysisResults.RFLocation_Linear               = analysisResults.RFLocation(:);
+    analysisResults.RFSize_Confidence_Linear        = analysisResults.RFSize_Confidence(:);
+    analysisResults.RFLocation_Confidence_Linear    = analysisResults.RFLocation_Confidence(:);
+    analysisResults.DiscardStatus_Linear            = analysisResults.DiscardStatus(:);
     
-    analysisResults.headCenteredNess_Linear_Clean = headCenteredNess_Linear_Clean;
-    analysisResults.eyeCenteredNess_Linear_Clean = eyeCenteredNess_Linear_Clean;
-    analysisResults.RFSize_Linear_Clean = RFSize_Linear_Clean;
-    analysisResults.RFLocation_Linear_Clean = RFLocation_Linear_Clean;
-    analysisResults.RFSize_Confidence_Linear_Clean = RFSize_Confidence_Linear_Clean;
-    analysisResults.RFLocation_Confidence_Linear_Clean = RFLocation_Confidence_Linear_Clean;
+    % Discard
+    d = analysisResults.DiscardStatus_Linear;
     
-    analysisResults.DiscardStatus = DiscardStatus;
-    analysisResults.wellBehavedNeurons = wellBehavedNeurons;
+    analysisResults.headCenteredNess_Linear_Clean         = analysisResults.headCenteredNess_Linear(d > 0);
+    analysisResults.eyeCenteredNess_Linear_Clean          = analysisResults.eyeCenteredNess_Linear(d > 0);
+    analysisResults.Index_Linear_Clean                    = analysisResults.Index_Linear(d > 0);
+    analysisResults.RFSize_Linear_Clean                   = analysisResults.RFSize_Linear(d > 0);
+    analysisResults.RFLocation_Linear_Clean               = analysisResults.RFLocation_Linear(d > 0);
+    analysisResults.RFSize_Confidence_Linear_Clean        = analysisResults.RFSize_Confidence_Linear(d > 0);
+    analysisResults.RFLocation_Confidence_Linear_Clean    = analysisResults.RFLocation_Confidence_Linear(d > 0);
+    analysisResults.DiscardStatus_Linear_Clean            = analysisResults.DiscardStatus_Linear(d > 0);
     
-    % Discarding cases
+    % Summary Statistics
     analysisResults.fractionDiscarded               = nnz(DiscardStatus) / numNeurons;
     analysisResults.fractionDiscarded_Discontinous  = nnz(bitget(DiscardStatus,2)) / numNeurons;
     analysisResults.fractionDiscarded_Edge          = nnz(bitget(DiscardStatus,3)) / numNeurons;
     analysisResults.fractionDiscarded_MultiPeak     = nnz(bitget(DiscardStatus,4)) / numNeurons;
+    analysisResults.fractionVeryHeadCentered        = nnz(analysisResults.Index_Linear_Clean >= 0) / numNeurons;
     
+    %{
     % Very head-centered
     lambdaCutoff = 0.7;
     analysisResults.fractionVeryHeadCentered     = nnz(headCenteredNess_Linear_Clean >= lambdaCutoff) / numNeurons;
@@ -145,7 +138,7 @@ function analysisResults = metrics(filename, info)
     analysisResults.entropy = entropy;
     analysisResults.maxEntropy = maxEntropy;
     analysisResults.uniformityOfVeryHeadCentered = entropy/maxEntropy;
-    
+    %}
     
     function discard = discardStatus(row,col,num)
         
@@ -233,7 +226,6 @@ function analysisResults = metrics(filename, info)
         lambdaEye = corr / combinations;
     end
 
-
     function [psi rfSTDEV maxNumIntervals] = computeRFSize(row,col)
         
         maxNumIntervals = 0;
@@ -304,7 +296,7 @@ function analysisResults = metrics(filename, info)
             %}
             
             h = mean(centersOfMass);
-            residue = 0;
+            residue = std(centersOfMass);
             
         else
             h = NaN;

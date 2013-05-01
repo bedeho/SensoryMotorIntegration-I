@@ -44,7 +44,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     %disp(['Fraction >=0.7: ' num2str(nnz(headCenteredNess{e} >= 0.7)/numel(headCenteredNess{e}))]);
     %disp(['uniformityOfVeryHeadCentered: ' num2str(analysisResults.uniformityOfVeryHeadCentered)]);
     %disp(['maxEntropy: ' num2str(analysisResults.maxEntropy)]);
-    disp(['coverage: ' num2str(analysisResults.uniformityOfVeryHeadCentered/analysisResults.maxEntropy)]);
+    %disp(['coverage: ' num2str(analysisResults.uniformityOfVeryHeadCentered/analysisResults.maxEntropy)]);
     disp('************************************************************');
     
     % For scatter

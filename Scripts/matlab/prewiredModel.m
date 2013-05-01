@@ -12,14 +12,14 @@ function prewiredModel(filename)
 
     % Stimuli/Model Parameters
     q                                   = 0.7; % targetRangeProportionOfVisualField
-    visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
+    visualFieldSize                     = 200; % 200, Entire visual field (rougly 100 per eye), (deg)
     eyePositionFieldSize                = (1-q)*visualFieldSize; % (1-q)*visualFieldSize OR equivalently (visualFieldSize/2 - targetVisualRange/2)
     targetVisualRange                   = visualFieldSize * q;
     %targetEyePositionRange              = 0.8*eyePositionFieldSize; %eyePositionFieldSize;
     visualPreferenceDistance            = 1;
     eyePositionPrefrerenceDistance      = 1;
     targetSpacing                       = 17; % (deg)
-    inputLayerSigma                     = 19;
+    inputLayerSigma                     = 19; % 3 classic, 6,19
     
     % Setup random number generator
     seed = 3;
@@ -30,14 +30,14 @@ function prewiredModel(filename)
     eyePositionPreferences              = centerDistance(eyePositionFieldSize, eyePositionPrefrerenceDistance);
     nrOfVisualPreferences               = length(visualPreferences);
     nrOfEyePositionPrefrerence          = length(eyePositionPreferences);
-    targets                             = centerDistance(targetVisualRange, targetSpacing); centerN(targetVisualRange, 5); 
+    targets                             = centerDistance(targetVisualRange, targetSpacing);% centerN(targetVisualRange, 5); 
     numTargetPositions                  = length(targets);
     
     % Output layer
     inputLayerDepth                     = 1; % 1 = PO, 2 = LIP
     trainedNetwork                      = true;
     %fanInPercentage                    = 0.30; % [0 1)
-    desiredFanIn                        = 1000; % 5000 %367fanInPercentage*(nrOfVisualPreferences*nrOfEyePositionPrefrerence*inputLayerDepth);
+    desiredFanIn                        = 5000; % 1000,5000 %367fanInPercentage*(nrOfVisualPreferences*nrOfEyePositionPrefrerence*inputLayerDepth);
     
     numRegions                          = 2;
     dim                                 = 30;

@@ -55,7 +55,7 @@
 	   	#my $experiment						= "nonlinear_activation_5";
 	   	#my $experiment						= "learningrate";
 	   	#my $experiment						= "numberOfNeurons_70";
-	   	my $experiment						= "sigma_19_failed_deeplook-normlization";
+	   	#my $experiment						= "sigma_19_failed_deeplook-normlization";
 	   	#my $experiment						= "decoupled_gainencoding";
 	   	#my $experiment						= "baseline";
 	   	#my $experiment						= "singlerandomepeak";
@@ -67,7 +67,14 @@
 	   	#my $experiment						= "planargain_recording";
 	   	#my $experiment						= "decodeTESTbaseline";
 	   	#my $experiment						= "planargain_insideepochlook";
-	   	my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+	   	#my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+	   	
+	   	#**********************************
+	   	# bigpeak
+	   	#**********************************
+	   	my $experiment						= "sigma_19_selforganization_biggerEyeDimension2";
+	   	#my $stim							= "peakedgain-biggerEyeDimension-visualfield=700.00-eyepositionfield=210.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
+	   	my $stim							= "peakedgain-biggerEyeDimension2-visualfield=700.00-eyepositionfield=210.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
 	   	
 	   	#**********************************
 	   	# varyingfixationsequencelength
@@ -176,11 +183,11 @@
 		# General Params
 		#**********************************
 				
-		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
+		my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
 		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
-		my $nrOfEpochs						= 1; # 20;#10; #50; # 30,100
-		my $saveNetworkAtEpochMultiple 		= 1;
+		my $nrOfEpochs						= 10; # 20;#10; #50; # 30,100
+		my $saveNetworkAtEpochMultiple 		= 4;
 		my $saveNetwork						= "true"; # "true","false"
 		my $outputAtTimeStepMultiple		= 2; # Keep this high (10>=) unless  you are recording for looking at dynamics!
 		

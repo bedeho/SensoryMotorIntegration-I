@@ -21,6 +21,9 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
     % Import global variables
     %declareGlobalVars();
     
+    eyePositionDimensionInputPopulationSize = floor(networkDimensions(1).x_dimension/2);
+    retinalLocationDimensionInputPopulationSize = floor(networkDimensions(1).y_dimension/2);
+    
     %UGLY!!!
     stimuliName = strrep(stimuliName,'stdTest','training');
 
@@ -131,8 +134,8 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
         eyePosition = buffer(lineCounter, 1);
         retinalPositions = buffer(lineCounter, 2:(numberOfSimultanousTargets + 1));
         
-        eyePosition_MatrixCord = eyePosition+30;
-        retinalPositions_MatrixCord = 100-retinalPositions;
+        eyePosition_MatrixCord = eyePosition+eyePositionDimensionInputPopulationSize;
+        retinalPositions_MatrixCord = retinalLocationDimensionInputPopulationSize-retinalPositions;
         
         
         % Plot synapses
