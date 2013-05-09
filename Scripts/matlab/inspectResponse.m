@@ -36,25 +36,20 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     
     % Network summary
     disp('************************************************************');
-    disp(['fractionVeryHeadCentered: ' num2str(analysisResults.fractionVeryHeadCentered)]);
-    disp(['fractionDiscarded: ' num2str(analysisResults.fractionDiscarded)]);
-    disp(['fractionDiscarded_Discontinous: ' num2str(analysisResults.fractionDiscarded_Discontinous)]);
-    disp(['fractionDiscarded_Edge: ' num2str(analysisResults.fractionDiscarded_Edge)]);
-    disp(['fractionDiscarded_MultiPeak: ' num2str(analysisResults.fractionDiscarded_MultiPeak)]);
-    %disp(['Fraction >=0.7: ' num2str(nnz(headCenteredNess{e} >= 0.7)/numel(headCenteredNess{e}))]);
-    %disp(['uniformityOfVeryHeadCentered: ' num2str(analysisResults.uniformityOfVeryHeadCentered)]);
-    %disp(['maxEntropy: ' num2str(analysisResults.maxEntropy)]);
-    %disp(['coverage: ' num2str(analysisResults.uniformityOfVeryHeadCentered/analysisResults.maxEntropy)]);
+    disp(['Is Head-centered: ' num2str(analysisResults.HC)]);
+    disp(['Uniformtiy(Normalized entropy): ' num2str(analysisResults.uniformity)]);
+    disp(['Fraction discarded: ' num2str(analysisResults.fractionDiscarded)]);
     disp('************************************************************');
     
     % For scatter
     wellBehavedNeurons  = analysisResults.wellBehavedNeurons;
-    scatterSpace = [wellBehavedNeurons(:,7) wellBehavedNeurons(:,3)]; %[analysisResults.RFLocation_Linear , analysisResults.headCenteredNess_Linear ];%  % 
-    numInScatter = length(scatterSpace);
+    referenceFrameScatter = [wellBehavedNeurons(:,4) wellBehavedNeurons(:,3)]; %eye vs head
+    receptiveFieldScatter = [wellBehavedNeurons(:,7) wellBehavedNeurons(:,5)]; %location vs size
+    numInScatter = length(referenceFrameScatter);
     
     % For distribution
-    hmatTOP = analysisResults.RFLocation_Linear;
-    hmatTOP(analysisResults.headCenteredNess_Linear < 0.7) = [];     % shave out
+    %hmatTOP = analysisResults.RFLocation_Linear;
+    %hmatTOP(analysisResults.headCenteredNess_Linear < 0.7) = [];     % shave out
 
     % Load single unit recordings
   
@@ -115,33 +110,34 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
             
             % Activity indicator
             axisVals(r-1,2) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 2); % Save axis
-            
-            im = imagesc(analysisResults.headCenteredNess);
+            im = imagesc(analysisResults.Index);
             pbaspect([size(im) 1]);
-            title('\lambda');
+            title('Index');
             colorbar;
-            
             set(im, 'ButtonDownFcn', {@imagescCallback, r}); % Setup callback
             
-            % ResponseCount historgram
+            % Reference Frame Scatter
             axisVals(r-1,3) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 3); % Save axis
-            
-            hist(hmatTOP,30);
-            
-            % Scatter
-            axisVals(r-1,PLOT_COLS) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + PLOT_COLS); % Save axis
-            
-            scatterAxis_BLUE = plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'ob');
-            %set(scatterAxis_BLUE, 'ButtonDownFcn', {@scatterCallBack,r}); % Setup callback
             hold on;
             
-            %scatterAxis = herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
-            scatterAxis_RED = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 1);
-            set(scatterAxis_RED, 'ButtonDownFcn', {@scatterCallBack,r}); % Setup callback
-            ylim([-0.1 1]);
-            xlim([info.targets(end) info.targets(1)]);
-            
+            ax = plot(analysisResults.eyeCenteredNess_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 1);
+            set(ax, 'ButtonDownFcn', {@scatterCallBack,r,1}); % Setup callback
+            axis([-0.1 1 -0.1 1]);
+            plot([-0.1 1],[-0.1 1]);
+            title('Refence Frames');
+            xlabel('Eye-Centeredness');
+            ylabel('Head-Centeredness');
             hold off
+            
+            % Receptive Field vs sie
+            axisVals(r-1,PLOT_COLS) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + PLOT_COLS); % Save axis
+            %herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.RFSize_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
+            ax = plot(analysisResults.RFLocation_Linear_Clean, analysisResults.RFSize_Linear_Clean, 'or', 'LineWidth', 1);
+            set(ax, 'ButtonDownFcn', {@scatterCallBack,r,2}); % Setup callback
+            title('Receptive Fields');
+            xlabel('Receptive Field Location');
+            ylabel('Receptive Field Size');
+            
         else
             subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 2); % Save axis
             subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + 3); % Save axis
@@ -168,13 +164,19 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         pos = get(gca,'Currentpoint'); %get(scatterAxis, 'CurrentPoint');
         %[row, col] = imagescClick(pos(1, 2), pos(1, 1), networkDimensions(region).y_dimension, networkDimensions(region).x_dimension);
         
-        hvalueClick = pos(1,1);
-        lambdaClick = pos(1,2);
+        yClick = pos(1,1);
+        xClick = pos(1,2);
         
         % Find neuron with closest match
-        d = repmat([hvalueClick lambdaClick], numInScatter, 1);
+        d = repmat([yClick xClick], numInScatter, 1);
         
-        error = sum(((scatterSpace - d).^2)');
+        if varargin{4} == 1, % indicates which plot was clicked
+            scatter = referenceFrameScatter;
+        else
+            scatter = receptiveFieldScatter;
+        end
+        
+        error = sum(((scatter - d).^2)');
         
         [e leastErrorIndex] = min(error);
         
@@ -194,14 +196,15 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         cellNr = (row-1)*topLayerRowDim + col;
         
         disp(['Row,Col: ' num2str(row) ',' num2str(col)]);
-        disp(['lambda: ' num2str(analysisResults.headCenteredNess(row,col))]);
-        disp(['h-value: ' num2str(analysisResults.RFLocation(row,col))]);
+        disp(['H: ' num2str(analysisResults.headCenteredNess(row,col))]);
         
         if(isfield(analysisResults,'eyeCenteredNess')),
-            disp(['e-value: ' num2str(analysisResults.eyeCenteredNess(row,col))]);
+            disp(['E: ' num2str(analysisResults.eyeCenteredNess(row,col))]);
+            disp(['RFI: ' num2str(analysisResults.Index(row,col))]);
         end
         
-        disp(['psi: ' num2str(analysisResults.RFSize(row,col))]);
+        disp(['RF-Location: ' num2str(analysisResults.RFLocation(row,col))]);
+        disp(['RF-Size: ' num2str(analysisResults.RFSize(row,col))]);
         disp(['Discard:' num2str(analysisResults.DiscardStatus(row,col))]);
         disp(['cellNr:' num2str(cellNr)]);
         
@@ -265,7 +268,7 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
     function prettyPlot(region,row,col)
         
         % Dimensions
-        margin = 50;
+        margin = 60;
         fDim = 400;
         sDim = 120;
         tWidth = fDim + 2*margin;
@@ -273,22 +276,31 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         
         % Create figure
         figure('Units','Pixels','position', [1000 1000 tWidth tHeight]);
-    
         responsePlot = subplot(1,2,1);
         
+        % Plot Receptive field
+        rlocation = analysisResults.RFLocation(row,col);
+        rsize = analysisResults.RFSize(row,col);
+        
+        rectangle('Position',[rlocation - rsize/2,0,rsize,1.10],'FaceColor',[0.9 0.9 0.9],'EdgeColor',[0.9 0.9 0.9])% ,'LineWidth',0
+        
+        hold on;
+        
+        
+        % Plot response
         cellData = data(:, :, row, col); % {region-1}
         plot(info.targets,cellData','LineWidth',2);
         
-        % Plot Receptive field
-        hlocation = analysisResults.RFLocation(row,col);
-        hold on;
-        plot([hlocation hlocation],[-0.1 1.1],'--k');
+        % plot line
+        plot([rlocation rlocation],[0 1.0],'--k');
 
+        % Cean up axis
+        set(gca,'YTick',[0 1]);
         set(gca,'XTick', xTick);
         set(gca,'XTickLabel', xTickLabels);
         axis square;
         xlim([info.targets(end) info.targets(1)]);
-        ylim([-0.05 1.05]);
+        ylim([-0.05 1.00]);
         
         hYLabel = ylabel('Firing Rate');
         hXLabel = xlabel('Head-Centered Location (deg)');
@@ -296,17 +308,21 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         legend('boxoff');
         
         %hTitle = title(['Cell #' num2str(cellNr)]); % ', R:' num2str(region) % ', \Omega_{' num2str(cellNr) '} = ' num2str(sCell)
-        set([hYLabel hXLabel hLegend gca], 'FontSize', 16);
+        set([hYLabel hXLabel], 'FontSize', 20);
+        set([gca hLegend], 'FontSize', 18);
         
         % Population plot        
         scatterPlot = subplot(1,2,2);
         
         grey = [0.1 0.1 0.1];
-        plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'o', 'MarkerSize' , 1, 'MarkerFaceColor', grey, 'MarkerEdgeColor', grey);
+        %plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'o', 'MarkerSize' , 1, 'MarkerFaceColor', grey, 'MarkerEdgeColor', grey);
+        scatterAxis_RED = plot(analysisResults.eyeCenteredNess_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'o', 'MarkerSize' , 1, 'MarkerFaceColor', grey, 'MarkerEdgeColor', grey);
         hold on;
-        plot(analysisResults.RFLocation(row,col), analysisResults.headCenteredNess(row,col), 'o', 'MarkerSize' , 3, 'LineWidth', 3, 'MarkerFaceColor', 'r', 'MarkerEdgeColor', 'r');
-        ylim([-0.1 1]);
-        xlim([info.targets(end) info.targets(1)]);
+        %plot(analysisResults.RFLocation(row,col), analysisResults.headCenteredNess(row,col), 'o', 'MarkerSize' , 3, 'LineWidth', 3, 'MarkerFaceColor', 'r', 'MarkerEdgeColor', 'r');
+        plot(analysisResults.eyeCenteredNess(row,col), analysisResults.headCenteredNess(row,col), 'o', 'MarkerSize' , 3, 'LineWidth', 3, 'MarkerFaceColor', 'r', 'MarkerEdgeColor', 'r');
+        %ylim([-0.1 1]);
+        %xlim([info.targets(end) info.targets(1)]);
+        axis([-0.1 1 -0.1 1]);
         
         % Turn off ticks
         set(gca,'xtick',[]);

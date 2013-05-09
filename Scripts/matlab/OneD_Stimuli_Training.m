@@ -254,7 +254,7 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     end
     
     % Make stimuli figures
-    if numberOfSimultanousTargets  == 1,
+    if numberOfSimultanousTargets == 1,
         
         disp('Making Spatial Plot.');
         OneD_Stimuli_SpatialFigure([folderName '-training'], [folderName '-stdTest']);
@@ -263,8 +263,8 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
         OneD_Stimuli_MovementDynamicsFigure([folderName '-training']);
         
         % Generate correlation data
-        if true
-            disp('Computing correlation.');
+        if false
+            disp('Computing correlation');
             OneD_Stimuli_Correlation(folderName, dimensions);
         end
     

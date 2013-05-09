@@ -352,7 +352,7 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
                         outputFinalNetwork(name.c_str());
                     }
                 }
-                 */
+                */
                 
 			}
 			

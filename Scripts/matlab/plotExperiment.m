@@ -34,6 +34,21 @@ function plotExperiment(experiment, stimuliName)
     
     cd(startDir);
     
+    % Load training <=== complete and utter hackjob , but no time!;
+    stimuliName_training = strrep(stimuliName, 'stdTest', 'training');
+    training_dir = [base 'Stimuli/' stimuliName_training];
+    
+    if exist(training_dir),
+        
+        % Load stimuli
+        cd(training_dir);
+        trainingInfo = load('dimensions.mat');
+        cd(startDir);
+    
+    else
+        trainingInfo = 0;
+    end
+    
     % Find an example of simulation directory to extract column names- HORRIBLY CODED
     for d = 1:length(listing),
 
@@ -101,7 +116,7 @@ function plotExperiment(experiment, stimuliName)
             disp(['******** Doing ' num2str(counter) ' out of ' num2str((nnz([listing(:).isdir]) - 2)) '********']); 
             counter = counter + 1;
             
-            summary = plotSimulation(experiment, simulation, info, dotproduct);
+            summary = plotSimulation(experiment, simulation, info, trainingInfo);
 
             for s=1:length(summary),
                 
@@ -119,7 +134,7 @@ function plotExperiment(experiment, stimuliName)
                 fprintf(fileID, '<td> %s </td>\n', summary(s).directory);
 
                 % hvalue
-                fprintf(fileID, '<td><img src="%s" width="250px" height="250px"/></td>\n', [netDir '/lambdah.png']);
+                fprintf(fileID, '<td><img src="%s" width="250px" height="250px"/></td>\n', [netDir '/referenceFramePlot.png']);
 
                 % Parameters
                 parameters = getParameters(simulation);

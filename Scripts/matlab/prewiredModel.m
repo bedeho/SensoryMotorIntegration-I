@@ -19,7 +19,7 @@ function prewiredModel(filename)
     visualPreferenceDistance            = 1;
     eyePositionPrefrerenceDistance      = 1;
     targetSpacing                       = 17; % (deg)
-    inputLayerSigma                     = 19; % 3 classic, 6,19
+    inputLayerSigma                     = 3;%19; % 3 classic, 6,19
     
     % Setup random number generator
     seed = 3;
@@ -30,14 +30,14 @@ function prewiredModel(filename)
     eyePositionPreferences              = centerDistance(eyePositionFieldSize, eyePositionPrefrerenceDistance);
     nrOfVisualPreferences               = length(visualPreferences);
     nrOfEyePositionPrefrerence          = length(eyePositionPreferences);
-    targets                             = centerDistance(targetVisualRange, targetSpacing);% centerN(targetVisualRange, 5); 
+    targets                             = [-63 -45 -27 -9 9 27 45 63] %centerDistance(targetVisualRange, targetSpacing);
     numTargetPositions                  = length(targets);
     
     % Output layer
     inputLayerDepth                     = 1; % 1 = PO, 2 = LIP
     trainedNetwork                      = true;
     %fanInPercentage                    = 0.30; % [0 1)
-    desiredFanIn                        = 5000; % 1000,5000 %367fanInPercentage*(nrOfVisualPreferences*nrOfEyePositionPrefrerence*inputLayerDepth);
+    desiredFanIn                        = 1000; %5000; % 1000,5000 %367fanInPercentage*(nrOfVisualPreferences*nrOfEyePositionPrefrerence*inputLayerDepth);
     
     numRegions                          = 2;
     dim                                 = 30;

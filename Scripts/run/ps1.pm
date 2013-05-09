@@ -149,14 +149,14 @@
 										#["0.03"],
 										#["0.04"],
 										##["0.05"]
-										["0.06"],
+										#["0.06"],
 										#["0.07"],
 										#["0.08"],
 										#["0.09"],
 										
-										["0.10"]  # multitargettraining, variable duration 1.0, fixedduration
+										#["0.10"],  # multitargettraining, variable duration 1.0, fixedduration
 										#["0.15"]  # multitargettraining
-										#["0.20"]   # classic
+										#["0.20"],   # classic
 										#["0.30"], # nonspesific
 										#"0.40"] # # use with (0.1 -w)
 										#["0.50"],
@@ -475,14 +475,14 @@
     
     our @epochs							= (10); # only used in discrete model
 
-	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS   
+	our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+	#our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS   
 	
 	# 1-based indexing, as in inspector/MATLAB, not 0-based as
-	#our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) )");
+	our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) )");
 	#our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1))");
 	#our @recordedSingleCells			= ("( (11,5), (11,20), (23,7), (27,8), (28,2))");	
-	our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	#our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 
 	# Do some validation
 	print "Uneven parameter length." if 

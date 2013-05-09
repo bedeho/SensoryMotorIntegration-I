@@ -6,7 +6,7 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function analysisResults = metrics(filename, info)
+function analysisResults = metrics(filename, info, trainingInfo)
 
     % Get dimensions
     [networkDimensions, nrOfPresentLayers, historyDimensions] = getHistoryDimensions(filename);
@@ -77,14 +77,19 @@ function analysisResults = metrics(filename, info)
         error('Last layer is not present!');
     end
     
-    Index = (headCenteredNess-eyeCenteredNess)./(headCenteredNess+eyeCenteredNess);
+    h_r = headCenteredNess;
+    e_r = eyeCenteredNess;
+    
+    h_r(h_r < 0) = 0;
+    e_r(e_r < 0) = 0;
+    Index = (h_r-e_r)./(h_r+e_r);
     
     %% Save data in .mat file
     
     % Well behaved
     analysisResults.wellBehavedNeurons      = wellBehavedNeurons;
     
-    % Matrix form
+    %% Matrix form
     analysisResults.headCenteredNess        = headCenteredNess;
     analysisResults.eyeCenteredNess         = eyeCenteredNess;
     analysisResults.Index                   = Index;
@@ -94,7 +99,7 @@ function analysisResults = metrics(filename, info)
     analysisResults.RFLocation_Confidence   = RFLocation_Confidence;
     analysisResults.DiscardStatus           = DiscardStatus;
     
-    % Linearize
+    %% Linearize
     analysisResults.headCenteredNess_Linear         = analysisResults.headCenteredNess(:);
     analysisResults.eyeCenteredNess_Linear          = analysisResults.eyeCenteredNess(:);
     analysisResults.Index_Linear                    = analysisResults.Index(:);
@@ -104,51 +109,86 @@ function analysisResults = metrics(filename, info)
     analysisResults.RFLocation_Confidence_Linear    = analysisResults.RFLocation_Confidence(:);
     analysisResults.DiscardStatus_Linear            = analysisResults.DiscardStatus(:);
     
-    % Discard
+    %% Discard
     d = analysisResults.DiscardStatus_Linear;
     
-    analysisResults.headCenteredNess_Linear_Clean         = analysisResults.headCenteredNess_Linear(d > 0);
-    analysisResults.eyeCenteredNess_Linear_Clean          = analysisResults.eyeCenteredNess_Linear(d > 0);
-    analysisResults.Index_Linear_Clean                    = analysisResults.Index_Linear(d > 0);
-    analysisResults.RFSize_Linear_Clean                   = analysisResults.RFSize_Linear(d > 0);
-    analysisResults.RFLocation_Linear_Clean               = analysisResults.RFLocation_Linear(d > 0);
-    analysisResults.RFSize_Confidence_Linear_Clean        = analysisResults.RFSize_Confidence_Linear(d > 0);
-    analysisResults.RFLocation_Confidence_Linear_Clean    = analysisResults.RFLocation_Confidence_Linear(d > 0);
-    analysisResults.DiscardStatus_Linear_Clean            = analysisResults.DiscardStatus_Linear(d > 0);
+    analysisResults.headCenteredNess_Linear_Clean         = analysisResults.headCenteredNess_Linear(d == 0);
+    analysisResults.eyeCenteredNess_Linear_Clean          = analysisResults.eyeCenteredNess_Linear(d == 0);
+    analysisResults.Index_Linear_Clean                    = analysisResults.Index_Linear(d == 0);
+    analysisResults.RFSize_Linear_Clean                   = analysisResults.RFSize_Linear(d == 0);
+    analysisResults.RFLocation_Linear_Clean               = analysisResults.RFLocation_Linear(d == 0);
+    analysisResults.RFSize_Confidence_Linear_Clean        = analysisResults.RFSize_Confidence_Linear(d == 0);
+    analysisResults.RFLocation_Confidence_Linear_Clean    = analysisResults.RFLocation_Confidence_Linear(d == 0);
+    analysisResults.DiscardStatus_Linear_Clean            = analysisResults.DiscardStatus_Linear(d == 0);
     
-    % Summary Statistics
+    %% Head-centered (HC)
+    i = analysisResults.Index_Linear_Clean;
+    
+    analysisResults.headCenteredNess_HC         = analysisResults.headCenteredNess_Linear_Clean(i > 0);
+    analysisResults.eyeCenteredNess_HC          = analysisResults.eyeCenteredNess_Linear_Clean(i > 0);
+    analysisResults.Index_HC                    = analysisResults.Index_Linear_Clean(i > 0);
+    analysisResults.RFSize_HC                   = analysisResults.RFSize_Linear_Clean(i > 0);
+    analysisResults.RFLocation_HC               = analysisResults.RFLocation_Linear_Clean(i > 0);
+    analysisResults.RFSize_Confidence_HC        = analysisResults.RFSize_Confidence_Linear_Clean(i > 0);
+    analysisResults.RFLocation_Confidence_HC    = analysisResults.RFLocation_Confidence_Linear_Clean(i > 0);
+    analysisResults.DiscardStatus_HC            = analysisResults.DiscardStatus_Linear_Clean(i == 0);
+    
+    hc = length(analysisResults.headCenteredNess_HC);
+    analysisResults.hc = hc;
+    
+    %% Coverage analysis : Only if we have information abour training locations
+    if isstruct(trainingInfo)
+    
+        trainingTargets = sort(trainingInfo.allShownTargets);
+        numTargets = length(trainingTargets);
+
+        % Map to preferred training location
+        comparisonTargets = repmat(trainingTargets', hc, 1);
+        comparisonLocations = repmat(analysisResults.RFLocation_HC, 1, numTargets);
+        dist = (comparisonLocations - comparisonTargets).^2;
+        [c preferredTarget] = min(dist');
+        
+        % Make distribution
+        preferredTargetDistribution = hist(preferredTarget, 1:numTargets)./ hc;
+        
+        % Compute entropy
+        entropy = -dot(preferredTargetDistribution,log(preferredTargetDistribution)/log(2)); % -(dist*.log(dist)/log(2));
+        maxEntropy = log(numTargets)/log(2);
+
+        % Save
+        analysisResults.trainingTargets =  sort(trainingInfo.allShownTargets);
+        analysisResults.preferredTarget = preferredTarget;
+        analysisResults.preferredTargetDistribution = preferredTargetDistribution;
+        analysisResults.entropy = entropy;
+        analysisResults.maxEntropy = maxEntropy;
+        analysisResults.uniformity = entropy/maxEntropy;
+    end
+    
+    %% Summary
     analysisResults.fractionDiscarded               = nnz(DiscardStatus) / numNeurons;
-    analysisResults.fractionDiscarded_Discontinous  = nnz(bitget(DiscardStatus,2)) / numNeurons;
-    analysisResults.fractionDiscarded_Edge          = nnz(bitget(DiscardStatus,3)) / numNeurons;
-    analysisResults.fractionDiscarded_MultiPeak     = nnz(bitget(DiscardStatus,4)) / numNeurons;
-    analysisResults.fractionVeryHeadCentered        = nnz(analysisResults.Index_Linear_Clean >= 0) / numNeurons;
+    %analysisResults.fractionDiscarded_Discontinous  = nnz(bitget(DiscardStatus,2)) / numNeurons;
+    %analysisResults.fractionDiscarded_Edge          = nnz(bitget(DiscardStatus,3)) / numNeurons;
+    %analysisResults.fractionDiscarded_MultiPeak     = nnz(bitget(DiscardStatus,4)) / numNeurons;
+    analysisResults.HC                              = hc / numNeurons;
     
-    %{
-    % Very head-centered
-    lambdaCutoff = 0.7;
-    analysisResults.fractionVeryHeadCentered     = nnz(headCenteredNess_Linear_Clean >= lambdaCutoff) / numNeurons;
-    
-    % Uniformity
-    vals = RFLocation_Linear_Clean(headCenteredNess_Linear_Clean >= lambdaCutoff);
-    numEntropyBins = 40;
-    dist = hist(vals,numEntropyBins)./ numel(vals);
-    entropy = -dot(dist,log(dist)/log(2)); % -(dist*.log(dist)/log(2));
-    maxEntropy = log(numEntropyBins)/log(2);
-    
-    analysisResults.entropy = entropy;
-    analysisResults.maxEntropy = maxEntropy;
-    analysisResults.uniformityOfVeryHeadCentered = entropy/maxEntropy;
-    %}
     
     function discard = discardStatus(row,col,num)
         
-        peakResponse = ratio*max(max(dataPrEyePosition(:,:,row,col)));
+        %peakResponse = ratio*max(max(dataPrEyePosition(:,:,row,col)));
         response = dataPrEyePosition(:,:,row,col)';
         discard = 0;
 
         % Non-responsive rf: there is an eye position for which it is non-respnse ($r_i =0$) to all retinal locations
         if any(sum(response > 0) == 0),
             discard = discard + 2;
+        end
+        
+        if isnan(eyeCenteredNess(row, col)),
+            discard = discard + 4;
+        end
+        
+        if eyeCenteredNess(row, col) < 0 && headCenteredNess(row,col) < 0,
+            discard = discard + 8;
         end
         
         %{
@@ -217,8 +257,10 @@ function analysisResults = metrics(filename, info)
                 correlationMatrix = corrcoef(observationMatrix);
                 c = correlationMatrix(1,2); % pick one of the two identical non-diagonal element :)
                 
-                corr = corr + c;
-                combinations = combinations + 1;
+                if ~isnan(c),
+                    corr = corr + c;
+                    combinations = combinations + 1;
+                end
 
             end
         end
@@ -259,7 +301,9 @@ function analysisResults = metrics(filename, info)
         for e=1:nrOfEyePositionsInTesting,
             
             responses = dataPrEyePosition(e, :,row,col);
-            centersOfMass(e) = dot(responses,targets) / sum(responses);
+            normalized_mean = responses - mean(responses);
+            normalized_mean(normalized_mean < 0) = 0;
+            centersOfMass(e) = dot(normalized_mean,targets) / sum(normalized_mean);
         end
         
         % Remove any nan entries, that is eye position where there was NO
@@ -272,7 +316,7 @@ function analysisResults = metrics(filename, info)
         
         %2) Do regression to find best fitting: ax+b
         
-        if(length(usedEyePositions) > 1)
+        if(numUsedEyePositions > 1)
         
             %{
             old shit:

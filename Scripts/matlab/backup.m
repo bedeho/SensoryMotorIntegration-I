@@ -1,5 +1,72 @@
-            % Connect
-            %{
+
+    %{
+    % Receptive Field
+    receptiveFieldPlot = figure();
+    plot(analysisResults.RFLocation_Linear_Clean, analysisResults.RFSize_Linear_Clean, 'or', 'LineWidth', 1);
+    title('Receptive Field');
+    xlabel('Receptive Field Location (deg)');
+    ylabel('Receptive Field Size (deg)');
+    axis([-0.1 1 -0.1 1]);
+    saveFigureAndDelete(receptiveFieldPlot, 'receptiveFieldPlot');
+    %}
+
+
+    %{
+            %scatterAxis = herrorbar(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, analysisResults.RFLocation_Confidence_Linear_Clean , 'or'); %, 'LineWidth', 2
+            scatterAxis_RED = plot(analysisResults.eyeCenteredNess_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or', 'LineWidth', 1);
+            set(scatterAxis_RED, 'ButtonDownFcn', {@scatterCallBack,r}); % Setup callback
+            axis([-0.1 1 -0.1 1]);
+            plot([-0.1 1],[-0.1 1]);
+            title('Refence Frames');
+            xlabel('Eye-Centeredness');
+            ylabel('Head-Centeredness');
+            %xlim([info.targets(end) info.targets(1)]);
+            hold off
+            
+            % Receptive Field vs sie
+            axisVals(r-1,PLOT_COLS) = subplot(numRegions, PLOT_COLS, PLOT_COLS*(r-2) + PLOT_COLS); % Save axis
+            plot(analysisResults.RFLocation_Linear_Clean, analysisResults.RFSize_Linear_Clean, 'or', 'LineWidth', 1);
+            title('Receptive Fields');
+            xlabel('Receptive Field Location');
+            ylabel('Receptive Field Size');
+%}
+
+
+
+    
+    %{
+    % lambda/h scatter plot
+    lambdahPlot = figure();
+    plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'ob');
+    hold on;
+    plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or');
+    xlabel('h-value');
+    ylabel('\lambda');
+    ylim([-0.1 1]);
+    xlim([info.targets(end) info.targets(1)]);
+    saveFigureAndDelete(lambdahPlot, 'lambdah');
+    
+    % Psi/h
+    psiHPlot = figure();
+    plot(analysisResults.RFSize_Linear, analysisResults.RFLocation_Linear, 'ob');
+    hold on;
+    plot(analysisResults.RFSize_Linear_Clean, analysisResults.RFLocation_Linear_Clean, 'or');
+    xlabel('\psi');
+    ylabel('h-value');
+    saveFigureAndDelete(psiHPlot, 'psih');
+    
+    % h/Psi/Lambda
+    hPsiLambdaPlot = figure();
+    scatter3(analysisResults.RFLocation_Linear_Clean, analysisResults.RFSize_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean);
+    xlabel('h-value');
+    ylabel('\psi');
+    zlabel('\lambda');
+    saveFigureAndDelete(hPsiLambdaPlot, 'hpsilambda');
+    %}
+
+
+
+%{
             for d=1:inputLayerDepth,
                 for ret=1:nrOfVisualPreferences,
                     

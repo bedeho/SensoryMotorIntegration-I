@@ -6,50 +6,38 @@
 %  Copyright 2011 OFTNAI. All rights reserved.
 %
 
-function plotRegion(filename, info, dotproduct, netDir)
+function plotRegion(filename, info, trainingInfo, netDir)
     
-    analysisResults = metrics(filename, info);
+    analysisResults = metrics(filename, info, trainingInfo);
     
     disp(['Discarded: ' num2str(100*nnz(analysisResults.DiscardStatus_Linear > 0)/numel(analysisResults.DiscardStatus_Linear)) '%']);
     
-    % Psi/lambda scatter plot
-    psiLambdaPlot = figure();
-    plot(analysisResults.RFSize_Linear, analysisResults.headCenteredNess_Linear, 'ob');
+    % Refence Frames
+    referenceFramePlot = figure();
     hold on;
-    plot(analysisResults.RFSize_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or');
-    xlabel('\psi');
-    ylabel('\lambda');
-    ylim([-0.1 1]);
-    saveFigureAndDelete(psiLambdaPlot, 'psilambda');
+    plot(analysisResults.eyeCenteredNess_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or');     
+    plot([-0.1 1],[-0.1 1]);
+    title('Refence Frame');
+    xlabel('Eye-Centeredness');
+    ylabel('Head-Centeredness');
+    axis([-0.1 1 -0.1 1]);
+    saveFigureAndDelete(referenceFramePlot, 'referenceFramePlot');
     
-    % lambda/h scatter plot
-    lambdahPlot = figure();
-    plot(analysisResults.RFLocation_Linear, analysisResults.headCenteredNess_Linear, 'ob');
-    hold on;
-    plot(analysisResults.RFLocation_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean, 'or');
-    xlabel('h-value');
-    ylabel('\lambda');
-    ylim([-0.1 1]);
-    xlim([info.targets(end) info.targets(1)]);
-    saveFigureAndDelete(lambdahPlot, 'lambdah');
-    
-    % Psi/h
-    psiHPlot = figure();
-    plot(analysisResults.RFSize_Linear, analysisResults.RFLocation_Linear, 'ob');
-    hold on;
-    plot(analysisResults.RFSize_Linear_Clean, analysisResults.RFLocation_Linear_Clean, 'or');
-    xlabel('\psi');
-    ylabel('h-value');
-    saveFigureAndDelete(psiHPlot, 'psih');
-    
-    % h/Psi/Lambda
-    hPsiLambdaPlot = figure();
-    scatter3(analysisResults.RFLocation_Linear_Clean, analysisResults.RFSize_Linear_Clean, analysisResults.headCenteredNess_Linear_Clean);
-    xlabel('h-value');
-    ylabel('\psi');
-    zlabel('\lambda');
-    saveFigureAndDelete(hPsiLambdaPlot, 'hpsilambda');
-    
+    % Coverage analysis
+    %% Coverage analysis : Only if we have information abour training locations
+     if isstruct(trainingInfo)
+                 
+        coveragePlot = figure();
+        bar(analysisResults.preferredTargetDistribution,'LineStyle','none');
+        box off;
+        ylabel('Frequency');
+        xlabel('Head-Centered Training Location (deg)');
+        ylim([0 1]);
+        set(gca,'XTickLabel', sort(trainingInfo.allShownTargets));
+
+        saveFigureAndDelete(coveragePlot, 'coveragePlot');
+    end
+
     % Save for collation
     save([netDir '/analysisResults.mat'], 'analysisResults' );
     

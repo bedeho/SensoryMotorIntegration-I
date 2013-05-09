@@ -72,9 +72,9 @@
 	   	#**********************************
 	   	# bigpeak
 	   	#**********************************
-	   	my $experiment						= "sigma_19_selforganization_biggerEyeDimension2";
-	   	#my $stim							= "peakedgain-biggerEyeDimension-visualfield=700.00-eyepositionfield=210.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
-	   	my $stim							= "peakedgain-biggerEyeDimension2-visualfield=700.00-eyepositionfield=210.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
+	   	my $experiment						= "sigma_19_selforganization_biggerEyeDimension-recording";
+	   	my $stim							= "bigpeakedgain-biggerEyeDimension-visualfield=700.00-eyepositionfield=210.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
+	   	#my $stim							= "peakedgain-biggerEyeDimension2-visualfield=700.00-eyepositionfield=210.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
 	   	
 	   	#**********************************
 	   	# varyingfixationsequencelength
@@ -183,11 +183,11 @@
 		# General Params
 		#**********************************
 				
-		my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
+		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
-		my $nrOfEpochs						= 10; # 20;#10; #50; # 30,100
-		my $saveNetworkAtEpochMultiple 		= 4;
+		my $nrOfEpochs						= 1; # 20;#10; #50; # 30,100
+		my $saveNetworkAtEpochMultiple 		= 1;
 		my $saveNetwork						= "true"; # "true","false"
 		my $outputAtTimeStepMultiple		= 2; # Keep this high (10>=) unless  you are recording for looking at dynamics!
 		

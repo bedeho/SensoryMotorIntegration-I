@@ -11,7 +11,7 @@
 
 %  scatterPlotWithMarginalHistograms({randn(200,1), randn(400,1)*0.3}, {randn(200,1)+1, randn(400,1)*1.6},'XTitle','Receptive Field Location (deg)','YTitle','Head-Centerednes','Legends',{'Untrained','Trained'},'XLim',[-5 2],'YLim',[-5 7])
 
-function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms(X, Y, varargin)
+function [maxPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms(X, Y, varargin)
 
     % Process varargs
     args = vararginProcessing(varargin, {'XTitle', 'YTitle', 'XLim', 'YLim', 'Legends', 'FaceColors', 'EdgeColors', 'NumberOfBins', 'MarkerSize', 'Location', 'YLabelOffset', 'LabelFontSize', 'AxisFontSize'}); % 'XPercentiles', 'YPercentiles',
@@ -22,15 +22,17 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
     end
     
     nrOfDataSets = length(X);
-
-    % Dimensions
+        
+    % Figure Dimensions
     scatterDim = 200;
-    outerMargin = 20;
-    projectionHeight = 42;
-    projectionScatterMargin = 40;
-    totalFigureHeight = 2*outerMargin + scatterDim + projectionHeight + projectionScatterMargin;
+    titleEdgeMargin = 50;
+    scatterToProjectionMargin = 10;
+    projectionHeight = 40;
+    totalFigureHeight = scatterDim+titleEdgeMargin+scatterToProjectionMargin+projectionHeight;
     totalFigureWidth = totalFigureHeight;
+    projectionOffset = titleEdgeMargin+scatterDim+scatterToProjectionMargin; % Offset between left (or bottom) of scatter plot and figure left (or bottom)
     
+
     % Process arguments
     % Colors
     % Light = {[0.4,0.4,0.9]; [0.9,0.4,0.4]}; % , [0.4,0.4,0.4]
@@ -41,9 +43,10 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
     NumberOfBins    = processOptionalArgument('NumberOfBins', 40);
     MarkerSize      = processOptionalArgument('MarkerSize', 3);
     Location        = processOptionalArgument('Location', 'NorthEast'); % SouthWest
-    YLabelOffset    = processOptionalArgument('YLabelOffset', 5);
-    LabelFontSize   = processOptionalArgument('LabelFontSize', 12);
-    AxisFontSize    = processOptionalArgument('AxisFontSize', 12);
+    %YLabelOffset    = processOptionalArgument('YLabelOffset', 5);
+    LabelFontSize   = processOptionalArgument('LabelFontSize', 15);
+    AxisFontSize    = processOptionalArgument('AxisFontSize', 14);
+    LegendFontSize    = processOptionalArgument('LegendFontSize', 10);
     
     %% Main plot
 
@@ -59,6 +62,7 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
     XHistograms = zeros(NumberOfBins, nrOfDataSets);
     YHistograms = zeros(NumberOfBins, nrOfDataSets);
     
+    %% Limits
     if(isKey(args, 'XLim') && isKey(args, 'YLim')),
         
         XLim = args('XLim');
@@ -95,8 +99,8 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
         YLim = [minY maxY];
     end
     
-    xDivide = linspace(minX, maxX, NumberOfBins);
-    yDivide = linspace(minY, maxY, NumberOfBins);
+    xDivide = linspace(minX, maxX, NumberOfBins+1);
+    yDivide = linspace(minY, maxY, NumberOfBins+1);
     
     % Do scatters
     for i=1:nrOfDataSets,
@@ -112,8 +116,11 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
         end
         
         % Make normalize histograms
-        XHistograms(:,i) = histc(xData, xDivide) ./ sizeOfDataSet;
-        YHistograms(:,i) = histc(yData, yDivide) ./ sizeOfDataSet;
+        hx = histc(xData, xDivide);
+        hy = histc(yData, yDivide);
+        
+        XHistograms(:,i) =  hx(1:(end-1))./ sizeOfDataSet;
+        YHistograms(:,i) =  hy(1:(end-1))./ sizeOfDataSet;
         
         % Add scatter plots
         axes(scatterAxis);
@@ -132,13 +139,16 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
         
     end
     
+    %% Style
+    
     % Add legend
     if nrOfDataSets > 1 && isKey(args,'Legends'),
         
         Legends = args('Legends');
         
         if(nrOfDataSets == length(Legends))
-            legend(Legends,'Location', Location);
+            hlegend = legend(Legends,'Location', Location);
+            set(hlegend, 'FontSize', LegendFontSize);
         else
             error('Number of data sets does not match number of legends');
         end 
@@ -150,7 +160,28 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
     % Add Grid
     grid
     
-    % Add x projection
+    % Add Limits
+    xlim(XLim);
+    ylim(YLim);
+    
+    %% Add titles
+    
+    if isKey(args,'XTitle'),
+        
+        hLabeL = xlabel(args('XTitle'));
+        set(hLabeL, 'FontSize', LabelFontSize);
+    end
+    
+    if isKey(args,'YTitle'),
+        
+        axes(scatterAxis);
+        hLabeL = ylabel(args('YTitle'));
+        set(hLabeL, 'FontSize', LabelFontSize);
+    end
+    
+    %% Add Projections
+    
+    % x
     axes(xProjectionAxis);
     hBar = bar(XHistograms,1.0,'stacked','LineStyle','none'); 
     %set(hBar,{'FaceColor'}, FaceColors); %, {'EdgeColor'}, edgeColors
@@ -159,7 +190,7 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
     end
     
     
-    % Add y projection
+    % y
     axes(yProjectionAxis);
     hBar = bar(YHistograms,1.0,'stacked','LineStyle','none'); 
     view(-90,90);
@@ -168,48 +199,64 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
         set(hBar(i),'FaceColor', FaceColors{i}); %, {'EdgeColor'}, edgeColors
     end
     
-    % Positioning: 
+    %% Positioning
     % remember, pos = [left, bottom, width, height]
-    scatterOffset = (outerMargin+projectionHeight+projectionScatterMargin); % Offset between left (or bottom) of scatter plot and figure left (or bottom)
     
+
     % scatter
     axes(scatterAxis);
     box on;
-    p = [scatterOffset scatterOffset scatterDim scatterDim];
-    set(scatterAxis, 'Units','Pixels', 'pos', p);
-    
-    if isKey(args,'XTitle'),
-        
-        hLabeL = xlabel(args('XTitle'));
-        set(hLabeL, 'FontSize', LabelFontSize);
-    end
-    
-    %{
-    if isKey(args,'YTitle'),
-        
-        hLabeL = ylabel(args('YTitle'));
-        set(hLabeL, 'FontSize', LabelFontSize);
-    end
-    %}
-    
-    xlim(XLim);
-    ylim(YLim);
+    set(scatterAxis, 'Units','Pixels', 'pos', [titleEdgeMargin titleEdgeMargin scatterDim scatterDim]);
     
     % y projection
     axes(yProjectionAxis);
     box off
     axis tight
     axis off
-    
+    set(gca,'YDir','reverse');
+    set(gca,'XAxisLocation','top');
     set(gca,'xtick',[])
     set(gca,'ytick',[]);
-    p = [outerMargin scatterOffset projectionHeight scatterDim];
-    set(yProjectionAxis, 'Units','Pixels', 'pos', p);
+    set(yProjectionAxis, 'Units','Pixels', 'pos', [projectionOffset titleEdgeMargin projectionHeight scatterDim]);
 
     % x projection
     axes(xProjectionAxis);
-    p = [scatterOffset outerMargin scatterDim projectionHeight];
-    set(xProjectionAxis, 'Units','Pixels', 'pos', p);
+    set(xProjectionAxis, 'Units','Pixels', 'pos', [titleEdgeMargin projectionOffset scatterDim projectionHeight]);
+    
+    box off
+    axis tight
+    axis off
+    set(gca,'xtick',[]);
+    set(gca,'ytick',[]);
+    
+    
+    
+    %{
+    outerMargin = 20;
+    projectionHeight = 42;
+    projectionScatterMargin = 40;
+    totalFigureHeight = 2*outerMargin + scatterDim + projectionHeight + projectionScatterMargin;
+    totalFigureWidth = totalFigureHeight;
+    scatterOffset = (outerMargin+projectionHeight+projectionScatterMargin); % Offset between left (or bottom) of scatter plot and figure left (or bottom)
+    
+    % scatter
+    axes(scatterAxis);
+    box on;
+    set(scatterAxis, 'Units','Pixels', 'pos', [scatterOffset scatterOffset scatterDim scatterDim]);
+    
+    % y projection
+    axes(yProjectionAxis);
+    box off
+    axis tight
+    axis off
+    set(gca,'xtick',[])
+    set(gca,'ytick',[]);
+    set(yProjectionAxis, 'Units','Pixels', 'pos', [outerMargin scatterOffset projectionHeight scatterDim]);
+
+    % x projection
+    axes(xProjectionAxis);
+    set(xProjectionAxis, 'Units','Pixels', 'pos', [scatterOffset outerMargin scatterDim projectionHeight]);
+    
     box off
     axis tight
     axis off
@@ -218,33 +265,8 @@ function [maxPlot, miniPlot yProjectionAxis, scatterAxis, xProjectionAxis, XLim,
     set(gca,'xtick',[]);
     set(gca,'ytick',[]);
     
-    % TESTING TESTING TESTING
-    %% Move label closer, some sort of issue here
-    %axes(scatterAxis);
-    %xlabh = get(gca,'YLabel');
-    %set(xlabh,'Position', get(xlabh,'Position') + [YLabelOffset 0 0])
+%}
     
-    if isKey(args,'YTitle'),
-        
-        axes(scatterAxis);
-        hLabeL = ylabel(args('YTitle'));
-        set(hLabeL, 'FontSize', LabelFontSize);
-    end
-
-    %% Mini plot
-    miniPlot = 0; %figure;
-    
-    %{
-    for i=1:nrOfDataSets,
-        
-        plot(X{i}, Y{i},'o','MarkerFaceColor', faceColors{i},'MarkerEdgeColor', faceColors{i}, 'MarkerSize', MarkerSize);
-        hold on;
-        
-    end
-    
-    set(gca,'xtick',[]);
-    set(gca,'ytick',[]);
-    %}
     %% Process an optional argument
     function r = processOptionalArgument(key, default)
         

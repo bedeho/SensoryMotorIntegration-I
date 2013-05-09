@@ -10,7 +10,7 @@
 %  experiment: experiment name
 %  simulation: simulation name
 
-function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
+function [summary] = plotSimulation(experiment, simulation, info, trainingInfo)
 
     % Import global variables
     declareGlobalVars();
@@ -39,7 +39,7 @@ function [summary] = plotSimulation(experiment, simulation, info, dotproduct)
             
             %[outputPatternsPlot, MeanObjects, MeanTransforms, orthogonalityIndex, regionOrthogonalizationPlot, regionCorrelationPlot,thetaPlot, thetaMatrix, singleCell, multiCell, omegaBins, invariancePlot, distributionPlot] = plotRegion([netDir '/firingRate.dat'], info, dotproduct);
             
-            plotRegion([netDir '/firingRate.dat'], info, dotproduct, netDir);
+            plotRegion([netDir '/firingRate.dat'], info, trainingInfo, netDir);
             
             summary(counter).directory = directory;
             counter = counter + 1;
