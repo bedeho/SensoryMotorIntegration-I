@@ -17,9 +17,9 @@ function ThesisParameterVariationPlot()
     
     %% Baseline
     %{
-    experiments(1).Folder   =   'peakedgain/S=0.80_/BlankNetwork';
-    X(1)                    =    0;
-    names{1}                =  '0';
+    experiments(1).Folder   = 'peakedgain/S=0.80_/BlankNetwork';
+    X(1)                    = 0;
+    names{1}                = '0';
     vals(1)                 = 0;
     for i=1:20,
         experiments(i+1).Folder   = ['peakedgain/S=0.80_/TrainedNetwork_e' num2str(i)];
@@ -45,16 +45,16 @@ function ThesisParameterVariationPlot()
     %}
     
     %% sparseness
-    
+    %{
     vals = 50:2:98;
     for i=1:length(vals),
-        experiments(i).Folder   = ['../Experiments_disk/sparseness/S=0.' num2str(vals(i)) '_/TrainedNetwork']; %_e11
+        experiments(i).Folder   = ['../Experiments_disk/sparseness/S=0.' num2str(vals(i)) '_/TrainedNetwork']; %Blank
         X(i)                    = vals(i);
         XTick(i)                = X(i);
         names{i}                = num2str(i);
     end
     XAxislabel = 'Sparseness Percentile - \pi';
-    
+    %}
      
     %% learningrate
     %{
@@ -93,13 +93,14 @@ function ThesisParameterVariationPlot()
     %{
     for i=1:30,
         
-        experiments(i).Folder   = ['../Experiments_disk/varyingheadpositions_' num2str(i) '/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork'];
-
-        X(i)                    = i;
-        XTick(i)                    = X(i);
+        experiments(i).Folder  = ['../Experiments_disk/varyingheadpositions_' num2str(i) '/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork'];
+        X(i)                   = i;
+        XTick(i)               = X(i);
+        vals(i)                = i;
+        names{i}               = num2str(i);
     end
     
-    XAxislabel = 'Number of Target Locations';
+    XAxislabel = 'Number of Target Locations - M';
     %}
     
     %% Time constant
@@ -149,6 +150,20 @@ function ThesisParameterVariationPlot()
     
     XAxislabel = 'Fixation Duration Standard Deviation (s)';
     %}
+    
+    %% varying_sigma_X
+    
+    for i=1:30,
+        
+        experiments(i).Folder  = ['../Experiments_disk/varying_sigma_' num2str(i) '.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork'];
+        X(i)                   = i;
+        XTick(i)               = X(i);
+        vals(i)                = i;
+        names{i}               = num2str(i);
+    end
+    
+    XAxislabel = 'Receptive Field Size - \sigma (deg)';
+    
    
     %% Plotting
     numExperiments = length(experiments);
@@ -162,13 +177,15 @@ function ThesisParameterVariationPlot()
     rfSizesSTD = zeros(1,numExperiments);
     coverage = zeros(1,numExperiments);
     
-    
     % Load baseline
     disp('Exp: untrained ----------------------');
-    % [expFolder '../Experiments_disk/varyingfixationsequencelength_' num2str(i) '.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork/analysisResults.mat']
-    % [expFolder '../Experiments_disk/tracetimeconstant/ttC=0.010_/BlankNetwork/analysisResults.mat']
-    [c,h,r,r_std,a,a_std] = loadExperiment([expFolder '../Experiments_disk/sparseness/S=0.52_/TrainedNetwork/analysisResults.mat']);
-    
+    %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder '../Experiments_disk/varyingfixationsequencelength_' num2str(i) '.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork/analysisResults.mat']);
+    %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder '../Experiments_disk/tracetimeconstant/ttC=0.010_/BlankNetwork/analysisResults.mat']);
+    %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder '../Experiments_disk/sparseness/S=0.52_/BlankNetwork/analysisResults.mat']);
+    %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder '../Experiments_disk/varyingheadpositions_1/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork/analysisResults.mat']);
+    [c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder '../Experiments_disk/varying_sigma_1.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork/analysisResults.mat']);
+
+
     % Iterate experiments and plot
     for e = 1:numExperiments,
 
@@ -194,11 +211,11 @@ function ThesisParameterVariationPlot()
     
     XLim = [vals(1) vals(end)];
     
-    Y1min = min(r,min(rfSizes - rfSizesSTD/2)) - 2; %classic=2
-    Y2min = min(a,min(AverageHeadCenteredNess - AverageHeadCenteredNessSTD/2)) - 0.1; % clssic: 0.1s
+    Y1min = min(r_,min(rfSizes - rfSizesSTD/2)) - 2; %classic=2
+    Y2min = min(a_,min(AverageHeadCenteredNess - AverageHeadCenteredNessSTD/2)) - 0.1; % clssic: 0.1s
     
-    Y1max = max(r, max(rfSizes + rfSizesSTD/2)) + 2;%classic=2
-    Y2max = max(a, max(AverageHeadCenteredNess + AverageHeadCenteredNessSTD/2)) + 0.1; % clssic: 0.1s
+    Y1max = max(r_, max(rfSizes + rfSizesSTD/2)) + 2;%classic=2
+    Y2max = max(a_, max(AverageHeadCenteredNess + AverageHeadCenteredNessSTD/2)) + 0.1; % clssic: 0.1s
     
     function [c,h,r,r_std,a,a_std] =  loadExperiment(analysisPath)
     
@@ -223,26 +240,23 @@ function ThesisParameterVariationPlot()
     
     %% Log plots
     %{
-    
-    
-    
     % Plot 1
     figure();
-    [AX,H1,H2] = plotyy(X, headCenteredNessRate, X, coverage,'semilogx');
+    [AX,H1,H2] = plotyy(X, headCenteredNessRate, X, coverage); % ,'semilogx'
     
     axes(AX(1));
-    set(AX(1),'XGrid','on','XLim', XLim, 'YLim', [0 1], 'YTick', 0:0.2:1);
+    set(AX(1),'XLim', XLim, 'YLim', [0 1], 'YTick', 0:0.2:1); % ,'XGrid','on'
     
     axes(AX(2));
-    set(AX(2),'XGrid','on','XLim', XLim, 'YLim', [0 1], 'YTick', 0:0.2:1);
+    set(AX(2),'XLim', XLim, 'YLim', [0 1], 'YTick', 0:0.2:1); % ,'XGrid','on'   
     
     % Add untrained
     axes(AX(1));
     hold(AX(1), 'on');
-    plot(XLim,[h h],'--','Color','b');
+    %plot(XLim,[h_ h_],'--','Color','b');
     axes(AX(2));
     hold(AX(2), 'on');
-    plot(XLim,[c c],'--','Color','g');
+    %plot(XLim,[c_ c_],'--','Color','g');
     
     % Prettyup
     pretty(AX, XAxislabel,'Head-Centeredness Rate','Coverage');
@@ -250,20 +264,20 @@ function ThesisParameterVariationPlot()
     % Errorbars in plot 2
     figure();
     
-    [AX,H1,H2] = plotyy(X, rfSizes,X, AverageHeadCenteredNess,'semilogx');  
+    [AX,H1,H2] = plotyy(X, rfSizes,X, AverageHeadCenteredNess); % ,'semilogx'  
     
     % Errorbars
     axes(AX(1));
     hold(AX(1), 'on');
     errorbar(AX(1), X, rfSizes, -rfSizesSTD/2, rfSizesSTD/2,'Color','k','Parent', AX(1));
-    plot(XLim,[r r],'--','Color','k'); % Add untrained
-    set(AX(1),'YColor','k','XGrid','on','YLim', [Y1min Y1max],'XLim', XLim, 'YTick', roundn(linspace(Y1min,Y1max,5),0));
+    %plot(XLim,[r_ r_],'--','Color','k'); % Add untrained
+    set(AX(1),'YColor','k','YLim', [0 100],'XLim', XLim,'YTick', 0:20:100); % roundn(linspace(Y1min,Y1max,5),0) ,'XGrid','on'
     
     axes(AX(2));
     hold(AX(2), 'on');
     errorbar(AX(2), X, AverageHeadCenteredNess, -AverageHeadCenteredNessSTD/2, AverageHeadCenteredNessSTD/2,'Color','r','Parent',AX(2));
-    plot(XLim,[a a],'--','Color','r'); % Add untrained
-    set(AX(2),'YColor','r','XGrid','on','YLim', [Y2min Y2max],'XLim', XLim, 'YTick', roundn(linspace(Y2min,Y2max,5),-2));
+    %plot(XLim,[a_ a_],'--','Color','r'); % Add untrained
+    set(AX(2),'YColor','r','YLim', [0 1],'XLim', XLim, 'YTick', 0:0.2:1); %, 'YTick', roundn(linspace(Y2min,Y2max,5),-2)); % ,'XGrid','on'
 
     % Prettyup
     pretty(AX, XAxislabel,'Average Receptive Field Size (deg)','Average Head-Centeredness');
@@ -282,32 +296,32 @@ function ThesisParameterVariationPlot()
         set([AX hXLabel hYLabel1 hYLabel2], 'FontSize', 14);
         
     end
+    
     %}
     
-    
     %% Combined 4yyyy
+    
     [ax,hlines] = ploty4(X,headCenteredNessRate,X,coverage,X,AverageHeadCenteredNess,X,rfSizes,{'Head-Centeredness Rate','Coverage','Average Head-Centeredness','Average Receptive Field Size (deg)'}, XAxislabel, AverageHeadCenteredNessSTD,rfSizesSTD,XLim); 
     
-    
-    set(ax(4),'YLim', [Y1min Y1max]);
-    set(ax(3),'YLim', [Y2min Y2max]);
+    set(ax(4),'YLim', [0 80]);%[Y1min Y1max]);
+    set(ax(3),'YLim', [0 1]);%[Y2min Y2max]);
     
     
     % Add untrained
     %{
     hold(ax(1), 'on');
-    plot(ax(1),XLim,[h h],'--','Color','b');
+    plot(ax(1),XLim,[h_ h_],'--','Color','b');
     
     hold(ax(2), 'on');
-    plot(ax(2),XLim,[c c],'--','Color','g');
+    plot(ax(2),XLim,[c_ c_],'--','Color','g');
     
     hold(ax(3), 'on');
-    plot(ax(3),XLim,[a a],'--','Color','r');
+    plot(ax(3),XLim,[a_ a_],'--','Color','r');
     
     hold(ax(4), 'on');
-    plot(ax(4),XLim,[r r],'--','Color','k');
-    
+    plot(ax(4),XLim,[r_ r_],'--','Color','k');
     %}
+    
         
     %if(exist('XTick')),
     %    set(AX,'XTick', XTick);

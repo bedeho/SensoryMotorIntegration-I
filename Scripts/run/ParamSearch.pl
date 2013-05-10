@@ -74,7 +74,6 @@
 	   	#**********************************
 	   	my $experiment						= "sigma_19_selforganization_biggerEyeDimension-recording";
 	   	my $stim							= "bigpeakedgain-biggerEyeDimension-visualfield=700.00-eyepositionfield=210.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
-	   	#my $stim							= "peakedgain-biggerEyeDimension2-visualfield=700.00-eyepositionfield=210.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
 	   	
 	   	#**********************************
 	   	# varyingfixationsequencelength

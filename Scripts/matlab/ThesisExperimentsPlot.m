@@ -45,13 +45,15 @@ function ThesisExperimentsPlot()
     FaceColors = {[1,0,0]};
     %}
     
-    %% sigma_19_failed
-    %{
-    Experiment = 'sigma_19_failed';
-    experiment(1).Name = 'sigma_19_failed';
-    experiment(1).Folder = expFolder('sigma_19_failed/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0500_eS=0.0_/TrainedNetwork');
-    FaceColors = {[1,0,0]};
-    %}
+    %% varying_sigma_19.00
+    
+    Experiment = 'varying_sigma_19.00';
+    experiment(1).Name = 'Untrained';
+    experiment(1).Folder = expFolder('varying_sigma_19.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork');
+    experiment(2).Name = 'Trained';
+    experiment(2).Folder = expFolder('varying_sigma_19.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    FaceColors = {[67,82,163]/255; [238,48,44]/255};
+    
     
     %% nonlinear_activation_5
     %{
@@ -134,14 +136,14 @@ function ThesisExperimentsPlot()
     %}
     
     %% global_slopetuning/sS=00000003.0_
-    
+    %{
     Experiment = 'global_slopetuning';
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('global_slopetuning/sS=00000003.0_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('global_slopetuning/sS=00000003.0_/TrainedNetwork');
     FaceColors = {[67,82,163]/255; [238,48,44]/255};
-    
+    %}
     
     %% planargain/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_
     %{
@@ -292,7 +294,7 @@ function ThesisExperimentsPlot()
             preferredTargetDistributions = [preferredTargetDistributions; data.analysisResults.preferredTargetDistribution];
             trainingTargets = data.analysisResults.trainingTargets;
             
-                        %index = x.headCenteredNess_Linear; %x.eyeCenteredNess_Linear %(x.eyeCenteredNess_Linear - x.headCenteredNess_Linear)./(x.eyeCenteredNess_Linear + x.headCenteredNess_Linear);
+            %index = x.headCenteredNess_Linear; %x.eyeCenteredNess_Linear %(x.eyeCenteredNess_Linear - x.headCenteredNess_Linear)./(x.eyeCenteredNess_Linear + x.headCenteredNess_Linear);
             %IndexTrack = [IndexTrack; index'];
         end
         
@@ -359,21 +361,6 @@ function ThesisExperimentsPlot()
     dumptableline('RFI', Index_summary, 0);
     dumptableline('RF Location', RFLocation_summary ,1);
     dumptableline('RF Size', RFSize_summary,1);
-    
-    function dumptableline(title, data, addcirc)
-        
-        str = [title char(9)];
-        
-        for e = 1:numExperiments,
-            if addcirc
-                str = sprintf('%s & \t $%.2f^\\circ$ $(%.2f^\\circ)$ & \t $%.2f^\\circ$ $(%.2f^\\circ)$', str, data(1,e), data(2,e), data(3,e), data(4,e));
-            else
-                str = sprintf('%s & \t $%.2f$ $(%.2f)$ & \t $%.2f$ $(%.2f)$', str, data(1,e), data(2,e), data(3,e), data(4,e));
-            end
-        end
-        
-        disp([str ' \\']);
-    end
     
     %scatterPlotWithMarginalHistograms(RFLocation, headCenteredNess, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Head-Centeredness', 'Legends', Legends,'YLabelOffset', 3, 'FaceColors', FaceColors);
     
@@ -457,6 +444,8 @@ function ThesisExperimentsPlot()
             chapnr = 6;
         case 'Chap 7'
             chapnr = 7;
+        case 'Noooooooo!'
+            return
     end
     
     chapter_dir = ['/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Thesis/figures/chap-' num2str(chapnr) '/'];
@@ -468,6 +457,21 @@ function ThesisExperimentsPlot()
     
     function folder = expFolder(name)
         folder = [base 'Experiments/' name];
+    end
+
+    function dumptableline(title, data, addcirc)
+        
+        str = [title char(9)];
+        
+        for e = 1:numExperiments,
+            if addcirc
+                str = sprintf('%s & \t $%.2f^\\circ$ $(%.2f^\\circ)$ & \t $%.2f^\\circ$ $(%.2f^\\circ)$', str, data(1,e), data(2,e), data(3,e), data(4,e));
+            else
+                str = sprintf('%s & \t $%.2f$ $(%.2f)$ & \t $%.2f$ $(%.2f)$', str, data(1,e), data(2,e), data(3,e), data(4,e));
+            end
+        end
+        
+        disp([str ' \\']);
     end
 
 end
