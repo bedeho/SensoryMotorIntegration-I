@@ -46,14 +46,30 @@ function ThesisExperimentsPlot()
     %}
     
     %% varying_sigma_19.00
-    
+    %{
     Experiment = 'varying_sigma_19.00';
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('varying_sigma_19.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('varying_sigma_19.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork');
     FaceColors = {[67,82,163]/255; [238,48,44]/255};
+    %}
     
+    %% bigpeak_wiring_19_testing_19
+    %{
+    Experiment = 'bigpeak_wiring_19_testing_19';
+    experiment(1).Name = 'Prewired';
+    experiment(1).Folder = expFolder('bigpeak_wiring_19_testing_19/X=1_Y=1/TrainedNetwork');
+    FaceColors = {[238,48,44]/255};
+    %}
+    
+    %% bigpeak_wiring_19_testing_6
+    %{
+    Experiment = 'bigpeak_wiring_19_testing_6';
+    experiment(1).Name = 'Prewired';
+    experiment(1).Folder = expFolder('bigpeak_wiring_19_testing_6/X=1_Y=1/TrainedNetwork');
+    FaceColors = {[238,48,44]/255};
+    %}
     
     %% nonlinear_activation_5
     %{
@@ -62,7 +78,7 @@ function ThesisExperimentsPlot()
     experiment(1).Folder = expFolder('nonlinear_activation_5/L=0.05000_S=0.90_sS=00000050.0_sT=0.02_gIC=0.0500_eS=0.0_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('nonlinear_activation_5/L=0.05000_S=0.90_sS=00000050.0_sT=0.02_gIC=0.0500_eS=0.0_/TrainedNetwork');
-    FaceColors = {[1,0,0]; [0,0,1]};
+    FaceColors = {[67,82,163]/255; [238,48,44]/255};
     %}
 
     %% decoupled_gainencoding
@@ -82,7 +98,7 @@ function ThesisExperimentsPlot()
     experiment(1).Folder = expFolder('multitargettraining_retune/S=0.80_sS=00000015.0_sT=0.15_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('multitargettraining_retune/S=0.80_sS=00000015.0_sT=0.15_/TrainedNetwork');
-    FaceColors = {[1,0,0]; [0,0,1]};
+    FaceColors = {[67,82,163]/255; [238,48,44]/255};
     %}
     
     %% 8H_13E_FIX1200ms
@@ -92,7 +108,7 @@ function ThesisExperimentsPlot()
     experiment(1).Folder = expFolder('8H_13E_FIX1200ms/sT=0.40_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('8H_13E_FIX1200ms/sT=0.40_/TrainedNetwork');
-    FaceColors = {[1,0,0]; [0,0,1]};
+    FaceColors = {[67,82,163]/255; [238,48,44]/255};
     %}
     
     %% 8H_13E_FIX1200ms-w-0.1
@@ -102,7 +118,7 @@ function ThesisExperimentsPlot()
     experiment(1).Folder = expFolder('8H_13E_FIX1200ms-w-0.1/L=0.90000_S=0.80_sS=00000006.0_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('8H_13E_FIX1200ms-w-0.1/L=0.90000_S=0.80_sS=00000006.0_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork');
-    FaceColors = {[1,0,0]; [0,0,1]};
+    FaceColors = {[67,82,163]/255; [238,48,44]/255};
     %}
     
     %% 8H_13E_FIX1200ms-w-0.1-covariance-TUNE
@@ -115,6 +131,16 @@ function ThesisExperimentsPlot()
     FaceColors = {[1,0,0]; [0,0,1]};
     %}
     
+    %% 8H_13E_FIX1200ms-normalization
+    %{
+    Experiment = '8H_13E_FIX1200ms-normalization';
+    experiment(1).Name = 'Untrained';
+    experiment(1).Folder = expFolder('8H_13E_FIX1200ms-normalization/S=0.80_gIC=0.1500_/BlankNetwork');
+    experiment(2).Name = 'Trained';
+    experiment(2).Folder = expFolder('8H_13E_FIX1200ms-normalization/S=0.80_gIC=0.1500_/TrainedNetwork');
+    FaceColors = {[67,82,163]/255; [238,48,44]/255};
+    %}
+    
     %% singlerandomepeak/sS=00000007.0_sT=0.05_
     %{
     Experiment = 'singlerandomepeak';
@@ -122,7 +148,7 @@ function ThesisExperimentsPlot()
     experiment(1).Folder = expFolder('singlerandomepeak/sS=00000007.0_sT=0.05_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('singlerandomepeak/sS=00000007.0_sT=0.05_/TrainedNetwork');
-    FaceColors = {[1,0,0]; [0,0,1]};
+    FaceColors = {[67,82,163]/255; [238,48,44]/255};
     %}
     
     %% doublepeak_0.30/L=0.05000_S=0.90_sS=00000004.50_sT=0.10_gIC=0.0500_eS=0.0_
@@ -132,7 +158,7 @@ function ThesisExperimentsPlot()
     experiment(1).Folder = expFolder('doublepeak_0.30/L=0.05000_S=0.90_sS=00000004.50_sT=0.10_gIC=0.0500_eS=0.0_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('doublepeak_0.30/L=0.05000_S=0.90_sS=00000004.50_sT=0.10_gIC=0.0500_eS=0.0_/TrainedNetwork');
-    FaceColors = {[1,0,0]; [0,0,1]};
+    FaceColors = {[67,82,163]/255; [238,48,44]/255};
     %}
     
     %% global_slopetuning/sS=00000003.0_
@@ -172,7 +198,7 @@ function ThesisExperimentsPlot()
     experiment(1).Folder = expFolder('prewiredLIPold/X=1_Y=1/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('prewiredLIPold/X=1_Y=1/TrainedNetwork');
-    FaceColors = {[1,0,0]; [0,0,1]};
+    FaceColors = {[67,82,163]/255; [238,48,44]/255};
     %}
     
     %% prewiredLIPnew_selforganization/X=1_Y=1
@@ -196,26 +222,32 @@ function ThesisExperimentsPlot()
     %}
     
     %% planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_
-    %{
+    
     Experiment = 'planargain_insideepochlook';
+    
     experiment(1).Name = 'TrainedNetwork_e1p_1';
-    experiment(1).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_1');
-    experiment(2).Name = 'TrainedNetwork_e1p_2';
-    experiment(2).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_2');
-    experiment(3).Name = 'TrainedNetwork_e1p_3';
-    experiment(3).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_3');    
-    experiment(4).Name = 'TrainedNetwork_e1p_4';
-    experiment(4).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_4');
-    experiment(5).Name = 'TrainedNetwork_e1p_5';
-    experiment(5).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_5');
-    experiment(6).Name = 'TrainedNetwork_e1p_6';
-    experiment(6).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_6');
-    experiment(7).Name = 'TrainedNetwork_e1p_7';
-    experiment(7).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_7');
-    experiment(8).Name = 'TrainedNetwork_e1p_8';
-    experiment(8).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_8');
-    FaceColors = {[1,0,0]; [0,0,1]; [1,0,0]; [1,0,0]; [1,0,0]; [1,0,0]; [1,0,0]; [1,0,0];};
-    %}
+    experiment(1).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/BlankNetwork');
+    experiment(2).Name = 'TrainedNetwork_e1p_1';
+    experiment(2).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_1');
+    experiment(3).Name = 'TrainedNetwork_e1p_2';
+    experiment(3).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_2');
+    experiment(4).Name = 'TrainedNetwork_e1p_3';
+    experiment(4).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_3');    
+    experiment(5).Name = 'TrainedNetwork_e1p_4';
+    experiment(5).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_4');
+    experiment(6).Name = 'TrainedNetwork_e1p_5';
+    experiment(6).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_5');
+    experiment(7).Name = 'TrainedNetwork_e1p_6';
+    experiment(7).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_6');
+    experiment(8).Name = 'TrainedNetwork_e1p_7';
+    experiment(8).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_7');
+    experiment(9).Name = 'TrainedNetwork_e1p_8';
+    experiment(9).Folder = expFolder('planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork_e1p_8');
+    FaceColors = {[1,0,0]; [0,0,1]; [1,0,0]; [1,0,0]; [1,0,0]; [1,0,0]; [1,0,0]; [1,0,0]; [1,0,0];};
+    
+    cell_row = 18;
+    cell_col = 20;
+    
     
     %% sigma_19_selforganization_biggerEyeDimension/sT=0.02_
     %{
@@ -225,6 +257,35 @@ function ThesisExperimentsPlot()
     experiment(2).Name = 'TrainedNetwork';
     experiment(2).Folder = expFolder('sigma_19_selforganization_biggerEyeDimension/sT=0.02_/TrainedNetwork');
     FaceColors = {[1,0,0],[0,0,1]};
+    %}
+    
+    %% prewiredLIPold_selforganization_deepochlook
+    %{
+    Experiment = 'planargain_insideepochlook';
+    
+    experiment(1).Name = 'TrainedNetwork_e1p_1';
+    experiment(1).Folder = expFolder('prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e0');
+    
+    experiment(2).Name = 'TrainedNetwork_e1p_1';
+    experiment(2).Folder = expFolder('prewiredLIPold_selforganization_deeplook/X=1_Y=1/TrainedNetwork_e1p_1');
+    experiment(3).Name = 'TrainedNetwork_e1p_2';
+    experiment(3).Folder = expFolder('prewiredLIPold_selforganization_deeplook/X=1_Y=1/TrainedNetwork_e1p_2');
+    experiment(4).Name = 'TrainedNetwork_e1p_3';
+    experiment(4).Folder = expFolder('prewiredLIPold_selforganization_deeplook/X=1_Y=1/TrainedNetwork_e1p_3');    
+    experiment(5).Name = 'TrainedNetwork_e1p_4';
+    experiment(5).Folder = expFolder('prewiredLIPold_selforganization_deeplook/X=1_Y=1/TrainedNetwork_e1p_4');
+    experiment(6).Name = 'TrainedNetwork_e1p_5';
+    experiment(6).Folder = expFolder('prewiredLIPold_selforganization_deeplook/X=1_Y=1/TrainedNetwork_e1p_5');
+    experiment(7).Name = 'TrainedNetwork_e1p_6';
+    experiment(7).Folder = expFolder('prewiredLIPold_selforganization_deeplook/X=1_Y=1/TrainedNetwork_e1p_6');
+    experiment(8).Name = 'TrainedNetwork_e1p_7';
+    experiment(8).Folder = expFolder('prewiredLIPold_selforganization_deeplook/X=1_Y=1/TrainedNetwork_e1p_7');
+    experiment(9).Name = 'TrainedNetwork_e1p_8';
+    experiment(9).Folder = expFolder('prewiredLIPold_selforganization_deeplook/X=1_Y=1/TrainedNetwork_e1p_8');
+    FaceColors = {[1,0,0]; [0,0,1]; [1,0,0]; [1,0,0]; [1,0,0]; [1,0,0]; [1,0,0]; [1,0,0]; [1,0,0];};
+    
+    cell_row = 17;
+    cell_col = 12;
     %}
     
     %% Dont need to touch anything below here.
@@ -267,6 +328,10 @@ function ThesisExperimentsPlot()
     RFSize_summary              = zeros(4,numExperiments);
     
     % Iterate experiments and plot
+
+    cell_data_head = zeros(1, numExperiments);
+    cell_data_eye = zeros(1, numExperiments);
+    
     for e = 1:numExperiments,
 
         % Load analysis file for experiments
@@ -351,9 +416,43 @@ function ThesisExperimentsPlot()
         disp(['Is Head-centered: ' num2str(data.analysisResults.HC)]);
         disp(['Uniformity(Normalized entropy): ' num2str(data.analysisResults.uniformity)]);
         disp(['Fraction discarded: ' num2str(data.analysisResults.fractionDiscarded)]);
+        
+        % Save single cell data
+        cell_data_head(e) = data.analysisResults.headCenteredNess(cell_row, cell_col);
+        cell_data_eye(e) = data.analysisResults.eyeCenteredNess(cell_row, cell_col);
 
     end
     disp('--------------------------------------');
+    
+    % Single cell plot
+    
+    figure;
+    [AX,H1,H2] = plotyy(1:(numExperiments-1), cell_data_head(2:end), 1:(numExperiments-1), cell_data_eye(2:end));
+    
+    axes(AX(1));
+    hold on;
+    plot([1 (numExperiments-1)], [cell_data_head(1) cell_data_head(1)], '--'); 
+    
+    axes(AX(2));
+    hold on;
+    plot([1 (numExperiments-1)], [cell_data_eye(1) cell_data_eye(1)], '--');  
+    
+            hYLabel1 = get(AX(1),'Ylabel');
+        set(hYLabel1,'String', 'Head-Centeredness');
+
+        hYLabel2 = get(AX(2),'Ylabel');
+        set(hYLabel2,'String', 'Eye-centeredness');
+        
+    
+    
+
+    hXLabel = xlabel('Period');
+    ylim([0 1.1]);
+    set([AX hXLabel hYLabel1 hYLabel2], 'FontSize', 14);
+    set(AX,'YLim', [0 1.1], 'YTick', 0:0.2:1);
+    
+    
+    
     
     %% Make table dump    
     dumptableline('Head-centeredness', headCenteredNess_summary,0);
@@ -365,11 +464,21 @@ function ThesisExperimentsPlot()
     %scatterPlotWithMarginalHistograms(RFLocation, headCenteredNess, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Head-Centeredness', 'Legends', Legends,'YLabelOffset', 3, 'FaceColors', FaceColors);
     
     %% Receptive Field
-    [receptivefieldPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms(RFLocation_HC, RFSize_HC, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Receptive Field Size (deg)', 'Legends', Legends ,'FaceColors', FaceColors, 'Location', 'NorthEast');
+
+        [receptivefieldPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms(RFLocation_HC, RFSize_HC, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Receptive Field Size (deg)', 'Legends', Legends ,'FaceColors', FaceColors, 'Location', 'NorthEast');
+
+        
+        
+        %tmp_RFLocation_HC{1} = RFLocation_HC{2};
+        %tmp_RFSize_HC{1} = RFSize_HC{2};
+        %[receptivefieldPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms(tmp_RFLocation_HC, tmp_RFSize_HC, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Receptive Field Size (deg)', 'Legends', Legends ,'FaceColors', {[238,48,44]/255}, 'Location', 'NorthEast');
+
+        
+        
     %size_ticks = 10*(idivide(int32(minSize),10,'floor'):1:idivide(int32(maxSize),10,'ceil'));
     %rflocation_ticks = 10*(idivide(int32(minLocation),10,'floor'):1:idivide(int32(maxLocation),10,'ceil'));
-    axes(scatterAxis);
-    grid off
+    %axes(scatterAxis);
+    %grid off
     %set(gca,'XTick', rflocation_ticks);
     %set(gca,'YTick', size_ticks);
         
@@ -430,7 +539,7 @@ function ThesisExperimentsPlot()
     
     choice = questdlg('Save to Thesis?', ...
 	'Save to Thesis', ...
-	'Noooooooo!','Chap 2','Chap 3'); % 'Chap 4','Chap 6','Chap 7'
+	'Noooooooo!','Chap 4','Chap 4'); % 'Chap 2','Chap 4','Chap 6','Chap 7'
 
     % Handle response
     switch choice
@@ -463,11 +572,11 @@ function ThesisExperimentsPlot()
         
         str = [title char(9)];
         
-        for e = 1:numExperiments,
+        for q = 1:numExperiments,
             if addcirc
-                str = sprintf('%s & \t $%.2f^\\circ$ $(%.2f^\\circ)$ & \t $%.2f^\\circ$ $(%.2f^\\circ)$', str, data(1,e), data(2,e), data(3,e), data(4,e));
+                str = sprintf('%s & \t $%.2f^\\circ$ $(%.2f^\\circ)$ & \t $%.2f^\\circ$ $(%.2f^\\circ)$', str, data(1,q), data(2,q), data(3,q), data(4,q));
             else
-                str = sprintf('%s & \t $%.2f$ $(%.2f)$ & \t $%.2f$ $(%.2f)$', str, data(1,e), data(2,e), data(3,e), data(4,e));
+                str = sprintf('%s & \t $%.2f$ $(%.2f)$ & \t $%.2f$ $(%.2f)$', str, data(1,q), data(2,q), data(3,q), data(4,q));
             end
         end
         

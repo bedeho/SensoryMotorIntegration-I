@@ -22,7 +22,7 @@ function zipser()
     [retinalMeshX, retinalMeshY] = meshgrid(retinalPreferencesX, retinalPreferencesY);
     eyePositionSlopes = [rand(1,8) (-1*rand(1,8))];
     eyePositionIntercepts = 2*rand(1,16) - 1;
-    numInputNeurons = 8*8+8*4;
+    numInputNeurons = 8*8+8*4; % 96
     
     % Hidden units: 9-36 units
     numHiddenNeurons = 9;
@@ -64,7 +64,7 @@ function zipser()
     
     % Setup Training
     untrainedNet.trainParam.epochs = numEpochs;
-    untrainedNet.trainParam.goal = 0.01;	
+    untrainedNet.trainParam.goal = 0.01;
     untrainedNet.trainParam.lr = learningrate;
     untrainedNet.trainParam.show = 1;
     untrainedNet.trainParam.time = 1000;
@@ -76,64 +76,80 @@ function zipser()
     figure();
     hLayer = trainedNet.LW{2,1};
     iLayer = trainedNet.IW{1};
-    hist([hLayer(:)' iLayer(:)'], -3:0.1:3);
+    
+    ticks = -3:0.1:3;
+    
+    hdist = hist(hLayer(:)', ticks);
+    idist = hist(iLayer(:)', ticks);
+    
+    hBar = bar(ticks,[hdist' idist'],'stacked','LineStyle','none');
+    FaceColors = {[67,82,163]/255; [238,48,44]/255};
+    for i=1:length(hBar),
+        set(hBar(i),'FaceColor', FaceColors{i}); %, {'EdgeColor'}, edgeColors
+    end
+    
+    xlim([-3 3]);
     
     hXLabel = xlabel('Synaptic Weight');
     hYLabel = ylabel('Number of Synapses');
-    
-    set( gca                   , ...
-        'FontName'   , 'Helvetica' , ...
-        'FontSize'   , 10          );
-    
-    set([ hXLabel, hYLabel], ...
-        'FontName'   , 'AvantGarde');
+    hLegend = legend('Hidden Layer Unit','Input Layer Unit');
 
-    set(hYLabel  , ...
-        'FontSize'   , 18          );
-    set(hXLabel  , ...
-        'FontSize'   , 18          );
+    set([hYLabel hXLabel], 'FontSize', 16);
+    set(gca, 'FontSize', 14);
+    box off
+    
+    axis square
+    
+    % Hidden-> output weight matrix
+    figure;
+    imagesc(trainedNet.LW{2,1});
+    
+    hXLabel = xlabel('Hidden Layer Unit');
+    hYLabel = ylabel('Output Layer Unit');
 
-    set(gca, ...
-      'Box'         , 'on'     , ...
-      'TickDir'     , 'in'     , ...
-      'TickLength'  , [.02 .02] , ...
-      'XMinorTick'  , 'off'      , ...
-      'YMinorTick'  , 'off'      , ...
-      'LineWidth'   , 2         );
-  
-    axis tight;
+    set([hYLabel hXLabel], 'FontSize', 16);
+    set(gca, 'FontSize', 14);
+    colorbar
+    axis square
     
     %% DALE principle
+    %{
     figure();
-    iMoreExcitatory = sum(trainedNet.IW{1} >= 0) - sum(trainedNet.IW{1} < 0);
-    hMoreExcitatory = sum(trainedNet.LW{1} >= 0) - sum(trainedNet.LW{1} < 0);
-
+    iMoreExcitatory = sum(trainedNet.IW{1} >= 0) - sum(trainedNet.IW{1} < 0); % 9x96
+    hMoreExcitatory = sum(trainedNet.LW{1} >= 0) - sum(trainedNet.LW{1} < 0); % 
     hist([iMoreExcitatory hMoreExcitatory],-9:1:9);
+    xlim([-9 9]);
     
     hXLabel = xlabel('Number of Surplus Excitatory Projections');
     hYLabel = ylabel('Number of Neurons');
     
-    set( gca                   , ...
-        'FontName'   , 'Helvetica' , ...
-        'FontSize'   , 10          );
+    set([hYLabel hXLabel], 'FontSize', 16);
+    set(gca, 'FontSize', 14);
     
-    set([ hXLabel, hYLabel], ...
-        'FontName'   , 'AvantGarde');
+    box off
+    
+    % Hidden-> output weight matrix
+    figure;
+    imagesc(trainedNet.IW{1}');
+    
+    hXLabel = xlabel('Hidden Layer Unit');
+    hYLabel = ylabel('Input Layer Unit');
 
-    set(hYLabel  , ...
-        'FontSize'   , 18          );
-    set(hXLabel  , ...
-        'FontSize'   , 18          );
-
-    set(gca, ...
-      'Box'         , 'on'     , ...
-      'TickDir'     , 'in'     , ...
-      'TickLength'  , [.02 .02] , ...
-      'XMinorTick'  , 'off'      , ...
-      'YMinorTick'  , 'off'      , ...
-      'LineWidth'   , 2         );
-  
-    axis tight;
+    set([hYLabel hXLabel], 'FontSize', 16);
+    set(gca, 'FontSize', 14);
+    colorbar
+    axis square
+    %}
+    
+    %hidden layer units
+    hiddenToOutput_numExcitatory = sum(trainedNet.LW{2,1} > 0);
+    hiddenToOutput_numInhibitory = sum(trainedNet.LW{2,1} < 0);
+    
+    inputToHidden_numExcitatory = sum((trainedNet.IW{1} > 0));
+    inputToHidden_numInhibitory = sum((trainedNet.IW{1} < 0));
+    
+    [receptivefieldPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms({hiddenToOutput_numExcitatory; inputToHidden_numExcitatory}, {hiddenToOutput_numInhibitory; inputToHidden_numInhibitory}, 'XTitle', 'Excitatory Efferents', 'YTitle', 'Inhibitory Efferents', 'FaceColors', FaceColors, 'Legends', {'Hidden Layer'; 'Input Layer'},'Location', 'SouthEast');
+    
 
     % Generate stimuli
     function [inputPatterns, outputPatterns] = generatePatterns()

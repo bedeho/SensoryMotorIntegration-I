@@ -24,18 +24,22 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
     dimensions = load('dimensions.mat');
     cd(startDir);
     
+    %Load testing stimuli
+    cd([base 'Stimuli/' stimuliName]);
+    info = load('info.mat');
+    info = info.info;
+    cd(startDir);
+    
+    % Read out analysis results
+    [pathstr, name, ext] = fileparts(filename);
+    x = load([pathstr '/analysisResults.mat']);
+    analysisResults = x.analysisResults;
+    
     % Extract head-position from name if tehre
     [pathstr, name, ext] = fileparts(networkFile);
     splitted = strsplit(name,'_');
     if(length(splitted) == 3),
         targetNr = str2num(cell2mat(splitted(end)));
-        
-        %Load testing stuff
-        %cd([base 'Stimuli/' stimuliName]);
-        %info = load('info.mat');
-        %info = info.info;
-        
-        
     end
     
     % Setup vars
@@ -44,7 +48,8 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
     topLayerRowDim = networkDimensions(numRegions).x_dimension;
     inputDepth = networkDimensions(1).depth;
     
-    
+    vfSize                              = dimensions.visualFieldSize;
+    epSize                              = dimensions.eyePositionFieldSize;
     visualPreferenceDistance            = 1;
     eyePositionPrefrerenceDistance      = 1;
     visualPreferences                   = fliplr(centerDistance(dimensions.visualFieldSize, visualPreferenceDistance));
@@ -79,9 +84,122 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
     % Keep open for callback
     fileID = fopen(networkFile);
     
+        function h = circle2(x,y,r)
+        d = r*2;
+        px = x-r;
+        py = y-r;
+        h = rectangle('Position',[px py d d],'Curvature',[1,1],'EdgeColor',[1 1 1]); % 
+        daspect([1,1,1])
+    end
+    
     % Callback
     function responseCallBack(varargin)
         
+                                % Contour drawing
+                                if false,
+                                    for row_= 3:3,%networkDimensions(numRegions).x_dimension,
+                                        for col_=1:networkDimensions(numRegions).y_dimension,
+
+                                            if col_ > 20,
+                                                continue;
+                                            end
+
+                                            eye = analysisResults.eyeCenteredNess(row_,col_);
+                                            head = analysisResults.headCenteredNess(row_,col_);
+
+                                            if  eye > 0 ,
+                                                
+                                                cellNr = (row_-1)*topLayerRowDim + col_;
+                                                disp(['Cell: ' num2str(cellNr) ', row: ' num2str(row_) ' col: ' num2str(col_)]);
+
+                                                figure('Units','Pixels','position', [1000 1000 300 600]);
+                                                hold on
+                                                
+
+                                                w = afferentSynapseMatrix(fileID, networkDimensions, neuronOffsets, numRegions, 1, row_, col_, numRegions-1, 1);
+                                                
+                                                % get 
+                                                %{
+                                                w2 = conv2(w,ones(30),'same');
+                                                [c,h] = contour(w2,[2 2],'Color',[1 0 0]);
+                                                XX=get(h(1),'xdata');
+                                                YY=get(h(1),'ydata');
+                                                %}
+                                                
+                                                % add weight
+                                                imagesc(w);
+                                                colorbar
+                                                %colormap('gray')
+                                                
+                                                %plot(XX,YY,'r')
+
+                                                % Add head bar
+                                                target = analysisResults.RFLocation(row_,col_);%dimensions.allShownTargets(targetNr);
+                                                plot(info.eyePositions+epSize/2,vfSize/2 - (target-info.eyePositions),'-*g','LineWidth',2);
+                                                
+                                                % Add testing & circles
+                                                numTargets = length(info.targets);
+                                                for e=info.eyePositions,
+                                                    
+                                                    plot(ones(1,numTargets)*e+epSize/2,vfSize/2 - (info.targets-e),'.y');
+                                                    circle2(e + epSize/2,vfSize/2 - (target-e), 6);
+                                                end
+                                                
+                                                set(gca,'YDir','reverse');
+                                                
+                                                box on
+                                                
+                                                
+                                                %% pretty up
+                                                dim = fliplr(size(w));
+                                                pbaspect([dim 1]);
+                                                %colorbar;
+
+                                                [height,width] = size(w);
+                                                xlim([1 width]);
+                                                ylim([1 height]);
+
+                                                hYLabel = ylabel('Retinal preference (deg)'); % : \alpha_{i}
+                                                hXLabel = xlabel('Eye-position preference (deg)'); % : \beta_{i}
+
+                                                % Fix axes ticks
+                                                wTicks = 1:width;
+                                                wdist = 15;
+                                                wTicks = wTicks(1:wdist:end);
+                                                wLabels = eyePositionPreferences(1:wdist:end);
+                                                wCellLabels = cell(1,length(wLabels));
+                                                for t=1:length(wLabels),
+                                                  wCellLabels{t} = num2str(wLabels(t));
+                                                end
+
+                                                set(gca,'XTick',wTicks);
+                                                set(gca,'XTickLabel',wCellLabels);
+
+                                                % Height
+                                                hTicks = 1:height;
+                                                hdist = 20;
+                                                hTicks = hTicks(1:hdist:end);
+                                                hLabels = visualPreferences(1:hdist:end);
+                                                hCellLabels = cell(1,length(hLabels));
+                                                for l=1:length(hLabels),
+                                                  hCellLabels{l} = [num2str(hLabels(l))];
+                                                end
+
+                                                set(gca,'YTick',hTicks);
+                                                set(gca,'YTickLabel',hCellLabels);
+
+                                                % Change font size
+                                                set([hYLabel hXLabel], 'FontSize', 16);
+                                                set(gca, 'FontSize', 14);
+
+                                            end
+
+                                        end
+                                    end
+
+                                    
+                                end
+                                            
         % Extract region,row,col
         region = varargin{3};
         
@@ -118,6 +236,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         dim = fliplr(size(weightBox1));
         pbaspect([dim 1]);
         colorbar;
+        %colormap('gray')
         
         [height,width] = size(weightBox1);
         
@@ -172,6 +291,27 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
             set([hYLabel hXLabel], 'FontSize', 16);
             set(gca, 'FontSize', 14);
             
+            
+            %% Add head-centered bar
+            if false ,
+                hold on;
+
+                target = dimensions.allShownTargets(targetNr);
+                vfs = dimensions.visualFieldSize;
+                eps = dimensions.eyePositionFieldSize;
+                eyePositionRange = dimensions.targetEyePositionRange;
+
+                dx = (eps - eyePositionRange)/2;
+
+                x1 = -eps/2 + dx;
+                y1 = vfs/2 - (target - x1);
+
+                x2 = eps/2 - dx;
+                y2 = vfs/2 - (target - x2);
+
+                plot([dx (dx + eyePositionRange)],[y1 y2],'-ow','LineWidth',1);
+            end
+            
         end
     end
 
@@ -197,31 +337,29 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         hold on;
         plot([width/2 width/2],[height 1],'--w','LineWidth',1);
         
-        if false,
+        
+            %% Add head-centered bar
+            if false,
+                
+                target = dimensions.allShownTargets(targetNr);
+                vfs = dimensions.visualFieldSize;
+                eps = dimensions.eyePositionFieldSize;
+                eyePositionRange = dimensions.targetEyePositionRange;
 
-            % Add head-centered bar
-            target = dimensions.allShownTargets(targetNr);
-            vfs = dimensions.visualFieldSize;
-            eps = dimensions.eyePositionFieldSize;
-            eyePositionRange = dimensions.targetEyePositionRange;
+                dx = (eps - eyePositionRange)/2;
 
-            % outer box
-            %dx = (eps - eyePositionRange)/2;
-            %dy = (vfs - visualRange)/2;
+                y = target - (-(eps/2 - dx));
+                y2 = target - (eps/2 - dx);
 
-            % outer box
-            dx = (eps - eyePositionRange)/2;
+                dy = vfs/2 - y;
+                dy2 = vfs/2 - y2;
 
-            y = target - (-(eps/2 - dx));
-            y2 = target - (eps/2 - dx);
+                plot([dx (eps-dx)],[dy dy2],'-ow','LineWidth',1);
 
-            dy = vfs/2 - y;
-            dy2 = vfs/2 - y2;
-
-            plot([dx (eps-dx)],[dy dy2],'-ow','LineWidth',1);
-
-            plot([(dx+eps) (2*eps-dx)],[dy dy2],'-ow','LineWidth',1);
-        end
+                plot([(dx+eps) (2*eps-dx)],[dy dy2],'-ow','LineWidth',1);
+            end
+        
+        
         
         %hTitle = title(''); %; title(['Afferent synaptic weights of cell #' num2str(cellNr) extraTitle]);
         hYLabel = ylabel('Retinal preference (deg)'); % : \alpha_{i}
@@ -232,7 +370,6 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         disp(['Number of Afferent synapses: ' num2str(nnz(weightBox1 > 0))]);
 
         % Fix axes ticks
-
         wTicks = 1:(width/2);
         wdist = 15;
         wTicks = wTicks(1:wdist:end);
@@ -241,7 +378,7 @@ function inspectWeights(networkFile, filename, nrOfEyePositionsInTesting, stimul
         for t=1:length(wLabels),
           wCellLabels{t} = num2str(wLabels(t));
         end
-        
+         
         % ticks and labels
         for t=2:length(wTicks),
           wCellLabels{length(wCellLabels)+1} = num2str(wLabels(t));

@@ -338,7 +338,7 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
                         ESPathway[k].clearState(true); // does not matter if trace is reset here
                 }
                 
-                /*
+                
                 // Save network after PERIOD
                 if(isTraining && p.saveNetwork && (e+1) % p.saveNetworkAtEpochMultiple == 0) {
                     
@@ -352,7 +352,7 @@ u_short Network::runContinous(const char * outputDirectory, bool isTraining, boo
                         outputFinalNetwork(name.c_str());
                     }
                 }
-                */
+                
                 
 			}
 			

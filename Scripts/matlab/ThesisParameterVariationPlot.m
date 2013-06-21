@@ -127,24 +127,26 @@ function ThesisParameterVariationPlot()
     
     %% Spatiotemporal Stimulus Dynamics
     %{
-    vals = 0:5:50;%;5:100;
+    vals = 10:5:75;%;5:100;
     for i=1:length(vals),
         
-        experiments(i).Folder   = ['search_nonspesific_' num2str(vals(i)) '.00/L=0.05000_S=0.90_sS=00000006.0_sT=0.30_gIC=0.0500_eS=0.0_/TrainedNetwork'];
+        experiments(i).Folder   = ['TEST5_search_nonspesific_' num2str(vals(i)) '.00/L=0.05000_S=0.80_sS=00000004.0_sT=0.50_gIC=0.0000_eS=0.0_/TrainedNetwork'];
         X(i)                    = vals(i);
+        names{i} = num2str(i);
         
     end
     
-    XAxislabel = 'Non-Spesific Periode Length - K';
+    XAxislabel = 'Non-Spesific Period Length - K';
     %}
 
-    %% varyingfixationdurationvariability_cov_X
+    %% durationvariability_sigma_0.00
     %{
     vals = 0:0.1:2;
     for i=1:length(vals),
         
-        experiments(i).Folder   = ['varyingfixationdurationvariability_cov_' num2str(vals(i),'%.2f') '/L=0.90000_S=0.90_sS=00000015.0_sT=0.10_gIC=0.0500_eS=0.0_/TrainedNetwork'];
+        experiments(i).Folder   = ['durationvariability_sigma_' num2str(vals(i),'%.2f') '/L=2.00000_S=0.80_sS=00000004.50_sT=0.400_gIC=0.1500_eS=0.0_/TrainedNetwork'];
         X(i)                    = vals(i);
+        names{i}                = num2str(i);
         
     end
     
@@ -152,7 +154,7 @@ function ThesisParameterVariationPlot()
     %}
     
     %% varying_sigma_X
-    
+    %{
     for i=1:30,
         
         experiments(i).Folder  = ['../Experiments_disk/varying_sigma_' num2str(i) '.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork'];
@@ -163,8 +165,55 @@ function ThesisParameterVariationPlot()
     end
     
     XAxislabel = 'Receptive Field Size - \sigma (deg)';
+    %}
     
-   
+    %% prewiredLIPold_selforganization
+    %{
+        experiments(1).Folder  = 'prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e0';
+        X(1)                   = 1;
+        XTick(1)               = X(1);
+        vals(1)                = 1;
+        names{1}               = num2str(1);
+        
+    for i=2:9,
+
+        experiments(i).Folder  = ['prewiredLIPold_selforganization_deeplook/X=1_Y=1/TrainedNetwork_e1p_' num2str(i-1)];
+        X(i)                   = i;
+        XTick(i)               = X(i-1);
+        vals(i)                = i-1;
+        names{i}               = num2str(i-1);
+    end
+    
+    XAxislabel = 'Periode';
+    %}
+    
+    %% prewiredLIPold_selforganization
+    %{
+    for i=1:10,
+
+        experiments(i).Folder  = ['prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e' num2str(i)];
+        X(i)                   = i;
+        XTick(i)               = X(i);
+        vals(i)                = i;
+        names{i}               = num2str(i);
+    end
+    
+    XAxislabel = 'Epoch';
+    %}
+    
+    %% varyingsigmoidrate_x
+    
+    vals = 0:0.1:1;
+    for i=1:length(vals),
+        
+        experiments(i).Folder   = ['varyingsigmoidrate_' sprintf('%.2f',vals(i)) '/L=0.05000_S=0.80_sS=00000004.50_sT=0.400_gIC=0.0000_eS=0.0_/BlankNetwork'];
+        X(i)                    = vals(i);
+        names{i}                = num2str(i);
+        
+    end
+    
+    XAxislabel = 'Sigmoid Modulation Rate';
+    
     %% Plotting
     numExperiments = length(experiments);
     
@@ -183,9 +232,12 @@ function ThesisParameterVariationPlot()
     %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder '../Experiments_disk/tracetimeconstant/ttC=0.010_/BlankNetwork/analysisResults.mat']);
     %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder '../Experiments_disk/sparseness/S=0.52_/BlankNetwork/analysisResults.mat']);
     %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder '../Experiments_disk/varyingheadpositions_1/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork/analysisResults.mat']);
-    [c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder '../Experiments_disk/varying_sigma_1.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork/analysisResults.mat']);
-
-
+    %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder '../Experiments_disk/varying_sigma_1.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork/analysisResults.mat']);
+    %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder 'TEST5_search_nonspesific_70.00/L=0.05000_S=0.80_sS=00000004.0_sT=0.50_gIC=0.0000_eS=0.0_/BlankNetwork/analysisResults.mat']);
+    %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder 'durationvariability_sigma_0.00/L=2.00000_S=0.80_sS=00000004.50_sT=0.400_gIC=0.1500_eS=0.0_/BlankNetwork/analysisResults.mat']);
+    %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder 'prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e0/analysisResults.mat']);
+    [c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder 'prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e0/analysisResults.mat']);
+    
     % Iterate experiments and plot
     for e = 1:numExperiments,
 
@@ -296,10 +348,11 @@ function ThesisParameterVariationPlot()
         set([AX hXLabel hYLabel1 hYLabel2], 'FontSize', 14);
         
     end
-    
     %}
     
+    
     %% Combined 4yyyy
+    
     
     [ax,hlines] = ploty4(X,headCenteredNessRate,X,coverage,X,AverageHeadCenteredNess,X,rfSizes,{'Head-Centeredness Rate','Coverage','Average Head-Centeredness','Average Receptive Field Size (deg)'}, XAxislabel, AverageHeadCenteredNessSTD,rfSizesSTD,XLim); 
     

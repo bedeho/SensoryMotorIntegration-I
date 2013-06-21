@@ -39,6 +39,9 @@
 	# varyingfixationduration: 0:0.05:2
 	#our @paramArray				   		= ("0.00","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00","1.10","1.20","1.30","1.40","1.50","1.60","1.70","1.80","1.90","2.00");
 	
+	# varyinggainmixturerates: 0:0.1:1
+	#our @paramArray				   		= ("0.00","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00");
+	
 	# iterate param values   	
 	#for my $p (@paramArray) {
 	   	
@@ -47,15 +50,12 @@
 	   	#**********************************
 	   	#my $experiment						= "prewiredPO";
 	   	#my $experiment						= "peakedgain";
-	   	#my $experiment						= "tracetimeconstant_short";
 	   	#my $experiment						= "learningrate";
 	   	#my $experiment						= "sparseness";
-	   	#my $experiment						= "hebb_MANUAL"; #_ssf_0.001
-	   	#my $experiment						= "varying_sigma_19_th0.99_fc0.2";
+	   	#my $experiment						= "hebb_MANUAL";
 	   	#my $experiment						= "nonlinear_activation_5";
 	   	#my $experiment						= "learningrate";
 	   	#my $experiment						= "numberOfNeurons_70";
-	   	#my $experiment						= "sigma_19_failed_deeplook-normlization";
 	   	#my $experiment						= "decoupled_gainencoding";
 	   	#my $experiment						= "baseline";
 	   	#my $experiment						= "singlerandomepeak";
@@ -67,13 +67,19 @@
 	   	#my $experiment						= "planargain_recording";
 	   	#my $experiment						= "decodeTESTbaseline";
 	   	#my $experiment						= "planargain_insideepochlook";
-	   	#my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+	   	#my $experiment						= "varying_sigma_6_deeplook";
+	   	
+	   	my $experiment						= "varying_sigma_19_covariancelearning";
+	   	my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	   	
 	   	#**********************************
 	   	# bigpeak
 	   	#**********************************
-	   	my $experiment						= "sigma_19_selforganization_biggerEyeDimension-recording";
-	   	my $stim							= "bigpeakedgain-biggerEyeDimension-visualfield=700.00-eyepositionfield=210.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
+	   	#my $experiment						= "sigma_19_selforganization_biggerEyeDimension-recording";
+	   	#my $experiment						= "bigpeakcontrol25-tighttest_sigma19_tune";
+	   	#my $stim							= "bigpeakcontrol-visualfield=300.00-eyepositionfield=200.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
+	   	#my $stim							= "bigpeakcontrol25-visualfield=300.00-eyepositionfield=200.00-fixations=200.00-targets=1.00-fixduration=0.30-fixationsequence=25.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
+	   	#my $stim							= "bigpeakcontrol25-tighttest-visualfield=300.00-eyepositionfield=200.00-fixations=200.00-targets=1.00-fixduration=0.30-fixationsequence=25.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
 	   	
 	   	#**********************************
 	   	# varyingfixationsequencelength
@@ -127,66 +133,55 @@
 		# nonspesific
 		#**********************************
 		
-		# nonspesific
-		#my $experiment						= "nonspesific";
-		#my $stim							= "xxx-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-numNonSpesFix=5.00";
-		
-		#my $experiment						= "nonspesific_15_tune";
-		#my $stim							= "xxx-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-numNonSpesFix=15.00";	
-
-		#my $experiment						= "nonspesific_30_tune";
-		#my $stim							= "xxx-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-numNonSpesFix=30.00";	
-		
-		#my $experiment						= "nonspesific_50";
-		#my $stim							= "xxx-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-numNonSpesFix=50.00";
-		
-		#my $experiment						= "nonspesific_80";
-		#my $stim							= "xxx-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-numNonSpesFix=80.00";
-			
 		#my $experiment						= "_search_nonspesific_${p}";
+		#my $experiment						= "TEST5_search_nonspesific_${p}";
 		#my $stim							= "nonspesific-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-numNonSpesFix=${p}";
+		
+		#my $experiment						= "TEST5_search_nonspesific";
+		#my $stim							= "nonspesific-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=1.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00";
+
+		#**********************************
+		# 8H_13E_FIX1200ms
+		#**********************************
+		
+		#my $experiment						= "8H_13E_FIX1200ms-normalization";
+		#my $stim							= "8H_13E_FIX1200ms-visualfield=200.00-eyepositionfield=60.00-fixations=104.00-targets=1.00-fixduration=1.20-fixationsequence=13.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=0.00";
 		
 		#**********************************
 		# varyingfixationduration
 		#**********************************
 		
-		#my $experiment						= "varyingfixationdurationvariability_cov_${p}";
+		#my $experiment						= "durationvariability_sigma_${p}";
 		#my $stim							= "varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=${p}";
-		#my $stim							= "varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=1.00"; # 0.40
-		
-		#**********************************
-		# fixation duration
-		#**********************************
-		
-		#my $experiment						= "8H_13E_FIX50ms";
-		#my $stim							= "8H_13E_FIX50ms-visualfield=200.00-eyepositionfield=60.00-fixations=104.00-targets=1.00-fixduration=0.05-fixationsequence=13.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=0.00";
-		
-		#my $experiment						= "8H_13E_FIX1200ms";
-		#my $stim							= "8H_13E_FIX1200ms-visualfield=200.00-eyepositionfield=60.00-fixations=104.00-targets=1.00-fixduration=1.20-fixationsequence=13.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=0.00";
-		
-		#my $experiment						= "8H_13E_FIX1200ms-w-0.1-covariance-TUNE-REALDEAL-RECORD";
-		#my $stim							= "8H_13E_FIX1200ms-visualfield=200.00-eyepositionfield=60.00-fixations=104.00-targets=1.00-fixduration=1.20-fixationsequence=13.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=0.00";
+		#my $stim							= "varyingfixationdurationvariability-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=0.00";
 		
 		#**********************************
 		# complex
 		#**********************************
 				
-		#my $experiment						= "complex_10_singlepeak";
+		#my $experiment						= "complex_h10";
 		#my $stim							= "complex-visualfield=200.00-eyepositionfield=60.00-fixations=600.00-targets=2.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-numNonSpesFix=40.00-fixationSigma=1.00";
 		#my $stim							= "complex_h10-visualfield=200.00-eyepositionfield=60.00-fixations=300.00-targets=2.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-numNonSpesFix=40.00-fixationSigma=1.00";
 		
 		#my $experiment						= "multitargettraining_h8_fix1000";
 		#my $stim							= "multitargettraining_h8_fix1000-visualfield=200.00-eyepositionfield=60.00-fixations=240.00-targets=2.00-fixduration=0.30-fixationsequence=30.00-seed=72.00-samplingrate=100.00-numNonSpesFix=0.00-fixationSigma=1.00";
-
+		
+		#**********************************
+		# vayringsigmoidrate
+		#**********************************
+		
+		#my $experiment						= "varyingsigmoidrate_${p}";
+		#my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+		
 		#**********************************
 		# General Params
 		#**********************************
 				
 		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
-		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
+		my $learningRule					= COVARIANCE_PRESYNAPTIC_TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
-		my $nrOfEpochs						= 1; # 20;#10; #50; # 30,100
-		my $saveNetworkAtEpochMultiple 		= 1;
+		my $nrOfEpochs						= 20; # 20;#10; #50; # 30,100
+		my $saveNetworkAtEpochMultiple 		= 333;
 		my $saveNetwork						= "true"; # "true","false"
 		my $outputAtTimeStepMultiple		= 2; # Keep this high (10>=) unless  you are recording for looking at dynamics!
 		
@@ -195,9 +190,9 @@
 	
 		my $resetActivity					= "false"; # "false", Reset activation between objects of training
 		my $resetTrace						= "false"; # "false", Reset trace between objects of training
-		my $covarianceThreshold				= "0.40"; # classic = 0, multitarget=0.4, \sigma=19 = 0.9
+		my $covarianceThreshold				= "0.9"; # classic = 0, multitarget=0.4, \sigma=19 = 0.9
 		
-		my $sigmoidModulationPercentage		= "0.0";
+		my $sigmoidModulationPercentage		= "0.0"; #$p; #"0.0";
 		my $inputEncoding					= MIXED; # MIXED, DOUBLEPEAK_GAUSSIAN,DECOUPLED
 		my $weightVectorLength				= "1.0"; # classic = 1.0
 		my $weightNormalization 			= "1"; # NONE = 0, CLASSIC = 1	
@@ -817,4 +812,4 @@ TEMPLATE
 			        return $str." );";
 				}
 	
-	#}
+#}

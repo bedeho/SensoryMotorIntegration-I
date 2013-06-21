@@ -31,10 +31,11 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     % Environment
     numberOfSimultanousTargets          = 1; % classic = 1
     q                                   = 0.7; % targetRangeProportionOfVisualField
-    visualFieldSize                     = 700; % 200 % Entire visual field (rougly 100 per eye), (deg)
-    eyePositionFieldSize                = (1-q)*visualFieldSize; % equivalently (visualFieldSize/2 - targetVisualRange/2)
-    targetVisualRange                   = 126; %0.9*visualFieldSize*q; %126
-    targetEyePositionRange              = 0.8*eyePositionFieldSize; % 0.8*eyePositionFieldSize;
+    visualFieldSize                     = 300; % 200, Entire visual field (rougly 100 per eye), (deg)
+    eyePositionFieldSize                = 200; %(1-q)*visualFieldSize, 200, (1-q)*visualFieldSize; % equivalently (visualFieldSize/2 - targetVisualRange/2)
+    targetVisualRange                   = 126; % 0.9*visualFieldSize*q, 126
+    targetEyePositionRange              = 0.8*eyePositionFieldSize; % 0.8*eyePositionFieldSize,48
+    testingEyePositionFieldSize         = 48; % 48, targetEyePositionRange
     
     % Agent Movement
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
@@ -47,7 +48,7 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     
     %% CLASSIC/Varying #head positions
     headPositions                       = 8; % classic = 8
-    fixationSequenceLength              = 15; % classic = 15
+    fixationSequenceLength              = 25; % classic = 15
     numberOfFixations                   = headPositions*fixationSequenceLength; % classic = headPositions*fixationSequenceLength;
     
     % Variations
@@ -215,8 +216,8 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
          'fixations', ...
          'eyePositionsRecord');
      
-     % keep it around, may be of use
-     dimensions = load('dimensions.mat');
+    % keep it around, may be of use
+    dimensions = load('dimensions.mat');
                       
     cd(startDir);
     
@@ -232,7 +233,7 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     margin = 10;
     
     % Testing Parameters
-    testingRetinalFieldSize = max(2*(maxDev + 3*margin)); % *buffer
+    testingRetinalFieldSize = max(2*(maxDev + 3*margin));
     
     if testingRetinalFieldSize > nrOfRetinalTestingPositions,
         testingTargets = fliplr(centerN2(testingRetinalFieldSize, nrOfRetinalTestingPositions));
@@ -240,7 +241,6 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
         testingTargets = fliplr(centerN2(nrOfRetinalTestingPositions, nrOfRetinalTestingPositions)); 
     end
     
-    testingEyePositionFieldSize = 48;%targetEyePositionRange; %*0.8
     testingEyePositions = centerN2(testingEyePositionFieldSize, nrOfTestingEyePositions);
     
     % Generate testing data
@@ -248,7 +248,7 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     OneD_Stimuli_Testing(folderName, samplingRate, testingFixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets);
     
     % Generate multiple targets testing data
-    if 1,
+    if false,
         disp('Generating Multiple Target Testing Data.');
         OneD_Stimuli_MTT(folderName, samplingRate, testingFixationDuration, visualFieldSize, eyePositionFieldSize, testingEyePositions, testingTargets, 2, 2);
     end
@@ -257,7 +257,7 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     if numberOfSimultanousTargets == 1,
         
         disp('Making Spatial Plot.');
-        OneD_Stimuli_SpatialFigure([folderName '-training'], [folderName '-stdTest']);
+        OneD_Stimuli_SpatialFigure([folderName '-training'], [folderName '-stdTest'], eyePositionsRecord, allShownTargets);
 
         disp('Making Temporal Plot.');
         OneD_Stimuli_MovementDynamicsFigure([folderName '-training']);

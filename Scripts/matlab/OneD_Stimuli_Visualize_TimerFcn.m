@@ -7,7 +7,7 @@
 %
 %  Draws graphics - TimerFcn callback 
 
-function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope, visualFieldSize, eyePositionFieldSize, timeStep)
+function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope, visualFieldSize, eyePositionFieldSize, timeStep, doSigmoid)
 
     % Exporting
     global OneD_Stimuli_VisualizeTimeObject; % to expose it to make it stoppable in console
@@ -71,13 +71,18 @@ function OneD_Stimuli_Visualize_TimerFcn(obj, event, numberOfSimultanousTargets,
     function draw()
         
 
-        v = OneD_Stimuli_InputLayer([eyePosition retinalPositions], true, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
+        v = OneD_Stimuli_InputLayer([eyePosition retinalPositions], doSigmoid, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope);
         
         % Clean up so that it is not hidden from us that stimuli is off
         % retina
         %v(v < 0.001) = 0;
-        sigmoidPositive = squeeze(v(1,:,:));
-        sigmoidNegative = squeeze(v(2,:,:));
+        if doSigmoid,
+            sigmoidPositive = squeeze(v(1,:,:));
+            sigmoidNegative = squeeze(v(2,:,:));
+        else
+            sigmoidPositive = v;
+            sigmoidNegative = v;
+        end
         
         disp(['Total: ' num2str(sum(sum(sigmoidPositive)))]);
         

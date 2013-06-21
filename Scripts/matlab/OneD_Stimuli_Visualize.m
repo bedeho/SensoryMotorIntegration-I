@@ -21,6 +21,18 @@ function OneD_Stimuli_Visualize(stimuliName)
     global timeStep;
     global fig;
     
+   choice = questdlg('SIGMOIDAL MODULATION?', 'Pick modulation type', 'Yes', 'No' , 'Yes');
+
+    % Handle response
+    switch choice
+        case 'Yes'
+            doSigmoid = true;
+        case 'No'
+            doSigmoid = false
+    end
+    
+
+    
     % Load supplementary stimuli dimensions
     %path = [base 'Stimuli/' stimuliName];
     %startDir = pwd;
@@ -29,15 +41,15 @@ function OneD_Stimuli_Visualize(stimuliName)
     %cd(startDir);
     
 
-        visualPreferenceDistance = 1;
-        eyePositionPrefrerenceDistance = 1;
+    visualPreferenceDistance = 1;
+    eyePositionPrefrerenceDistance = 1;
 
     
     % Load data
     [samplingRate, numberOfSimultanousTargets, visualFieldSize, eyePositionFieldSize, buffer] = OneD_Stimuli_Load(stimuliName);
 
     % LIP Parameters   
-    gaussianSigma                       = 6; % deg
+    gaussianSigma                       = 19; % deg
     sigmoidSlope                        = 1/16; % (1/8)/2 = 0.0625
     
     visualPreferences                   = centerDistance(visualFieldSize, visualPreferenceDistance);
@@ -54,7 +66,7 @@ function OneD_Stimuli_Visualize(stimuliName)
     % Setup timer
     % Good video on timers: http://blogs.mathworks.com/pick/2008/05/05/advanced-matlab-timer-objects/
     OneD_Stimuli_VisualizeTimeObject = timer('Period', period, 'ExecutionMode', 'fixedSpacing');
-    set(OneD_Stimuli_VisualizeTimeObject, 'TimerFcn', {@OneD_Stimuli_Visualize_TimerFcn, numberOfSimultanousTargets, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope, visualFieldSize, eyePositionFieldSize, timeStep});
+    set(OneD_Stimuli_VisualizeTimeObject, 'TimerFcn', {@OneD_Stimuli_Visualize_TimerFcn, numberOfSimultanousTargets, visualPreferences, eyePositionPreferences, gaussianSigma, sigmoidSlope, visualFieldSize, eyePositionFieldSize, timeStep, doSigmoid});
     set(OneD_Stimuli_VisualizeTimeObject, 'StopFcn', {@OneD_Stimuli_Visualize_StopFcn});
 
     % Start timer

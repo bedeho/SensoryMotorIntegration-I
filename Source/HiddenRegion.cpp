@@ -351,7 +351,11 @@ void HiddenRegion::computeNewActivation() {
 				float stimulation = 0;
 
 				for(std::vector<Synapse>::iterator s = n->afferentSynapses.begin(); s != n->afferentSynapses.end();s++) {
+                    
+                    // classic
+                    stimulation += (*s).weight * (*s).preSynapticNeuron->firingRate;
 
+                    /*
                     switch (rule) {
                             
                         case COVARIANCE_PRESYNAPTIC_TRACE_RULE:
@@ -364,6 +368,7 @@ void HiddenRegion::computeNewActivation() {
                             
                             break;
                     }
+                     */
                     
                 }
                 
@@ -506,9 +511,11 @@ void HiddenRegion::applyLearningRule() {
                             // BLOCKING
                             //(*s).weight += stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
                             */
-                            
+                             
                             // INDIVIDUAL WEIGHT SATURATION
-                            //(*s).weight += stepSize * (0.1 - (*s).weight)*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
+                            //cout << learningRate << std::endl;
+                            // 0.1
+                            //(*s).weight += stepSize * (globalInhibitoryConstant - (*s).weight)*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
                             
                             break;
                             
@@ -518,12 +525,12 @@ void HiddenRegion::applyLearningRule() {
                             //(*s).weight += stepSize * ((*s).preSynapticNeuron->firingRate * (*s).weight * learningRate * n->trace * ((*s).preSynapticNeuron->firingRate - covarianceThreshold));
                             
                             // Conditional LTP : controlled version
-                            //if((*s).preSynapticNeuron->firingRate > covarianceThreshold)
-                            //   (*s).weight += stepSize * (learningRate * n->trace); // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
+                            if((*s).preSynapticNeuron->firingRate > covarianceThreshold)
+                               (*s).weight += stepSize * (learningRate * n->trace); // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
                             
                             // Conditional LTP 2 : controlled version
-                            if((*s).preSynapticNeuron->firingRate > covarianceThreshold)
-                                (*s).weight += stepSize * (0.1 - (*s).weight)* (learningRate * n->trace); // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
+                            //if((*s).preSynapticNeuron->firingRate > covarianceThreshold)
+                            //    (*s).weight += stepSize * (0.1 - (*s).weight)* (learningRate * n->trace); // * ((*s).preSynapticNeuron->firingRate - covarianceThreshold)
                             
                             // REAL Conditional LTP : controlled version
                             //if((*s).preSynapticNeuron->firingRate > covarianceThreshold)
