@@ -69,7 +69,8 @@
 	   	#my $experiment						= "planargain_insideepochlook";
 	   	#my $experiment						= "varying_sigma_6_deeplook";
 	   	
-	   	my $experiment						= "varying_sigma_19_covariancelearning";
+	   	#my $experiment						= "varying_sigma_19_covariancelearning";
+	   	my $experiment						= "no_competition";
 	   	my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	   	
 	   	#**********************************
@@ -201,7 +202,7 @@
 		
 		my $visualPreferenceDistance		= "1.0";
 		my $eyePositionPrefrerenceDistance 	= "1.0";
-		my $gaussianSigma					= "19.00"; # 19 # $p # classic = 6
+		my $gaussianSigma					= "6.00"; # 19 # $p # classic = 6
 		
 		my $sigmoidSlope					= "0.0625"; #1/16
 		

@@ -18,14 +18,17 @@ function ThesisExperimentsPlot()
     Experiment = 'prewiredPO';
     experiment(1).Name = 'Random';
     experiment(1).Folder = expFolder('prewiredPO/X=1_Y=1/BlankNetwork');
-    experiment(2).Name = 'Prewired';
+    experiment(2).Name = 'Manual';
     experiment(2).Folder = expFolder('prewiredPO/X=1_Y=1/TrainedNetwork');
     %FaceColors = {[1,0,0]; [0,0,1]};
     FaceColors = {[67,82,163]/255; [238,48,44]/255};
-    %}
     
+    cell_row = 17;
+    cell_col = 12;
+    %}
+   
     %% peakedgain
-    %{
+    %{ 
     Experiment = 'peakedgain';
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('peakedgain/S=0.80_/BlankNetwork');
@@ -34,7 +37,11 @@ function ThesisExperimentsPlot()
     experiment(3).Name = '20 Epochs';
     experiment(3).Folder = expFolder('peakedgain/S=0.80_/TrainedNetwork'); 
     %FaceColors = {[1,0,0]; [0.5,0,0.5]; [0,0,1]};
-    FaceColors = {[67,82,163]/255; [152,65,103]/255; [238,48,44]/255};
+    FaceColors = {[67,82,163]/255; [65,152,103]/255; [238,48,44]/255}; % [152,65,103]/255
+    
+        
+    cell_row = 17;
+    cell_col = 12;
     %}
     
     %% learningrate
@@ -222,7 +229,7 @@ function ThesisExperimentsPlot()
     %}
     
     %% planargain_insideepochlook/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_
-    
+    %{
     Experiment = 'planargain_insideepochlook';
     
     experiment(1).Name = 'TrainedNetwork_e1p_1';
@@ -247,7 +254,7 @@ function ThesisExperimentsPlot()
     
     cell_row = 18;
     cell_col = 20;
-    
+    %}
     
     %% sigma_19_selforganization_biggerEyeDimension/sT=0.02_
     %{
@@ -287,6 +294,19 @@ function ThesisExperimentsPlot()
     cell_row = 17;
     cell_col = 12;
     %}
+    
+    %% no_competition
+    
+    Experiment = 'no_competition';
+    experiment(1).Name = 'Untrained';
+    experiment(1).Folder = expFolder('no_competition/L=0.05000_S=0.00_sS=00000004.50_sT=0.400_gIC=0.0000_eS=0.0_/BlankNetwork');
+    experiment(2).Name = 'Trained';
+    experiment(2).Folder = expFolder('no_competition/L=0.05000_S=0.00_sS=00000004.50_sT=0.400_gIC=0.0000_eS=0.0_/TrainedNetwork'); 
+    FaceColors = {[67,82,163]/255;  [238,48,44]/255}; % [152,65,103]/255
+    
+        
+    cell_row = 17;
+    cell_col = 12;
     
     %% Dont need to touch anything below here.
     numExperiments = length(experiment);
@@ -539,7 +559,7 @@ function ThesisExperimentsPlot()
     
     choice = questdlg('Save to Thesis?', ...
 	'Save to Thesis', ...
-	'Noooooooo!','Chap 4','Chap 4'); % 'Chap 2','Chap 4','Chap 6','Chap 7'
+	'Noooooooo!','Chap 2','Chap 2'); % 'Chap 2','Chap 4','Chap 6','Chap 7'
 
     % Handle response
     switch choice

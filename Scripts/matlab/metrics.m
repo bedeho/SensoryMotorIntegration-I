@@ -80,9 +80,23 @@ function analysisResults = metrics(filename, info, trainingInfo)
     h_r = headCenteredNess;
     e_r = eyeCenteredNess;
     
+    % Old RFI
+    %{
     h_r(h_r < 0) = 0;
     e_r(e_r < 0) = 0;
     Index = (h_r-e_r)./(h_r+e_r);
+    %}
+    
+    % New RFI
+    index = h_r-e_r; % h_r,e_r>=0
+    
+    upperLeft  = (h_r >= 0 & e_r < 0);
+    lowerLeft  = (h_r < 0 & e_r < 0);
+    lowerRight = (h_r < 0 & e_r >= 0);
+    
+    index(upperLeft) = h_r(upperLeft);
+    index(lowerLeft) = 0;
+    index(lowerRight) = -e_r(lowerRight);
     
     %% Save data in .mat file
     

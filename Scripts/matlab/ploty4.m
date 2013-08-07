@@ -38,7 +38,7 @@ figure('units','normalized',...
 
 %Plot the first two lines with plotyy
 [ax,hlines(1),hlines(2)] = plotyy(x1,y1,x2,y2);
-hXLabel = xlabel(x_label);
+hXLabel = xlabel(x_label); %,'Interpreter','latex'); % ,'Interpreter','latex'
 set(hXLabel, 'FontSize', 14);
 
 
