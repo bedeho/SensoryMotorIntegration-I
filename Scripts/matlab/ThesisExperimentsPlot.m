@@ -89,14 +89,14 @@ function ThesisExperimentsPlot()
     %}
 
     %% decoupled_gainencoding
-    %{
+    
     Experiment = 'decoupled_gainencoding';
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('decoupled_gainencoding/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0500_eS=0.0_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('decoupled_gainencoding/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0500_eS=0.0_/TrainedNetwork');
     FaceColors = {[67,82,163]/255; [238,48,44]/255};
-    %}
+    
     
     %% multitargettraining_retune
     %{
@@ -296,7 +296,7 @@ function ThesisExperimentsPlot()
     %}
     
     %% no_competition
-    
+    %{
     Experiment = 'no_competition';
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('no_competition/L=0.05000_S=0.00_sS=00000004.50_sT=0.400_gIC=0.0000_eS=0.0_/BlankNetwork');
@@ -307,6 +307,7 @@ function ThesisExperimentsPlot()
         
     cell_row = 17;
     cell_col = 12;
+    %}
     
     %% Dont need to touch anything below here.
     numExperiments = length(experiment);
@@ -444,8 +445,8 @@ function ThesisExperimentsPlot()
     end
     disp('--------------------------------------');
     
-    % Single cell plot
-    
+    % Single cell plot through experiments
+    %{
     figure;
     [AX,H1,H2] = plotyy(1:(numExperiments-1), cell_data_head(2:end), 1:(numExperiments-1), cell_data_eye(2:end));
     
@@ -471,7 +472,7 @@ function ThesisExperimentsPlot()
     set([AX hXLabel hYLabel1 hYLabel2], 'FontSize', 14);
     set(AX,'YLim', [0 1.1], 'YTick', 0:0.2:1);
     
-    
+    %}
     
     
     %% Make table dump    

@@ -25,7 +25,7 @@ function ThesisParameterVariationPlot()
         experiments(i+1).Folder   = ['peakedgain/S=0.80_/TrainedNetwork_e' num2str(i)];
         X(i+1)                  = i;
         names{i+1}            = num2str(i+1);
-        vals(i+1)                = i+1;
+        vals(i)                = i;
     end
     XAxislabel = 'Epochs';
     %}
@@ -79,7 +79,7 @@ function ThesisParameterVariationPlot()
     %}
     
     %% numberOfNeurons_
-    
+    %{
     vals = [10 20 30 40 50 60 70];
     for i=1:length(vals),
         experiments(i).Folder   = ['numberOfNeurons_' num2str(vals(i)) '/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0500_eS=0.0_/BlankNetwork'];
@@ -88,7 +88,7 @@ function ThesisParameterVariationPlot()
     end
     %XAxislabel = 'N^{0.5}';
     XAxislabel = '$$\sqrt{N}$$';
-    
+    %}
     
     %% varyingheadpositions
     %{
@@ -238,7 +238,7 @@ function ThesisParameterVariationPlot()
     %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder 'TEST5_search_nonspesific_70.00/L=0.05000_S=0.80_sS=00000004.0_sT=0.50_gIC=0.0000_eS=0.0_/BlankNetwork/analysisResults.mat']);
     %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder 'durationvariability_sigma_0.00/L=2.00000_S=0.80_sS=00000004.50_sT=0.400_gIC=0.1500_eS=0.0_/BlankNetwork/analysisResults.mat']);
     %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder 'prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e0/analysisResults.mat']);
-    [c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder 'prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e0/analysisResults.mat']);
+    %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder 'prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e0/analysisResults.mat']);
     
     % Iterate experiments and plot
     for e = 1:numExperiments,
@@ -261,9 +261,12 @@ function ThesisParameterVariationPlot()
         %rfSizes(e) = mean(rf);
     end
     
-    %Limits
-    
     XLim = [vals(1) vals(end)];
+
+    %% Log plots
+    %{
+    
+    %Limits
     
     Y1min = min(r_,min(rfSizes - rfSizesSTD/2)) - 2; %classic=2
     Y2min = min(a_,min(AverageHeadCenteredNess - AverageHeadCenteredNessSTD/2)) - 0.1; % clssic: 0.1s
@@ -271,29 +274,6 @@ function ThesisParameterVariationPlot()
     Y1max = max(r_, max(rfSizes + rfSizesSTD/2)) + 2;%classic=2
     Y2max = max(a_, max(AverageHeadCenteredNess + AverageHeadCenteredNessSTD/2)) + 0.1; % clssic: 0.1s
     
-    function [c,h,r,r_std,a,a_std] =  loadExperiment(analysisPath)
-    
-        % Load analysis file for experiments
-        collation = load(analysisPath);
-        res = collation.analysisResults;
-        
-        % Save data
-        c = res.uniformity;
-        h = res.HC;
-        r = mean(res.RFSize_HC);
-        r_std = std(res.RFSize_HC);
-        a = mean(res.headCenteredNess_HC);
-        a_std = std(res.headCenteredNess_HC);
-        
-        %Dump
-        disp(['coverage: ' num2str(c)]);
-        disp(['headCenteredNessRate: ' num2str(h)]);
-        disp(['rfSizes: ' num2str(r)]);
-        disp(['AverageHeadCenteredNess: ' num2str(a)]);
-    end
-    
-    %% Log plots
-    %{
     % Plot 1
     figure();
     [AX,H1,H2] = plotyy(X, headCenteredNessRate, X, coverage); % ,'semilogx'
@@ -361,7 +341,6 @@ function ThesisParameterVariationPlot()
     set(ax(4),'YLim', [0 80]);%[Y1min Y1max]);
     set(ax(3),'YLim', [0 1]);%[Y2min Y2max]);
     
-    
     % Add untrained
     %{
     hold(ax(1), 'on');
@@ -388,5 +367,27 @@ function ThesisParameterVariationPlot()
     % sparseness
     %axis(AX(1),[50 98 0 1]);
     %axis(AX(2),[50 98 20 60]);
+   
+    %% Load experiment
+    function [c,h,r,r_std,a,a_std] =  loadExperiment(analysisPath)
+    
+        % Load analysis file for experiments
+        collation = load(analysisPath);
+        res = collation.analysisResults;
+        
+        % Save data
+        c = res.uniformity;
+        h = res.HC;
+        r = mean(res.RFSize_HC);
+        r_std = std(res.RFSize_HC);
+        a = mean(res.headCenteredNess_HC);
+        a_std = std(res.headCenteredNess_HC);
+        
+        %Dump
+        disp(['coverage: ' num2str(c)]);
+        disp(['headCenteredNessRate: ' num2str(h)]);
+        disp(['rfSizes: ' num2str(r)]);
+        disp(['AverageHeadCenteredNess: ' num2str(a)]);
+    end
 end
   

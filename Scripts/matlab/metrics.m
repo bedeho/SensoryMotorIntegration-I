@@ -146,7 +146,9 @@ function analysisResults = metrics(filename, info, trainingInfo)
     analysisResults.RFLocation_Confidence_HC    = analysisResults.RFLocation_Confidence_Linear_Clean(i > 0);
     analysisResults.DiscardStatus_HC            = analysisResults.DiscardStatus_Linear_Clean(i == 0);
     
-    hc = length(analysisResults.headCenteredNess_HC);
+    
+    %hc = length(analysisResults.headCenteredNess_HC);
+    hc = nnz(i > 0);
     analysisResults.hc = hc;
     
     %% Coverage analysis : Only if we have information abour training locations
@@ -200,9 +202,13 @@ function analysisResults = metrics(filename, info, trainingInfo)
             discard = discard + 4;
         end
         
+        
+        %% No longer discard negative ones in both directions
+        %{
         if eyeCenteredNess(row, col) < 0 && headCenteredNess(row,col) < 0,
             discard = discard + 8;
         end
+        %}
         
         %{
         % Edge bias: there is an eye position for which the firing rate ($r_i$) is above the cut off in at least one of the two most eccentric retinal locations

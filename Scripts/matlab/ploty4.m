@@ -44,11 +44,13 @@ set(hXLabel, 'FontSize', 14);
 
     %hold(ax(1), 'on');
     set(ax(1), 'YLim', [0 1], 'YTick', 0:0.2:1);
-    set(ax(1),'XLim', XLim);
+    %set(ax(1),'XLim', XLim);
+    %set(ax(1),'XLim', XLim , 'XTick', XLim(1):1:XLim(end));
     
     %hold(ax(2), 'on');
     set(ax(2), 'YLim', [0 1], 'YTick', 0:0.2:1);
-    set(ax(2),'XLim', XLim);
+    %set(ax(2),'XLim', XLim);
+    %set(ax(2),'XLim', XLim , 'XTick', XLim(1):1:XLim(end));
     
 
 %cfig = get(gcf,'color');
