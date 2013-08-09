@@ -17,9 +17,8 @@ function salinas()
     ret_size = 10;
 
     % Setup input neuron preferences
-    dpref = 1; % preferene resolution in both spaces
-    eye_prefs = -eye_size:dpref:eye_size;
-    ret_prefs = fliplr(-ret_size:dpref:ret_size);
+    eye_prefs = -eye_size:1:eye_size;
+    ret_prefs = fliplr(-ret_size:1:ret_size);
 
     % Seight vectors of output neuron,
     weights_positiveslope = zeros(length(ret_prefs), length(eye_prefs));
