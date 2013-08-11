@@ -1,5 +1,5 @@
 
-function salinas()
+function salinas_analytic()
 
     % Output neuron prefernce
     h = 0; 
@@ -48,6 +48,7 @@ function salinas()
         end
     end
     
+    %% EXample syanptic weight vector of output neuron 1
     figure
     subplot(1,2,1);
     imagesc(weights_negativeslope);
@@ -56,7 +57,7 @@ function salinas()
     subplot(1,2,2);
     imagesc(weights_positiveslope);
     title('positive slope')
-
+    
     function total = integrand(eye, ret)
         
         % eye

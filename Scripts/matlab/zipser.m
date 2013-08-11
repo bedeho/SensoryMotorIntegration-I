@@ -73,7 +73,7 @@ function zipser()
     [trainedNet, tr] = train(untrainedNet, inputPatterns, outputPatterns);
     
     %% Analyze weight distribution
-    figure();
+    figure;
     hLayer = trainedNet.LW{2,1};
     iLayer = trainedNet.IW{1};
     
@@ -97,10 +97,9 @@ function zipser()
     set([hYLabel hXLabel], 'FontSize', 16);
     set(gca, 'FontSize', 14);
     box off
-    
     axis square
     
-    % Hidden-> output weight matrix
+    %% Hidden-> output weight matrix
     figure;
     imagesc(trainedNet.LW{2,1});
     
@@ -112,8 +111,21 @@ function zipser()
     colorbar
     axis square
     
+    %% Show Input->Hidden Weight matrix
+    figure;
+    imagesc(trainedNet.IW{1}');
+    
+    hXLabel = xlabel('Hidden Layer Unit');
+    hYLabel = ylabel('Input Layer Unit');
+
+    set([hYLabel hXLabel], 'FontSize', 16);
+    set(gca, 'FontSize', 14);
+    colorbar
+    axis square
+    
     %% DALE principle
     %{
+    % OLD STYLE
     figure();
     iMoreExcitatory = sum(trainedNet.IW{1} >= 0) - sum(trainedNet.IW{1} < 0); % 9x96
     hMoreExcitatory = sum(trainedNet.LW{1} >= 0) - sum(trainedNet.LW{1} < 0); % 
@@ -127,19 +139,9 @@ function zipser()
     set(gca, 'FontSize', 14);
     
     box off
-    
-    % Hidden-> output weight matrix
-    figure;
-    imagesc(trainedNet.IW{1}');
-    
-    hXLabel = xlabel('Hidden Layer Unit');
-    hYLabel = ylabel('Input Layer Unit');
-
-    set([hYLabel hXLabel], 'FontSize', 16);
-    set(gca, 'FontSize', 14);
-    colorbar
-    axis square
     %}
+    % NEW STYLE
+    figure();
     
     %hidden layer units
     hiddenToOutput_numExcitatory = sum(trainedNet.LW{2,1} > 0);
@@ -150,7 +152,6 @@ function zipser()
     
     [receptivefieldPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms({hiddenToOutput_numExcitatory; inputToHidden_numExcitatory}, {hiddenToOutput_numInhibitory; inputToHidden_numInhibitory}, 'XTitle', 'Excitatory Efferents', 'YTitle', 'Inhibitory Efferents', 'FaceColors', FaceColors, 'Legends', {'Hidden Layer'; 'Input Layer'},'Location', 'SouthEast');
     
-
     % Generate stimuli
     function [inputPatterns, outputPatterns] = generatePatterns()
 

@@ -13,6 +13,17 @@ function pouget()
     % Seed rng
     rng(33, 'twister');
     
+    % Stimuli:
+    % 441=21*21 pairs of retinal and eye positions.
+    % 21 retinal locations in [-40,40]
+    % 21 eye positions in [-20,20]
+    retinalTargets = centerN(80, 21);
+    eyeTargets = centerN(40, 21);
+    numPatterns = length(retinalTargets)*length(eyeTargets);
+    
+    mexRetTarget = max(retinalTargets);
+    maxEyeTarget = max(eyeTargets);
+    
     % Input:
     % 121 units
     % \mu uniform in 12 increments \in [-60,60]
@@ -24,7 +35,7 @@ function pouget()
     retinalPreferences = centerDistance(60*2, 12);
     eyePreferences = centerDistance(40*2, 8);
     
-    [retMesh,eyeMesh] = meshgrid(retinalPreferences, eyePreferences);
+    [eyeMesh retMesh] = meshgrid(retinalPreferences, eyePreferences);
     numInputNeurons = numel(retMesh);
     
     % Output:
@@ -32,99 +43,96 @@ function pouget()
     % \sigma = 18
     % \mu = 0
     outputSigma = 18;
-    outputHeadPreferences = [0];
-    outputEyePreferences = [0];
-    numOutputNeurons = length(outputHeadPreferences) + length(outputEyePreferences);
-    
-    % Stimuli:
-    % 441=21*21 pairs of retinal and eye positions.
-    % 21 retinal locations in [-40,40]
-    % 21 eye positions in [-20,20]
-    retinalTargets = centerN(80, 21);
-    eyeTargets = centerN(40, 21);
-    numPatterns = length(retinalTargets)*length(eyeTargets);
+    outputHeadPreferences = [-1 1];%-10:2:10;%[0]; -mexRetTarget:2:mexRetTarget;
+    outputRetinalPreferences = [-1 1];%-10:2:10;%[0]; -mexRetTarget:2:mexRetTarget;
+    numOutputNeurons = length(outputHeadPreferences) + length(outputRetinalPreferences);
     
     % Network Parameters
     learningrate = 0.001;
-    numEpochs = 1000;
+    numEpochs = 100;
     
     [inputPatterns, outputPatterns] = generatePatterns();
+    numPatterns = length(inputPatterns);
     
-    % Create network
-    untrainedNet = feedforwardnet([]);
+    %% Train
+    figure;
     
-    % Setup Training
-    untrainedNet.trainParam.epochs = numEpochs;
-    untrainedNet.trainParam.goal = 0.01;	
-    untrainedNet.trainParam.lr = learningrate;
-    untrainedNet.trainParam.show = 1;
-    untrainedNet.trainParam.time = 1000;
-     
-    % Train
-    [trainedNet, tr] = train(untrainedNet, inputPatterns, outputPatterns);
-    synapses = trainedNet.IW{1};
+    synapses = rand(numOutputNeurons, numInputNeurons);
+    error = zeros(1,numEpochs);
     
-    % Figure
-    figure();
-    hist(synapses(:), -1.3:0.1:1.3);
-    %errorbar(means,stdev);
-    %ymax = max(h)*1.1;
-    %ylim([0 ymax]);
-    axis tight;
-    %plot(m*[1 1], [0 ymax],'r-');
+    for epochNr=1:numEpochs,
+        
+        for p=1:numPatterns,
+            
+            % get input and desired output
+            input = inputPatterns(:,p);
+            target = outputPatterns(:,p);
+            
+            % compute response
+            response = synapses*input;
+            
+            % update synapses
+            synapses = learningrate*(target - response)*input';
+        end
+        
+        error(epochNr) = sum((target-response).^2);
+    end
+    
+    plot(error);
+    ylabel('Error');
+    xlabel('Epoch');
+    
+    %% Synaptic weight distribution   
+    figure;
+
+    lineardata = synapses(:);
+    max_deviation = max(lineardata);
+    min_deviation = min(lineardata);
+    ticks = min_deviation:(max_deviation-min_deviation)/100:max_deviation;
+    
+    hdist = hist(lineardata, ticks);
+
+    hBar = bar(ticks,hdist','stacked','LineStyle','none');
+    set(hBar(1),'FaceColor', [67,82,163]/255); %, {'EdgeColor'}, edgeColors
+
+    xlim([min_deviation max_deviation]);
+    
     hXLabel = xlabel('Synaptic Weight');
     hYLabel = ylabel('Number of Synapses');
-    
-    disp(['Number of Inhibitory: ' num2str(nnz(synapses < 0))]);
-    
-    set([hXLabel, hYLabel], ...
-        'FontName'   , 'AvantGarde');
 
-    set(hYLabel  , ...
-        'FontSize'   , 18          );
-    set(hXLabel  , ...
-        'FontSize'   , 18          );
+    set([hYLabel hXLabel], 'FontSize', 16);
+    set(gca, 'FontSize', 14);
+    box off
+    
+    axis square
+    
+    
+    %% Show Input->Hidden Weight matrix
+    figure;
+    imagesc(synapses);
+    
+    hXLabel = xlabel('Hidden Layer Unit');
+    hYLabel = ylabel('Input Layer Unit');
 
-    set(gca, ...
-      'FontName'    , 'Helvetica', ...
-      'FontSize'    , 10         , ...         
-      'Box'         , 'on'       , ...
-      'TickDir'     , 'in'       , ...
-      'TickLength'  , [.02 .02]  , ...
-      'XMinorTick'  , 'off'      , ...
-      'YMinorTick'  , 'off'      , ...
-      'LineWidth'   , 2         );
-  
+    set([hYLabel hXLabel], 'FontSize', 16);
+    set(gca, 'FontSize', 14);
+    colorbar
+    axis square
+    
+    %% Single unit weight plot
+    
+    figure;
+    output_weight_vector = reshape(synapses(1,:), [length(retinalPreferences), length(eyePreferences)]);
+    imagesc(output_weight_vector);
+    
     %% DALE principle
-    figure();
-    iMoreExcitatory = sum(trainedNet.IW{1} >= 0) - sum(trainedNet.IW{1} < 0);
-    hMoreExcitatory = sum(trainedNet.LW{1} >= 0) - sum(trainedNet.LW{1} < 0);
-
-    hist([iMoreExcitatory hMoreExcitatory],-9:1:9);
+    %{
+    inputToHidden_numExcitatory = sum((synapses > 0)');
+    inputToHidden_numInhibitory = sum((synapses < 0)');
     
-    hXLabel = xlabel('Number of Surplus Excitatory Projections');
-    hYLabel = ylabel('Number of Neurons');
+    [receptivefieldPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms({inputToHidden_numExcitatory}, {inputToHidden_numInhibitory}, 'XTitle', 'Excitatory Efferents', 'YTitle', 'Inhibitory Efferents', 'FaceColors', {[67,82,163]/255},'Location', 'SouthEast');
+    %}
     
-    set( gca                   , ...
-        'FontName'   , 'Helvetica' , ...
-        'FontSize'   , 10          );
-    
-    set([ hXLabel, hYLabel], ...
-        'FontName'   , 'AvantGarde');
-
-    set(hYLabel  , ...
-        'FontSize'   , 18          );
-    set(hXLabel  , ...
-        'FontSize'   , 18          );
-
-    set(gca, ...
-      'Box'         , 'on'     , ...
-      'TickDir'     , 'in'     , ...
-      'TickLength'  , [.02 .02] , ...
-      'XMinorTick'  , 'off'      , ...
-      'YMinorTick'  , 'off'      , ...
-      'LineWidth'   , 2         );
-  
     % Generate stimuli
     function [inputPatterns, outputPatterns] = generatePatterns()
 
@@ -143,29 +151,36 @@ function pouget()
                 
                 % Output
                 h = r+e;
-                outputPatterns(:,counter) = [exp(-((h - outputHeadPreferences).^2)/(2*outputSigma^2)) exp(-((e - outputEyePreferences).^2)/(2*outputSigma^2))];
                 
+                if(mod(counter,13) == 110),
+                    figure;
+                    subplot(1,3,1);
+                    imagesc(in);
+                    subplot(1,3,2);
+                    plot(exp(-((h - outputHeadPreferences).^2)/(2*outputSigma^2)));
+                    title('head');
+                    xlim([1 length(outputHeadPreferences)]);
+                    ylim([0 1]);
+                    subplot(1,3,3);
+                    plot(exp(-((r - outputRetinalPreferences).^2)/(2*outputSigma^2)));
+                    title('retinal');
+                    xlim([1 length(outputRetinalPreferences)]);
+                    ylim([0 1]);
+                    x=1;
+                end
+                
+                if(~isempty(outputHeadPreferences) && ~isempty(outputRetinalPreferences)),
+                    outputPatterns(:,counter) = [exp(-((h - outputHeadPreferences).^2)/(2*outputSigma^2)) exp(-((r - outputRetinalPreferences).^2)/(2*outputSigma^2))];
+                elseif(~isempty(outputHeadPreferences)),
+                    outputPatterns(:,counter) = exp(-((h - outputHeadPreferences).^2)/(2*outputSigma^2));
+                else
+                    outputPatterns(:,counter) = exp(-((r - outputRetinalPreferences).^2)/(2*outputSigma^2));
+                end
+
                 counter = counter + 1;
             end
         end
 
     end
-
-    %{
-    % Train over multiple trials
-    %numTrials = 10;
-    %numBins = 15;
-    %histVector = zeros(numTrials, numBins);
-    %for t=1:numTrials,
-        
-        %[trainedNet, tr] = train(untrainedNet, inputPatterns, outputPatterns);
-        %histVector(t,:) = hist(trainedNet.IW{1},numBins);
-        
-    %end
-    
-    % Process data
-    %means = mean(histVector);
-    %stdev = std(histVector);
-    %}
 
 end
