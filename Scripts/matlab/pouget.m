@@ -30,10 +30,10 @@ function pouget()
     % \sigma = 18
     % \inflection points uniform in 8 increments \in [-40,40]
     % slope = 8
-    inputSigma = 18;
-    sigmoidSlope = 8;
-    retinalPreferences = centerDistance(60*2, 12);
-    eyePreferences = centerDistance(40*2, 8);
+    inputSigma = 3;
+    sigmoidSlope = 18;
+    retinalPreferences = centerDistance(60*2, 10);
+    eyePreferences = centerDistance(40*2, 4);
     
     [eyeMesh retMesh] = meshgrid(retinalPreferences, eyePreferences);
     numInputNeurons = numel(retMesh);
@@ -43,44 +43,90 @@ function pouget()
     % \sigma = 18
     % \mu = 0
     outputSigma = 18;
-    outputHeadPreferences = [-1 1];%-10:2:10;%[0]; -mexRetTarget:2:mexRetTarget;
-    outputRetinalPreferences = [-1 1];%-10:2:10;%[0]; -mexRetTarget:2:mexRetTarget;
+    outputHeadPreferences = -10:2:10;%, [0]; -mexRetTarget:2:mexRetTarget;
+    outputRetinalPreferences =-10:2:10;%,[0]; -mexRetTarget:2:mexRetTarget;
     numOutputNeurons = length(outputHeadPreferences) + length(outputRetinalPreferences);
     
     % Network Parameters
-    learningrate = 0.001;
-    numEpochs = 100;
+    learningrate = 0.1;
+    numEpochs = 400;
     
-    [inputPatterns, outputPatterns] = generatePatterns();
-    numPatterns = length(inputPatterns);
+    %[inputPatterns, outputPatterns] = generatePatterns();
+    %numPatterns = length(inputPatterns);
     
     %% Train
     figure;
     
     synapses = rand(numOutputNeurons, numInputNeurons);
-    error = zeros(1,numEpochs);
+    totalAveragError = zeros(1,numEpochs);
     
     for epochNr=1:numEpochs,
+        epochNr
         
-        for p=1:numPatterns,
-            
-            % get input and desired output
-            input = inputPatterns(:,p);
-            target = outputPatterns(:,p);
-            
-            % compute response
-            response = synapses*input;
-            
-            % update synapses
-            synapses = learningrate*(target - response)*input';
+        % do one round of learning
+        counter = 0;
+        for r=retinalTargets,
+            for e=eyeTargets,
+                
+                % get input and desired output
+                [input, target] = layers(r,e);
+                linear_input = input(:);
+
+                % compute response
+                response = synapses*linear_input;
+                
+                %{
+                if(counter==0 && mod(epochNr,20) == 0),
+                    figure;
+
+                    subplot(1,3,1);
+                    imagesc(input);
+                    title('input')
+
+                    subplot(1,3,2);
+                    plot(response,'r');
+                    xlim([1 numOutputNeurons]);
+
+                    subplot(1,3,3);
+                    plot(target,'b');
+                    xlim([1 numOutputNeurons]);
+
+                    x=1;
+                end
+                  %}  
+                
+                % update synapses
+                synapses = synapses + learningrate*(target - response)*linear_input';
+
+                counter = counter + 1;
+            end
+        end
+
+        % get error after last epoch
+        error = 0;
+        for r=retinalTargets,
+            for e=eyeTargets,
+                
+                % get input and desired output
+                [input target] = layers(r,e);
+                linear_input = input(:);
+
+                % compute response
+                response = synapses*linear_input;
+                
+                % error
+                error = error + sum((target-response).^2);
+            end
         end
         
-        error(epochNr) = sum((target-response).^2);
+        totalAveragError(epochNr) = error/numOutputNeurons;
     end
     
-    plot(error);
+    plot(totalAveragError)
     ylabel('Error');
     xlabel('Epoch');
+    
+    totalAveragError
     
     %% Synaptic weight distribution   
     figure;
@@ -122,65 +168,21 @@ function pouget()
     %% Single unit weight plot
     
     figure;
-    output_weight_vector = reshape(synapses(1,:), [length(retinalPreferences), length(eyePreferences)]);
+    output_weight_vector = reshape(synapses(2,:), [length(retinalPreferences), length(eyePreferences)]);
     imagesc(output_weight_vector);
     
     %% DALE principle
-    %{
+    
     inputToHidden_numExcitatory = sum((synapses > 0)');
     inputToHidden_numInhibitory = sum((synapses < 0)');
     
     [receptivefieldPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms({inputToHidden_numExcitatory}, {inputToHidden_numInhibitory}, 'XTitle', 'Excitatory Efferents', 'YTitle', 'Inhibitory Efferents', 'FaceColors', {[67,82,163]/255},'Location', 'SouthEast');
-    %}
     
-    % Generate stimuli
-    function [inputPatterns, outputPatterns] = generatePatterns()
-
-        inputPatterns = zeros(numInputNeurons, numPatterns);
-        outputPatterns = zeros(numOutputNeurons, numPatterns);
+    function [input target] = layers(r,e)
         
-        % Iterate all targets comboes
-        counter = 1;
-        for r=retinalTargets,
-            for e=eyeTargets,
-                
-                % Input
-                in = exp(-(r - retMesh).^2/(2*inputSigma^2)) .* 1./(1 + exp(sigmoidSlope * (eyeMesh - e)));
-                
-                inputPatterns(:,counter) = in(:);
-                
-                % Output
-                h = r+e;
-                
-                if(mod(counter,13) == 110),
-                    figure;
-                    subplot(1,3,1);
-                    imagesc(in);
-                    subplot(1,3,2);
-                    plot(exp(-((h - outputHeadPreferences).^2)/(2*outputSigma^2)));
-                    title('head');
-                    xlim([1 length(outputHeadPreferences)]);
-                    ylim([0 1]);
-                    subplot(1,3,3);
-                    plot(exp(-((r - outputRetinalPreferences).^2)/(2*outputSigma^2)));
-                    title('retinal');
-                    xlim([1 length(outputRetinalPreferences)]);
-                    ylim([0 1]);
-                    x=1;
-                end
-                
-                if(~isempty(outputHeadPreferences) && ~isempty(outputRetinalPreferences)),
-                    outputPatterns(:,counter) = [exp(-((h - outputHeadPreferences).^2)/(2*outputSigma^2)) exp(-((r - outputRetinalPreferences).^2)/(2*outputSigma^2))];
-                elseif(~isempty(outputHeadPreferences)),
-                    outputPatterns(:,counter) = exp(-((h - outputHeadPreferences).^2)/(2*outputSigma^2));
-                else
-                    outputPatterns(:,counter) = exp(-((r - outputRetinalPreferences).^2)/(2*outputSigma^2));
-                end
-
-                counter = counter + 1;
-            end
-        end
-
+        input = exp(-(r - retMesh).^2/(2*inputSigma^2)) .* 1./(1 + exp(sigmoidSlope * (eyeMesh - e)));
+        target = [exp(-(((r+e) - outputHeadPreferences).^2)/(2*outputSigma^2)) exp(-(((r+e) - outputRetinalPreferences).^2)/(2*outputSigma^2))]';
+        
     end
 
 end
