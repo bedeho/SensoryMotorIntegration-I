@@ -89,15 +89,17 @@ function ThesisExperimentsPlot()
     %}
 
     %% decoupled_gainencoding
-    
+    %{
     Experiment = 'decoupled_gainencoding';
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('decoupled_gainencoding/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0500_eS=0.0_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('decoupled_gainencoding/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0500_eS=0.0_/TrainedNetwork');
     FaceColors = {[67,82,163]/255; [238,48,44]/255};
-    
-    
+        
+    cell_row = 17;
+    cell_col = 12;
+    %}
     %% multitargettraining_retune
     %{
     Experiment = 'multitargettraining_retune';
@@ -169,14 +171,16 @@ function ThesisExperimentsPlot()
     %}
     
     %% global_slopetuning/sS=00000003.0_
-    %{
+    
     Experiment = 'global_slopetuning';
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('global_slopetuning/sS=00000003.0_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('global_slopetuning/sS=00000003.0_/TrainedNetwork');
     FaceColors = {[67,82,163]/255; [238,48,44]/255};
-    %}
+        
+    cell_row = 17;
+    cell_col = 12;
     
     %% planargain/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_
     %{
@@ -201,9 +205,9 @@ function ThesisExperimentsPlot()
     %% prewiredLIPold/X=1_Y=1
     %{
     Experiment = 'prewiredLIPold';
-    experiment(1).Name = 'Untrained';
+    experiment(1).Name = 'Random';
     experiment(1).Folder = expFolder('prewiredLIPold/X=1_Y=1/BlankNetwork');
-    experiment(2).Name = 'Trained';
+    experiment(2).Name = 'Manual';
     experiment(2).Folder = expFolder('prewiredLIPold/X=1_Y=1/TrainedNetwork');
     FaceColors = {[67,82,163]/255; [238,48,44]/255};
     %}
@@ -507,7 +511,7 @@ function ThesisExperimentsPlot()
     if(isfield(x,'eyeCenteredNess_Linear_Clean')),
         
         %% Reference Frame
-        minVal = min(minEye,minHead);
+        minVal = min(minEye,minHead); % 
         
         [referenceframePlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms(eyeCenteredNess, headCenteredNess, 'XTitle', 'Eye-Centeredness', 'YTitle', 'Head-Centeredness', 'Legends', Legends , 'FaceColors', FaceColors, 'XLim', [minVal 1], 'YLim', [minVal 1]);
         axes(scatterAxis);
