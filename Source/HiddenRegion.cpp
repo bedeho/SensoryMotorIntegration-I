@@ -70,8 +70,10 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, unsigned l
     //this->blockageLeakTime = p.blockageLeakTime[regionNr-1];
     //this->blockageRiseTime = p.blockageRiseTime[regionNr-1];
     //this->blockageTimeWindow = p.blockageTimeWindow[regionNr-1];
+    
     /*
-    int fixedBufferWeightHistorySize = static_cast<int>(ceil(this->blockageTimeWindow/this->stepSize));
+    float bufferDuration = this->globalInhibitoryConstant; // 0.5, this->blockageTimeWindow
+    int fixedBufferWeightHistorySize = static_cast<int>(ceil(bufferDuration/this->stepSize));
     
     if(fixedBufferWeightHistorySize < 0) {
         
@@ -80,7 +82,9 @@ void HiddenRegion::init(u_short regionNr, Param & p, bool isTraining, unsigned l
     }
     
     cout << "fixedBufferWeightHistorySize: " << fixedBufferWeightHistorySize << endl;
-*/
+     
+    */
+    
     int fixedBufferWeightHistorySize = 0;
     
     if(percentileSize < 1 && p.sparsenessRoutine != NOSPARSENESS) {
@@ -487,6 +491,9 @@ void HiddenRegion::applyLearningRule() {
                     // NEW Update synapse blockage
                     //(*s).blockage += stepSize * (blockageLeakTime*(1-oldBlockage) - blockageRiseTime*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
                     
+                    // Get delayed trace
+                    //float delayedTrace = n->getDelayedTrace();
+                    
                     // Add to cumulative norm value
 					norm += oldWeight * oldWeight;
 
@@ -502,6 +509,9 @@ void HiddenRegion::applyLearningRule() {
                             
                             // CLASSIC
                             (*s).weight += stepSize * (learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
+                            
+                            // DELAYED TRACE
+                            //(*s).weight += stepSize * (learningRate * delayedTrace * (*s).preSynapticNeuron->firingRate);
                             
                             /* not used
                             // SATURATION RULE 1: b_ij =0 -> LTP is possible
@@ -547,6 +557,9 @@ void HiddenRegion::applyLearningRule() {
                 // Update trace for this neuron
 				//obfuscated form: n->newTrace = (1 - stepSize/traceTimeConstant)*n->trace + (stepSize/traceTimeConstant)*n->firingRate;
                 n->newTrace = n->trace + (stepSize/traceTimeConstant)*(-n->trace + n->firingRate);
+                
+                // Save this trace value in buffer
+                //n->addNewTraceValueToTraceBuffer();
                 
 				// Normalization
 				if(weightNormalization == CLASSIC)

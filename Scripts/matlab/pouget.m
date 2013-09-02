@@ -163,10 +163,10 @@ function pouget()
     
     %% Show Input->Hidden Weight matrix
     figure;
-    imagesc(synapses);
+    imagesc(synapses');
     
-    hXLabel = xlabel('Input Layer Unit');
-    hYLabel = ylabel('Hidden Layer Unit');
+    hXLabel = xlabel('Output Layer Unit');
+    hYLabel = ylabel('Input Layer Unit');
 
     set([hYLabel hXLabel], 'FontSize', 16);
     set(gca, 'FontSize', 14);

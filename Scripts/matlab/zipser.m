@@ -101,10 +101,10 @@ function zipser()
     
     %% Hidden-> output weight matrix
     figure;
-    imagesc(trainedNet.LW{2,1});
+    imagesc(trainedNet.LW{2,1}');
     
-    hXLabel = xlabel('Hidden Layer Unit');
-    hYLabel = ylabel('Output Layer Unit');
+    hXLabel = xlabel('Output Layer Unit');
+    hYLabel = ylabel('Hidden Layer Unit');
 
     set([hYLabel hXLabel], 'FontSize', 16);
     set(gca, 'FontSize', 14);

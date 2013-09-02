@@ -141,7 +141,7 @@
     die "Invalid array: sigmoidSlopes" if !validateArray(\@sigmoidSlopes);
     
     our @sigmoidThresholds				= (
-										#["0.00"]# classic
+										["0.00"]# classic
 									
 										#["0.01"],
 										#["0.02"], # sigma = 19,covariance_th = 0.9
@@ -160,7 +160,7 @@
 										#["0.325"],
 										#["0.350"],
 										#["0.375"],
-										["0.400"] # # use with (0.1 -w)
+										#["0.400"] # # use with (0.1 -w)
 										#["0.425"],
 										#["0.450"],
 										#["0.475"],
@@ -199,54 +199,49 @@
     die "Invalid array: sigmoidThreshold" if !validateArray(\@sigmoidThresholds);
      
     our @globalInhibitoryConstants		= (
-    									["0.0000"]
-    									#["0.0010"],
-    									#["0.0020"],
-    									#["0.0030"],
-    									#["0.0040"],
-    									#["0.0050"],
-    									##["0.0055"],
-    									#["0.0060"],
-    									##["0.0065"],
-    									#["0.0070"]
-    									#["0.0075"]
-    									#["0.0080"],
-    									#["0.0085"],
-    									#["0.0090"],
-    									#["0.0095"],
-    									#["0.0100"],
-    									#["0.0105"],
-    									#["0.0110"],
-    									#["0.0115"],
-    									#["0.0120"]
+    									["0.000"]
+    									#["0.001"],
+    									#["0.002"],
+    									#["0.003"],
+    									#["0.004"],
+    									#["0.005"],
+    									#["0.006"],
+    									#["0.007"]
+    									#["0.008"],
+    									#["0.009"],
+    									#["0.010"],
+    									#["0.011"],
+    									#["0.012"]
     									
     									
-    									#["0.0200"],
-    									#["0.0300"],
-    									#["0.0400"],
-    									#["0.0500"],
-    									#["0.0600"],
-    									#["0.0700"],
-    									#["0.0800"],
-    									#["0.0900"],
-    									#["0.1000"],
-    									##["0.1100"]
-    									#["0.1200"],
-    									#["0.1300"],
-    									#["0.1400"],
+    									#["0.020"],
+    									#["0.030"],
+    									#["0.040"],
+    									#["0.050"],
+    									#["0.060"],
+    									#["0.070"],
+    									#["0.080"],
+    									#["0.090"],
+    									#["0.100"],
+    									#["0.110"]
+    									#["0.120"],
+    									#["0.130"],
+    									#["0.140"],
     									########### use for complex? ["0.1500"]
-    									#["0.1600"]
-    									#["0.1700"],
-    									#["0.1800"],
-    									#["0.1900"],
-    									#["0.2000"]
-    									#["0.2100"],
-    									#["0.2200"],
-    									#["0.2300"],
-    									#["0.2400"],
-    									#["0.2500"],
-    									#["0.2600"],
-    									#["0.2700"]   									
+    									#["0.160"]
+    									#["0.170"],
+    									#["0.180"],
+    									#["0.190"],
+    									#["0.200"]
+    									#["0.210"],
+    									#["0.220"],
+    									#["0.230"],
+    									#["0.240"],
+    									#["0.250"],
+    									#["0.260"],
+    									#["0.270"]
+    									#["0.500"],
+    									#["1.000"]   									
 										);
 	die "Invalid array: globalInhibitoryConstants" if !validateArray(\@globalInhibitoryConstants);
 	
@@ -359,7 +354,7 @@
 										#["0.94"],
 										#["0.95"]
 										#["0.92"],
-										#["0.90"],
+										["0.90"]
 										#["0.88"]
 										#["0.86"],
 										#["0.85"],
@@ -371,36 +366,37 @@
 										#["0.75"],
 										#["0.74"],
 										#["0.72"],
-										#["0.70"]
+										#["0.70"],
 										#["0.68"],
 										#["0.66"],
 										#["0.64"],
 										#["0.62"],
-										#["0.60"]
+										#["0.60"],
 										#["0.58"],
 										#["0.56"],
 										#["0.54"],
 										#["0.52"],
-										#["0.50"]
+										#["0.50"],
 										#["0.48"],
 										#["0.46"]
 										#["0.44"],
 										#["0.42"],
-										#["0.40"],
+										#["0.40"]
 										#["0.38"],
 										#["0.36"]
 										#["0.34"],
 										#["0.32"],
 										#["0.30"]
-										["0.00"]
+										#["0.00"]
 										);
 
     die "Invalid array: sparsenessLevels" if !validateArray(\@sparsenessLevels);
     
     our @timeConstants					= (    							
-										 ["0.100"]
-										
 										 #["0.010"], ["0.020"], ["0.030"], ["0.040"], ["0.050"], ["0.060"], ["0.070"], ["0.080"], ["0.090"],
+										 #["0.030"],
+										 #["0.050"],
+										 ["0.100"]
 										 #["0.100"], ["0.200"], ["0.300"], ["0.400"], ["0.500"], ["0.600"], ["0.700"], ["0.800"], ["0.900"],
 										 #["1.000"], ["2.000"], ["3.000"], ["4.000"], ["5.000"], ["6.000"], ["7.000"], ["8.000"], ["9.000"]
 										   # 0.100
@@ -484,7 +480,7 @@
     our @depth							= (1);
     our @connectivity					= (SPARSE_CONNECTIVITY);  # FULL_CONNECTIVITY, SPARSE_CONNECTIVITY, SPARSE_BIASED
     our @fanInRadius 					= (6); # not used
-    our @fanInCountPercentage 			= ("0.05"); #0.1, classic=0.1,05 #0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
+    our @fanInCountPercentage 			= ("0.1"); #CLASSIC= 05                 0.1, classic=0.1,05 #0.2 # Not easily permutble due to a variety of issues - generating different blank networks etc.
     our @learningrate					= ("0.1"); # < === is permuted below
     our @eta							= ("0.8");
     our @timeConstant					= ("0.1"); # < === is permuted below
@@ -504,14 +500,14 @@
     
     our @epochs							= (10); # only used in discrete model
 
-	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS   
+	our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+	#our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS   
 	
 	# 1-based indexing, as in inspector/MATLAB, not 0-based as
-	#our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) )");
+	our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) )");
 	#our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1))");
 	#our @recordedSingleCells			= ("( (11,5), (11,20), (23,7), (27,8), (28,2))");	
-	our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	#our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 
 	# Do some validation
 	print "Uneven parameter length." if 

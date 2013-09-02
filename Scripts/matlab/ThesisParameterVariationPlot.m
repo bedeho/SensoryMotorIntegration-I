@@ -203,18 +203,18 @@ function ThesisParameterVariationPlot()
     %}
     
     %% varyingsigmoidrate_x
-    %{
+    
     vals = 0:0.1:1;
     for i=1:length(vals),
         
-        experiments(i).Folder   = ['varyingsigmoidrate_' sprintf('%.2f',vals(i)) '/L=0.05000_S=0.80_sS=00000004.50_sT=0.400_gIC=0.0000_eS=0.0_/BlankNetwork'];
+        experiments(i).Folder   = ['varyingsigmoidrate_' sprintf('%.2f',vals(i)) '/L=0.05000_S=0.80_sS=00000004.50_sT=0.400_gIC=0.0000_eS=0.0_/TrainedNetwork'];
         X(i)                    = vals(i);
         names{i}                = num2str(i);
         
     end
     
     XAxislabel = 'Sigmoid Modulation Rate';
-    %}
+    
     
     %% Plotting
     numExperiments = length(experiments);
@@ -339,7 +339,7 @@ function ThesisParameterVariationPlot()
     [ax,hlines] = ploty4(X,headCenteredNessRate,X,coverage,X,AverageHeadCenteredNess,X,rfSizes,{'Head-Centeredness Rate','Coverage','Average Head-Centeredness','Average Receptive Field Size (deg)'}, XAxislabel, AverageHeadCenteredNessSTD,rfSizesSTD,XLim); 
     
     set(ax(4),'YLim', [0 80]);%[Y1min Y1max]);
-    set(ax(3),'YLim', [0 1]);%[Y2min Y2max]);
+    set(ax(3),'YLim', [-0.1 1]);%[Y2min Y2max]);
     
     % Add untrained
     %{

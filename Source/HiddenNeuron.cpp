@@ -58,7 +58,10 @@ void HiddenNeuron::init(HiddenRegion * region,
     this->effectiveTraceHistory = effectiveTraceHistory;
     this->stimulationHistory = stimulationHistory;
     
+    // Allocate buffer space.
     this->fixedBufferWeightHistorySize = fixedBufferWeightHistorySize;
+    this->fixedBufferTraceHistory = new float[fixedBufferWeightHistorySize];
+    this->lastTraceBufferElement = 0; // init buffer indicator
     
     // Reserve, so only capacity changes, not size
     this->afferentSynapses.reserve(desiredFanIn);
@@ -257,11 +260,28 @@ void HiddenNeuron::output(BinaryWrite & file, DATA data) {
     }
 }
 
-
-
 void HiddenNeuron::output(BinaryWrite & file, const float * buffer) {
     
     for(unsigned long t = 0;t < neuronHistoryCounter;t++)
         file << buffer[t];
     
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Trace buffer
+//////////////////////////////////////////////////////////////////////////
+
+ float HiddenNeuron::getDelayedTrace() {
+     
+     // The elemnt in the buffer directly behind (lower index, with wrap arround) the oldest, is the newest
+     return fixedBufferTraceHistory[lastTraceBufferElement];
+ }
+ 
+ void HiddenNeuron::addNewTraceValueToTraceBuffer() {
+ 
+     // Save new addition in the position of the oldest
+     fixedBufferTraceHistory[lastTraceBufferElement] = newTrace;
+ 
+     // move position of the oldest along
+     lastTraceBufferElement = (lastTraceBufferElement == fixedBufferWeightHistorySize-1) ? 0 : lastTraceBufferElement+1;
+ }

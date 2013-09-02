@@ -39,9 +39,7 @@ class HiddenNeuron: public Neuron {
         unsigned long neuronHistoryCounter;
         unsigned long synapseHistoryCounter;
 		bool saveNeuronHistory;
-    
-        int fixedBufferWeightHistorySize;
-		
+        
         // History buffers
         float * activationHistory;
         float * inhibitedActivationHistory;
@@ -52,8 +50,14 @@ class HiddenNeuron: public Neuron {
     
         void output(BinaryWrite & file, const float * buffer);
     
-    public:
+        /////////////////////
+        // Trace buffer
+        /////////////////////
+        int fixedBufferWeightHistorySize;
+        int lastTraceBufferElement; // Round robin index
+        float * fixedBufferTraceHistory;
     
+    public:
     
         // temporarily moved
         bool saveSynapseHistory;
@@ -111,6 +115,10 @@ class HiddenNeuron: public Neuron {
         bool areYouConnectedTo(const Neuron * n);
 		void normalize();
 		void normalize(float norm);
+    
+        
+        float getDelayedTrace();
+        void addNewTraceValueToTraceBuffer();
 };
 
 /*
@@ -138,8 +146,15 @@ inline void HiddenNeuron::clearState(bool resetTrace) {
     newInhibitedActivation = 0;
     stimulation = 0;
     
-    for(u_short s = 0;s < afferentSynapses.size();s++)
-		afferentSynapses[s].resetBlockage();
+    //for(u_short s = 0;s < afferentSynapses.size();s++)
+	//	afferentSynapses[s].resetBlockage();
+    
+    // Clear trace buffer
+    for(int i=0;i < fixedBufferWeightHistorySize;i++)
+        fixedBufferTraceHistory[i] = 0;
+    
+    // Reset buffer
+    this->lastTraceBufferElement = 0; //  I dont think we need to do this really
 	
     
 	if(resetTrace) {

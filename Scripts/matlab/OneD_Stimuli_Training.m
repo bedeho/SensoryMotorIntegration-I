@@ -31,11 +31,11 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     % Environment
     numberOfSimultanousTargets          = 1; % classic = 1
     q                                   = 0.7; % targetRangeProportionOfVisualField
-    visualFieldSize                     = 300; % 200, Entire visual field (rougly 100 per eye), (deg)
-    eyePositionFieldSize                = 200; %(1-q)*visualFieldSize, 200, (1-q)*visualFieldSize; % equivalently (visualFieldSize/2 - targetVisualRange/2)
-    targetVisualRange                   = 126; % 0.9*visualFieldSize*q, 126
-    targetEyePositionRange              = 0.8*eyePositionFieldSize; % 0.8*eyePositionFieldSize,48
-    testingEyePositionFieldSize         = 48; % 48, targetEyePositionRange
+    visualFieldSize                     = 200; % Entire visual field (rougly 100 per eye), (deg)
+    eyePositionFieldSize                = (1-q)*visualFieldSize; % classic=60, quivalently (visualFieldSize/2 - targetVisualRange/2)
+    targetVisualRange                   = 0.9*visualFieldSize*q;
+    targetEyePositionRange              = 0.8*eyePositionFieldSize;% classic=48
+    testingEyePositionFieldSize         = targetEyePositionRange;
     
     % Agent Movement
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
@@ -47,8 +47,8 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     % Agent in Training
     
     %% CLASSIC/Varying #head positions
-    headPositions                       = 8; % classic = 8
-    fixationSequenceLength              = 25; % classic = 15
+    headPositions                       = 1; % classic = 8
+    fixationSequenceLength              = 40; % classic = 15
     numberOfFixations                   = headPositions*fixationSequenceLength; % classic = headPositions*fixationSequenceLength;
     
     % Variations
