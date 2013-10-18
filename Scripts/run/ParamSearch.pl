@@ -72,11 +72,11 @@
 	   	#my $experiment						= "varying_sigma_19_covariancelearning";
 	   	#my $experiment						= "no_competition";
 	   	
-	   	#my $experiment 						= "planar-assymetrictrace-0.5-0.0625";
+	   	#my $experiment 					= "planar-assymetrictrace-0.5-0.0625";
 	   	
-	   	my $experiment 						= "planargain-deeplook";
+	   	#my $experiment 						= "planargain-deeplook-newtrace";
 	   	
-	   	my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
+	   	#my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	   	
 	   	#**********************************
 	   	# bigpeak
@@ -97,13 +97,17 @@
 		#**********************************
 		# varyingheadposition
 		#**********************************
+		
+		#my $experiment 						= "planargain-h25-hebbiancontrol";
+		#my $p = 25;
+		
 		#my $experiment						= "varyingheadpositions_${p}";
 		#my $fixations						= 15 * $p;
 		#my $stim							= "varyingheadposition-visualfield=200.00-eyepositionfield=60.00-fixations=${fixations}.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 		
 		#**********************************
 		# multitargettraining
-		#**********************************
+		#********************************** 
 		#my $experiment						= "multitargettraining_retune";
 		#my $stim							= "multitargettraining-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=2.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 		
@@ -196,8 +200,15 @@
 		# planargain-notrace
 		#**********************************			
 		
-	   	#my $experiment 						= "peakedgain-notrace";
+	   	#my $experiment 					= "peakedgain-notrace";
 	   	#my $stim							= "notrace-visualfield=200.00-eyepositionfield=60.00-fixations=1.00-seed=72.00-samplingrate=1000.00";
+	   	
+	   	#**********************************
+		# planargain-notrace
+		#**********************************	
+		
+		my $experiment 						= "narroweyetesting-19";
+		my $stim							= "narroweyetesting-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
 		
 		#**********************************
 		# General Params
@@ -206,8 +217,8 @@
 		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
 		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
-		my $nrOfEpochs						= 1; # 20;#10; #50; # 30,100
-		my $saveNetworkAtEpochMultiple 		= 20;
+		my $nrOfEpochs						= 20; # 20;#10; #50; # 30,100
+		my $saveNetworkAtEpochMultiple 		= 66;
 		my $saveNetwork						= "true"; # "true","false"
 		my $outputAtTimeStepMultiple		= 2; # Keep this high (10>=) unless  you are recording for looking at dynamics!
 		
@@ -218,7 +229,7 @@
 		my $resetTrace						= "false"; # "false", Reset trace between objects of training
 		my $covarianceThreshold				= "0.9"; # classic = 0, multitarget=0.4, \sigma=19 = 0.9
 		
-		my $sigmoidModulationPercentage		= "1.0"; #$p; #"0.0" = classic, ALL peaked, "1.0" = all sigmoid
+		my $sigmoidModulationPercentage		= "0.0"; #$p; #"0.0" = classic, ALL peaked, "1.0" = all sigmoid
 		my $inputEncoding					= MIXED; # MIXED, DOUBLEPEAK_GAUSSIAN,DECOUPLED
 		my $weightVectorLength				= "1.0"; # classic = 1.0
 		my $weightNormalization 			= "1"; # NONE = 0, CLASSIC = 1	
@@ -227,7 +238,7 @@
 		
 		my $visualPreferenceDistance		= "1.0";
 		my $eyePositionPrefrerenceDistance 	= "1.0";
-		my $gaussianSigma					= "6.00"; # 19 # $p # classic = 6
+		my $gaussianSigma					= "19.00"; # 19 # $p # classic = 6
 		
 		my $sigmoidSlope					= "0.0625"; #clssic = 0.0625, steep=100000000.0
 		

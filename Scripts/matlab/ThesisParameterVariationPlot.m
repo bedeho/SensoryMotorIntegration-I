@@ -189,7 +189,7 @@ function ThesisParameterVariationPlot()
     %}
     
     %% prewiredLIPold_selforganization
-    %{
+    
     for i=1:10,
 
         experiments(i).Folder  = ['prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e' num2str(i)];
@@ -200,10 +200,10 @@ function ThesisParameterVariationPlot()
     end
     
     XAxislabel = 'Epoch';
-    %}
+    
     
     %% varyingsigmoidrate_x
-    
+    %{
     vals = 0:0.1:1;
     for i=1:length(vals),
         
@@ -214,7 +214,7 @@ function ThesisParameterVariationPlot()
     end
     
     XAxislabel = 'Sigmoid Modulation Rate';
-    
+    %}
     
     %% Plotting
     numExperiments = length(experiments);
@@ -222,6 +222,9 @@ function ThesisParameterVariationPlot()
     % Data
     AverageHeadCenteredNess = zeros(1, numExperiments);
     AverageHeadCenteredNessSTD = zeros(1, numExperiments);
+    
+    AverageEyeCenteredNess = zeros(1, numExperiments);
+    AverageEyeCenteredNessSTD = zeros(1, numExperiments);
     
     headCenteredNessRate = zeros(1,numExperiments);
     rfSizes = zeros(1,numExperiments);
@@ -237,15 +240,14 @@ function ThesisParameterVariationPlot()
     %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder '../Experiments_disk/varying_sigma_1.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork/analysisResults.mat']);
     %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder 'TEST5_search_nonspesific_70.00/L=0.05000_S=0.80_sS=00000004.0_sT=0.50_gIC=0.0000_eS=0.0_/BlankNetwork/analysisResults.mat']);
     %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder 'durationvariability_sigma_0.00/L=2.00000_S=0.80_sS=00000004.50_sT=0.400_gIC=0.1500_eS=0.0_/BlankNetwork/analysisResults.mat']);
-    %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder 'prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e0/analysisResults.mat']);
-    %[c_,h_,r_,r_std_,a_,a_std_] = loadExperiment([expFolder 'prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e0/analysisResults.mat']);
+    [c_,h_,r_,r_std_,a_,a_std_,ec_,ec_r_] = loadExperiment([expFolder 'prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e0/analysisResults.mat']);
     
     % Iterate experiments and plot
     for e = 1:numExperiments,
 
         % Load analysis file for experiments
         disp(['Exp: ' names{e} '----------------------']);
-        [c,h,r,r_std,a,a_std] = loadExperiment([expFolder experiments(e).Folder '/analysisResults.mat']);
+        [c,h,r,r_std,a,a_std,ec,ec_r] = loadExperiment([expFolder experiments(e).Folder '/analysisResults.mat']);
         
         % Save data
         coverage(e) = c;
@@ -254,6 +256,9 @@ function ThesisParameterVariationPlot()
         rfSizesSTD(e) = r_std;
         AverageHeadCenteredNess(e)  = a;
         AverageHeadCenteredNessSTD(e) = a_std;
+        
+        AverageEyeCenteredNess(e) = ec;
+        AverageEyeCenteredNessSTD(e) = ec_r;
         
         %[expFolder experiments(e).Folder '/analysisResults.mat']
         %headCenteredNess(e) = res.fractionVeryHeadCentered;
@@ -336,10 +341,10 @@ function ThesisParameterVariationPlot()
     %% Combined 4yyyy
     
     
-    [ax,hlines] = ploty4(X,headCenteredNessRate,X,coverage,X,AverageHeadCenteredNess,X,rfSizes,{'Head-Centeredness Rate','Coverage','Average Head-Centeredness','Average Receptive Field Size (deg)'}, XAxislabel, AverageHeadCenteredNessSTD,rfSizesSTD,XLim); 
+    %[ax,hlines] = ploty4(X,headCenteredNessRate,X,coverage,X,AverageHeadCenteredNess,X,rfSizes,{'Head-Centeredness Rate','Coverage','Average Head-Centeredness','Average Receptive Field Size (deg)'}, XAxislabel, AverageHeadCenteredNessSTD,rfSizesSTD,XLim); 
     
-    set(ax(4),'YLim', [0 80]);%[Y1min Y1max]);
-    set(ax(3),'YLim', [-0.1 1]);%[Y2min Y2max]);
+    %set(ax(4),'YLim', [0 80]);%[Y1min Y1max]);
+    %set(ax(3),'YLim', [-0.1 1]);%[Y2min Y2max]);
     
     % Add untrained
     %{
@@ -367,9 +372,39 @@ function ThesisParameterVariationPlot()
     % sparseness
     %axis(AX(1),[50 98 0 1]);
     %axis(AX(2),[50 98 20 60]);
+    
+    %% New style
+    figure;
+    hold on;
+    plot(X, headCenteredNessRate,'r');
+    
+    errorbar(X, AverageHeadCenteredNess, -AverageHeadCenteredNessSTD/2, AverageHeadCenteredNessSTD/2,'Color','g');
+    
+    errorbar(X, AverageEyeCenteredNess, -AverageEyeCenteredNessSTD/2, AverageEyeCenteredNessSTD/2,'Color','b');
+    
+    hLegend = legend('Head-centerdness rate','Avg. Head-centeredness','Avg. Eye-centeredness');
+    %legend(hLegend,);
+    %legend(hLegend,);
+    set(hLegend, 'FontSize', 14, 'Location','NorthEast'); % EastOutside
+    legend('boxoff');
+    
+    
+    hXLabel = xlabel(XAxislabel);
+    set([gca hXLabel], 'FontSize', 14);
+      
+    ylim([-0.1 1.4]);
+    xlim([X(1) X(end)]);
+    set(gca,'XTick', X);
+    grid on
+    axis square
+    
+    % Untrained
+    plot(XLim,[h_ h_],'--','Color','r');
+    plot(XLim,[a_ a_],'--','Color','g');
+    plot(XLim,[ec_ ec_],'--','Color','b');
    
     %% Load experiment
-    function [c,h,r,r_std,a,a_std] =  loadExperiment(analysisPath)
+    function [c,h,r,r_std,a,a_std,ec,ec_r] =  loadExperiment(analysisPath)
     
         % Load analysis file for experiments
         collation = load(analysisPath);
@@ -382,6 +417,9 @@ function ThesisParameterVariationPlot()
         r_std = std(res.RFSize_HC);
         a = mean(res.headCenteredNess_HC);
         a_std = std(res.headCenteredNess_HC);
+        
+        ec = mean(res.eyeCenteredNess_Linear_Clean);
+        ec_r = std(res.eyeCenteredNess_Linear_Clean);
         
         %Dump
         disp(['coverage: ' num2str(c)]);

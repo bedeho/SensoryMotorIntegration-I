@@ -510,6 +510,13 @@ void HiddenRegion::applyLearningRule() {
                             // CLASSIC
                             (*s).weight += stepSize * (learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
                             
+                            // INDIVIDUAL WEIGHT SATURATION
+                            //(*s).weight += stepSize * (globalInhibitoryConstant - (*s).weight)*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
+
+                            // ISOLATE TRACE MAGNITUDE
+                            //if(n->trace > 0.1)
+                            //    (*s).weight += stepSize * (learningRate * (*s).preSynapticNeuron->firingRate);
+                            
                             // DELAYED TRACE
                             //(*s).weight += stepSize * (learningRate * delayedTrace * (*s).preSynapticNeuron->firingRate);
                             
@@ -521,11 +528,6 @@ void HiddenRegion::applyLearningRule() {
                             // BLOCKING
                             //(*s).weight += stepSize * (learningRate * (n->trace * (*s).preSynapticNeuron->firingRate)*oldBlockage);
                             */
-                             
-                            // INDIVIDUAL WEIGHT SATURATION
-                            //cout << learningRate << std::endl;
-                            // 0.1
-                            //(*s).weight += stepSize * (globalInhibitoryConstant - (*s).weight)*(learningRate * n->trace * (*s).preSynapticNeuron->firingRate);
                             
                             break;
                             

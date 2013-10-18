@@ -28,8 +28,8 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
     stimuliName = strrep(stimuliName,'stdTest','training');
 
     % Output frequency
-    timestep = 0.01
-    outputAtTimeStepMultiple = 2
+    timestep = 0.01;
+    outputAtTimeStepMultiple = 2;
     tickSize = timestep*outputAtTimeStepMultiple;
     
     %% Load buffers
@@ -54,9 +54,24 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
         
         [streamSize numSynapses] = size(unit.synapses)
         
-        % What to show
-        sourceRegion = [1];
-        sourceDepth = [1]; % planar = 2;
+        % GENERALIZED
+        %{
+        % What to show% GENERAL
+        
+        sourceRegion = [1 1]; % regions to plot, 1=input layer, 2=output layer
+        sourceDepth = [1 2]; % for each region number in 'sourceRegion', the corresponding number in this vector picks the depth of this region to plot
+        
+        %}
+        
+        %What to show
+        if(networkDimensions(1).depth > 1),
+            sourceRegion = [1 1];
+            sourceDepth = [1 2];
+        else
+            sourceRegion = [1];
+            sourceDepth = [1];
+        end
+        
         numRegions = length(sourceRegion);
         
         for r=1:numRegions,
@@ -78,13 +93,14 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
     
     % Start figure and setup mouse click callback
     h = figure();
+    set(h, 'Position', [500 500 700 1300])
     set(h, 'ButtonDownFcn', {@clickCallback}); % Setup callback
     running = false;
     
     % Setup and start timer
     % Good video on timers: http://blogs.mathworks.com/pick/2008/05/05/advanced-matlab-timer-objects/
     t = 1;
-    timerObject = timer('Period', 0.08, 'ExecutionMode', 'fixedSpacing');
+    timerObject = timer('Period', 0.15, 'ExecutionMode', 'fixedSpacing');
     set(timerObject, 'TimerFcn', {@trainingDynamics_Draw});
     
     goSlow = false;
@@ -105,7 +121,6 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
         f = firingBuffer(t);
         s = stimulationBuffer(t);
         ia = inhibitedActivationBuffer(t);
-        
 
         plotBuffer(:,end) = [tr; f; s]; % [tr; a; f; s; ia];
         
@@ -115,7 +130,8 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
         minVal = -0.1;
         
         % Plot buffer
-        subplot(numRegions+1, 1,1);%% subplot(numRegions+1+1, 1,1)
+        % General form: subplot(numRegions+1, 1, 1);
+        subplot(2, 1, 1);
         plot(plotBuffer');
         axis([1 ticksInBuffer minVal maxVal]); 
         title(['tick = ' num2str(t) '/' num2str(streamSize)]);
@@ -160,6 +176,34 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
             end
 
             % Show matrices
+            subplot(2, 1, 2);
+            
+            
+            if(numRegions == 1),
+                
+                w1 = matrixes{1,1};
+                
+                imagesc(w1);
+                colobar
+                pbaspect([networkDimensions(1).x_dimension networkDimensions(1).y_dimension 1]);
+                hold on
+                plot(eyePosition_MatrixCord*ones(numberOfSimultanousTargets), retinalPositions_MatrixCord , 'xw', 'MarkerSize',10,'LineWidth',10);
+                
+            else
+                
+                w1 = matrixes{1,1};
+                w2 = matrixes{1,2};
+                imagesc([w1 w2]);
+                colorbar
+                pbaspect([2*networkDimensions(1).x_dimension networkDimensions(1).y_dimension 1]);
+                hold on
+                plot(eyePosition_MatrixCord*ones(numberOfSimultanousTargets), retinalPositions_MatrixCord , 'xw', 'MarkerSize',10,'LineWidth',10);
+                
+                plot((eyePosition_MatrixCord+2*eyePositionDimensionInputPopulationSize)*ones(numberOfSimultanousTargets), retinalPositions_MatrixCord , 'xw', 'MarkerSize',10,'LineWidth',10);
+            end
+            
+            %% GENERALIZED
+            %{
             for r=1:numRegions,
 
                 subplot(numRegions+1,1,r+1); %% subplot(numRegions+1+1, 1,1)
@@ -176,6 +220,7 @@ function trainingDynamics(unit, historyDimensions, networkDimensions, includeSyn
                 plot(eyePosition_MatrixCord*ones(numberOfSimultanousTargets), retinalPositions_MatrixCord , 'xw', 'MarkerSize',10,'LineWidth',10);
 
             end
+            %}
 
         end
         

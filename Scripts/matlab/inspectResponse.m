@@ -276,23 +276,21 @@ function inspectResponse(filename, networkFile, nrOfEyePositionsInTesting, stimu
         
         % Create figure
         figure('Units','Pixels','position', [1000 1000 tWidth tHeight]);
+        hold on;
+        
         responsePlot = subplot(1,2,1);
         
         % Plot Receptive field
         rlocation = analysisResults.RFLocation(row,col);
         rsize = analysisResults.RFSize(row,col);
-        
-        rectangle('Position',[rlocation - rsize/2,0,rsize,1.10],'FaceColor',[0.9 0.9 0.9],'EdgeColor',[0.9 0.9 0.9])% ,'LineWidth',0
-        
-        hold on;
-        
+        %rectangle('Position',[rlocation - rsize/2,0,rsize,1.10],'FaceColor',[0.9 0.9 0.9],'EdgeColor',[0.9 0.9 0.9])% ,'LineWidth',0
         
         % Plot response
         cellData = data(:, :, row, col); % {region-1}
         plot(info.targets,cellData','LineWidth',2);
         
-        % plot line
-        plot([rlocation rlocation],[0 1.0],'--k');
+        % plot receptive field location
+        %plot([rlocation rlocation],[0 1.0],'--k');
 
         % Cean up axis
         set(gca,'YTick',[0 1]);

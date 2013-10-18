@@ -35,7 +35,7 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     eyePositionFieldSize                = (1-q)*visualFieldSize; % classic=60, quivalently (visualFieldSize/2 - targetVisualRange/2)
     targetVisualRange                   = 0.9*visualFieldSize*q;
     targetEyePositionRange              = 0.8*eyePositionFieldSize;% classic=48
-    testingEyePositionFieldSize         = targetEyePositionRange;
+    testingEyePositionFieldSize         = 15%targetEyePositionRange;
     
     % Agent Movement
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
@@ -47,8 +47,8 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     % Agent in Training
     
     %% CLASSIC/Varying #head positions
-    headPositions                       = 1; % classic = 8
-    fixationSequenceLength              = 40; % classic = 15
+    headPositions                       = 8; % classic = 8
+    fixationSequenceLength              = 15; % classic = 15
     numberOfFixations                   = headPositions*fixationSequenceLength; % classic = headPositions*fixationSequenceLength;
     
     % Variations

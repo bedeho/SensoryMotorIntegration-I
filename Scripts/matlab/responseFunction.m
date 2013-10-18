@@ -1,27 +1,38 @@
 
 function responseFunction()
-
-    figure;
-
-    retinalTargets = centerN(80, 21);
-    eyeTargets = centerN(40, 21);
     
-    inputSigma = 10;
+    inputSigma = 6;
     sigmoidSlope = 0.0625;
     
-    retinalPreferences = -50:4:50; %centerDistance(60*4, 4);
-    eyePreferences = -50:4:50; %centerDistance(40*4, 4);
+    ret_max = 30;
+    eye_max = 30;
+    
+    retinalPreferences = -ret_max:2:ret_max; %centerDistance(60*4, 4);
+    eyePreferences = -eye_max:2:eye_max; %centerDistance(40*4, 4);
+    
+    retinalTargets_ticks = -ret_max:15:ret_max;
+    eyePreferences_ticks = -eye_max:15:eye_max;
 
     [retMesh,eyeMesh] = meshgrid(retinalPreferences, eyePreferences);
     
-    e = -20
+    % first peak
+    e = -15
+    r = 10
+    
+    e_first = e;
+    e_second = e-5;
+    e_third = e+15;
+    
+    r_2 = 30
     e2 = 15
-    r = 40
+    
     coeff1 = 1
     coeff2 = 0.8
     
+    figure;
+    
     %% Sig
-    %in = exp(-(r - retMesh).^2/(2*inputSigma^2)) .* 1./(1 + exp(sigmoidSlope * (e - eyeMesh)));
+    in = exp(-(r - retMesh).^2/(2*inputSigma^2)) .* 1./(1 + exp(sigmoidSlope * (e - eyeMesh)));
     
     %% Lin
     %LIN = (sigmoidSlope*eyeMesh) + e;
@@ -36,9 +47,10 @@ function responseFunction()
     %in = coeff1*exp(-((r - retMesh).^2 + (e - eyeMesh).^2)/(2*inputSigma^2));
     
     % double peak
-    in = coeff1*exp(-((r - retMesh).^2 + (e - eyeMesh).^2)/(2*inputSigma^2)) + coeff2*exp(-((r - retMesh).^2 + (e2 - eyeMesh).^2)/(2*inputSigma^2));
+    %in = coeff1*exp(-((r - retMesh).^2 + (e - eyeMesh).^2)/(2*inputSigma^2)) + coeff2*exp(-((r - retMesh).^2 + (e2 - eyeMesh).^2)/(2*inputSigma^2));
     
     %% Plot
+    %{
     meshc(retMesh,eyeMesh,in);
     
     % Move contours:
@@ -73,4 +85,44 @@ function responseFunction()
       'YMinorTick'  , 'off'      , ...
       'XTick'       , retinalTargets);
     %}
+    
+    %}
+    
+    %% New
+    
+    surf(eyeMesh, retMesh, in,'EdgeColor','none','LineStyle','none','FaceLighting','phong')% 'LineStyle', 'none', 'FaceColor', 'interp');
+    hold on
+    grid off
+    axis off
+    colormap cool
+        
+    %in_line_1 = exp(-((r - retinalPreferences).^2 + (e - e_first).^2)/(2*inputSigma^2)); 
+    in_line_1 = exp(-(r - retinalPreferences).^2/(2*inputSigma^2)) .* 1./(1 + exp(sigmoidSlope * (e - e_first)));
+    
+    
+    %in_line_2 = exp(-((r - retinalPreferences).^2 + (e - e_second).^2)/(2*inputSigma^2));
+    in_line_2 = exp(-(r - retinalPreferences).^2/(2*inputSigma^2)) .* 1./(1 + exp(sigmoidSlope * (e - e_second)));
+    
+    %in_line_3 = exp(-((r - retinalPreferences).^2 + (e - e_third).^2)/(2*inputSigma^2));
+    in_line_3 = exp(-(r - retinalPreferences).^2/(2*inputSigma^2)) .* 1./(1 + exp(sigmoidSlope * (e - e_third)));
+    
+    eyeFixed_first = e_first*ones(1,length(in_line_1));
+    eyeFixed_second = e_second*ones(1,length(in_line_1));
+    eyeFixed_third = e_third*ones(1,length(in_line_1));
+    
+    plot3(eyeFixed_first, retinalPreferences, in_line_1 , 'LineWidth', 3 ,'Color','r')
+    plot3(eyeFixed_second, retinalPreferences, in_line_2 , 'LineWidth', 3 ,'Color','g')
+    plot3(eyeFixed_third, retinalPreferences, in_line_3 , 'LineWidth', 3 ,'Color','b')
+    
+    hZLabel = zlabel('Response');
+    hXLabel = xlabel('Eye position (deg)');
+    hYLabel = ylabel('Retinal location (deg)');
+    
+    set([ hZLabel], 'FontSize', 14); % hYLabel hXLabel
+    set([gca], 'FontSize', 14);
+    
+    set(gca,'ZTick',[0 1]);
+    set(gca,'XTick', eyePreferences_ticks);
+    set(gca,'YTick', retinalTargets_ticks);
+    
 end

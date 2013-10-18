@@ -8,22 +8,23 @@ function salinas_learning()
     % Response params
     R_max = 1;
     M = 3;
-    sigma = 3;
+    sigma = 2.0;
     
     % Learning parameter
     k = 0;
     
-    % Training stimuli
-    training_ret = -6.5:1:6.5;
-    training_eye = -6.5:1:6.5;
-    numTrainingInputs = length(training_ret)*length(training_eye);
-
+    
     % Size of space
     eye_size = 10;
     ret_size = 10;
+    
+    % Training stimuli
+    training_ret = -6.5:1:6.5; %-ret_size:1:ret_size;%
+    training_eye = -6.5:1:6.5; %-eye_size:1:eye_size;%
+    numTrainingInputs = length(training_ret)*length(training_eye);
 
     % Setup input neuron preferences
-    pref_dist = 0.5;
+    pref_dist = 1;
     eye_prefs = -eye_size:pref_dist:eye_size;
     ret_prefs = fliplr(-ret_size:pref_dist:ret_size);
     
@@ -78,12 +79,53 @@ function salinas_learning()
             end
         end
     end
+       
+    %% Response plot
+    figure;
+    hold on;
+    
+    %h_testpositions = fliplr(-20:1:20);
+    h_testpositions = fliplr(-6:0.1:6);
+    %test_eyepositions = [-25 0 25];
+    test_eyepositions = [-2 0 2];
+    
+    response_curves = zeros(length(test_eyepositions), length(h_testpositions));
+    
+    % grab the right weight vector
+    w_neg = weights_negativeslope(:, :, 5);
+    w_pos = weights_positiveslope(:, :, 5);
+         
+    for e=1:length(test_eyepositions),
+        for h=1:length(h_testpositions),    
+            
+            % Get stimuli
+            eye = test_eyepositions(e);
+            ret = h_testpositions(h)-eye;
+            
+            % input neuron poulation
+            input_positive = sensory_layer_response(eye, ret, 1);
+            input_negative = sensory_layer_response(eye, ret, -1);
+            
+            dotprod = w_pos.*input_positive + w_neg.*input_negative;
+            
+            %figure;
+            %imagesc(dotprod);
+            
+            response_curves(e,h) = sum(sum(dotprod));
+        end
+        
+        %plot(h_testpositions,response_curves(e,:));
+        
+    end
+    
+    plot(h_testpositions,response_curves');
     
     %% Show Weights of neuron 1
-    showPrettyWeightVector(weights_negativeslope(:,:,1));
-    showPrettyWeightVector(weights_positiveslope(:,:,1));
+    showPrettyWeightVector(w_neg);
+    showPrettyWeightVector(w_pos);
     
     %% Analyze weight distribution
+    %{
     figure;
 
     data = [weights_positiveslope(:)' weights_negativeslope(:)'];
@@ -106,6 +148,7 @@ function salinas_learning()
     box off
     
     axis square
+    %}
     
     %% weight vector display 
     function showPrettyWeightVector(w)
@@ -147,8 +190,6 @@ function salinas_learning()
         set(gca,'YTickLabel',retCellLabels);
         
     end
-
-
     
     %% Evaluate input layer
     function f = sensory_layer_response(eye, ret, slopesign)

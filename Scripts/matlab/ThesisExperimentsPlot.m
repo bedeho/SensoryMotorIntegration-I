@@ -53,14 +53,18 @@ function ThesisExperimentsPlot()
     %}
     
     %% varying_sigma_19.00
-    %{
+    
     Experiment = 'varying_sigma_19.00';
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('varying_sigma_19.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('varying_sigma_19.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork');
     FaceColors = {[67,82,163]/255; [238,48,44]/255};
-    %}
+    
+        
+    cell_row = 18;
+    cell_col = 20;
+    
     
     %% bigpeak_wiring_19_testing_19
     %{
@@ -171,7 +175,7 @@ function ThesisExperimentsPlot()
     %}
     
     %% global_slopetuning/sS=00000003.0_
-    
+    %{
     Experiment = 'global_slopetuning';
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('global_slopetuning/sS=00000003.0_/BlankNetwork');
@@ -181,7 +185,7 @@ function ThesisExperimentsPlot()
         
     cell_row = 17;
     cell_col = 12;
-    
+    %}
     %% planargain/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_
     %{
     Experiment = 'planargain';
@@ -209,7 +213,11 @@ function ThesisExperimentsPlot()
     experiment(1).Folder = expFolder('prewiredLIPold/X=1_Y=1/BlankNetwork');
     experiment(2).Name = 'Manual';
     experiment(2).Folder = expFolder('prewiredLIPold/X=1_Y=1/TrainedNetwork');
-    FaceColors = {[67,82,163]/255; [238,48,44]/255};
+    %FaceColors = {[67,82,163]/255; [238,48,44]/255};
+    FaceColors = {0.5*[67,82,163]/255; [67,82,163]/255}
+    
+        cell_row = 18;
+    cell_col = 20;
     %}
     
     %% prewiredLIPnew_selforganization/X=1_Y=1
@@ -311,6 +319,38 @@ function ThesisExperimentsPlot()
         
     cell_row = 17;
     cell_col = 12;
+    %}
+    
+    %% sigmoid paper plot
+    %{
+    Experiment = 'peakedandplanargain';
+    
+    experiment(1).Name = 'Untrained';
+    experiment(1).Folder = expFolder('peakedgain/S=0.80_/BlankNetwork');
+    experiment(2).Name = '20 Epochs';
+    experiment(2).Folder = expFolder('peakedgain/S=0.80_/TrainedNetwork'); 
+    experiment(3).Name = 'Untrained';
+    experiment(3).Folder = expFolder('planargain/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/BlankNetwork');
+    experiment(4).Name = 'Trained';
+    experiment(4).Folder = expFolder('planargain/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.0000_eS=0.0_/TrainedNetwork');
+
+    FaceColors = {0.5*[67,82,163]/255; [67,82,163]/255;   0.5*[238,48,44]/255; [238,48,44]/255};
+    
+    cell_row = 17;
+    cell_col = 12;
+    %}
+    
+    %% 
+    %{
+    Experiment = 'narroweyetesting-19';
+    experiment(1).Name = 'Untrained';
+    experiment(1).Folder = expFolder('narroweyetesting-19/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.000_eS=0.0_/BlankNetwork');
+    experiment(2).Name = 'Trained';
+    experiment(2).Folder = expFolder('narroweyetesting-19/L=0.05000_S=0.90_sS=00000004.50_sT=0.00_gIC=0.000_eS=0.0_/TrainedNetwork');
+    FaceColors = {0.5*[67,82,163]/255; [67,82,163]/255}
+    
+    cell_row = 18;
+    cell_col = 20;
     %}
     
     %% Dont need to touch anything below here.
@@ -486,11 +526,11 @@ function ThesisExperimentsPlot()
     dumptableline('RF Location', RFLocation_summary ,1);
     dumptableline('RF Size', RFSize_summary,1);
     
-    %scatterPlotWithMarginalHistograms(RFLocation, headCenteredNess, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Head-Centeredness', 'Legends', Legends,'YLabelOffset', 3, 'FaceColors', FaceColors);
+    scatterPlotWithMarginalHistograms(RFLocation, headCenteredNess, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Head-Centeredness', 'Legends', Legends,'YLabelOffset', 3, 'FaceColors', FaceColors);
     
     %% Receptive Field
 
-        [receptivefieldPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms(RFLocation_HC, RFSize_HC, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Receptive Field Size (deg)', 'Legends', Legends ,'FaceColors', FaceColors, 'Location', 'NorthEast');
+        %[receptivefieldPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms(RFLocation_HC, RFSize_HC, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Receptive Field Size (deg)', 'Legends', Legends ,'FaceColors', FaceColors, 'Location', 'NorthEast');
 
         
         

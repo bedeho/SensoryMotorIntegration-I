@@ -7,7 +7,7 @@ function salinas_analytic()
     % Response params
     R_max = 1;
     M = 3;
-    sigma = 2;
+    sigma = 1;
     
     % Learning parameter
     k = 0;

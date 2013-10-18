@@ -263,7 +263,7 @@
 										#["0.00080"],
 										#["0.00090"], 
 										# 
-										#["0.00100"],
+										#["0.00100"]
 										#["0.00200"],
 										#["0.00300"],
 										#["0.00400"],
@@ -500,14 +500,13 @@
     
     our @epochs							= (10); # only used in discrete model
 
-	our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
-	#our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS   
+	#our @saveHistory					= (SINGLE_CELLS); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS
+	our @saveHistory					= (NO_HISTORY); #  NO_HISTORY, ALL, NO_SYNAPSE, SINGLE_CELLS   
 	
 	# 1-based indexing, as in inspector/MATLAB, not 0-based as
-	our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) )");
-	#our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1))");
-	#our @recordedSingleCells			= ("( (11,5), (11,20), (23,7), (27,8), (28,2))");	
-	#our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
+	#our @recordedSingleCells			= ("( (18,18), (8,8), (1,7), (7,1), (12,6), (6,12), (4,6), (6,4), (20,20), (6,1), (1,1), (25,25), (8,25), (16,11), (11,11), (16,16), (11,16), (8,27), (17,17), (17,11), (22,1), (27,27), (11,23), (21,21), (23,23), (10,10), (19,19), (29,29), (29,6), (9,6) )");
+	#our @recordedSingleCells			= ("( (18,20), (8,24), (8,20), (6,1), (8,25), (11,16), (8,27), (11,11), (17,11), (22,1), (16,11), (11,23), (21,21) , (10,10), (19,19) , (29,6) , (9,6) )");
+	our @recordedSingleCells			= ("()"); # 1-based indexing, as in inspector/MATLAB, not 0-based as 
 
 	# Do some validation
 	print "Uneven parameter length." if 

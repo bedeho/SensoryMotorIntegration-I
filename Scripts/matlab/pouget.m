@@ -175,7 +175,7 @@ function pouget()
     
     %% Single unit weight plot
     
-    %{
+    
     figure;
     output_weight_vector = reshape(synapses(2,:), [length(retinalPreferences), length(eyePreferences)]);
     imagesc(output_weight_vector);
@@ -202,7 +202,7 @@ function pouget()
         imagesc(reshape(synapses(length(outputHeadPreferences)+ h,:), [length(retinalPreferences), length(eyePreferences)]));
         title('eye - weight vector');
     end
-    %}    
+       
     
     %% Dale principle
     
