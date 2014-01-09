@@ -141,26 +141,25 @@
     die "Invalid array: sigmoidSlopes" if !validateArray(\@sigmoidSlopes);
     
     our @sigmoidThresholds				= (
-										["0.00"]# classic
+										#["0.00"], # classic
 									
 										#["0.01"],
 										#["0.02"], # sigma = 19,covariance_th = 0.9
 										#["0.03"],
 										#["0.04"],
-										##["0.05"]
+										#["0.05"],
 										#["0.06"],
 										#["0.07"],
 										#["0.08"],
 										#["0.09"],
-										
 										#["0.10"],  # multitargettraining, variable duration 1.0, fixedduration
 										#["0.15"]  # multitargettraining
-										#["0.200"]   # classic
-										#["0.300"], # nonspesific, old, new value is 0.5
+										#["0.20"],   # classic
+										["0.30"] # nonspesific, old, new value is 0.5
 										#["0.325"],
 										#["0.350"],
 										#["0.375"],
-										#["0.400"] # # use with (0.1 -w)
+										#["0.40"], # # use with (0.1 -w)
 										#["0.425"],
 										#["0.450"],
 										#["0.475"],
@@ -175,7 +174,7 @@
 										#["1.30"]										
 										
 										
-										#["2.00"]
+										#["2.00"],
 										#["3.00"],
 										#["4.00"]
 										#["5.00"],

@@ -12,6 +12,10 @@ function ThesisExperimentsPlot()
 
     global base;
     
+    % dummies
+    cell_row = 17;
+    cell_col = 12;
+    
      
     %% prewiredPO
     %{
@@ -23,8 +27,7 @@ function ThesisExperimentsPlot()
     %FaceColors = {[1,0,0]; [0,0,1]};
     FaceColors = {[67,82,163]/255; [238,48,44]/255};
     
-    cell_row = 17;
-    cell_col = 12;
+
     %}
    
     %% peakedgain
@@ -53,18 +56,18 @@ function ThesisExperimentsPlot()
     %}
     
     %% varying_sigma_19.00
-    
+    %{
     Experiment = 'varying_sigma_19.00';
     experiment(1).Name = 'Untrained';
-    experiment(1).Folder = expFolder('varying_sigma_19.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork');
+    experiment(1).Folder = expFolder('varying_sigma_6.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork');
     experiment(2).Name = 'Trained';
-    experiment(2).Folder = expFolder('varying_sigma_19.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork');
+    experiment(2).Folder = expFolder('varying_sigma_6.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/TrainedNetwork');
     FaceColors = {[67,82,163]/255; [238,48,44]/255};
     
         
     cell_row = 18;
     cell_col = 20;
-    
+    %}
     
     %% bigpeak_wiring_19_testing_19
     %{
@@ -105,14 +108,14 @@ function ThesisExperimentsPlot()
     cell_col = 12;
     %}
     %% multitargettraining_retune
-    %{
+    
     Experiment = 'multitargettraining_retune';
     experiment(1).Name = 'Untrained';
     experiment(1).Folder = expFolder('multitargettraining_retune/S=0.80_sS=00000015.0_sT=0.15_/BlankNetwork');
     experiment(2).Name = 'Trained';
     experiment(2).Folder = expFolder('multitargettraining_retune/S=0.80_sS=00000015.0_sT=0.15_/TrainedNetwork');
     FaceColors = {[67,82,163]/255; [238,48,44]/255};
-    %}
+    
     
     %% 8H_13E_FIX1200ms
     %{
@@ -145,6 +148,7 @@ function ThesisExperimentsPlot()
     %}
     
     %% 8H_13E_FIX1200ms-normalization
+    
     %{
     Experiment = '8H_13E_FIX1200ms-normalization';
     experiment(1).Name = 'Untrained';
@@ -340,7 +344,7 @@ function ThesisExperimentsPlot()
     cell_col = 12;
     %}
     
-    %% 
+    %% Simon control
     %{
     Experiment = 'narroweyetesting-19';
     experiment(1).Name = 'Untrained';
@@ -526,11 +530,11 @@ function ThesisExperimentsPlot()
     dumptableline('RF Location', RFLocation_summary ,1);
     dumptableline('RF Size', RFSize_summary,1);
     
-    scatterPlotWithMarginalHistograms(RFLocation, headCenteredNess, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Head-Centeredness', 'Legends', Legends,'YLabelOffset', 3, 'FaceColors', FaceColors);
+    %scatterPlotWithMarginalHistograms(RFLocation, headCenteredNess, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Head-Centeredness', 'Legends', Legends,'YLabelOffset', 3, 'FaceColors', FaceColors);
     
     %% Receptive Field
 
-        %[receptivefieldPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms(RFLocation_HC, RFSize_HC, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Receptive Field Size (deg)', 'Legends', Legends ,'FaceColors', FaceColors, 'Location', 'NorthEast');
+        [receptivefieldPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = scatterPlotWithMarginalHistograms(RFLocation_HC, RFSize_HC, 'XTitle', 'Receptive Field Location (deg)', 'YTitle', 'Receptive Field Size (deg)', 'Legends', Legends ,'FaceColors', FaceColors, 'Location', 'NorthEast');
 
         
         
@@ -604,7 +608,7 @@ function ThesisExperimentsPlot()
     
     choice = questdlg('Save to Thesis?', ...
 	'Save to Thesis', ...
-	'Noooooooo!','Chap 2','Chap 2'); % 'Chap 2','Chap 4','Chap 6','Chap 7'
+	'Noooooooo!','Chap 3','Chap 2'); % 'Chap 2','Chap 4','Chap 6','Chap 7'
 
     % Handle response
     switch choice

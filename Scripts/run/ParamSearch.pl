@@ -42,8 +42,11 @@
 	# varyinggainmixturerates: 0:0.1:1
 	#our @paramArray				   		= ("0.00","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00");
 	
+	# fixation duration
+	our @paramArray				   		= ("100","200","300","400","500","600","700","800","900","1000","1100","1200","1300","1400","1500","1600"); #
+		
 	# iterate param values   	
-	#for my $p (@paramArray) {
+	for my $p (@paramArray) {
 	   	
 	   	#**********************************
 	   	# peakedgain
@@ -207,17 +210,24 @@
 		# planargain-notrace
 		#**********************************	
 		
-		my $experiment 						= "narroweyetesting-19";
-		my $stim							= "narroweyetesting-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
+		#my $experiment 				= "narroweyetesting-19";
+		#my $stim							= "narroweyetesting-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
+		
+		#**********************************
+		# fixation duration
+		#**********************************
+		my $experiment						= "fixationduration_${p}";
+		my $num_2dec 						= sprintf '%.2f', $p/1000;
+		my $stim							= "fixationduration_${p}-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=${num_2dec}-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
 		
 		#**********************************
 		# General Params
 		#**********************************
 		
-		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
+		my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
 		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
-		my $nrOfEpochs						= 20; # 20;#10; #50; # 30,100
+		my $nrOfEpochs						= 10; # 20;#10; #50; # 30,100
 		my $saveNetworkAtEpochMultiple 		= 66;
 		my $saveNetwork						= "true"; # "true","false"
 		my $outputAtTimeStepMultiple		= 2; # Keep this high (10>=) unless  you are recording for looking at dynamics!
@@ -238,7 +248,7 @@
 		
 		my $visualPreferenceDistance		= "1.0";
 		my $eyePositionPrefrerenceDistance 	= "1.0";
-		my $gaussianSigma					= "19.00"; # 19 # $p # classic = 6
+		my $gaussianSigma					= "6.00"; # 19 # $p # classic = 6
 		
 		my $sigmoidSlope					= "0.0625"; #clssic = 0.0625, steep=100000000.0
 		
@@ -250,8 +260,6 @@
 	   	###################################################################
 	    
 		# Load params from stimuli name	
-		# fixations=100.00-targets=1.00-fixduration=0.30-fixationsequence=20.00-visualfield=200.00-eyepositionfield=100.00-seed=72.00-samplingrate=1000.00-training
-		
 		my @res 							= ($stimuliTraining =~ m/(\d+\.\d+)/g);
 		
 		my $horVisualFieldSize				= $res[0];
@@ -849,4 +857,4 @@ TEMPLATE
 			        return $str." );";
 				}
 	
-#}
+}

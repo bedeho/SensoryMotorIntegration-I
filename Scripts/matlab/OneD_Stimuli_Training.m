@@ -17,7 +17,7 @@
 %           linearly interpolated and saved at each point to file.
 %
 
-function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFixations)%, dist) %), headPositions) % fixationSequenceLength, ) 
+function OneD_Stimuli_Training(prefix,fixduration)%, fixationSigma)%, numberOfNonSpesificFixations)%, dist) %), headPositions) % fixationSequenceLength, ) 
 
     % Import global variables
     declareGlobalVars();
@@ -35,11 +35,11 @@ function OneD_Stimuli_Training(prefix)%, fixationSigma)%, numberOfNonSpesificFix
     eyePositionFieldSize                = (1-q)*visualFieldSize; % classic=60, quivalently (visualFieldSize/2 - targetVisualRange/2)
     targetVisualRange                   = 0.9*visualFieldSize*q;
     targetEyePositionRange              = 0.8*eyePositionFieldSize;% classic=48
-    testingEyePositionFieldSize         = 15%targetEyePositionRange;
+    testingEyePositionFieldSize         = targetEyePositionRange;
     
     % Agent Movement
     saccadeVelocity                     = 400; % (deg/s), http://www.omlab.org/Personnel/lfd/Jrnl_Arts/033_Sacc_Vel_Chars_Intrinsic_Variability_Fatigue_1979.pdf
-    trainingFixationDuration            = 0.3; % 0.3, is used as mean if fixationSigma >0, (s) - fixation period after each saccade
+    trainingFixationDuration            = fixduration/1000;%0.3; % 0.3, is used as mean if fixationSigma >0, (s) - fixation period after each saccade
     
     % dont change
     testingFixationDuration             = 0.3; % dont change
