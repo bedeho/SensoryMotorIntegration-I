@@ -16,9 +16,22 @@
 	use Cwd 'abs_path';
 	use myConfig;
 
-	use ps1; # ps1, ps2 # <-------- only change this to change to different number of layers!! jippi
+	#use ps1; # ps1, ps2 # <-------- only change this to change to different number of layers!! jippi
+	#my $imported = "ps1"; # psi1,ps2
 	
-	my $imported = "ps1"; # psi1,ps2
+	# sprattling_tracetimeconstant
+	#use ps1_sprattling_tracetimeconstant;
+	#my $imported = "ps1_sprattling_tracetimeconstant";
+	
+	# ps1_sprattling_hebb_MANUAL
+	use ps1_sprattling_hebb_MANUAL;
+	my $imported = "ps1_sprattling_hebb_MANUAL";	
+	
+	# Title
+
+	print "******** imported ***********\n";
+	print "${imported} \n";
+	print "******** imported ***********\n";
 
 	####################################################################
 	# Input
@@ -43,10 +56,10 @@
 	#our @paramArray				   		= ("0.00","0.10","0.20","0.30","0.40","0.50","0.60","0.70","0.80","0.90","1.00");
 	
 	# fixation duration
-	our @paramArray				   		= ("100","200","300","400","500","600","700","800","900","1000","1100","1200","1300","1400","1500","1600"); #
+	#our @paramArray				   		= ("100","200","300","400","500","600","700","800","900","1000","1100","1200","1300","1400","1500","1600"); #
 		
 	# iterate param values   	
-	for my $p (@paramArray) {
+	#for my $p (@paramArray) {
 	   	
 	   	#**********************************
 	   	# peakedgain
@@ -78,6 +91,18 @@
 	   	#my $experiment 					= "planar-assymetrictrace-0.5-0.0625";
 	   	
 	   	#my $experiment 						= "planargain-deeplook-newtrace";
+	   	
+		   	
+	   	#**********************************
+	   	# sprattling
+	   	#********************************** 
+	   	#my $experiment						= "sprattling_tracetimeconstant_headpositions";
+	   	#my $experiment						= "sprattling_hebb_MANUAL";
+	   	
+	   	my $p = 20;
+	   	my $experiment						= "sprattling_hebb_MANUAL_varyingheadposition_${p}";
+		my $fixations						= 15 * $p;
+		my $stim							= "varyingheadposition-visualfield=200.00-eyepositionfield=60.00-fixations=${fixations}.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	   	
 	   	#my $stim							= "peakedgain-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=0.30-fixationsequence=15.00-seed=72.00-samplingrate=1000.00";
 	   	
@@ -216,19 +241,19 @@
 		#**********************************
 		# fixation duration
 		#**********************************
-		my $experiment						= "fixationduration_${p}";
-		my $num_2dec 						= sprintf '%.2f', $p/1000;
-		my $stim							= "fixationduration_${p}-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=${num_2dec}-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
+		#my $experiment						= "fixationduration_${p}";
+		#my $num_2dec 						= sprintf '%.2f', $p/1000;
+		#my $stim							= "fixationduration_${p}-visualfield=200.00-eyepositionfield=60.00-fixations=120.00-targets=1.00-fixduration=${num_2dec}-fixationsequence=15.00-seed=72.00-samplingrate=1000.00-numNonSpesFix=0.00-fixationSigma=0.00";
 		
 		#**********************************
 		# General Params
 		#**********************************
 		
-		my $xgrid 							= XGIRD_RUN; # LOCAL_RUN, XGIRD_RUN
-		my $learningRule					= TRACE; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
+		my $xgrid 							= LOCAL_RUN; # LOCAL_RUN, XGIRD_RUN
+		my $learningRule					= HEBB; # TRACE, HEBB, COVARIANCE_PRESYNAPTIC_TRACE
 	
-		my $nrOfEpochs						= 10; # 20;#10; #50; # 30,100
-		my $saveNetworkAtEpochMultiple 		= 66;
+		my $nrOfEpochs						= 20; # 20;#10; #50; # 30,100
+		my $saveNetworkAtEpochMultiple 		= 11;
 		my $saveNetwork						= "true"; # "true","false"
 		my $outputAtTimeStepMultiple		= 2; # Keep this high (10>=) unless  you are recording for looking at dynamics!
 		
@@ -857,4 +882,4 @@ TEMPLATE
 			        return $str." );";
 				}
 	
-}
+#}

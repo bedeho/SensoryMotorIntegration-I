@@ -97,6 +97,7 @@ function [maxPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = 
         
         XLim = [minX maxX];
         YLim = [minY maxY];
+        
     end
     
     xDivide = linspace(minX, maxX, NumberOfBins+1);
@@ -161,8 +162,10 @@ function [maxPlot, yProjectionAxis, scatterAxis, xProjectionAxis, XLim, YLim] = 
     grid
     
     % Add Limits
-    xlim(XLim);
-    ylim(YLim);
+    if(~(XLim(1) == inf || XLim(2) == -inf || YLim(1) == inf || YLim(2) == -inf)),
+        xlim(XLim);
+        ylim(YLim);
+    end
     
     %% Add titles
     

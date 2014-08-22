@@ -105,7 +105,7 @@ function ThesisParameterVariationPlot()
     %}
     
     %% Time constant
-    %{
+    
     names  = {'0.010', '0.020', '0.030', '0.040', '0.050', '0.060', '0.070', '0.080', '0.090', ... 
               '0.100', '0.200', '0.300', '0.400', '0.500', '0.600', '0.700', '0.800', '0.900', ...
               '1.000', '2.000', '3.000', '4.000', '5.000', '6.000', '7.000', '8.000', '9.000'};
@@ -118,13 +118,17 @@ function ThesisParameterVariationPlot()
         %../Experiments_disk/tracetimeconstant/ttC=
         % hebb_MANUAL/tC=
         
-        experiments(i).Folder   = ['../Experiments_disk/hebb_MANUAL/tC=' names{i}  '_/TrainedNetwork'];
+        %experiments(i).Folder   = ['../Experiments/sprattling_hebb_MANUAL/tC=' names{i}  '_/TrainedNetwork'];
+        
+        experiments(i).Folder   = ['sprattling_hebb_MANUAL/tC=' names{i}  '_/BlankNetwork'];
+        %experiments(i).Folder   = ['sprattling_tracetimeconstant/ttC=' names{i}  '_/BlankNetwork'];
+        
         X(i)                    = vals(i);
     end
     
     %XAxislabel = 'Trace Time Constant - \tau_q (s)';
     XAxislabel = 'Activation Time Constant - \tau_u (s)';
-    %}
+    
     
     %% Spatiotemporal Stimulus Dynamics
     %{
@@ -217,7 +221,7 @@ function ThesisParameterVariationPlot()
     %}
     
     %% fixation duration
-    
+    %{
     vals = 100:100:1600;
     for i=1:length(vals),
         
@@ -228,7 +232,7 @@ function ThesisParameterVariationPlot()
     end
     
     XAxislabel = 'Fixation duration (ms)';
-    
+    %}
     
     %% Plotting
     numExperiments = length(experiments);
@@ -248,7 +252,10 @@ function ThesisParameterVariationPlot()
     % Load baseline
     disp('Exp: untrained ----------------------');
     %[c_,h_,r_,r_std_,a_,a_std_,ec_,ec_r_] = loadExperiment([expFolder '../Experiments_disk/varyingfixationsequencelength_' num2str(i) '.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork/analysisResults.mat']);
+    
     %[c_,h_,r_,r_std_,a_,a_std_,ec_,ec_r_] = loadExperiment([expFolder '../Experiments_disk/tracetimeconstant/ttC=0.010_/BlankNetwork/analysisResults.mat']);
+    [c_,h_,r_,r_std_,a_,a_std_,ec_,ec_r_] = loadExperiment([expFolder 'sprattling_hebb_MANUAL/tC=0.010_/BlankNetwork/analysisResults.mat']);
+    
     %[c_,h_,r_,r_std_,a_,a_std_,ec_,ec_r_] = loadExperiment([expFolder '../Experiments_disk/sparseness/S=0.52_/BlankNetwork/analysisResults.mat']);
     %[c_,h_,r_,r_std_,a_,a_std_,ec_,ec_r_] = loadExperiment([expFolder '../Experiments_disk/varyingheadpositions_1/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork/analysisResults.mat']);
     %[c_,h_,r_,r_std_,a_,a_std_,ec_,ec_r_] = loadExperiment([expFolder 'varying_sigma_1.00/L=0.05000_S=0.80_sS=00000004.50_sT=0.40_gIC=0.0500_eS=0.0_/BlankNetwork/analysisResults.mat']);
@@ -256,7 +263,7 @@ function ThesisParameterVariationPlot()
     %[c_,h_,r_,r_std_,a_,a_std_,ec_,ec_r_] = loadExperiment([expFolder 'durationvariability_sigma_0.00/L=2.00000_S=0.80_sS=00000004.50_sT=0.400_gIC=0.1500_eS=0.0_/BlankNetwork/analysisResults.mat']);
     %[c_,h_,r_,r_std_,a_,a_std_,ec_,ec_r_] = loadExperiment([expFolder 'prewiredLIPold_selforganization/X=1_Y=1/TrainedNetwork_e0/analysisResults.mat']);
     
-    [c_,h_,r_,r_std_,a_,a_std_,ec_,ec_r_] = loadExperiment([expFolder 'fixationduration_100/L=0.05000_S=0.90_sS=00000004.50_sT=0.30_gIC=0.000_eS=0.0_/BlankNetwork/analysisResults.mat']);
+    %[c_,h_,r_,r_std_,a_,a_std_,ec_,ec_r_] = loadExperiment([expFolder 'fixationduration_100/L=0.05000_S=0.90_sS=00000004.50_sT=0.30_gIC=0.000_eS=0.0_/BlankNetwork/analysisResults.mat']);
     
     
     % Iterate experiments and plot
@@ -286,7 +293,7 @@ function ThesisParameterVariationPlot()
     XLim = [vals(1) vals(end)];
 
     %% Log plots
-    %{
+    
     
     %Limits
     
@@ -298,7 +305,7 @@ function ThesisParameterVariationPlot()
     
     % Plot 1
     figure();
-    [AX,H1,H2] = plotyy(X, headCenteredNessRate, X, coverage); % ,'semilogx'
+    [AX,H1,H2] = plotyy(X, headCenteredNessRate, X, coverage,'semilogx');
     
     axes(AX(1));
     set(AX(1),'XLim', XLim, 'YLim', [0 1], 'YTick', 0:0.2:1); % ,'XGrid','on'
@@ -320,7 +327,7 @@ function ThesisParameterVariationPlot()
     % Errorbars in plot 2
     figure();
     
-    [AX,H1,H2] = plotyy(X, rfSizes,X, AverageHeadCenteredNess); % ,'semilogx'  
+    [AX,H1,H2] = plotyy(X, rfSizes,X, AverageHeadCenteredNess,'semilogx');  
     
     % Errorbars
     axes(AX(1));
@@ -352,11 +359,11 @@ function ThesisParameterVariationPlot()
         set([AX hXLabel hYLabel1 hYLabel2], 'FontSize', 14);
         
     end
-    %}
+    
     
     
     %% Combined 4yyyy
-    
+    %{
     
     [ax,hlines] = ploty4(X,headCenteredNessRate,X,coverage,X,AverageHeadCenteredNess,X,rfSizes,{'Head-Centeredness Rate','Coverage','Average Head-Centeredness','Average Receptive Field Size (deg)'}, XAxislabel, AverageHeadCenteredNessSTD,rfSizesSTD,XLim); 
     
@@ -378,7 +385,7 @@ function ThesisParameterVariationPlot()
     
     hold(ax(4), 'on');
     plot(ax(4),XLim,[r_ r_],'--','Color','k');
-    
+    %}
     
     %if(exist('XTick')),
     %    set(AX,'XTick', XTick);

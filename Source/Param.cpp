@@ -223,28 +223,29 @@ Param::Param(const char * filename, bool isTraining) {
 
 void Param::validate(bool isTraining) {
 
-		float smallestTimeConstant = FLT_MAX;
-		
-		// Find the smallest time constant
-		for(unsigned i = 0;i < timeConstants.size();i++) {
-			smallestTimeConstant = smallestTimeConstant > timeConstants[i] ? timeConstants[i] : smallestTimeConstant;
-			
-			if(smallestTimeConstant <= 0) {
-				cerr << "timeConstant cannot be zero." << endl;
-                cerr.flush();
-				exit(EXIT_FAILURE);
-			}
-		}
-		
-		stepSize = smallestTimeConstant * stepSizeFraction;
+    // We start out with the global trace time constant as the upper bound
+    float smallestTimeConstant = traceTimeConstant;
     
-        cout << "dt = " << stepSize << endl;
-    
-        if(nrOfEpochs < 1) {
-            cerr << "No training epochs, nrOfEpochs = 0." << endl;
+    // Find the smallest time constant
+    for(unsigned i = 0;i < timeConstants.size();i++) {
+        smallestTimeConstant = smallestTimeConstant > timeConstants[i] ? timeConstants[i] : smallestTimeConstant;
+        
+        if(smallestTimeConstant <= 0) {
+            cerr << "timeConstant cannot be zero." << endl;
             cerr.flush();
             exit(EXIT_FAILURE);
         }
+    }
+		
+	stepSize = smallestTimeConstant * stepSizeFraction;
+    
+	cout << "frac = " << stepSizeFraction << ", min_i {tau_i} = " << smallestTimeConstant << ", dt = " << stepSize << endl;
+    
+	if(nrOfEpochs < 1) {
+		cerr << "No training epochs, nrOfEpochs = 0." << endl;
+		cerr.flush();
+		exit(EXIT_FAILURE);
+	}
 	
 	if(traceTimeConstant <= 0) {
 		// Cannot be zero, because then traceFactor = -inf, 

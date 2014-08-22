@@ -1,0 +1,623 @@
+TSMI
+v7
+r0
+t430230364.123654
+cCheck dependencies
+cCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/BinaryRead.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryRead.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+cCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/BinaryWrite.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryWrite.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+cCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/HiddenNeuron.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenNeuron.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+cCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/HiddenRegion.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+cCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/InputNeuron.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+cCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/InputRegion.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputRegion.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+cCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Network.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Network.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+cCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Neuron.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Neuron.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+cCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Param.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Param.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+cCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Synapse.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Synapse.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+cCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Region.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Region.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+cCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/main.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/main.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+cLd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI normal x86_64
+cGenerateDSYMFile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI.dSYM /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI
+
+N/Developer/SDKs/MacOSX10.6.sdk
+c000000004D5A274300000000000000EE
+t1297753923
+s238
+
+N/Developer/SDKs/MacOSX10.6.sdk/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin10/4.2.1/include/omp.h
+c000000004D087F0A0000000000000AE9
+t1292402442
+s2793
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/errno.h
+c000000004BBD2CE900000000000003EB
+t1270689001
+s1003
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/math.h
+c000000004A5C14A000000000000004F1
+t1247548576
+s1265
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/stdio.h
+c000000004BBD2CE90000000000004174
+t1270689001
+s16756
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/stdlib.h
+c000000004BBD2CE90000000000002DF5
+t1270689001
+s11765
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryRead.cpp
+c000000005071C30800000000000005D8
+t1349632776
+s1496
+i"BinaryRead.h"
+i<cstdlib>
+i<cstring>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryRead.h
+c000000004F854A08000000000000046B
+t1334135304
+s1131
+i<fstream>
+i<string>
+i<iostream>
+i<cerrno>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryWrite.cpp
+c000000004F854A08000000000000041F
+t1334135304
+s1055
+i"BinaryWrite.h"
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryWrite.h
+c000000004F854A080000000000000559
+t1334135304
+s1369
+i<fstream>
+i<string>
+i<iostream>
+i<cerrno>
+i<cstdlib>
+i<cstring>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenNeuron.cpp
+c00000000521CD4D80000000000002890
+t1377621208
+s10384
+i"HiddenNeuron.h"
+i"Param.h"
+i"Synapse.h"
+i"Region.h"
+i"HiddenRegion.h"
+i"InputRegion.h"
+i"InputNeuron.h"
+i"BinaryWrite.h"
+i<iostream>
+i<cstdlib>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenNeuron.h
+c00000000521CD4C10000000000001A43
+t1377621185
+s6723
+i"Neuron.h"
+i"Synapse.h"
+i"Param.h"
+i<vector>
+i<gsl/gsl_randist.h>
+i<cfloat>
+i"Utilities.h"
+i<cfloat>
+i<cmath>
+i<math.h>
+i<iostream>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp
+c00000000522BCDCE00000000000069D7
+t1378602446
+s27095
+i"HiddenRegion.h"
+i"HiddenNeuron.h"
+i"Synapse.h"
+i"BinaryWrite.h"
+i"InputNeuron.h"
+i"InputRegion.h"
+i<cmath>
+i<sstream>
+i<algorithm>
+i<queue>
+i<iostream>
+i<cstdlib>
+i"Utilities.h"
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.h
+c00000000513B737E000000000000166C
+t1362850686
+s5740
+i"Region.h"
+i"HiddenNeuron.h"
+i"Param.h"
+i<vector>
+i<queue>
+i<functional>
+i<gsl/gsl_cdf.h>
+i<gsl/gsl_randist.h>
+i"Utilities.h"
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp
+c00000000515F1E1700000000000017D4
+t1365188119
+s6100
+i"InputNeuron.h"
+i"InputRegion.h"
+i<cmath>
+i<iostream>
+i<stdlib.h>
+i<math.h>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.h
+c0000000051312AAC00000000000005C5
+t1362176684
+s1477
+i"Neuron.h"
+i"Param.h"
+i"Utilities.h"
+i<gsl/gsl_cdf.h>
+i<gsl/gsl_randist.h>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputRegion.cpp
+c000000005130C81F00000000000030B8
+t1362151455
+s12472
+i"InputRegion.h"
+i"InputNeuron.h"
+i"Neuron.h"
+i"Param.h"
+i"BinaryRead.h"
+i<string>
+i<iostream>
+i<sstream>
+i<fstream>
+i<cmath>
+i<iomanip>
+i<cstdlib>
+i<cstring>
+i"Utilities.h"
+i<vector>
+i<fstream>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputRegion.h
+c000000005131299A0000000000000B81
+t1362176410
+s2945
+i"Region.h"
+i"InputNeuron.h"
+i<vector>
+i<string>
+i<gsl/gsl_randist.h>
+i"Utilities.h"
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Network.cpp
+c00000000521C95A40000000000005008
+t1377605028
+s20488
+i"Network.h"
+i"HiddenRegion.h"
+i"HiddenNeuron.h"
+i"InputRegion.h"
+i"BinaryRead.h"
+i"BinaryWrite.h"
+i<iostream>
+i<fstream>
+i<cstdlib>
+i<string>
+i<sstream>
+i<ctime>
+i<cmath>
+i<iomanip>
+i<cerrno>
+i"Utilities.h"
+i<omp.h>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Network.h
+c000000005071B7F60000000000000A01
+t1349629942
+s2561
+i"InputRegion.h"
+i"Param.h"
+i<vector>
+i"Utilities.h"
+i<gsl/gsl_cdf.h>
+i<gsl/gsl_randist.h>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Neuron.cpp
+c000000004F854A08000000000000018A
+t1334135304
+s394
+i"Neuron.h"
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Neuron.h
+c000000005071B7EE0000000000000413
+t1349629934
+s1043
+i<vector>
+i"Utilities.h"
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Param.cpp
+c0000000053F492DB0000000000002683
+t1408537307
+s9859
+i"Param.h"
+i<iostream>
+i<cstdlib>
+i<libconfig.h++>
+i<cmath>
+i<cfloat>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Param.h
+c00000000513BA23A0000000000001055
+t1362862650
+s4181
+i<vector>
+i"Utilities.h"
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Region.cpp
+c000000004F854A0800000000000001B4
+t1334135304
+s436
+i"Region.h"
+i"Param.h"
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Region.h
+c000000004F854A080000000000000269
+t1334135304
+s617
+i<vector>
+i"Utilities.h"
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Synapse.cpp
+c00000000511E9D9900000000000008FC
+t1360960921
+s2300
+i"Synapse.h"
+i<cfloat>
+i<iostream>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Synapse.h
+c00000000511E9D4D00000000000004C1
+t1360960845
+s1217
+i<vector>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Utilities.h
+c00000000521CD4C90000000000000FF9
+t1377621193
+s4089
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI
+t1408537561
+s318976
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI.dSYM
+t1408537561
+s102
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/BinaryRead.o
+t1408537560
+s72700
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/BinaryWrite.o
+t1408537560
+s72040
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/HiddenNeuron.o
+t1408537560
+s170888
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/HiddenRegion.o
+t1408537561
+s534324
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/InputNeuron.o
+t1408537560
+s107840
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/InputRegion.o
+t1408537561
+s483464
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Network.o
+t1408537561
+s648876
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Neuron.o
+t1408537559
+s3236
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Param.o
+t1408537560
+s260480
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Region.o
+t1408537560
+s39432
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/SMI.LinkFileList
+c0000000053F493D60000000000000846
+t1408537558
+s2118
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Synapse.o
+t1408537560
+s6552
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/main.o
+t1408537560
+s108412
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/main.cpp
+c00000000515DB09E0000000000001628
+t1365094558
+s5672
+i"Network.h"
+i<iostream>
+i<cstring>
+i<string>
+i<cstdlib>
+i"Utilities.h"
+i<omp.h>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include/gsl/gsl_cdf.h
+c000000004F86ED290000000000001CC9
+t1334242601
+s7369
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include/gsl/gsl_errno.h
+c000000004F86ED1E000000000000174D
+t1334242590
+s5965
+i<stdio.h>
+i<errno.h>
+i<gsl/gsl_types.h>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include/gsl/gsl_inline.h
+c000000004F86ED2B000000000000099F
+t1334242603
+s2463
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include/gsl/gsl_randist.h
+c000000004F86ED25000000000000219F
+t1334242597
+s8607
+i<gsl/gsl_rng.h>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include/gsl/gsl_rng.h
+c000000004F86ED250000000000001B2D
+t1334242597
+s6957
+i<stdlib.h>
+i<gsl/gsl_types.h>
+i<gsl/gsl_errno.h>
+i<gsl/gsl_inline.h>
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include/gsl/gsl_types.h
+c000000004F86ED2B000000000000047D
+t1334242603
+s1149
+
+N/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include/libconfig.h++
+c000000004F510CCA00000000000034C5
+t1330711754
+s13509
+i<stdio.h>
+i<exception>
+i<string>
+
+CCheck dependencies
+r0
+lSLF07#2@18"Check dependencies430230354#430230358#0(155"[WARN]Mac OS X deployment target '10.7' for architecture 'x86_64' and variant 'normal' is greater than the maximum value '10.6' for the Mac OS X 10.6 SDK.1(22@148"Mac OS X deployment target '10.7' for architecture 'x86_64' and variant 'normal' is greater than the maximum value '10.6' for the Mac OS X 10.6 SDK.430230354#18446744073709551615#0#0(1@0"0(0#1#0"8606953728#0"0#
+
+CCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/BinaryRead.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryRead.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+s430230358.219496
+e430230360.566170
+r1
+xCompileC
+xbuild/SMI.build/Release/SMI.build/Objects-normal/x86_64/BinaryRead.o
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryRead.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvmgcc42
+lSLF07#2@131"Compile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryRead.cpp430230358#430230360#0(0"0(0#0#123"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryRead.cpp8606642688#2251"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -Wuninitialized -Wshorten-64-to-32 -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -fvisibility-inlines-hidden -mmacosx-version-min=10.7 -gdwarf-2 -fopenmp -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-generated-files.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-own-target-headers.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-all-target-headers.hmap -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-project-headers.hmap -F/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources/x86_64 -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources -fopenmp -c /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryRead.cpp -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/BinaryRead.o0#
+
+CCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/BinaryWrite.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryWrite.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+s430230358.220737
+e430230360.567366
+r1
+xCompileC
+xbuild/SMI.build/Release/SMI.build/Objects-normal/x86_64/BinaryWrite.o
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryWrite.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvmgcc42
+lSLF07#2@132"Compile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryWrite.cpp430230358#430230360#0(0"0(0#0#124"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryWrite.cpp8606392480#2253"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -Wuninitialized -Wshorten-64-to-32 -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -fvisibility-inlines-hidden -mmacosx-version-min=10.7 -gdwarf-2 -fopenmp -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-generated-files.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-own-target-headers.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-all-target-headers.hmap -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-project-headers.hmap -F/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources/x86_64 -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources -fopenmp -c /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/BinaryWrite.cpp -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/BinaryWrite.o0#
+
+CCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/HiddenNeuron.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenNeuron.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+s430230358.244126
+e430230360.663929
+r1
+xCompileC
+xbuild/SMI.build/Release/SMI.build/Objects-normal/x86_64/HiddenNeuron.o
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenNeuron.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvmgcc42
+lSLF07#2@133"Compile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenNeuron.cpp430230358#430230360#0(0"0(0#0#125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenNeuron.cpp8604114976#2255"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -Wuninitialized -Wshorten-64-to-32 -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -fvisibility-inlines-hidden -mmacosx-version-min=10.7 -gdwarf-2 -fopenmp -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-generated-files.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-own-target-headers.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-all-target-headers.hmap -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-project-headers.hmap -F/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources/x86_64 -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources -fopenmp -c /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenNeuron.cpp -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/HiddenNeuron.o0#
+
+CCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/HiddenRegion.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+s430230358.245180
+e430230361.457416
+r1
+xCompileC
+xbuild/SMI.build/Release/SMI.build/Objects-normal/x86_64/HiddenRegion.o
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvmgcc42
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp: In member function 'void HiddenRegion::setupFilters()':
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:233: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:238: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp: In member function 'void HiddenRegion::computeNewFiringRate()':
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:295: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:337: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:338: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp: In member function 'void HiddenRegion::computeNewActivation()':
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:380: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp: In member function 'void HiddenRegion::applyLearningRule()':
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:504: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:511: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:541: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:484: warning: unused variable 'oldBlockage'
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:561: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:479: warning: unused variable 'dw'
+lSLF07#2@133"Compile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp430230358#430230361#0(3104"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp: In member function 'void HiddenRegion::setupFilters()':/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:233: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:238: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp: In member function 'void HiddenRegion::computeNewFiringRate()':/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:295: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:337: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:338: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp: In member function 'void HiddenRegion::computeNewActivation()':/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:380: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp: In member function 'void HiddenRegion::applyLearningRule()':/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:504: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:511: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:541: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:484: warning: unused variable 'oldBlockage'/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:561: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp:479: warning: unused variable 'dw'12(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#183#202#0(6@125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp400295246#233#0#233#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#385#202#0(6@125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp400295246#238#0#238#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#778#202#0(6@125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp400295246#295#0#295#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#980#202#0(6@125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp400295246#337#0#337#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#1182#202#0(6@125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp400295246#338#0#338#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#1575#202#0(6@125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp400295246#380#0#380#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#1965#202#0(6@125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp400295246#504#0#504#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#2167#202#0(6@125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp400295246#511#0#511#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#2369#202#0(6@125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp400295246#541#0#541#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@29"Unused variable 'oldBlockage'430230360#2571#170#0(6@125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp400295246#484#0#484#0#19"unused variable '*'0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#2741#202#0(6@125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp400295246#561#0#561#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@20"Unused variable 'dw'430230360#2943#161#0(6@125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp400295246#479#0#479#0#19"unused variable '*'0(0#0#125"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp8599556832#2255"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -Wuninitialized -Wshorten-64-to-32 -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -fvisibility-inlines-hidden -mmacosx-version-min=10.7 -gdwarf-2 -fopenmp -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-generated-files.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-own-target-headers.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-all-target-headers.hmap -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-project-headers.hmap -F/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources/x86_64 -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources -fopenmp -c /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/HiddenRegion.cpp -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/HiddenRegion.o0#
+
+CCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/InputNeuron.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+s430230358.246146
+e430230360.564795
+r1
+xCompileC
+xbuild/SMI.build/Release/SMI.build/Objects-normal/x86_64/InputNeuron.o
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvmgcc42
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp: In member function 'void InputNeuron::init(Region*, u_short, u_short, u_short, gsl_rng*, Param&)':
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:49: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:50: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp: In member function 'float InputNeuron::computeRetinalComponent(const std::vector<float, std::allocator<float> >&)':
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:144: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp: In member function 'float InputNeuron::computeEyePositionCompononent(float)':
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:170: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:176: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:177: warning: implicit conversion shortens 64-bit value into a 32-bit value
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:182: warning: implicit conversion shortens 64-bit value into a 32-bit value
+lSLF07#2@132"Compile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp430230358#430230360#0(2076"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp: In member function 'void InputNeuron::init(Region*, u_short, u_short, u_short, gsl_rng*, Param&)':/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:49: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:50: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp: In member function 'float InputNeuron::computeRetinalComponent(const std::vector<float, std::allocator<float> >&)':/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:144: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp: In member function 'float InputNeuron::computeEyePositionCompononent(float)':/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:170: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:176: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:177: warning: implicit conversion shortens 64-bit value into a 32-bit value/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp:182: warning: implicit conversion shortens 64-bit value into a 32-bit value7(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#225#200#0(6@124"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp386880919#49#0#49#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#425#200#0(6@124"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp386880919#50#0#50#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#867#201#0(6@124"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp386880919#144#0#144#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#1272#201#0(6@124"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp386880919#170#0#170#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#1473#201#0(6@124"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp386880919#176#0#176#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#1674#201#0(6@124"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp386880919#177#0#177#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#1875#201#0(6@124"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp386880919#182#0#182#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(0#0#124"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp8596960512#2253"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -Wuninitialized -Wshorten-64-to-32 -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -fvisibility-inlines-hidden -mmacosx-version-min=10.7 -gdwarf-2 -fopenmp -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-generated-files.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-own-target-headers.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-all-target-headers.hmap -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-project-headers.hmap -F/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources/x86_64 -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources -fopenmp -c /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputNeuron.cpp -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/InputNeuron.o0#
+
+CCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/InputRegion.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputRegion.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+s430230358.247203
+e430230361.274118
+r1
+xCompileC
+xbuild/SMI.build/Release/SMI.build/Objects-normal/x86_64/InputRegion.o
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputRegion.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvmgcc42
+lSLF07#2@132"Compile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputRegion.cpp430230358#430230361#0(0"0(0#0#124"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputRegion.cpp8593015168#2253"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -Wuninitialized -Wshorten-64-to-32 -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -fvisibility-inlines-hidden -mmacosx-version-min=10.7 -gdwarf-2 -fopenmp -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-generated-files.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-own-target-headers.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-all-target-headers.hmap -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-project-headers.hmap -F/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources/x86_64 -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources -fopenmp -c /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/InputRegion.cpp -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/InputRegion.o0#
+
+CCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Network.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Network.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+s430230358.248215
+e430230361.562877
+r1
+xCompileC
+xbuild/SMI.build/Release/SMI.build/Objects-normal/x86_64/Network.o
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Network.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvmgcc42
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Network.cpp: In member function 'u_short Network::runContinous(const char*, bool, bool)':
+o/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Network.cpp:291: warning: implicit conversion shortens 64-bit value into a 32-bit value
+lSLF07#2@128"Compile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Network.cpp430230358#430230361#0(396"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Network.cpp: In member function 'u_short Network::runContinous(const char*, bool, bool)':/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Network.cpp:291: warning: implicit conversion shortens 64-bit value into a 32-bit value1(22@61"Implicit conversion shortens 64-bit value into a 32-bit value430230360#199#197#0(6@120"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Network.cpp399297828#291#0#291#0#61"implicit conversion shortens 64-bit value into a 32-bit value0(0#0#120"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Network.cpp8607332608#2245"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -Wuninitialized -Wshorten-64-to-32 -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -fvisibility-inlines-hidden -mmacosx-version-min=10.7 -gdwarf-2 -fopenmp -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-generated-files.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-own-target-headers.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-all-target-headers.hmap -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-project-headers.hmap -F/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources/x86_64 -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources -fopenmp -c /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Network.cpp -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Network.o0#
+
+CCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Neuron.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Neuron.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+s430230358.249148
+e430230359.874357
+r1
+xCompileC
+xbuild/SMI.build/Release/SMI.build/Objects-normal/x86_64/Neuron.o
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Neuron.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvmgcc42
+lSLF07#2@127"Compile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Neuron.cpp430230358#430230359#0(0"0(0#0#119"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Neuron.cpp8606954496#2243"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -Wuninitialized -Wshorten-64-to-32 -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -fvisibility-inlines-hidden -mmacosx-version-min=10.7 -gdwarf-2 -fopenmp -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-generated-files.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-own-target-headers.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-all-target-headers.hmap -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-project-headers.hmap -F/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources/x86_64 -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources -fopenmp -c /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Neuron.cpp -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Neuron.o0#
+
+CCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Param.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Param.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+s430230358.250324
+e430230360.916816
+r1
+xCompileC
+xbuild/SMI.build/Release/SMI.build/Objects-normal/x86_64/Param.o
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Param.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvmgcc42
+lSLF07#2@126"Compile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Param.cpp430230358#430230360#0(0"0(0#0#118"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Param.cpp8606770912#2241"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -Wuninitialized -Wshorten-64-to-32 -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -fvisibility-inlines-hidden -mmacosx-version-min=10.7 -gdwarf-2 -fopenmp -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-generated-files.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-own-target-headers.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-all-target-headers.hmap -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-project-headers.hmap -F/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources/x86_64 -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources -fopenmp -c /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Param.cpp -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Param.o0#
+
+CCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Region.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Region.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+s430230358.252482
+e430230360.212880
+r1
+xCompileC
+xbuild/SMI.build/Release/SMI.build/Objects-normal/x86_64/Region.o
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Region.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvmgcc42
+lSLF07#2@127"Compile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Region.cpp430230358#430230360#0(0"0(0#0#119"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Region.cpp8606255904#2243"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -Wuninitialized -Wshorten-64-to-32 -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -fvisibility-inlines-hidden -mmacosx-version-min=10.7 -gdwarf-2 -fopenmp -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-generated-files.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-own-target-headers.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-all-target-headers.hmap -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-project-headers.hmap -F/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources/x86_64 -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources -fopenmp -c /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Region.cpp -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Region.o0#
+
+CCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Synapse.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Synapse.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+s430230358.251416
+e430230360.197327
+r1
+xCompileC
+xbuild/SMI.build/Release/SMI.build/Objects-normal/x86_64/Synapse.o
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Synapse.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvmgcc42
+lSLF07#2@128"Compile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Synapse.cpp430230358#430230360#0(0"0(0#0#120"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Synapse.cpp8606404000#2245"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -Wuninitialized -Wshorten-64-to-32 -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -fvisibility-inlines-hidden -mmacosx-version-min=10.7 -gdwarf-2 -fopenmp -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-generated-files.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-own-target-headers.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-all-target-headers.hmap -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-project-headers.hmap -F/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources/x86_64 -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources -fopenmp -c /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/Synapse.cpp -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/Synapse.o0#
+
+CCompileC build/SMI.build/Release/SMI.build/Objects-normal/x86_64/main.o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/main.cpp normal x86_64 c++ com.apple.compilers.llvmgcc42
+s430230358.253665
+e430230360.503185
+r1
+xCompileC
+xbuild/SMI.build/Release/SMI.build/Objects-normal/x86_64/main.o
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/main.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvmgcc42
+lSLF07#2@125"Compile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/main.cpp430230358#430230360#0(0"0(0#0#117"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/main.cpp8606079232#2239"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -mdynamic-no-pic -Wreturn-type -Wunused-variable -Wuninitialized -Wshorten-64-to-32 -isysroot /Developer/SDKs/MacOSX10.6.sdk -fvisibility=hidden -fvisibility-inlines-hidden -mmacosx-version-min=10.7 -gdwarf-2 -fopenmp -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-generated-files.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-own-target-headers.hmap -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-all-target-headers.hmap -iquote /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/SMI-project-headers.hmap -F/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/include -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources/x86_64 -I/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/DerivedSources -fopenmp -c /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/main.cpp -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/main.o0#
+
+CGenerateDSYMFile /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI.dSYM /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI
+s430230361.706245
+e430230364.123527
+r1
+xGenerateDSYMFile
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI.dSYM
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI
+lSLF07#2@57"GenerateDSYMFile build/Release/SMI.dSYM build/Release/SMI430230361#430230364#0(0"0(0#0#126"/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI8606144736#410"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    /Developer/usr/bin/dsymutil /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI.dSYM0#
+
+CLd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI normal x86_64
+s430230361.562933
+e430230361.706168
+r1
+xLd
+x/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI
+xnormal
+xx86_64
+lSLF07#2@131"Link /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI430230361#430230361#0(0"0(0#0#0"8606483840#1028"    cd /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source    setenv MACOSX_DEPLOYMENT_TARGET 10.7    /Developer/usr/bin/llvm-g++-4.2 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -L/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/GSL/lib -L/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/libconfig/lib -F/Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release -filelist /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/SMI.build/Release/SMI.build/Objects-normal/x86_64/SMI.LinkFileList -mmacosx-version-min=10.7 -fopenmp -lconfig++ -lgsl -prebind -o /Network/Servers/mac0.cns.ox.ac.uk/Volumes/Data/Users/mender/Dphil/Projects/SensoryMotorIntegration-I/Source/build/Release/SMI0#
+
